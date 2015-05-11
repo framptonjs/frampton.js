@@ -1,0 +1,25 @@
+{
+  "name": "frampton",
+  "version": "0.0.1",
+  "description": "A functional reactive library",
+  "main": "frampton.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/framptonjs/frampton.git"
+  },
+  "author": "Kevin Greene",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/framptonjs/frampton/issues"
+  },
+  "homepage": "https://github.com/framptonjs/frampton",
+  "devDependencies": {
+    "broccoli": "^0.16.2",
+    "broccoli-cli": "^1.0.0",
+    "frampton-build": "0.0.4",
+    "qunitjs": "^1.16.0"
+  }
+}

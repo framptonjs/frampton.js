@@ -1,0 +1,23 @@
+import EventStream from 'frampton-signals/event_stream';
+import { nextEvent } from 'frampton-signals/event';
+
+// interval :: EventStream Number
+export default function interval() {
+  return new EventStream((sink) => {
+
+    var frame = 0;
+    var requestId = null;
+    var isStopped = false;
+
+    requestId = requestAnimationFrame(function step() {
+      sink(nextEvent(frame++));
+      if (!isStopped) requestId = requestAnimationFrame(step);
+    });
+
+    return function interval_destroy() {
+      cancelAnimationFrame(requestId);
+      isStopped = true;
+      requestId = null;
+    };
+  });
+}
