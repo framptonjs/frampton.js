@@ -1,3 +1,3 @@
-import Frampton from 'frampton/namespace';
+import namespace from 'frampton/namespace';
 
-export default Frampton;
+export default namespace;

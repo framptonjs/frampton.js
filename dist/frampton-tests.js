@@ -1,8 +1,7 @@
-/**
- *
- */
+/*globals Frampton:true */
+
 if (typeof Frampton === 'undefined') {
-  var Frampton = {};
+  Frampton = {};
 }
 
 if (typeof define === 'undefined' && typeof require === 'undefined') {
@@ -297,6 +296,329 @@ define("frampton-events/listen.jshint", ["exports"], function (exports) {
   undefined;
 });
 define("frampton-events/target_value.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/ajax.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/complete.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/error.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/get.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/get_newest.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/is_complete.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/is_error.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/is_start.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/post.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/progress.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/query_escape.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/query_pair.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/request.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/response.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/send.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/start.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/get_test', ['exports', 'frampton-http/get'], function (exports, _framptonHttpGet) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _get = _interopRequire(_framptonHttpGet);
+
+  QUnit.module('Frampton.Http.get');
+
+  QUnit.test('should return an EventStream of an ajax response', function (assert) {
+    var done = assert.async();
+    var req = (0, _get)('test');
+    req.next(function (val) {
+      if (val.status === 'complete') {
+        ok(true);
+        done();
+      }
+    });
+  });
+});
+define("frampton-http/tests/get_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/is_complete_test', ['exports', 'frampton-http/is_complete', 'frampton-http/response'], function (exports, _framptonHttpIs_complete, _framptonHttpResponse) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isComplete = _interopRequire(_framptonHttpIs_complete);
+
+  var _Response = _interopRequire(_framptonHttpResponse);
+
+  QUnit.module('Frampton.Http.isComplete');
+
+  QUnit.test('should return true for complete response', function () {
+    var response = (0, _Response)('complete', 1, null);
+    ok((0, _isComplete)(response));
+  });
+
+  QUnit.test('should return false for incomplete response', function () {
+    var response = (0, _Response)('progress', 0.5, null);
+    notOk((0, _isComplete)(response));
+  });
+});
+define("frampton-http/tests/is_complete_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/is_error_test', ['exports', 'frampton-http/is_error', 'frampton-http/response'], function (exports, _framptonHttpIs_error, _framptonHttpResponse) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isError = _interopRequire(_framptonHttpIs_error);
+
+  var _Response = _interopRequire(_framptonHttpResponse);
+
+  QUnit.module('Frampton.Http.isError');
+
+  QUnit.test('should return true for error response', function () {
+    var response = (0, _Response)('error', 0, null);
+    ok((0, _isError)(response));
+  });
+
+  QUnit.test('should return false for complete response', function () {
+    var response = (0, _Response)('complete', 1, null);
+    notOk((0, _isError)(response));
+  });
+});
+define("frampton-http/tests/is_error_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/post_test', ['exports', 'frampton-http/post'], function (exports, _framptonHttpPost) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _post = _interopRequire(_framptonHttpPost);
+
+  QUnit.module('Frampton.Http.post');
+
+  QUnit.test('should return an EventStream of an ajax response', function (assert) {
+    var done = assert.async();
+    var req = (0, _post)('test', {});
+    req.next(function (val) {
+      if (val.status === 'complete') {
+        ok(true);
+        done();
+      }
+    });
+  });
+});
+define("frampton-http/tests/post_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/query_escape_test', ['exports', 'frampton-http/query_escape'], function (exports, _framptonHttpQuery_escape) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _queryEscape = _interopRequire(_framptonHttpQuery_escape);
+
+  QUnit.module('Frampton.Http.queryEscape');
+
+  QUnit.test('should correctly escape spaces', function () {
+    var params = 'some thing';
+    equal((0, _queryEscape)(params), 'some+thing');
+  });
+});
+define("frampton-http/tests/query_escape_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/query_pair_test', ['exports', 'frampton-http/query_pair'], function (exports, _framptonHttpQuery_pair) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _queryPair = _interopRequire(_framptonHttpQuery_pair);
+
+  QUnit.module('Frampton.Http.queryPair');
+
+  QUnit.test('should combine pair of strings to string', function () {
+    var params = ['key', 'value'];
+    equal((0, _queryPair)(params), 'key=value');
+  });
+});
+define("frampton-http/tests/query_pair_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/send_test', ['exports', 'frampton-http/send', 'frampton-http/request'], function (exports, _framptonHttpSend, _framptonHttpRequest) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _send = _interopRequire(_framptonHttpSend);
+
+  var _Request = _interopRequire(_framptonHttpRequest);
+
+  QUnit.module('Frampton.Http.send');
+
+  QUnit.test('should return an EventStream of an ajax response', function (assert) {
+    var done = assert.async();
+    var req = (0, _send)(null, (0, _Request)('test'));
+    req.next(function (val) {
+      if (val.status === 'complete') {
+        ok(true);
+        done();
+      }
+    });
+  });
+});
+define("frampton-http/tests/send_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/upload_test', ['exports', 'frampton-http/upload'], function (exports, _framptonHttpUpload) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _upload = _interopRequire(_framptonHttpUpload);
+
+  QUnit.module('Frampton.Http.upload');
+
+  QUnit.test('should return an EventStream of an ajax response', function (assert) {
+    var done = assert.async();
+    var req = (0, _upload)('test', 'test data');
+    req.next(function (val) {
+      if (val.status === 'complete') {
+        ok(true);
+        done();
+      }
+    });
+  });
+});
+define("frampton-http/tests/upload_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-http/tests/url_test', ['exports', 'frampton-http/url'], function (exports, _framptonHttpUrl) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _url = _interopRequire(_framptonHttpUrl);
+
+  QUnit.module('Frampton.Http.url');
+
+  QUnit.test('should return url for domain and object of params', function () {
+    var params = { one: 1, two: 2, three: 3 };
+    var domain = 'http://www.test.com';
+    equal((0, _url)(domain, params), 'http://www.test.com?one=1&two=2&three=3');
+  });
+
+  QUnit.test('return url with correctly encoded spaces', function () {
+    var params = { one: 1, two: 2, three: 'three three' };
+    var domain = 'http://www.test.com';
+    equal((0, _url)(domain, params), 'http://www.test.com?one=1&two=2&three=three+three');
+  });
+});
+define("frampton-http/tests/url_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/upload.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/uri_decode.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/uri_encode.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-http/url.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -2163,11 +2485,6 @@ define("frampton.jshint", ["exports"], function (exports) {
   undefined;
 });
 define("frampton/namespace.jshint", ["exports"], function (exports) {
-  "use strict";
-
-  undefined;
-});
-define("frampton/runtime.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;

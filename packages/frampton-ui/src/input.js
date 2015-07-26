@@ -1,7 +1,6 @@
 import { stepper } from 'frampton-signals';
 
 import {
-  contains,
   eventValue,
   listen
 } from 'frampton-events';

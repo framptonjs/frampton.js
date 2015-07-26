@@ -1,5 +1,7 @@
+/*globals Frampton:true */
+
 if (typeof Frampton === 'undefined') {
-  var Frampton = {};
+  Frampton = {};
 }
 
 Frampton.VERSION = '0.0.3';

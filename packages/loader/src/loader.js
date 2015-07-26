@@ -1,8 +1,7 @@
-/**
- *
- */
+/*globals Frampton:true */
+
 if (typeof Frampton === 'undefined') {
-  var Frampton = {};
+  Frampton = {};
 }
 
 if (typeof define === 'undefined' && typeof require === 'undefined') {

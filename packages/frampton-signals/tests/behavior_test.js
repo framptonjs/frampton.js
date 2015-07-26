@@ -10,7 +10,7 @@ QUnit.test('of method should return Behavior with initial value', function() {
   });
 });
 
-QUnit.test('update method should notify listeners', function() {
+QUnit.test('update method should notify listeners', () => {
   var behavior = Behavior.of(5);
   var count = 0;
   behavior.changes((val) => {

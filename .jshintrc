@@ -24,7 +24,8 @@
     "clearInterval",
     "requestAnimationFrame",
     "cancelAnimationFrame",
-    "XMLHttpRequest"
+    "XMLHttpRequest",
+    "FormData"
   ],
 
   "esnext": true,
@@ -37,7 +38,6 @@
   "eqeqeq": true,
   "forin": false,
   "laxbreak": false,
-  "newcap": true,
   "noarg": true,
   "noempty": false,
   "nonew": false,
