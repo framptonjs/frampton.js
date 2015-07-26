@@ -11,10 +11,6 @@ if (typeof define === 'undefined' && typeof require === 'undefined') {
 
 (function() {
 
-  Frampton = this.Frampton = this.Frampton || {};
-
-  if (typeof Frampton === 'undefined') { Frampton = {}; };
-
   if (typeof Frampton.__loader === 'undefined') {
 
     var registry = {},

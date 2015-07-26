@@ -88,8 +88,8 @@ function End(value) {
   this._value = value;
 }
 
-End.prototype.map = function(fn) {
-  return new End(fn(this._value));
+End.prototype.map = function() {
+  return new End(this._value);
 };
 
 End.prototype.recover = function(fn) {

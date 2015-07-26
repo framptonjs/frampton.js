@@ -11,10 +11,6 @@ if (typeof define === 'undefined' && typeof require === 'undefined') {
 
 (function() {
 
-  Frampton = this.Frampton = this.Frampton || {};
-
-  if (typeof Frampton === 'undefined') { Frampton = {}; };
-
   if (typeof Frampton.__loader === 'undefined') {
 
     var registry = {},
@@ -222,6 +218,61 @@ define("frampton-events/target_value.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-keyboard.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_down.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_enter.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_esc.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_key.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_left.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_right.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_up.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/key_code.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/key_map.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/keyboard.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-list.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -378,6 +429,11 @@ define("frampton-math/multiply.jshint", ["exports"], function (exports) {
   undefined;
 });
 define("frampton-math/subtract.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-mouse.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -725,18 +781,11 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
   QUnit.test('recover method should produce next from error', function (assert) {
 
     var done = assert.async();
-    var stream = this.stream.map(function () {
+    var stream = this.stream.map(function (x) {
       throw new Error('test error');
     });
-    var stream2 = new _framptonSignals.EventStream(function (sink) {
-      setTimeout(function () {
-        sink((0, _framptonSignals.nextEvent)(5));
-      }, 100);
-    });
 
-    stream.recover(function () {
-      return stream2;
-    }).next(function (val) {
+    stream.recover(5).next(function (val) {
       equal(val, 5, 'recover generated correct value from error');
       done();
     });
@@ -1053,6 +1102,11 @@ define('frampton-utils/tests/get_test', ['exports', 'frampton-utils'], function 
   });
 });
 define("frampton-utils/tests/get_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-window.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;

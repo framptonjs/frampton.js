@@ -189,14 +189,9 @@ QUnit.test('sample method should take values from associated behavior', function
 QUnit.test('recover method should produce next from error', function(assert) {
 
   var done = assert.async();
-  var stream = this.stream.map(() => { throw new Error('test error'); });
-  var stream2 = new EventStream((sink) => {
-    setTimeout(() => {
-      sink(nextEvent(5));
-    }, 100);
-  });
+  var stream = this.stream.map((x) => { throw new Error('test error'); });
 
-  stream.recover(() => { return stream2; }).next((val) => {
+  stream.recover(5).next((val) => {
     equal(val, 5, 'recover generated correct value from error');
     done();
   });

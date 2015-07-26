@@ -9,7 +9,4 @@ packages/frampton-animation
 packages/frampton-environment
 packages/frampton-http
 packages/frampton-io
-packages/frampton-keyboard
 packages/frampton-mixin
-packages/frampton-mouse
-packages/frampton-window

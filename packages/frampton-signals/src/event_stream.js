@@ -68,9 +68,7 @@ EventStream.prototype.push = function EventStream_push(event) {
       this.dispatcher.push(this.transform(event));
     }
   } catch(e) {
-    if (Frampton.ENV.MODE === Frampton.DEV) {
-      log('error: ', e);
-    }
+    log('error: ', e);
     this.dispatcher.push(errorEvent(e.message));
   }
 };
@@ -115,7 +113,6 @@ EventStream.prototype.close = function EventStream_close() {
   if (!this.isClosed) {
     this.push(endEvent());
     this.isClosed = true;
-    // Tell the dispatcher to remove subscribers.
     this.dispatcher.destroy();
     this.dispatcher = null;
   }
@@ -150,11 +147,6 @@ EventStream.prototype.join = function EventStream_join() {
 // chain(>>=) :: EventStream a -> (a -> EventStream b) -> EventStream b
 EventStream.prototype.chain = function EventStream_chain(fn) {
   return this.map(fn).join();
-};
-
-// recover :: EventStream a -> (err -> EventStream b) -> EventStream b
-EventStream.prototype.recover = function EventStream_chain(fn) {
-  return this.mapError(fn).join();
 };
 
 // chainLatest :: EventStream a -> (a -> EventStream b) -> EventStream b
@@ -238,8 +230,8 @@ EventStream.prototype.map = function EventStream_map(mapping) {
   });
 };
 
-// mapError :: EventStream a -> (err -> b) -> EventStream b
-EventStream.prototype.mapError = function EventStream_map(mapping) {
+// recover :: EventStream a -> (err -> a) -> EventStream a
+EventStream.prototype.recover = function EventStream_recover(mapping) {
   var mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
   return withTransform(this, (event) => {
     return event.recover(mappingFn);
@@ -281,6 +273,7 @@ EventStream.prototype.sample = function(behavior) {
 
 // fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
 EventStream.prototype.fold = function(fn, acc) {
+  console.log('acc 1: ', acc);
   return withTransform(this, (event) => {
     acc = (isUndefined(acc)) ? event.get() : fn(acc, event.get());
     return nextEvent(acc);

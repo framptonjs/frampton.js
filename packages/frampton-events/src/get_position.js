@@ -13,14 +13,5 @@ export default function get_position(evt) {
     posy = evt.clientY + body.scrollTop + documentElement.scrollTop;
   }
 
-  // if (localRuntime.isEmbed()) {
-  //     var rect = localRuntime.node.getBoundingClientRect();
-  //     var relx = rect.left + document.body.scrollLeft + document.documentElement.scrollLeft;
-  //     var rely = rect.top + document.body.scrollTop + document.documentElement.scrollTop;
-  //     // TODO: figure out if there is a way to avoid rounding here
-  //     posx = posx - Math.round(relx) - localRuntime.node.clientLeft;
-  //     posy = posy - Math.round(rely) - localRuntime.node.clientTop;
-  //   }
-
   return [posx, posy];
 }
