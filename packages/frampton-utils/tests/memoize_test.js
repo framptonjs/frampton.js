@@ -7,7 +7,7 @@ QUnit.test('should wrap a function so it always returns same value for same argu
   var temp = memoize(function(key) {
     return count++;
   });
-  temp('foo');
-  equal(temp('foo'), 1, 'correctly returns value');
-  equal(temp('bar'), 2, 'correctly returns value');
+  equal(temp('foo'), 1, 'returns correct inital value');
+  equal(temp('foo'), 1, 'returns correct cached value');
+  equal(temp('bar'), 2, 'returns correct value for new input');
 });

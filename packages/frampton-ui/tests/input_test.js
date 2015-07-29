@@ -33,6 +33,17 @@ QUnit.test('should get the initial value of nested input element', function() {
   });
 });
 
+QUnit.test('should get the correct length of input value', function() {
+
+  var textInput = document.createElement('input');
+  textInput.value = 'test';
+  this.div.appendChild(textInput);
+
+  Input(this.div).length.changes((val) => {
+    equal(val, 4);
+  });
+});
+
 QUnit.test('should get the initial value of select element', function() {
 
   var selectInput = document.createElement('select');

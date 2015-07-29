@@ -9,7 +9,7 @@ export default function deep_equal(obj1, obj2) {
     var key = null;
 
     for (key in obj1) {
-      if (!deep_equal(obj1[key], obj2[key])) {
+      if (!obj2 || !deep_equal(obj1[key], obj2[key])) {
         return false;
       }
     }

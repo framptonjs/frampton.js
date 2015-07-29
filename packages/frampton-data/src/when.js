@@ -20,7 +20,7 @@ export default function when(...tasks) {
       task.run(logError, (val) => {
         count = count + 1;
         valueArray[index] = val;
-        if (count === (len - 1)) {
+        if (count === len) {
           resolve.apply(null, valueArray);
         }
       });

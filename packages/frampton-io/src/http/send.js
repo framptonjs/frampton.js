@@ -26,11 +26,11 @@ export default function send(settings, request) {
     });
 
     req.addEventListener('error', function(err) {
-      sink(errorEvent(Response('error', 0, (err.message || 'ajax error'))));
+      sink(errorEvent(err.message || 'ajax error'));
     });
 
     req.addEventListener('timeout', function(err) {
-      sink(errorEvent(Response('error', 0, 'timeout')));
+      sink(errorEvent(err.message || 'timeout'));
     });
 
     req.addEventListener('load', function(evt) {

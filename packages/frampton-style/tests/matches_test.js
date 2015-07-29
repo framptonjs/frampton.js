@@ -15,15 +15,15 @@ QUnit.module('Frampton.Style.matches', {
 
 QUnit.test('should detect if an element has a class', function() {
   this.div.classList.add('blue');
-  ok(matches('.blue', this.div), 'correctly detects selector');
+  ok(matches('.blue', this.div));
 });
 
 QUnit.test('should detect if an element has an id', function() {
   this.div.id = 'blue';
-  ok(matches('#blue', this.div), 'correctly detects selector');
+  ok(matches('#blue', this.div));
 });
 
 QUnit.test('should detect if an element has an attribute', function() {
   this.div.setAttribute('aria-live', 'polite');
-  ok(matches('[aria-live]', this.div), 'correctly detects selector');
+  ok(matches('[aria-live]', this.div));
 });

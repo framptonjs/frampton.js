@@ -631,7 +631,7 @@ define("frampton-data/sequence", ["exports", "module"], function (exports, modul
     }
 
     return tasks.reduce(function (acc, next) {
-      acc.concat(next);
+      return acc.concat(next);
     });
   }
 });
@@ -770,7 +770,7 @@ define('frampton-data/when', ['exports', 'module', 'frampton-data/task'], functi
         task.run(logError, function (val) {
           count = count + 1;
           valueArray[index] = val;
-          if (count === len - 1) {
+          if (count === len) {
             resolve.apply(null, valueArray);
           }
         });
@@ -1188,7 +1188,7 @@ define('frampton-events/event_supported', ['exports', 'module', 'frampton-utils/
       isSupported = (0, _isFunction)(el[eventName]);
     }
     el = null;
-    return isSupported;
+    return !!isSupported;
   });
 });
 define("frampton-events/event_target", ["exports", "module"], function (exports, module) {
@@ -1371,6 +1371,19 @@ define('frampton-events/listen', ['exports', 'module', 'frampton-utils/curry', '
       return getEventStream(eventName, target);
     }
   });
+});
+define('frampton-events/once', ['exports', 'module', 'frampton-events/listen'], function (exports, module, _framptonEventsListen) {
+  'use strict';
+
+  module.exports = once;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _listen = _interopRequire(_framptonEventsListen);
+
+  function once(eventName, target) {
+    return (0, _listen)(eventName, target).take(1);
+  }
 });
 define('frampton-events/selector_contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-events/closest_to_event'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonEventsClosest_to_event) {
   'use strict';
@@ -2040,11 +2053,11 @@ define('frampton-io/http/send', ['exports', 'module', 'frampton-utils/extend', '
       });
 
       req.addEventListener('error', function (err) {
-        sink((0, _framptonSignalsEvent.errorEvent)((0, _Response)('error', 0, err.message || 'ajax error')));
+        sink((0, _framptonSignalsEvent.errorEvent)(err.message || 'ajax error'));
       });
 
       req.addEventListener('timeout', function (err) {
-        sink((0, _framptonSignalsEvent.errorEvent)((0, _Response)('error', 0, 'timeout')));
+        sink((0, _framptonSignalsEvent.errorEvent)(err.message || 'timeout'));
       });
 
       req.addEventListener('load', function (evt) {
@@ -3311,6 +3324,416 @@ define('frampton-monad/map', ['exports', 'module', 'frampton-utils/curry'], func
   module.exports = (0, _curry)(function curried_map(mapping, monad) {
     return monad.map(mapping);
   });
+});
+define('frampton-motion', ['exports', 'frampton/namespace', 'frampton-motion/transition', 'frampton-motion/sequence', 'frampton-motion/when'], function (exports, _framptonNamespace, _framptonMotionTransition, _framptonMotionSequence, _framptonMotionWhen) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Frampton = _interopRequire(_framptonNamespace);
+
+  var _sequence = _interopRequire(_framptonMotionSequence);
+
+  var _when = _interopRequire(_framptonMotionWhen);
+
+  _Frampton.Motion = {};
+  _Frampton.Motion.transition = _framptonMotionTransition.transition;
+  _Frampton.Motion.sequence = _sequence;
+  _Frampton.Motion.when = _when;
+});
+define('frampton-motion/animation_end', ['exports', 'module', 'frampton-style/supported'], function (exports, module, _framptonStyleSupported) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _supported = _interopRequire(_framptonStyleSupported);
+
+  var eventMap = {
+    'WebkitAnimation': 'webkitAnimationEnd',
+    'MozAnimation': 'animationend',
+    'animation': 'animationend'
+  };
+
+  function animationEnd() {
+    return eventMap[(0, _supported)('animation')] || null;
+  }
+
+  module.exports = animationEnd();
+});
+define('frampton-motion/easing', ['exports', 'module'], function (exports, module) {
+  'use strict';
+
+  module.exports = {
+    'in': 'ease-in',
+    'out': 'ease-out',
+    'in-out': 'ease-in-out',
+    'snap': 'cubic-bezier(0,1,.5,1)',
+    'linear': 'cubic-bezier(0.250, 0.250, 0.750, 0.750)',
+    'ease-in-quad': 'cubic-bezier(0.550, 0.085, 0.680, 0.530)',
+    'ease-in-cubic': 'cubic-bezier(0.550, 0.055, 0.675, 0.190)',
+    'ease-in-quart': 'cubic-bezier(0.895, 0.030, 0.685, 0.220)',
+    'ease-in-quint': 'cubic-bezier(0.755, 0.050, 0.855, 0.060)',
+    'ease-in-sine': 'cubic-bezier(0.470, 0.000, 0.745, 0.715)',
+    'ease-in-expo': 'cubic-bezier(0.950, 0.050, 0.795, 0.035)',
+    'ease-in-circ': 'cubic-bezier(0.600, 0.040, 0.980, 0.335)',
+    'ease-in-back': 'cubic-bezier(0.600, -0.280, 0.735, 0.045)',
+    'ease-out-quad': 'cubic-bezier(0.250, 0.460, 0.450, 0.940)',
+    'ease-out-cubic': 'cubic-bezier(0.215, 0.610, 0.355, 1.000)',
+    'ease-out-quart': 'cubic-bezier(0.165, 0.840, 0.440, 1.000)',
+    'ease-out-quint': 'cubic-bezier(0.230, 1.000, 0.320, 1.000)',
+    'ease-out-sine': 'cubic-bezier(0.390, 0.575, 0.565, 1.000)',
+    'ease-out-expo': 'cubic-bezier(0.190, 1.000, 0.220, 1.000)',
+    'ease-out-circ': 'cubic-bezier(0.075, 0.820, 0.165, 1.000)',
+    'ease-out-back': 'cubic-bezier(0.175, 0.885, 0.320, 1.275)',
+    'ease-in-out-quart': 'cubic-bezier(0.770, 0.000, 0.175, 1.000)',
+    'ease-in-out-quint': 'cubic-bezier(0.860, 0.000, 0.070, 1.000)',
+    'ease-in-out-sine': 'cubic-bezier(0.445, 0.050, 0.550, 0.950)',
+    'ease-in-out-expo': 'cubic-bezier(1.000, 0.000, 0.000, 1.000)',
+    'ease-in-out-circ': 'cubic-bezier(0.785, 0.135, 0.150, 0.860)',
+    'ease-in-out-back': 'cubic-bezier(0.680, -0.550, 0.265, 1.550)'
+  };
+});
+define('frampton-motion/inverse_direction', ['exports', 'module'], function (exports, module) {
+  'use strict';
+
+  module.exports = inverse_direction;
+
+  function inverse_direction(dir) {
+    return dir === 'transition-in' ? 'transition-out' : 'transition-in';
+  }
+});
+define('frampton-motion/next_end', ['exports', 'module', 'frampton-utils/noop', 'frampton-events/once', 'frampton-motion/transition_end'], function (exports, module, _framptonUtilsNoop, _framptonEventsOnce, _framptonMotionTransition_end) {
+  'use strict';
+
+  module.exports = next_end;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _noop = _interopRequire(_framptonUtilsNoop);
+
+  var _once = _interopRequire(_framptonEventsOnce);
+
+  var _transitionend = _interopRequire(_framptonMotionTransition_end);
+
+  function next_end(element, fn) {
+    (0, _once)(_transitionend, element).next(function (evt) {
+      (fn || _noop)(evt);
+    });
+  }
+});
+define("frampton-motion/reflow", ["exports", "module"], function (exports, module) {
+  // Reading the offsetWidth of an element will force the browser to do a reflow
+  "use strict";
+
+  module.exports = reflow;
+
+  function reflow(element) {
+    return element.offsetWidth;
+  }
+});
+define("frampton-motion/sequence", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = sequence_transitions;
+
+  function sequence_transitions() {
+    for (var _len = arguments.length, transitions = Array(_len), _key = 0; _key < _len; _key++) {
+      transitions[_key] = arguments[_key];
+    }
+
+    return transitions.reduce(function (acc, next) {
+      return acc.chain(next);
+    });
+  }
+});
+define('frampton-motion/set_direction', ['exports', 'module', 'frampton-motion/inverse_direction'], function (exports, module, _framptonMotionInverse_direction) {
+  'use strict';
+
+  module.exports = set_direction;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _inverseDirection = _interopRequire(_framptonMotionInverse_direction);
+
+  function set_direction(transition, dir) {
+    if (transition.element) {
+      transition.element.classList.remove((0, _inverseDirection)(dir));
+      transition.element.classList.add(dir);
+    }
+    transition.direction = dir;
+  }
+});
+define('frampton-motion/set_state', ['exports', 'module'], function (exports, module) {
+  'use strict';
+
+  module.exports = set_state;
+
+  function set_state(transition, state) {
+    if (transition.element) {
+      transition.element.classList.remove('transition-' + transition.state);
+      transition.element.classList.add('transition-' + state);
+      transition.element.setAttribute('data-transition-state', state);
+    }
+    transition.state = state;
+  }
+});
+define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/guid', 'frampton-utils/noop', 'frampton-utils/not_implemented', 'frampton-list/add', 'frampton-list/remove', 'frampton-list/reverse', 'frampton-style/set_style', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-events/event_dispatcher', 'frampton-motion/transition_end', 'frampton-motion/reflow', 'frampton-motion/set_direction', 'frampton-motion/set_state', 'frampton-motion/inverse_direction'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsGuid, _framptonUtilsNoop, _framptonUtilsNot_implemented, _framptonListAdd, _framptonListRemove, _framptonListReverse, _framptonStyleSet_style, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonEventsEvent_dispatcher, _framptonMotionTransition_end, _framptonMotionReflow, _framptonMotionSet_direction, _framptonMotionSet_state, _framptonMotionInverse_direction) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _assert = _interopRequire(_framptonUtilsAssert);
+
+  var _isSomething = _interopRequire(_framptonUtilsIs_something);
+
+  var _isString = _interopRequire(_framptonUtilsIs_string);
+
+  var _guid = _interopRequire(_framptonUtilsGuid);
+
+  var _noop = _interopRequire(_framptonUtilsNoop);
+
+  var _notImplemented = _interopRequire(_framptonUtilsNot_implemented);
+
+  var _add = _interopRequire(_framptonListAdd);
+
+  var _remove = _interopRequire(_framptonListRemove);
+
+  var _reverse = _interopRequire(_framptonListReverse);
+
+  var _setStyle = _interopRequire(_framptonStyleSet_style);
+
+  var _addClass = _interopRequire(_framptonStyleAdd_class);
+
+  var _removeClass = _interopRequire(_framptonStyleRemove_class);
+
+  var _transitionend = _interopRequire(_framptonMotionTransition_end);
+
+  var _reflow = _interopRequire(_framptonMotionReflow);
+
+  var _setDirection = _interopRequire(_framptonMotionSet_direction);
+
+  var _setState = _interopRequire(_framptonMotionSet_state);
+
+  var _inverseDirection = _interopRequire(_framptonMotionInverse_direction);
+
+  function defaultRun(resolve) {
+    var _this = this;
+
+    (0, _reflow)(this.element);
+    this.element.setAttribute('data-transition-id', this.id);
+
+    var unsub = (0, _framptonEventsEvent_dispatcher.addListener)(_transitionend, function (evt) {
+      if (parseInt(evt.target.getAttribute('data-transition-id')) === _this.id) {
+        unsub();
+        (0, _setState)(_this, Transition.CLEANUP);
+        if (_this.delayTime) {
+          (0, _setStyle)(_this.element, 'transition-delay', 0 + 'ms');
+        }
+        (0, _reflow)(_this.element);
+        (0, _setState)(_this, Transition.DONE);
+        (resolve || _noop)(_this.element);
+      }
+    }, this.element);
+
+    (0, _setDirection)(this, this.direction);
+
+    if (this.delayTime) {
+      (0, _setStyle)(this.element, 'transition-delay', this.delayTime + 'ms');
+    }
+
+    if (this.direction === 'transition-in') {
+      this.classList.forEach((0, _addClass)(this.element));
+    } else {
+      this.classList.forEach((0, _removeClass)(this.element));
+    }
+
+    (0, _setState)(this, Transition.RUNNING);
+  }
+
+  function withDefaultRun(element, frame, dir) {
+    var trans = new Transition(element, frame, dir);
+    trans.run = defaultRun;
+    return trans;
+  }
+
+  function Transition(element, frame, dir) {
+
+    (0, _assert)('Browser does not support CSS transitions', (0, _isSomething)(_transitionend));
+
+    this.id = (0, _guid)();
+    this.element = element || null;
+    this.direction = dir || 'transition-in';
+    this.classList = (0, _isString)(frame) ? frame.trim().split(' ') : [];
+    this.state = Transition.WAITING;
+    this.delayTime = 0;
+    this.list = [this];
+
+    (0, _setState)(this, this.state);
+  }
+
+  /**
+   * Start the transition. Optionally provide a callback for when transition is complete.
+   *
+   * @name run
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Function} resolve Function to call when transition is complete.
+   */
+  Transition.prototype.run = _notImplemented;
+
+  /**
+   * @name delay
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} delay Miliseconds to delay transition
+   * @returns {Transition}
+   */
+  Transition.prototype.delay = function Transition_delay(delay) {
+    this.delayTime = delay;
+    return this;
+  };
+
+  /**
+   * @name addClass
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {String} name Name of class to add
+   * @returns {Transition}
+   */
+  Transition.prototype.addClass = function Transition_addClass(name) {
+    return withDefaultRun(this.element, (0, _add)(this.classList, name), this.direction);
+  };
+
+  /**
+   * @name removeClass
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {String} name Name of class to remove
+   * @returns {Transition}
+   */
+  Transition.prototype.removeClass = function Transition_removeClass(name) {
+    return withDefaultRun(this.element, (0, _remove)(this.classList, name), this.direction);
+  };
+
+  /**
+   * @name reverse
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @returns {Transition}
+   */
+  Transition.prototype.reverse = function Transition_reverse() {
+    return withDefaultRun(this.element, this.classList.join(' '), (0, _inverseDirection)(this.direction));
+  };
+
+  /**
+   * @name reverse
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Transition} transition Transition to run after this transition.
+   * @returns {Transition}
+   */
+  Transition.prototype.chain = function Transition_chain(transition) {
+
+    var trans = new Transition();
+    var saved = this.run.bind(this);
+
+    trans.list = (0, _add)(this.list, transition);
+
+    trans.run = function chain_run(resolve) {
+      saved(function () {
+        transition.run(resolve);
+      });
+    };
+
+    trans.reverse = function chain_reverse() {
+      var list = (0, _reverse)(trans.list);
+      var len = list.length;
+      var i = 1;
+      var temp = list[0].reverse();
+      for (; i < len; i++) {
+        temp = temp.chain(list[i].reverse());
+      }
+      return temp;
+    };
+
+    return trans;
+  };
+
+  Transition.WAITING = 'waiting';
+  Transition.STARTED = 'started';
+  Transition.RUNNING = 'running';
+  Transition.DONE = 'done';
+  Transition.CLEANUP = 'cleanup';
+
+  function transitionClass(element, frame) {
+    return withDefaultRun(element, frame);
+  }
+
+  exports.Transition = Transition;
+  exports.transition = transitionClass;
+});
+define('frampton-motion/transition_end', ['exports', 'module', 'frampton-style/supported'], function (exports, module, _framptonStyleSupported) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _supported = _interopRequire(_framptonStyleSupported);
+
+  var eventMap = {
+    'WebkitTransition': 'webkitTransitionEnd',
+    'MozTransition': 'transitionend',
+    'transition': 'transitionend'
+  };
+
+  function transitionEnd() {
+    return eventMap[(0, _supported)('transition')] || null;
+  }
+
+  module.exports = transitionEnd();
+});
+define('frampton-motion/when', ['exports', 'module', 'frampton-utils/noop', 'frampton-motion/transition'], function (exports, module, _framptonUtilsNoop, _framptonMotionTransition) {
+  'use strict';
+
+  //+ when :: [Transition] -> Transition
+  module.exports = when;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _noop = _interopRequire(_framptonUtilsNoop);
+
+  function when() {
+    for (var _len = arguments.length, transitions = Array(_len), _key = 0; _key < _len; _key++) {
+      transitions[_key] = arguments[_key];
+    }
+
+    var transition = new _framptonMotionTransition.Transition();
+
+    transition.reverse = function when_reverse() {
+      return when.apply(null, transitions.map(function (trans) {
+        return trans.reverse();
+      }));
+    };
+
+    transition.run = function when_run(resolve) {
+
+      var len = transitions.length;
+      var count = 0;
+
+      transitions.forEach(function (trans) {
+        console.log('trans: ', trans);
+        trans.run(function () {
+          count = count + 1;
+          if (count === len) {
+            (resolve || _noop)();
+          }
+        });
+      });
+    };
+
+    return transition;
+  }
 });
 define('frampton-mouse', ['exports', 'frampton/namespace', 'frampton-mouse/mouse'], function (exports, _framptonNamespace, _framptonMouseMouse) {
   'use strict';
@@ -5395,7 +5818,7 @@ define("frampton-string/words", ["exports", "module"], function (exports, module
     return str.trim().split(/\s+/g);
   }
 });
-define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/closest', 'frampton-style/contains'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleClosest, _framptonStyleContains) {
+define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/set_style', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/closest', 'frampton-style/contains', 'frampton-style/supported'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleSet_style, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleClosest, _framptonStyleContains, _framptonStyleSupported) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -5412,6 +5835,8 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
 
   var _current = _interopRequire(_framptonStyleCurrent_value);
 
+  var _setStyle = _interopRequire(_framptonStyleSet_style);
+
   var _applyStyles = _interopRequire(_framptonStyleApply_styles);
 
   var _removeStyles = _interopRequire(_framptonStyleRemove_styles);
@@ -5420,6 +5845,8 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
 
   var _contains = _interopRequire(_framptonStyleContains);
 
+  var _supported = _interopRequire(_framptonStyleSupported);
+
   _Frampton.Style = {};
   _Frampton.Style.addClass = _addClass;
   _Frampton.Style.closest = _closest;
@@ -5427,9 +5854,11 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
   _Frampton.Style.hasClass = _hasClass;
   _Frampton.Style.matches = _matches;
   _Frampton.Style.current = _current;
+  _Frampton.Style.setStyle = _setStyle;
   _Frampton.Style.applyStyles = _applyStyles;
   _Frampton.Style.removeStyles = _removeStyles;
   _Frampton.Style.contains = _contains;
+  _Frampton.Style.supported = _supported;
 });
 define('frampton-style/add_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
@@ -5438,20 +5867,29 @@ define('frampton-style/add_class', ['exports', 'module', 'frampton-utils/curry']
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  /**
+   * @name addClass
+   * @memberOf Frampton.Style
+   * @instance
+   * @param {Object} element
+   * @param {String} name
+   */
   module.exports = (0, _curry)(function add_class(element, name) {
     element.classList.add(name);
   });
 });
-define('frampton-style/apply_styles', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-style/apply_styles', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/set_style'], function (exports, module, _framptonUtilsCurry, _framptonStyleSet_style) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  var _setStyle = _interopRequire(_framptonStyleSet_style);
+
   module.exports = (0, _curry)(function apply_styles(element, props) {
     for (var key in props) {
-      element.style.setProperty(key, props[key], '');
+      (0, _setStyle)(element, key, props[key]);
     }
   });
 });
@@ -5492,18 +5930,29 @@ define('frampton-style/contains', ['exports', 'module', 'frampton-utils/curry', 
     return (0, _matches)(selector, element) || element.querySelectorAll(selector).length > 0;
   });
 });
-define('frampton-style/current_value', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-style/current_value', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, module, _framptonUtilsCurry, _framptonStyleSupported) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  var _supported = _interopRequire(_framptonStyleSupported);
+
   var style = window.getComputedStyle;
 
-  // current :: DomNode -> String -> String
+  /**
+   * current :: DomNode -> String -> String
+   *
+   * @name currentValue
+   * @memberOf Frampton.Style
+   * @static
+   * @param {Object} element DomNode whose property to check
+   * @param {String} prop    Name of property to check
+   * @returns {String} String representation of current property value
+   */
   module.exports = (0, _curry)(function current(element, prop) {
-    return style(element).getPropertyValue(prop);
+    return style(element).getPropertyValue((0, _supported)(prop));
   });
 });
 define('frampton-style/has_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -5543,6 +5992,13 @@ define('frampton-style/remove_class', ['exports', 'module', 'frampton-utils/curr
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  /**
+   * @name removeClass
+   * @memberOf Frampton.Style
+   * @instance
+   * @param {Object} element
+   * @param {String} name
+   */
   module.exports = (0, _curry)(function remove_class(element, name) {
     element.classList.remove(name);
   });
@@ -5554,10 +6010,91 @@ define('frampton-style/remove_styles', ['exports', 'module', 'frampton-utils/cur
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  /**
+   * removeStyles :: DomNode -> Object -> ()
+   *
+   * @name removeStyles
+   * @memberOf Frampton.Style
+   * @static
+   * @param {Object} element A dom node to remove styles from
+   * @param {Object} props   A hash of properties to remove
+   */
   module.exports = (0, _curry)(function remove_styles(element, props) {
     for (var key in props) {
       element.style.removeProperty(key);
     }
+  });
+});
+define('frampton-style/set_style', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, module, _framptonUtilsCurry, _framptonStyleSupported) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _supported = _interopRequire(_framptonStyleSupported);
+
+  module.exports = (0, _curry)(function set_style(element, key, value) {
+    element.style.setProperty((0, _supported)(key), value, '');
+  });
+});
+define('frampton-style/supported', ['exports', 'module', 'frampton-utils/memoize', 'frampton-style/supported_by_element'], function (exports, module, _framptonUtilsMemoize, _framptonStyleSupported_by_element) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _memoize = _interopRequire(_framptonUtilsMemoize);
+
+  var _supportedByElement = _interopRequire(_framptonStyleSupported_by_element);
+
+  /**
+   * supported :: String -> String
+   *
+   * @name supported
+   * @memberOf Frampton.Style
+   * @static
+   * @param {String} prop A standard CSS property name
+   * @returns {String} The property name with any vendor prefixes required by the browser, or null if the property is not supported
+   */
+  module.exports = (0, _memoize)((0, _supportedByElement)(document.createElement('div')));
+});
+define('frampton-style/supported_by_element', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-string/capitalize', 'frampton-string/dash_to_camel'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonStringCapitalize, _framptonStringDash_to_camel) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _isSomething = _interopRequire(_framptonUtilsIs_something);
+
+  var _capitalize = _interopRequire(_framptonStringCapitalize);
+
+  var _dashToCamel = _interopRequire(_framptonStringDash_to_camel);
+
+  var vendors = {
+    'webkit': 'webkit',
+    'Webkit': 'webkit',
+    'Moz': 'moz',
+    'ms': 'ms',
+    'Ms': 'ms'
+  };
+
+  module.exports = (0, _curry)(function supported_by_element(el, prop) {
+
+    var camelProp = (0, _dashToCamel)(prop);
+
+    if ((0, _isSomething)(el.style[camelProp])) {
+      return prop;
+    }
+
+    for (var key in vendors) {
+      var propToCheck = key + (0, _capitalize)(camelProp);
+      if ((0, _isSomething)(el.style[propToCheck])) {
+        return ('-' + vendors[key] + '-' + prop).toLowerCase();
+      }
+    }
+
+    return null;
   });
 });
 define('frampton-ui', ['exports', 'frampton/namespace', 'frampton-ui/input'], function (exports, _framptonNamespace, _framptonUiInput) {
@@ -5572,7 +6109,7 @@ define('frampton-ui', ['exports', 'frampton/namespace', 'frampton-ui/input'], fu
   _Frampton.UI = {};
   _Frampton.UI.Input = _Input;
 });
-define('frampton-ui/input', ['exports', 'module', 'frampton-signals/stepper', 'frampton-events/event_value', 'frampton-events/listen', 'frampton-list/length'], function (exports, module, _framptonSignalsStepper, _framptonEventsEvent_value, _framptonEventsListen, _framptonListLength) {
+define('frampton-ui/input', ['exports', 'module', 'frampton-signals/stepper', 'frampton-events/event_value', 'frampton-events/listen', 'frampton-string/length'], function (exports, module, _framptonSignalsStepper, _framptonEventsEvent_value, _framptonEventsListen, _framptonStringLength) {
   'use strict';
 
   module.exports = ui_input;
@@ -5585,7 +6122,7 @@ define('frampton-ui/input', ['exports', 'module', 'frampton-signals/stepper', 'f
 
   var _listen = _interopRequire(_framptonEventsListen);
 
-  var _length = _interopRequire(_framptonListLength);
+  var _length = _interopRequire(_framptonStringLength);
 
   function ui_input(element) {
 
@@ -5859,7 +6396,7 @@ define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object',
       var key = null;
 
       for (key in obj1) {
-        if (!deep_equal(obj1[key], obj2[key])) {
+        if (!obj2 || !deep_equal(obj1[key], obj2[key])) {
           return false;
         }
       }
@@ -6308,7 +6845,7 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signals/empty',
     };
   }
 });
-define('frampton', ['exports', 'module', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-object', 'frampton-string', 'frampton-math', 'frampton-data', 'frampton-events', 'frampton-signals', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-html', 'frampton-ui', 'frampton-io', 'frampton-style'], function (exports, module, _framptonNamespace, _framptonUtils, _framptonList, _framptonObject, _framptonString, _framptonMath, _framptonData, _framptonEvents, _framptonSignals, _framptonMouse, _framptonKeyboard, _framptonWindow, _framptonHtml, _framptonUi, _framptonIo, _framptonStyle) {
+define('frampton', ['exports', 'module', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-object', 'frampton-string', 'frampton-math', 'frampton-data', 'frampton-events', 'frampton-signals', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-html', 'frampton-ui', 'frampton-io', 'frampton-style', 'frampton-motion'], function (exports, module, _framptonNamespace, _framptonUtils, _framptonList, _framptonObject, _framptonString, _framptonMath, _framptonData, _framptonEvents, _framptonSignals, _framptonMouse, _framptonKeyboard, _framptonWindow, _framptonHtml, _framptonUi, _framptonIo, _framptonStyle, _framptonMotion) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }

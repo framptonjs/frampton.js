@@ -29,5 +29,5 @@ export default memoize(function event_supported(eventName) {
     isSupported = isFunction(el[eventName]);
   }
   el = null;
-  return isSupported;
+  return !!isSupported;
 });
