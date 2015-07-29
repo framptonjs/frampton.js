@@ -4,7 +4,7 @@ import {
   stepper
 } from 'frampton-signals';
 
-QUnit.module('Frampton.stepper');
+QUnit.module('Frampton.Signals.stepper');
 
 QUnit.test('creates a Behavior with initial value', function() {
   var stream = empty();

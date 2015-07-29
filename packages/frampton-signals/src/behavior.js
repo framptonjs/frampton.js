@@ -1,4 +1,11 @@
-import { assert, guid, noop, isDefined } from 'frampton-utils';
+import {
+  assert,
+  guid,
+  noop,
+  isDefined,
+  equal
+} from 'frampton-utils';
+
 import { contains } from 'frampton-list';
 
 function Behavior(initial, seed) {
@@ -35,7 +42,7 @@ Behavior.of = function Behavior_of(value) {
 Behavior.prototype.of = Behavior.of;
 
 Behavior.prototype.update = function Behavior_update(val) {
-  if (val !== this.value) {
+  if (!equal(val, this.value)) {
     this.value = val;
     updateListeners(this);
   }

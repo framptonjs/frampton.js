@@ -5,7 +5,7 @@ import {
   endEvent
 } from 'frampton-signals';
 
-QUnit.module('Frampton.Event');
+QUnit.module('Frampton.Signals.Event');
 
 QUnit.test('emptyEvent should return an Empty', function() {
   var empty = emptyEvent();

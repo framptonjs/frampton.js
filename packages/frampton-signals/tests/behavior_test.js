@@ -1,6 +1,6 @@
 import { Behavior } from 'frampton-signals';
 
-QUnit.module('Frampton.Behavior');
+QUnit.module('Frampton.Signals.Behavior');
 
 QUnit.test('of method should return Behavior with initial value', function() {
   var behavior = Behavior.of(5);

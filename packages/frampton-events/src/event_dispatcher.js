@@ -1,54 +1,53 @@
-import {
-  assert,
-  isFunction,
-  lazy
-} from 'frampton-utils';
+import assert from 'frampton-utils/assert';
+import isFunction from 'frampton-utils/is_function';
+import isDefined from 'frampton-utils/is_defined';
+import lazy from 'frampton-utils/lazy';
+import EVENT_MAP from 'frampton-events/event_map';
 
-/**
- *
- */
-var EVENT_MAPPING = {
-  focus : 'focusin',
-  blur  : 'focusout'
-};
-
-var EVENT_CACHE = {};
-
-var listeners = {};
-
-var listener = {
-  target : null,
-  callback : null
-};
-
-function eventFor(eventName, target) {
-
+// get dom event -> filter -> return stream
+function addDomEvent(name, node, callback) {
+  node.addEventListener(name, callback, !EVENT_MAP[name].bubbles);
 }
 
-function addCustomEvent(eventName, callback, target) {
-
-}
-
-function addListener(eventName, callback, target) {
-
+function addCustomEvent(name, target, callback) {
   var listen = isFunction(target.addEventListener) ? target.addEventListener :
                isFunction(target.on) ? target.on : null;
 
   assert('addListener received an unknown type as target', isFunction(listen));
 
-  listen.call(target, eventName, callback);
-
-  return lazy(removeListener, eventName, callback, target);
+  listen.call(target, name, callback);
 }
 
-function removeListener(eventName, callback, target) {
+function removeDomEvent(name, node, callback) {
+  node.removeEventListener(name, callback, !EVENT_MAP[name].bubbles);
+}
 
+function removeCustomEvent(name, target, callback) {
   var remove = isFunction(target.removeEventListener) ? target.removeEventListener :
                isFunction(target.off) ? target.off : null;
 
   assert('removeListener received an unknown type as target', isFunction(remove));
 
-  remove.call(target, eventName, callback);
+  remove.call(target, name, callback);
+}
+
+function addListener(eventName, callback, target) {
+
+  if (isDefined(EVENT_MAP[eventName])) {
+    addDomEvent(eventName, target, callback);
+  } else {
+    addCustomEvent(eventName, target, callback);
+  }
+
+  return lazy(removeListener, eventName, callback, target);
+}
+
+function removeListener(eventName, callback, target) {
+  if (isDefined(EVENT_MAP[eventName])) {
+    removeDomEvent(eventName, target, callback);
+  } else {
+    removeCustomEvent(eventName, target, callback);
+  }
 }
 
 export {

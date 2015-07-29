@@ -6,7 +6,7 @@ import {
   interval
 } from 'frampton-signals';
 
-QUnit.module('Frampton.EventStream', {
+QUnit.module('Frampton.Signals.EventStream', {
   beforeEach() {
     this.stream = new EventStream((sink) => {
       setTimeout(() => {

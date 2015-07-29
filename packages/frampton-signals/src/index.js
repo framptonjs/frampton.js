@@ -5,7 +5,6 @@ import Behavior from 'frampton-signals/behavior';
 import empty from 'frampton-signals/empty';
 import interval from 'frampton-signals/interval';
 import sequential from 'frampton-signals/sequential';
-import listen from 'frampton-signals/listen';
 import nullStream from 'frampton-signals/null';
 import send from 'frampton-signals/send';
 import stepper from 'frampton-signals/stepper';
@@ -28,7 +27,6 @@ export {
   empty,
   interval,
   sequential,
-  listen,
   nullStream,
   send,
   merge,
