@@ -14,6 +14,7 @@ QUnit.test('update method should notify listeners', function() {
   var behavior = Behavior.of(5);
   var count = 0;
   behavior.changes((val) => {
+    console.log('change: ' + val);
     if (count === 0) {
       equal(val, 5, 'notifies listener of initial value');
     } else {
