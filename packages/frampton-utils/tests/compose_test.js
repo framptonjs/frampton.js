@@ -1,6 +1,6 @@
 import { compose } from 'frampton-utils';
 
-QUnit.module('Frampton.compose');
+QUnit.module('Frampton.Utils.compose');
 
 QUnit.test('should compose functions right to left', function() {
   var a = function(x) { return (x + 'a'); };

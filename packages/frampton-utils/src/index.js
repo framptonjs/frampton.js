@@ -23,6 +23,8 @@ import lazy from 'frampton-utils/lazy';
 import apply from 'frampton-utils/apply';
 import get from 'frampton-utils/get';
 import ofValue from 'frampton-utils/of_value';
+import equal from 'frampton-utils/equal';
+import safeGet from 'frampton-utils/safe_get';
 
 export {
   compose,
@@ -49,5 +51,7 @@ export {
   lazy,
   apply,
   get,
-  ofValue
+  ofValue,
+  equal,
+  safeGet
 };

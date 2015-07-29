@@ -6,7 +6,6 @@ import EVENT_MAP from 'frampton-events/event_map';
 import { addListener } from 'frampton-events/event_dispatcher';
 
 var DOCUMENT_CACHE = {};
-var EVENT_CACHE = {};
 
 function getEventStream(name, target) {
   return new EventStream((sink) => {

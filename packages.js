@@ -1,14 +1,16 @@
 module.exports = {
-  'frampton' : {trees: null,  requirements: []},
-  'frampton-utils' : {trees: null, requirements: []},
-  'frampton-math' : {trees: null, requirements: []},
-  'frampton-list' : {trees: null,  requirements: []},
-  'frampton-object' : {trees: null,  requirements: []},
-  'frampton-data' : {trees: null, requirements: []},
-  'frampton-events' : {trees: null, requirements: []},
-  'frampton-cache' : {trees: null, requirements: []},
-  'frampton-signals' : {trees: null, requirements: []},
-  'frampton-window' : {trees: null, requirements: []},
-  'frampton-mouse' : {trees: null, requirements: []},
-  'frampton-keyboard' : {trees: null, requirements: []}
+  'frampton' : { trees: null },
+  'frampton-utils' : { trees: null },
+  'frampton-math' : { trees: null },
+  'frampton-list' : { trees: null },
+  'frampton-object' : { trees: null, },
+  'frampton-string' : { trees: null, },
+  'frampton-data' : { trees: null },
+  'frampton-monad' : { trees: null },
+  'frampton-events' : { trees: null },
+  'frampton-cache' : { trees: null },
+  'frampton-signals' : { trees: null },
+  'frampton-window' : { trees: null },
+  'frampton-mouse' : { trees: null },
+  'frampton-keyboard' : { trees: null }
 };

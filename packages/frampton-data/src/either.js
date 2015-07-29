@@ -1,4 +1,7 @@
-import { identity, inherits, noop, notImplemented } from 'frampton-utils';
+import noop from 'frampton-utils/noop';
+import identity from 'frampton-utils/identity';
+import inherits from 'frampton-utils/inherits';
+import notImplemented from 'frampton-utils/not_implemented';
 
 /**
  *

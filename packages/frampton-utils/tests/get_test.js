@@ -1,6 +1,6 @@
 import { get } from 'frampton-utils';
 
-QUnit.module('Frampton.get');
+QUnit.module('Frampton.Utils.get');
 
 QUnit.test('should retrieve value by key', function() {
   var temp = { id : 1 };

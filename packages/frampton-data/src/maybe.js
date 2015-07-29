@@ -1,4 +1,6 @@
-import { inherits, isSomething, notImplemented } from 'frampton-utils';
+import inherits from 'frampton-utils/inherits';
+import isSomething from 'frampton-utils/is_something';
+import notImplemented from 'frampton-utils/not_implemented';
 
 /**
  * @class
@@ -48,7 +50,9 @@ Maybe.prototype.toString = notImplemented;
  */
 inherits(Just, Maybe);
 
-function Just() {}
+function Just(val) {
+  this.value = val;
+}
 
 Just.prototype.isJust = function() {
   return true;

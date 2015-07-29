@@ -1,6 +1,6 @@
 import { assert } from 'frampton-utils';
 
-QUnit.module('Frampton.assert');
+QUnit.module('Frampton.Utils.assert');
 
 QUnit.test('should throw for falsy value', function() {
   throws(function() { assert('falsy value', 0); }, 'throws for falsy');
