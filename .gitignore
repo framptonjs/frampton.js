@@ -3,10 +3,3 @@ node_modules
 ./frampton.js
 notes.txt
 tmp
-
-packages/frampton-ui
-packages/frampton-animation
-packages/frampton-environment
-packages/frampton-http
-packages/frampton-io
-packages/frampton-mixin
