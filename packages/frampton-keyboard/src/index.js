@@ -7,6 +7,9 @@ import isUp from 'frampton-keyboard/is_up';
 import isDown from 'frampton-keyboard/is_down';
 import isLeft from 'frampton-keyboard/is_left';
 import isRight from 'frampton-keyboard/is_right';
+import isSpace from 'frampton-keyboard/is_space';
+import isCtrl from 'frampton-keyboard/is_ctrl';
+import isShift from 'frampton-keyboard/is_shift';
 
 export {
   Keyboard,
@@ -17,5 +20,8 @@ export {
   isUp,
   isDown,
   isLeft,
-  isRight
+  isRight,
+  isSpace,
+  isCtrl,
+  isShift
 };

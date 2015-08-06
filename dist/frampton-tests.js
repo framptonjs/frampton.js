@@ -124,7 +124,7 @@ define("frampton-cache.jshint", ["exports"], function (exports) {
 
   undefined;
 });
-define("frampton-cache/Cache.jshint", ["exports"], function (exports) {
+define("frampton-cache/cache.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -139,7 +139,32 @@ define("frampton-data/either.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-data/fail.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-data/fork.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-data/maybe.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-data/run_task.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-data/sequence.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-data/succeed.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -165,20 +190,58 @@ define("frampton-data/tests/maybe_test.jshint", ["exports"], function (exports) 
 
   undefined;
 });
-define("frampton-data/tests/task_test", ["exports"], function (exports) {
-  "use strict";
+define('frampton-data/tests/task_test', ['exports', 'frampton-data/task', 'frampton-utils/noop'], function (exports, _framptonDataTask, _framptonUtilsNoop) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Task = _interopRequire(_framptonDataTask);
+
+  var _noop = _interopRequire(_framptonUtilsNoop);
+
+  QUnit.module('Frampton.Data.Task');
+
+  QUnit.test('join method should flatten nested Tasks', function () {
+
+    var task = new _Task(function (_, resolve) {
+      resolve(new _Task(function (_, resolve) {
+        resolve(5);
+      }));
+    });
+
+    task.join().run(_noop, function (val) {
+      equal(val, 5, 'correctly flattened Task');
+    });
+  });
+
+  QUnit.test('chain method should propertly map and flatten', function () {
+
+    var task = new _Task(function (_, resolve) {
+      resolve(5);
+    });
+
+    var mapping = function mapping(val) {
+      return new _Task(function (_, resolve) {
+        resolve(val + 1);
+      });
+    };
+
+    task.chain(mapping).run(_noop, function (val) {
+      equal(val, 6, 'correctly composed Tasks');
+    });
+  });
 });
 define("frampton-data/tests/task_test.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
 });
-define("frampton-events.jshint", ["exports"], function (exports) {
+define("frampton-data/when.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
 });
-define("frampton-events/closest.jshint", ["exports"], function (exports) {
+define("frampton-events.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -189,6 +252,11 @@ define("frampton-events/contains.jshint", ["exports"], function (exports) {
   undefined;
 });
 define("frampton-events/event_dispatcher.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-events/event_map.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -213,12 +281,22 @@ define("frampton-events/get_position_relative.jshint", ["exports"], function (ex
 
   undefined;
 });
+define("frampton-events/listen.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-events/target_value.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
 });
 define("frampton-keyboard.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_ctrl.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -249,6 +327,16 @@ define("frampton-keyboard/is_left.jshint", ["exports"], function (exports) {
   undefined;
 });
 define("frampton-keyboard/is_right.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_shift.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-keyboard/is_space.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -433,7 +521,127 @@ define("frampton-math/subtract.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define('frampton-math/tests/add_test', ['exports', 'frampton-math/add'], function (exports, _framptonMathAdd) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _add = _interopRequire(_framptonMathAdd);
+
+  QUnit.module('Frampton.Math.add');
+
+  QUnit.test('should correctly add two numbers', function () {
+    equal((0, _add)(1, 2), 3, 'correctly adds');
+  });
+});
+define("frampton-math/tests/add_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-math/tests/divide_test', ['exports', 'frampton-math/divide'], function (exports, _framptonMathDivide) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _divide = _interopRequire(_framptonMathDivide);
+
+  QUnit.module('Frampton.Math.divide');
+
+  QUnit.test('should correctly divide two numbers', function () {
+    equal((0, _divide)(4, 2), 2, 'correctly divides');
+  });
+});
+define("frampton-math/tests/divide_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-math/tests/max_test', ['exports', 'frampton-math/max'], function (exports, _framptonMathMax) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _max = _interopRequire(_framptonMathMax);
+
+  QUnit.module('Frampton.Math.max');
+
+  QUnit.test('should correctly select the larger of two numbers', function () {
+    equal((0, _max)(4, 2), 4, 'correctly selects');
+  });
+});
+define("frampton-math/tests/max_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-math/tests/min_test', ['exports', 'frampton-math/min'], function (exports, _framptonMathMin) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _min = _interopRequire(_framptonMathMin);
+
+  QUnit.module('Frampton.Math.min');
+
+  QUnit.test('should correctly select the smaller of two numbers', function () {
+    equal((0, _min)(4, 2), 2, 'correctly selects');
+  });
+});
+define("frampton-math/tests/min_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-math/tests/multiply_test', ['exports', 'frampton-math/multiply'], function (exports, _framptonMathMultiply) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _multiply = _interopRequire(_framptonMathMultiply);
+
+  QUnit.module('Frampton.Math.multiply');
+
+  QUnit.test('should correctly multiply two numbers', function () {
+    equal((0, _multiply)(4, 2), 8, 'correctly multiplies');
+  });
+});
+define("frampton-math/tests/multiply_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-monad.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-monad/ap.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-monad/chain.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-monad/filter.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-monad/map.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-mouse.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-mouse/mouse.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -463,6 +671,26 @@ define("frampton-object/reduce.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define('frampton-object/tests/filter_test', ['exports', 'frampton-object'], function (exports, _framptonObject) {
+  'use strict';
+
+  QUnit.module('Frampton.Object.filter');
+
+  QUnit.test('should filter keys from object if value satisfies predicate', function () {
+
+    var obj = { one: 1, two: 2, three: 3 };
+    var predicate = function predicate(val) {
+      return val >= 2;
+    };
+
+    deepEqual((0, _framptonObject.filter)(predicate, obj), { two: 2, three: 3 }, 'correctly filters object');
+  });
+});
+define("frampton-object/tests/filter_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-signals.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -474,11 +702,6 @@ define("frampton-signals/accum_b.jshint", ["exports"], function (exports) {
   undefined;
 });
 define("frampton-signals/behavior.jshint", ["exports"], function (exports) {
-  "use strict";
-
-  undefined;
-});
-define("frampton-signals/cached.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -508,11 +731,6 @@ define("frampton-signals/interval.jshint", ["exports"], function (exports) {
 
   undefined;
 });
-define("frampton-signals/listen.jshint", ["exports"], function (exports) {
-  "use strict";
-
-  undefined;
-});
 define("frampton-signals/null.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -536,7 +754,7 @@ define("frampton-signals/stepper.jshint", ["exports"], function (exports) {
 define('frampton-signals/tests/behavior_test', ['exports', 'frampton-signals'], function (exports, _framptonSignals) {
   'use strict';
 
-  QUnit.module('Frampton.Behavior');
+  QUnit.module('Frampton.Signals.Behavior');
 
   QUnit.test('of method should return Behavior with initial value', function () {
     var behavior = _framptonSignals.Behavior.of(5);
@@ -596,7 +814,7 @@ define("frampton-signals/tests/behavior_test.jshint", ["exports"], function (exp
 define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals'], function (exports, _framptonSignals) {
   'use strict';
 
-  QUnit.module('Frampton.EventStream', {
+  QUnit.module('Frampton.Signals.EventStream', {
     beforeEach: function beforeEach() {
       this.stream = new _framptonSignals.EventStream(function (sink) {
         setTimeout(function () {
@@ -799,7 +1017,7 @@ define("frampton-signals/tests/event_stream_test.jshint", ["exports"], function 
 define('frampton-signals/tests/event_test', ['exports', 'frampton-signals'], function (exports, _framptonSignals) {
   'use strict';
 
-  QUnit.module('Frampton.Event');
+  QUnit.module('Frampton.Signals.Event');
 
   QUnit.test('emptyEvent should return an Empty', function () {
     var empty = (0, _framptonSignals.emptyEvent)();
@@ -855,7 +1073,7 @@ define("frampton-signals/tests/listen_test.jshint", ["exports"], function (expor
 define('frampton-signals/tests/stepper_test', ['exports', 'frampton-signals'], function (exports, _framptonSignals) {
   'use strict';
 
-  QUnit.module('Frampton.stepper');
+  QUnit.module('Frampton.Signals.stepper');
 
   QUnit.test('creates a Behavior with initial value', function () {
     var stream = (0, _framptonSignals.empty)();
@@ -883,6 +1101,100 @@ define("frampton-signals/tests/stepper_test.jshint", ["exports"], function (expo
 
   undefined;
 });
+define("frampton-string.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-string/contains.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-string/ends_with.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-string/join.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-string/lines.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-string/split.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-string/starts_with.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-string/tests/contains_test', ['exports', 'frampton-string'], function (exports, _framptonString) {
+  'use strict';
+
+  QUnit.module('Frampton.String.contains');
+
+  QUnit.test('returns true if a string contains a substring', function () {
+    ok((0, _framptonString.contains)('yep', 'yepnope'), 'correctly recognizes substring');
+  });
+
+  QUnit.test('returns false if a string does not contain substring', function () {
+    notOk((0, _framptonString.contains)('wrong', 'yepnope'), 'correctly recognizes substring');
+  });
+});
+define("frampton-string/tests/contains_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-string/tests/ends_with_test', ['exports', 'frampton-string'], function (exports, _framptonString) {
+  'use strict';
+
+  QUnit.module('Frampton.String.endsWith');
+
+  QUnit.test('returns true if a string ends with a substring', function () {
+    ok((0, _framptonString.endsWith)('nope', 'yepnope'), 'correctly recognizes substring');
+  });
+
+  QUnit.test('returns false if a string does not end with a substring', function () {
+    notOk((0, _framptonString.endsWith)('yep', 'yepnope'), 'correctly recognizes substring');
+  });
+});
+define("frampton-string/tests/ends_with_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-string/tests/starts_with_test', ['exports', 'frampton-string'], function (exports, _framptonString) {
+  'use strict';
+
+  QUnit.module('Frampton.String.startsWith');
+
+  QUnit.test('returns true if a string starts with a substring', function () {
+    ok((0, _framptonString.startsWith)('yep', 'yepnope'), 'correctly recognizes substring');
+  });
+
+  QUnit.test('returns false if a string does not start with a substring', function () {
+    notOk((0, _framptonString.startsWith)('nope', 'yepnope'), 'correctly recognizes substring');
+  });
+});
+define("frampton-string/tests/starts_with_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-string/words.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-utils.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -904,6 +1216,11 @@ define("frampton-utils/compose.jshint", ["exports"], function (exports) {
   undefined;
 });
 define("frampton-utils/curry.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-utils/equal.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -1018,10 +1335,15 @@ define("frampton-utils/of_value.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-utils/safe_get.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define('frampton-utils/tests/assert_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
   'use strict';
 
-  QUnit.module('Frampton.assert');
+  QUnit.module('Frampton.Utils.assert');
 
   QUnit.test('should throw for falsy value', function () {
     throws(function () {
@@ -1059,7 +1381,7 @@ define("frampton-utils/tests/assert_test.jshint", ["exports"], function (exports
 define('frampton-utils/tests/compose_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
   'use strict';
 
-  QUnit.module('Frampton.compose');
+  QUnit.module('Frampton.Utils.compose');
 
   QUnit.test('should compose functions right to left', function () {
     var a = function a(x) {
@@ -1086,10 +1408,44 @@ define("frampton-utils/tests/compose_test.jshint", ["exports"], function (export
 
   undefined;
 });
+define('frampton-utils/tests/equal_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+  'use strict';
+
+  QUnit.module('Frampton.Utils.equal');
+
+  QUnit.test('should return true for objects with same key/values', function () {
+    var a = { a: 1, b: 2 };
+    var b = { a: 1, b: 2 };
+    ok((0, _framptonUtils.equal)(a, b), 'correctly compares objects');
+  });
+
+  QUnit.test('should return false for objects with different key/values', function () {
+    var a = { a: 1, b: 2 };
+    var b = { a: 2, b: 1 };
+    notOk((0, _framptonUtils.equal)(a, b), 'correctly compares objects');
+  });
+
+  QUnit.test('should return true for the same primitive value', function () {
+    var a = 1;
+    var b = 1;
+    ok((0, _framptonUtils.equal)(a, b), 'correctly compares values');
+  });
+
+  QUnit.test('should return false for different primitive values', function () {
+    var a = 1;
+    var b = 2;
+    notOk((0, _framptonUtils.equal)(a, b), 'correctly compares values');
+  });
+});
+define("frampton-utils/tests/equal_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define('frampton-utils/tests/get_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
   'use strict';
 
-  QUnit.module('Frampton.get');
+  QUnit.module('Frampton.Utils.get');
 
   QUnit.test('should retrieve value by key', function () {
     var temp = { id: 1 };
@@ -1106,7 +1462,42 @@ define("frampton-utils/tests/get_test.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define('frampton-utils/tests/safe_get_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+  'use strict';
+
+  QUnit.module('Frampton.Utils.safeGet');
+
+  QUnit.test('should return Just for existing key', function () {
+    var temp = { id: 1 };
+    ok((0, _framptonUtils.safeGet)('id', temp).isJust(), 'correctly returns Just');
+  });
+
+  QUnit.test('should return Nothing for invalid key', function () {
+    var temp = { id: 1 };
+    ok((0, _framptonUtils.safeGet)('wrong', temp).isNothing(), 'correctly returns Nothing');
+  });
+
+  QUnit.test('should return Just for existing key', function () {
+    var temp = { id: 1 };
+    equal((0, _framptonUtils.safeGet)('id', temp).toString(), 'Just(1)', 'correctly returns Just');
+  });
+
+  QUnit.test('should return Nothing for invalid key', function () {
+    var temp = { id: 1 };
+    equal((0, _framptonUtils.safeGet)('wrong', temp).toString(), 'Nothing', 'correctly returns Nothing');
+  });
+});
+define("frampton-utils/tests/safe_get_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-window.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-window/window.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;

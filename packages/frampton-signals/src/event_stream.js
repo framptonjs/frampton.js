@@ -273,7 +273,6 @@ EventStream.prototype.sample = function(behavior) {
 
 // fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
 EventStream.prototype.fold = function(fn, acc) {
-  console.log('acc 1: ', acc);
   return withTransform(this, (event) => {
     acc = (isUndefined(acc)) ? event.get() : fn(acc, event.get());
     return nextEvent(acc);
@@ -369,12 +368,12 @@ EventStream.prototype.debounce = function EventStream_debounce(delay) {
   return new EventStream((sink) => {
 
     breakers.push(source.subscribe((event) => {
+
       if (event.isNext()) {
+
         saved = event.get();
 
-        if (timerId) {
-          clearTimeout(timerId);
-        }
+        if (timerId) clearTimeout(timerId);
 
         timerId = setTimeout(() => {
           sink(nextEvent(saved));

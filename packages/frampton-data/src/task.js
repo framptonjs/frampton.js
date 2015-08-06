@@ -20,16 +20,33 @@ Task.prototype.of = function(val) {
   });
 };
 
-// chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
-Task.prototype.chain = function(fn) {
+// join :: Task x (Task x a) -> Task x a
+Task.prototype.join = function() {
   var run = this.run;
   return new Task(function(reject, resolve) {
     return run(function(err) {
       return reject(err);
     }, function(val) {
-      return fn(val).run(reject, resolve);
+      return val.run(reject, resolve);
     });
   });
+};
+
+// concat(>>) :: Task x a -> Task x b -> Task x b
+Task.prototype.concat = function(task) {
+  var run = this.run;
+  return new Task(function(reject, resolve) {
+    return run(function(err) {
+      return reject(err);
+    }, function(val) {
+      return task.run(reject, resolve);
+    });
+  });
+};
+
+// chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
+Task.prototype.chain = function(fn) {
+  return this.map(fn).join();
 };
 
 // ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
@@ -63,33 +80,4 @@ Task.prototype.map = function(fn) {
   });
 };
 
-var runTask = function(task, reject, resolve) {
-  task.run(reject, resolve);
-};
-
-var fork = function(tasks, values, errors) {
-  return tasks.next((task) => {
-    runTask(task, values.push, errors.push);
-  });
-};
-
-var when = function(...tasks) {
-  tasks.forEach((task) => {
-    task.run();
-  });
-};
-
-var sequence = function(...tasks) {
-  return tasks.reduce((acc, next) => {
-    acc.chain(next);
-  });
-};
-
 export default Task;
-
-export {
-  runTask,
-  fork,
-  sequence,
-  when
-};

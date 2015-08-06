@@ -130,7 +130,7 @@ define('frampton-cache', ['exports', 'frampton-cache/Cache'], function (exports,
 
   exports.Cache = _Cache;
 });
-define('frampton-cache/Cache', ['exports', 'module', 'frampton-utils'], function (exports, module, _framptonUtils) {
+define('frampton-cache/cache', ['exports', 'module', 'frampton-utils'], function (exports, module, _framptonUtils) {
   'use strict';
 
   var defaults = {
@@ -307,7 +307,7 @@ define('frampton-cache/Cache', ['exports', 'module', 'frampton-utils'], function
 
   module.exports = Cache;
 });
-define('frampton-data', ['exports', 'frampton-data/either', 'frampton-data/maybe', 'frampton-data/task'], function (exports, _framptonDataEither, _framptonDataMaybe, _framptonDataTask) {
+define('frampton-data', ['exports', 'frampton-data/either', 'frampton-data/maybe', 'frampton-data/task', 'frampton-data/when', 'frampton-data/sequence', 'frampton-data/run_task', 'frampton-data/fork', 'frampton-data/fail', 'frampton-data/succeed'], function (exports, _framptonDataEither, _framptonDataMaybe, _framptonDataTask, _framptonDataWhen, _framptonDataSequence, _framptonDataRun_task, _framptonDataFork, _framptonDataFail, _framptonDataSucceed) {
   'use strict';
 
   exports.__esModule = true;
@@ -316,6 +316,18 @@ define('frampton-data', ['exports', 'frampton-data/either', 'frampton-data/maybe
 
   var _Task = _interopRequire(_framptonDataTask);
 
+  var _when = _interopRequire(_framptonDataWhen);
+
+  var _sequence = _interopRequire(_framptonDataSequence);
+
+  var _runTask = _interopRequire(_framptonDataRun_task);
+
+  var _fork = _interopRequire(_framptonDataFork);
+
+  var _fail = _interopRequire(_framptonDataFail);
+
+  var _succeed = _interopRequire(_framptonDataSucceed);
+
   exports.Either = _framptonDataEither.Either;
   exports.Left = _framptonDataEither.Left;
   exports.Right = _framptonDataEither.Right;
@@ -323,11 +335,27 @@ define('frampton-data', ['exports', 'frampton-data/either', 'frampton-data/maybe
   exports.Just = _framptonDataMaybe.Just;
   exports.Nothing = _framptonDataMaybe.Nothing;
   exports.Task = _Task;
+  exports.when = _when;
+  exports.sequence = _sequence;
+  exports.runTask = _runTask;
+  exports.fork = _fork;
+  exports.fail = _fail;
+  exports.succeed = _succeed;
 });
-define('frampton-data/either', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-data/either', ['exports', 'frampton-utils/noop', 'frampton-utils/identity', 'frampton-utils/inherits', 'frampton-utils/not_implemented'], function (exports, _framptonUtilsNoop, _framptonUtilsIdentity, _framptonUtilsInherits, _framptonUtilsNot_implemented) {
   'use strict';
 
   exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _noop = _interopRequire(_framptonUtilsNoop);
+
+  var _identity = _interopRequire(_framptonUtilsIdentity);
+
+  var _inherits = _interopRequire(_framptonUtilsInherits);
+
+  var _notImplemented = _interopRequire(_framptonUtilsNot_implemented);
 
   /**
    *
@@ -338,13 +366,13 @@ define('frampton-data/either', ['exports', 'frampton-utils'], function (exports,
     return new Right(val);
   };
 
-  Either.prototype.ap = _framptonUtils.notImplemented;
+  Either.prototype.ap = _notImplemented;
 
-  Either.prototype.chain = _framptonUtils.notImplemented;
+  Either.prototype.chain = _notImplemented;
 
-  Either.prototype.map = _framptonUtils.notImplemented;
+  Either.prototype.map = _notImplemented;
 
-  Either.prototype.toString = _framptonUtils.notImplemented;
+  Either.prototype.toString = _notImplemented;
 
   Either.prototype.isLeft = function () {
     return false;
@@ -354,23 +382,23 @@ define('frampton-data/either', ['exports', 'frampton-utils'], function (exports,
     return false;
   };
 
-  (0, _framptonUtils.inherits)(Left, Either);
+  (0, _inherits)(Left, Either);
 
   function Left(val) {
     this.value = val;
   }
 
-  Left.prototype.ap = _framptonUtils.identity;
+  Left.prototype.ap = _identity;
 
-  Left.prototype.chain = _framptonUtils.noop;
+  Left.prototype.chain = _noop;
 
-  Left.prototype.map = _framptonUtils.noop;
+  Left.prototype.map = _noop;
 
   Left.prototype.toString = function () {
     return 'Left(' + this.value + ')';
   };
 
-  (0, _framptonUtils.inherits)(Right, Either);
+  (0, _inherits)(Right, Either);
 
   function Right(val) {
     this.value = val;
@@ -405,10 +433,50 @@ define('frampton-data/either', ['exports', 'frampton-utils'], function (exports,
   exports.Left = Left;
   exports.Right = Right;
 });
-define('frampton-data/maybe', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-data/fail', ['exports', 'module', 'frampton-data/task'], function (exports, module, _framptonDataTask) {
+  'use strict';
+
+  //+ fail :: x -> Task x a
+  module.exports = fail;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Task = _interopRequire(_framptonDataTask);
+
+  function fail(err) {
+    return new _Task(function (reject, _) {
+      return reject(err);
+    });
+  }
+});
+define('frampton-data/fork', ['exports', 'module', 'frampton-data/run_task'], function (exports, module, _framptonDataRun_task) {
+  'use strict';
+
+  //+ fork
+  module.exports = fork;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _runTask = _interopRequire(_framptonDataRun_task);
+
+  function fork(tasks, values, errors) {
+    return tasks.next(function (task) {
+      (0, _runTask)(task, values.push, errors.push);
+    });
+  }
+});
+define('frampton-data/maybe', ['exports', 'frampton-utils/inherits', 'frampton-utils/is_something', 'frampton-utils/not_implemented'], function (exports, _framptonUtilsInherits, _framptonUtilsIs_something, _framptonUtilsNot_implemented) {
   'use strict';
 
   exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _inherits = _interopRequire(_framptonUtilsInherits);
+
+  var _isSomething = _interopRequire(_framptonUtilsIs_something);
+
+  var _notImplemented = _interopRequire(_framptonUtilsNot_implemented);
 
   /**
    * @class
@@ -422,21 +490,21 @@ define('frampton-data/maybe', ['exports', 'frampton-utils'], function (exports, 
   Maybe.prototype.fromEither = Maybe.fromEither;
 
   Maybe.of = function (val) {
-    return (0, _framptonUtils.isSomething)(val) ? new Just(val) : new Nothing();
+    return (0, _isSomething)(val) ? new Just(val) : new Nothing();
   };
 
   Maybe.prototype.of = Maybe.of;
 
   // join :: Maybe (Maybe a) -> Maybe a
-  Maybe.prototype.join = _framptonUtils.notImplemented;
+  Maybe.prototype.join = _notImplemented;
 
   // chain(>>=) :: Maybe a -> (a -> Maybe b) -> Maybe b
-  Maybe.prototype.chain = _framptonUtils.notImplemented;
+  Maybe.prototype.chain = _notImplemented;
 
   // ap(<*>) :: Maybe (a -> b) -> Maybe a -> Maybe b
-  Maybe.prototype.ap = _framptonUtils.notImplemented;
+  Maybe.prototype.ap = _notImplemented;
 
-  Maybe.prototype.map = _framptonUtils.notImplemented;
+  Maybe.prototype.map = _notImplemented;
 
   Maybe.prototype.isJust = function () {
     return false;
@@ -446,19 +514,21 @@ define('frampton-data/maybe', ['exports', 'frampton-utils'], function (exports, 
     return false;
   };
 
-  Maybe.prototype.get = _framptonUtils.notImplemented;
+  Maybe.prototype.get = _notImplemented;
 
-  Maybe.prototype.getOrElse = _framptonUtils.notImplemented;
+  Maybe.prototype.getOrElse = _notImplemented;
 
-  Maybe.prototype.toString = _framptonUtils.notImplemented;
+  Maybe.prototype.toString = _notImplemented;
 
   /**
    * @class
    * @extends Maybe
    */
-  (0, _framptonUtils.inherits)(Just, Maybe);
+  (0, _inherits)(Just, Maybe);
 
-  function Just() {}
+  function Just(val) {
+    this.value = val;
+  }
 
   Just.prototype.isJust = function () {
     return true;
@@ -499,7 +569,7 @@ define('frampton-data/maybe', ['exports', 'frampton-utils'], function (exports, 
    * @class
    * @extends Maybe
    */
-  (0, _framptonUtils.inherits)(Nothing, Maybe);
+  (0, _inherits)(Nothing, Maybe);
 
   function Nothing() {}
 
@@ -535,10 +605,49 @@ define('frampton-data/maybe', ['exports', 'frampton-utils'], function (exports, 
   exports.Just = Just;
   exports.Nothing = Nothing;
 });
-define("frampton-data/task", ["exports"], function (exports) {
+define("frampton-data/run_task", ["exports", "module"], function (exports, module) {
+  //+ runTask
   "use strict";
 
-  exports.__esModule = true;
+  module.exports = run_task;
+
+  function run_task(task, reject, resolve) {
+    task.run(reject, resolve);
+  }
+});
+define("frampton-data/sequence", ["exports", "module"], function (exports, module) {
+  //+ sequence :: [Task x a] -> Task x a
+  "use strict";
+
+  module.exports = sequence;
+
+  function sequence() {
+    for (var _len = arguments.length, tasks = Array(_len), _key = 0; _key < _len; _key++) {
+      tasks[_key] = arguments[_key];
+    }
+
+    return tasks.reduce(function (acc, next) {
+      acc.concat(next);
+    });
+  }
+});
+define('frampton-data/succeed', ['exports', 'module', 'frampton-data/task'], function (exports, module, _framptonDataTask) {
+  'use strict';
+
+  //+ succeed :: a -> Task x a
+  module.exports = succeed;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Task = _interopRequire(_framptonDataTask);
+
+  function succeed(val) {
+    return new _Task(function (_, resolve) {
+      return resolve(val);
+    });
+  }
+});
+define("frampton-data/task", ["exports", "module"], function (exports, module) {
   /**
    * Task takes an error stream and a value stream
    * Task are lazy, must be told to run?
@@ -550,6 +659,8 @@ define("frampton-data/task", ["exports"], function (exports) {
    * // fork :: EventStream Task x a -> EventStream x -> EventStream z -> ()
    * fork(stream)
    */
+  "use strict";
+
   function Task(computation) {
     this.run = computation;
   }
@@ -561,16 +672,33 @@ define("frampton-data/task", ["exports"], function (exports) {
     });
   };
 
-  // chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
-  Task.prototype.chain = function (fn) {
+  // join :: Task x (Task x a) -> Task x a
+  Task.prototype.join = function () {
     var run = this.run;
     return new Task(function (reject, resolve) {
       return run(function (err) {
         return reject(err);
       }, function (val) {
-        return fn(val).run(reject, resolve);
+        return val.run(reject, resolve);
       });
     });
+  };
+
+  // concat(>>) :: Task x a -> Task x b -> Task x b
+  Task.prototype.concat = function (task) {
+    var run = this.run;
+    return new Task(function (reject, resolve) {
+      return run(function (err) {
+        return reject(err);
+      }, function (val) {
+        return task.run(reject, resolve);
+      });
+    });
+  };
+
+  // chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
+  Task.prototype.chain = function (fn) {
+    return this.map(fn).join();
   };
 
   // ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
@@ -604,57 +732,78 @@ define("frampton-data/task", ["exports"], function (exports) {
     });
   };
 
-  var runTask = function runTask(task, reject, resolve) {
-    task.run(reject, resolve);
-  };
+  module.exports = Task;
+});
+define('frampton-data/when', ['exports', 'module', 'frampton-data/task'], function (exports, module, _framptonDataTask) {
+  'use strict';
 
-  var fork = function fork(tasks, values, errors) {
-    return tasks.next(function (task) {
-      runTask(task, values.push, errors.push);
-    });
-  };
+  //+ when :: [Task x a] -> Task x [a]
+  module.exports = when;
 
-  var when = function when() {
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Task = _interopRequire(_framptonDataTask);
+
+  function when() {
     for (var _len = arguments.length, tasks = Array(_len), _key = 0; _key < _len; _key++) {
       tasks[_key] = arguments[_key];
     }
 
-    tasks.forEach(function (task) {
-      task.run();
+    return new _Task(function (reject, resolve) {
+
+      var valueArray = new Array(tasks.length);
+      var errorArray = [];
+      var len = tasks.length;
+      var idx = 0;
+      var count = 0;
+
+      function logError(err) {
+        errorArray.push(err);
+      }
+
+      tasks.forEach(function (task) {
+        var index = idx++;
+        task.run(logError, function (val) {
+          count = count + 1;
+          valueArray[index] = val;
+          if (count === len - 1) {
+            resolve.apply(null, valueArray);
+          }
+        });
+      });
     });
-  };
-
-  var sequence = function sequence() {
-    for (var _len2 = arguments.length, tasks = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      tasks[_key2] = arguments[_key2];
-    }
-
-    return tasks.reduce(function (acc, next) {
-      acc.chain(next);
-    });
-  };
-
-  exports["default"] = Task;
-  exports.runTask = runTask;
-  exports.fork = fork;
-  exports.sequence = sequence;
-  exports.when = when;
+  }
 });
-define('frampton-events', ['exports', 'frampton-events/event_dispatcher', 'frampton-events/get_position'], function (exports, _framptonEventsEvent_dispatcher, _framptonEventsGet_position) {
+define('frampton-events', ['exports', 'frampton-events/event_dispatcher', 'frampton-events/listen', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/target_value'], function (exports, _framptonEventsEvent_dispatcher, _framptonEventsListen, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsTarget_value) {
   'use strict';
 
   exports.__esModule = true;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _listen = _interopRequire(_framptonEventsListen);
+
+  var _contains = _interopRequire(_framptonEventsContains);
+
+  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
+
+  var _eventValue = _interopRequire(_framptonEventsEvent_value);
+
   var _getPosition = _interopRequire(_framptonEventsGet_position);
+
+  var _getPositionRelative = _interopRequire(_framptonEventsGet_position_relative);
+
+  var _targetValue = _interopRequire(_framptonEventsTarget_value);
 
   exports.addListener = _framptonEventsEvent_dispatcher.addListener;
   exports.removeListener = _framptonEventsEvent_dispatcher.removeListener;
+  exports.listen = _listen;
+  exports.contains = _contains;
+  exports.eventTarget = _eventTarget;
+  exports.eventValue = _eventValue;
   exports.getPosition = _getPosition;
-});
-define("frampton-events/closest", ["exports"], function (exports) {
-  "use strict";
+  exports.getPositionRelative = _getPositionRelative;
+  exports.targetValue = _targetValue;
 });
 define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something) {
   'use strict';
@@ -670,61 +819,119 @@ define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry',
     return (0, _isSomething)(target) && (0, _isSomething)(element) && (element === target || element.contains(target));
   });
 });
-define('frampton-events/event_dispatcher', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function', 'frampton-utils/is_defined', 'frampton-utils/lazy', 'frampton-events/event_map'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_function, _framptonUtilsIs_defined, _framptonUtilsLazy, _framptonEventsEvent_map) {
   'use strict';
 
   exports.__esModule = true;
 
-  /**
-   *
-   */
-  var EVENT_MAPPING = {
-    focus: 'focusin',
-    blur: 'focusout'
-  };
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
-  var EVENT_CACHE = {};
+  var _assert = _interopRequire(_framptonUtilsAssert);
 
-  var listeners = {};
+  var _isFunction = _interopRequire(_framptonUtilsIs_function);
 
-  var listener = {
-    target: null,
-    callback: null
-  };
+  var _isDefined = _interopRequire(_framptonUtilsIs_defined);
 
-  function eventFor(eventName, target) {}
+  var _lazy = _interopRequire(_framptonUtilsLazy);
 
-  function addCustomEvent(eventName, callback, target) {}
+  var _EVENT_MAP = _interopRequire(_framptonEventsEvent_map);
+
+  // get dom event -> filter -> return stream
+  function addDomEvent(name, node, callback) {
+    node.addEventListener(name, callback, !_EVENT_MAP[name].bubbles);
+  }
+
+  function addCustomEvent(name, target, callback) {
+    var listen = (0, _isFunction)(target.addEventListener) ? target.addEventListener : (0, _isFunction)(target.on) ? target.on : null;
+
+    (0, _assert)('addListener received an unknown type as target', (0, _isFunction)(listen));
+
+    listen.call(target, name, callback);
+  }
+
+  function removeDomEvent(name, node, callback) {
+    node.removeEventListener(name, callback, !_EVENT_MAP[name].bubbles);
+  }
+
+  function removeCustomEvent(name, target, callback) {
+    var remove = (0, _isFunction)(target.removeEventListener) ? target.removeEventListener : (0, _isFunction)(target.off) ? target.off : null;
+
+    (0, _assert)('removeListener received an unknown type as target', (0, _isFunction)(remove));
+
+    remove.call(target, name, callback);
+  }
 
   function addListener(eventName, callback, target) {
 
-    var listen = (0, _framptonUtils.isFunction)(target.addEventListener) ? target.addEventListener : (0, _framptonUtils.isFunction)(target.on) ? target.on : null;
+    if ((0, _isDefined)(_EVENT_MAP[eventName])) {
+      addDomEvent(eventName, target, callback);
+    } else {
+      addCustomEvent(eventName, target, callback);
+    }
 
-    (0, _framptonUtils.assert)('addListener received an unknown type as target', (0, _framptonUtils.isFunction)(listen));
-
-    listen.call(target, eventName, callback);
-
-    return (0, _framptonUtils.lazy)(removeListener, eventName, callback, target);
+    return (0, _lazy)(removeListener, eventName, callback, target);
   }
 
   function removeListener(eventName, callback, target) {
-
-    var remove = (0, _framptonUtils.isFunction)(target.removeEventListener) ? target.removeEventListener : (0, _framptonUtils.isFunction)(target.off) ? target.off : null;
-
-    (0, _framptonUtils.assert)('removeListener received an unknown type as target', (0, _framptonUtils.isFunction)(remove));
-
-    remove.call(target, eventName, callback);
+    if ((0, _isDefined)(_EVENT_MAP[eventName])) {
+      removeDomEvent(eventName, target, callback);
+    } else {
+      removeCustomEvent(eventName, target, callback);
+    }
   }
 
   exports.addListener = addListener;
   exports.removeListener = removeListener;
 });
+define("frampton-events/event_map", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = {
+    focus: { bubbles: false, stream: null },
+    blur: { bubbles: false, stream: null },
+    focusin: { bubbles: true, stream: null },
+    focusout: { bubbles: true, stream: null },
+    input: { bubbles: true, stream: null },
+    change: { bubbles: true, stream: null },
+    click: { bubbles: true, stream: null },
+    mousedown: { bubbles: true, stream: null },
+    mouseup: { bubbles: true, stream: null },
+    mousemove: { bubbles: true, stream: null },
+    mouseenter: { bubbles: true, stream: null },
+    mouseleave: { bubbles: true, stream: null },
+    mouseover: { bubbles: true, stream: null },
+    mouseout: { bubbles: true, stream: null },
+    keyup: { bubbles: true, stream: null },
+    keydown: { bubbles: true, stream: null },
+    keypress: { bubbles: true, stream: null },
+    touchstart: { bubbles: true, stream: null },
+    touchend: { bubbles: true, stream: null },
+    touchcancel: { bubbles: true, stream: null },
+    touchleave: { bubbles: true, stream: null },
+    touchmove: { bubbles: true, stream: null },
+    submit: { bubbles: true, stream: null },
+    animationstart: { bubbles: true, stream: null },
+    animationend: { bubbles: true, stream: null },
+    animationiteration: { bubbles: true, stream: null },
+    transitionend: { bubbles: true, stream: null },
+    drag: { bubbles: true, stream: null },
+    drop: { bubbles: true, stream: null },
+    dragstart: { bubbles: true, stream: null },
+    dragend: { bubbles: true, stream: null },
+    dragenter: { bubbles: true, stream: null },
+    dragleave: { bubbles: true, stream: null },
+    dragover: { bubbles: true, stream: null },
+    wheel: { bubbles: true, stream: null }
+  };
+});
 define("frampton-events/event_target", ["exports", "module"], function (exports, module) {
   "use strict";
 
-  module.exports = function (evt) {
+  module.exports = event_target;
+
+  function event_target(evt) {
     return evt.target;
-  };
+  }
 });
 define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/compose', 'frampton-events/event_target', 'frampton-events/target_value'], function (exports, module, _framptonUtilsCompose, _framptonEventsEvent_target, _framptonEventsTarget_value) {
   'use strict';
@@ -785,14 +992,55 @@ define('frampton-events/get_position_relative', ['exports', 'module', 'frampton-
     return [posx, posy];
   });
 });
+define('frampton-events/listen', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/event_stream', 'frampton-signals/event', 'frampton-events/contains', 'frampton-events/event_map', 'frampton-events/event_dispatcher'], function (exports, module, _framptonUtilsCurry, _framptonSignalsEvent_stream, _framptonSignalsEvent, _framptonEventsContains, _framptonEventsEvent_map, _framptonEventsEvent_dispatcher) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
+
+  var _contains = _interopRequire(_framptonEventsContains);
+
+  var _EVENT_MAP = _interopRequire(_framptonEventsEvent_map);
+
+  var DOCUMENT_CACHE = {};
+
+  function getEventStream(name, target) {
+    return new _EventStream(function (sink) {
+      return (0, _framptonEventsEvent_dispatcher.addListener)(name, function (evt) {
+        return sink((0, _framptonSignalsEvent.nextEvent)(evt));
+      }, target);
+    });
+  }
+
+  function getDocumentStream(name) {
+    if (!DOCUMENT_CACHE[name]) {
+      DOCUMENT_CACHE[name] = getEventStream(name, document);
+    }
+    return DOCUMENT_CACHE[name];
+  }
+
+  // listen :: String -> Dom -> EventStream Event
+  module.exports = (0, _curry)(function listen(eventName, target) {
+    if (_EVENT_MAP[eventName]) {
+      return getDocumentStream(eventName).filter((0, _contains)(target));
+    } else {
+      return getEventStream(eventName, target);
+    }
+  });
+});
 define("frampton-events/target_value", ["exports", "module"], function (exports, module) {
   "use strict";
 
-  module.exports = function (target) {
+  module.exports = target_value;
+
+  function target_value(target) {
     return target.value;
-  };
+  }
 });
-define('frampton-keyboard', ['exports', 'frampton-keyboard/keyboard', 'frampton-keyboard/key_code', 'frampton-keyboard/is_key', 'frampton-keyboard/is_enter', 'frampton-keyboard/is_esc', 'frampton-keyboard/is_up', 'frampton-keyboard/is_down', 'frampton-keyboard/is_left', 'frampton-keyboard/is_right'], function (exports, _framptonKeyboardKeyboard, _framptonKeyboardKey_code, _framptonKeyboardIs_key, _framptonKeyboardIs_enter, _framptonKeyboardIs_esc, _framptonKeyboardIs_up, _framptonKeyboardIs_down, _framptonKeyboardIs_left, _framptonKeyboardIs_right) {
+define('frampton-keyboard', ['exports', 'frampton-keyboard/keyboard', 'frampton-keyboard/key_code', 'frampton-keyboard/is_key', 'frampton-keyboard/is_enter', 'frampton-keyboard/is_esc', 'frampton-keyboard/is_up', 'frampton-keyboard/is_down', 'frampton-keyboard/is_left', 'frampton-keyboard/is_right', 'frampton-keyboard/is_space', 'frampton-keyboard/is_ctrl', 'frampton-keyboard/is_shift'], function (exports, _framptonKeyboardKeyboard, _framptonKeyboardKey_code, _framptonKeyboardIs_key, _framptonKeyboardIs_enter, _framptonKeyboardIs_esc, _framptonKeyboardIs_up, _framptonKeyboardIs_down, _framptonKeyboardIs_left, _framptonKeyboardIs_right, _framptonKeyboardIs_space, _framptonKeyboardIs_ctrl, _framptonKeyboardIs_shift) {
   'use strict';
 
   exports.__esModule = true;
@@ -817,6 +1065,12 @@ define('frampton-keyboard', ['exports', 'frampton-keyboard/keyboard', 'frampton-
 
   var _isRight = _interopRequire(_framptonKeyboardIs_right);
 
+  var _isSpace = _interopRequire(_framptonKeyboardIs_space);
+
+  var _isCtrl = _interopRequire(_framptonKeyboardIs_ctrl);
+
+  var _isShift = _interopRequire(_framptonKeyboardIs_shift);
+
   exports.Keyboard = _Keyboard;
   exports.keyCode = _keyCode;
   exports.isKey = _isKey;
@@ -826,6 +1080,21 @@ define('frampton-keyboard', ['exports', 'frampton-keyboard/keyboard', 'frampton-
   exports.isDown = _isDown;
   exports.isLeft = _isLeft;
   exports.isRight = _isRight;
+  exports.isSpace = _isSpace;
+  exports.isCtrl = _isCtrl;
+  exports.isShift = _isShift;
+});
+define('frampton-keyboard/is_ctrl', ['exports', 'module', 'frampton-keyboard/is_key', 'frampton-keyboard/key_map'], function (exports, module, _framptonKeyboardIs_key, _framptonKeyboardKey_map) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isKey = _interopRequire(_framptonKeyboardIs_key);
+
+  var _KEY_MAP = _interopRequire(_framptonKeyboardKey_map);
+
+  // is_ctrl :: KeyCode -> Boolean
+  module.exports = (0, _isKey)(_KEY_MAP.CTRL);
 });
 define('frampton-keyboard/is_down', ['exports', 'module', 'frampton-keyboard/is_key', 'frampton-keyboard/key_map'], function (exports, module, _framptonKeyboardIs_key, _framptonKeyboardKey_map) {
   'use strict';
@@ -899,6 +1168,30 @@ define('frampton-keyboard/is_right', ['exports', 'module', 'frampton-keyboard/is
   // is_right :: KeyCode -> Boolean
   module.exports = (0, _isKey)(_KEY_MAP.RIGHT);
 });
+define('frampton-keyboard/is_shift', ['exports', 'module', 'frampton-keyboard/is_key', 'frampton-keyboard/key_map'], function (exports, module, _framptonKeyboardIs_key, _framptonKeyboardKey_map) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isKey = _interopRequire(_framptonKeyboardIs_key);
+
+  var _KEY_MAP = _interopRequire(_framptonKeyboardKey_map);
+
+  // is_shift :: KeyCode -> Boolean
+  module.exports = (0, _isKey)(_KEY_MAP.SHIFT);
+});
+define('frampton-keyboard/is_space', ['exports', 'module', 'frampton-keyboard/is_key', 'frampton-keyboard/key_map'], function (exports, module, _framptonKeyboardIs_key, _framptonKeyboardKey_map) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isKey = _interopRequire(_framptonKeyboardIs_key);
+
+  var _KEY_MAP = _interopRequire(_framptonKeyboardKey_map);
+
+  // is_space :: KeyCode -> Boolean
+  module.exports = (0, _isKey)(_KEY_MAP.SPACE);
+});
 define('frampton-keyboard/is_up', ['exports', 'module', 'frampton-keyboard/is_key', 'frampton-keyboard/key_map'], function (exports, module, _framptonKeyboardIs_key, _framptonKeyboardKey_map) {
   'use strict';
 
@@ -928,6 +1221,8 @@ define("frampton-keyboard/key_map", ["exports", "module"], function (exports, mo
     ENTER: 13,
     ESC: 27,
     SPACE: 32,
+    CTRL: 17,
+    SHIFT: 16,
     UP: 38,
     DOWN: 40,
     LEFT: 37,
@@ -950,7 +1245,6 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils', 'fr
   var keyPress = (0, _framptonSignals.listen)('keypress', document);
   var keyUpCodes = keyUp.map(_keyCode);
   var keyDownCodes = keyDown.map(_keyCode);
-  // var isDown = stepper(false, keyDown.map(true).merge(keyUp.map(false)));
 
   var addKey = function addKey(keyCode) {
     return function (arr) {
@@ -1005,11 +1299,13 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils', 'fr
     downs: keyDown,
     ups: keyUp,
     presses: keyPress,
-    keyCodes: keyUpCodes,
+    codes: keyUpCodes,
     arrows: (0, _framptonSignals.stepper)([0, 0], arrows),
-    escapes: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.ESC)),
-    enters: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.ENTER)),
-    spaces: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.SPACE))
+    shift: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.SHIFT)),
+    ctrl: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.CTRL)),
+    escape: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.ESC)),
+    enter: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.ENTER)),
+    space: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.SPACE))
   };
 
   function Keyboard(element) {
@@ -1671,12 +1967,79 @@ define('frampton-math/subtract', ['exports', 'module', 'frampton-utils'], functi
     return a - b;
   });
 });
-define('frampton-mouse', ['exports', 'module', 'frampton-signals', 'frampton-events/contains', 'frampton-events/get_position', 'frampton-events/get_position_relative'], function (exports, module, _framptonSignals, _framptonEventsContains, _framptonEventsGet_position, _framptonEventsGet_position_relative) {
+define('frampton-monad', ['exports', 'frampton-monad/ap', 'frampton-monad/chain', 'frampton-monad/filter', 'frampton-monad/map'], function (exports, _framptonMonadAp, _framptonMonadChain, _framptonMonadFilter, _framptonMonadMap) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _ap = _interopRequire(_framptonMonadAp);
+
+  var _chain = _interopRequire(_framptonMonadChain);
+
+  var _filter = _interopRequire(_framptonMonadFilter);
+
+  var _map = _interopRequire(_framptonMonadMap);
+
+  exports.ap = _ap;
+  exports.chain = _chain;
+  exports.filter = _filter;
+  exports.map = _map;
+});
+define('frampton-monad/ap', ['exports', 'module', 'frampton-utils'], function (exports, module, _framptonUtils) {
+  'use strict';
+
+  //+ ap(<*>) :: (a -> b) -> Monad a -> Monad b
+  module.exports = (0, _framptonUtils.curry)(function curried_ap(fn, monad) {
+    return monad.ap(fn);
+  });
+});
+define('frampton-monad/chain', ['exports', 'module', 'frampton-utils'], function (exports, module, _framptonUtils) {
+  'use strict';
+
+  //+ chain(>>=) :: Monad a -> Monad b -> Monad b
+  module.exports = (0, _framptonUtils.curry)(function curried_ap(monad1, monad2) {
+    return monad1.chain(monad2);
+  });
+});
+define('frampton-monad/filter', ['exports', 'module', 'frampton-utils'], function (exports, module, _framptonUtils) {
+  'use strict';
+
+  //+ filter :: (a -> b) -> Monad a -> Monad b
+  module.exports = (0, _framptonUtils.curry)(function curried_filter(predicate, monad) {
+    return monad.filter(predicate);
+  });
+});
+define('frampton-monad/map', ['exports', 'module', 'frampton-utils'], function (exports, module, _framptonUtils) {
+  'use strict';
+
+  //+ map :: (a -> b) -> Monad a -> Monad b
+  module.exports = (0, _framptonUtils.curry)(function curried_map(mapping, monad) {
+    return monad.map(mapping);
+  });
+});
+define('frampton-mouse', ['exports', 'frampton-mouse/mouse'], function (exports, _framptonMouseMouse) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Mouse = _interopRequire(_framptonMouseMouse);
+
+  exports.Mouse = _Mouse;
+});
+define('frampton-mouse/mouse', ['exports', 'module', 'frampton-signals/stepper', 'frampton-events/listen', 'frampton-events/contains', 'frampton-events/get_position', 'frampton-events/get_position_relative'], function (exports, module, _framptonSignalsStepper, _framptonEventsListen, _framptonEventsContains, _framptonEventsGet_position, _framptonEventsGet_position_relative) {
   'use strict';
 
   module.exports = Mouse;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _stepper = _interopRequire(_framptonSignalsStepper);
+
+  var _listen = _interopRequire(_framptonEventsListen);
 
   var _contains = _interopRequire(_framptonEventsContains);
 
@@ -1684,17 +2047,17 @@ define('frampton-mouse', ['exports', 'module', 'frampton-signals', 'frampton-eve
 
   var _getPositionRelative = _interopRequire(_framptonEventsGet_position_relative);
 
-  var clickStream = (0, _framptonSignals.listen)('click', document);
-  var downStream = (0, _framptonSignals.listen)('mousedown', document);
-  var upStream = (0, _framptonSignals.listen)('mouseup', document);
-  var moveStream = (0, _framptonSignals.listen)('mousemove', document);
-  var isDown = (0, _framptonSignals.stepper)(false, downStream.map(true).merge(upStream.map(false)));
+  var clickStream = (0, _listen)('click', document);
+  var downStream = (0, _listen)('mousedown', document);
+  var upStream = (0, _listen)('mouseup', document);
+  var moveStream = (0, _listen)('mousemove', document);
+  var isDown = (0, _stepper)(false, downStream.map(true).merge(upStream.map(false)));
 
   var defaultMouse = {
     clicks: clickStream,
     downs: downStream,
     ups: upStream,
-    position: (0, _framptonSignals.stepper)([0, 0], moveStream.map(_getPosition)),
+    position: (0, _stepper)([0, 0], moveStream.map(_getPosition)),
     isDown: isDown
   };
 
@@ -1706,7 +2069,7 @@ define('frampton-mouse', ['exports', 'module', 'frampton-signals', 'frampton-eve
         clicks: clickStream.filter((0, _contains)(element)),
         downs: downStream.filter((0, _contains)(element)),
         ups: upStream.filter((0, _contains)(element)),
-        position: (0, _framptonSignals.stepper)([0, 0], moveStream.filter((0, _contains)(element)).map((0, _getPositionRelative)(element))),
+        position: (0, _stepper)([0, 0], moveStream.filter((0, _contains)(element)).map((0, _getPositionRelative)(element))),
         isDown: isDown
       };
     }
@@ -1797,7 +2160,7 @@ define('frampton-object/reduce', ['exports', 'module', 'frampton-utils', 'frampt
     return acc;
   });
 });
-define('frampton-signals', ['exports', 'frampton-signals/dispatcher', 'frampton-signals/event_stream', 'frampton-signals/behavior', 'frampton-signals/empty', 'frampton-signals/interval', 'frampton-signals/sequential', 'frampton-signals/listen', 'frampton-signals/null', 'frampton-signals/send', 'frampton-signals/stepper', 'frampton-signals/accum_b', 'frampton-signals/event'], function (exports, _framptonSignalsDispatcher, _framptonSignalsEvent_stream, _framptonSignalsBehavior, _framptonSignalsEmpty, _framptonSignalsInterval, _framptonSignalsSequential, _framptonSignalsListen, _framptonSignalsNull, _framptonSignalsSend, _framptonSignalsStepper, _framptonSignalsAccum_b, _framptonSignalsEvent) {
+define('frampton-signals', ['exports', 'frampton-signals/dispatcher', 'frampton-signals/event_stream', 'frampton-signals/behavior', 'frampton-signals/empty', 'frampton-signals/interval', 'frampton-signals/sequential', 'frampton-signals/null', 'frampton-signals/send', 'frampton-signals/stepper', 'frampton-signals/accum_b', 'frampton-signals/event'], function (exports, _framptonSignalsDispatcher, _framptonSignalsEvent_stream, _framptonSignalsBehavior, _framptonSignalsEmpty, _framptonSignalsInterval, _framptonSignalsSequential, _framptonSignalsNull, _framptonSignalsSend, _framptonSignalsStepper, _framptonSignalsAccum_b, _framptonSignalsEvent) {
   'use strict';
 
   exports.__esModule = true;
@@ -1815,8 +2178,6 @@ define('frampton-signals', ['exports', 'frampton-signals/dispatcher', 'frampton-
   var _interval = _interopRequire(_framptonSignalsInterval);
 
   var _sequential = _interopRequire(_framptonSignalsSequential);
-
-  var _listen = _interopRequire(_framptonSignalsListen);
 
   var _nullStream = _interopRequire(_framptonSignalsNull);
 
@@ -1836,7 +2197,6 @@ define('frampton-signals', ['exports', 'frampton-signals/dispatcher', 'frampton-
   exports.empty = _empty;
   exports.interval = _interval;
   exports.sequential = _sequential;
-  exports.listen = _listen;
   exports.nullStream = _nullStream;
   exports.send = _send;
   exports.merge = _framptonSignalsEvent_stream.merge;
@@ -1896,7 +2256,7 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils', 'fra
   Behavior.prototype.of = Behavior.of;
 
   Behavior.prototype.update = function Behavior_update(val) {
-    if (val !== this.value) {
+    if (!(0, _framptonUtils.equal)(val, this.value)) {
       this.value = val;
       updateListeners(this);
     }
@@ -1924,19 +2284,6 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils', 'fra
   };
 
   module.exports = Behavior;
-});
-define('frampton-signals/cached', ['exports', 'module', 'frampton-signals/event_stream', 'frampton-cache'], function (exports, module, _framptonSignalsEvent_stream, _framptonCache) {
-  'use strict';
-
-  module.exports = cached;
-
-  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-
-  var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
-
-  var _Cache = _interopRequire(_framptonCache);
-
-  function cached(stream) {}
 });
 define('frampton-signals/dispatcher', ['exports', 'frampton-utils', 'frampton-list'], function (exports, _framptonUtils, _framptonList) {
   'use strict';
@@ -2491,7 +2838,6 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
 
   // fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
   EventStream.prototype.fold = function (fn, acc) {
-    console.log('acc 1: ', acc);
     return withTransform(this, function (event) {
       acc = (0, _framptonUtils.isUndefined)(acc) ? event.get() : fn(acc, event.get());
       return (0, _framptonSignalsEvent.nextEvent)(acc);
@@ -2587,12 +2933,12 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     return new EventStream(function (sink) {
 
       breakers.push(source.subscribe(function (event) {
+
         if (event.isNext()) {
+
           saved = event.get();
 
-          if (timerId) {
-            clearTimeout(timerId);
-          }
+          if (timerId) clearTimeout(timerId);
 
           timerId = setTimeout(function () {
             sink((0, _framptonSignalsEvent.nextEvent)(saved));
@@ -2783,22 +3129,6 @@ define('frampton-signals/interval', ['exports', 'module', 'frampton-signals/even
     });
   }
 });
-define('frampton-signals/listen', ['exports', 'module', 'frampton-utils', 'frampton-signals/event_stream', 'frampton-signals/event', 'frampton-events'], function (exports, module, _framptonUtils, _framptonSignalsEvent_stream, _framptonSignalsEvent, _framptonEvents) {
-  'use strict';
-
-  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-
-  var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
-
-  // listen :: String -> Dom -> EventStream Event
-  module.exports = (0, _framptonUtils.curry)(function listen(eventName, target) {
-    return new _EventStream(function (sink) {
-      return (0, _framptonEvents.addListener)(eventName, function (evt) {
-        return sink((0, _framptonSignalsEvent.nextEvent)(evt));
-      }, target);
-    });
-  });
-});
 define('frampton-signals/null', ['exports', 'module', 'frampton-signals/event_stream'], function (exports, module, _framptonSignalsEvent_stream) {
   'use strict';
 
@@ -2890,7 +3220,116 @@ define('frampton-signals/stepper', ['exports', 'module', 'frampton-utils', 'fram
     });
   });
 });
-define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/extend', 'frampton-utils/guid', 'frampton-utils/inherits', 'frampton-utils/identity', 'frampton-utils/is_array', 'frampton-utils/is_defined', 'frampton-utils/is_equal', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-utils/is_null', 'frampton-utils/is_object', 'frampton-utils/is_string', 'frampton-utils/is_undefined', 'frampton-utils/is_boolean', 'frampton-utils/is_function', 'frampton-utils/is_promise', 'frampton-utils/noop', 'frampton-utils/assert', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/apply', 'frampton-utils/get', 'frampton-utils/of_value'], function (exports, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsExtend, _framptonUtilsGuid, _framptonUtilsInherits, _framptonUtilsIdentity, _framptonUtilsIs_array, _framptonUtilsIs_defined, _framptonUtilsIs_equal, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonUtilsIs_null, _framptonUtilsIs_object, _framptonUtilsIs_string, _framptonUtilsIs_undefined, _framptonUtilsIs_boolean, _framptonUtilsIs_function, _framptonUtilsIs_promise, _framptonUtilsNoop, _framptonUtilsAssert, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsApply, _framptonUtilsGet, _framptonUtilsOf_value) {
+define('frampton-string', ['exports', 'frampton-string/join', 'frampton-string/split', 'frampton-string/lines', 'frampton-string/words', 'frampton-string/starts_with', 'frampton-string/ends_with', 'frampton-string/contains'], function (exports, _framptonStringJoin, _framptonStringSplit, _framptonStringLines, _framptonStringWords, _framptonStringStarts_with, _framptonStringEnds_with, _framptonStringContains) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _join = _interopRequire(_framptonStringJoin);
+
+  var _split = _interopRequire(_framptonStringSplit);
+
+  var _lines = _interopRequire(_framptonStringLines);
+
+  var _words = _interopRequire(_framptonStringWords);
+
+  var _startsWith = _interopRequire(_framptonStringStarts_with);
+
+  var _endsWith = _interopRequire(_framptonStringEnds_with);
+
+  var _contains = _interopRequire(_framptonStringContains);
+
+  exports.join = _join;
+  exports.split = _split;
+  exports.lines = _lines;
+  exports.words = _words;
+  exports.endsWith = _endsWith;
+  exports.startsWith = _startsWith;
+  exports.contains = _contains;
+});
+define('frampton-string/contains', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  // contains :: String -> String -> Boolean
+  module.exports = (0, _curry)(function contains(sub, str) {
+    return str.indexOf(sub) > -1;
+  });
+});
+define('frampton-string/ends_with', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  // ends_with :: String -> String -> Boolean
+  module.exports = (0, _curry)(function ends_with(sub, str) {
+    return str.length >= sub.length && str.lastIndexOf(sub) === str.length - sub.length;
+  });
+});
+define('frampton-string/join', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  // join :: String -> Array String -> String
+  module.exports = (0, _curry)(function join(sep, strs) {
+    return strs.join(sep);
+  });
+});
+define("frampton-string/lines", ["exports", "module"], function (exports, module) {
+  // lines :: String -> Array String
+  "use strict";
+
+  module.exports = lines;
+
+  function lines(str) {
+    return str.split(/\r\n|\r|\n/g);
+  }
+});
+define('frampton-string/split', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  // split :: String -> String -> Array String
+  module.exports = (0, _curry)(function join(sep, str) {
+    return str.split(sep);
+  });
+});
+define('frampton-string/starts_with', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  // starts_with :: String -> String -> Boolean
+  module.exports = (0, _curry)(function starts_with(sub, str) {
+    return str.indexOf(sub) === 0;
+  });
+});
+define("frampton-string/words", ["exports", "module"], function (exports, module) {
+  // words :: String -> Array String
+  "use strict";
+
+  module.exports = words;
+
+  function words(str) {
+    return str.trim().split(/\s+/g);
+  }
+});
+define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/extend', 'frampton-utils/guid', 'frampton-utils/inherits', 'frampton-utils/identity', 'frampton-utils/is_array', 'frampton-utils/is_defined', 'frampton-utils/is_equal', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-utils/is_null', 'frampton-utils/is_object', 'frampton-utils/is_string', 'frampton-utils/is_undefined', 'frampton-utils/is_boolean', 'frampton-utils/is_function', 'frampton-utils/is_promise', 'frampton-utils/noop', 'frampton-utils/assert', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/apply', 'frampton-utils/get', 'frampton-utils/of_value', 'frampton-utils/equal', 'frampton-utils/safe_get'], function (exports, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsExtend, _framptonUtilsGuid, _framptonUtilsInherits, _framptonUtilsIdentity, _framptonUtilsIs_array, _framptonUtilsIs_defined, _framptonUtilsIs_equal, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonUtilsIs_null, _framptonUtilsIs_object, _framptonUtilsIs_string, _framptonUtilsIs_undefined, _framptonUtilsIs_boolean, _framptonUtilsIs_function, _framptonUtilsIs_promise, _framptonUtilsNoop, _framptonUtilsAssert, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsApply, _framptonUtilsGet, _framptonUtilsOf_value, _framptonUtilsEqual, _framptonUtilsSafe_get) {
   'use strict';
 
   exports.__esModule = true;
@@ -2947,6 +3386,10 @@ define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/c
 
   var _ofValue = _interopRequire(_framptonUtilsOf_value);
 
+  var _equal = _interopRequire(_framptonUtilsEqual);
+
+  var _safeGet = _interopRequire(_framptonUtilsSafe_get);
+
   exports.compose = _compose;
   exports.curry = _curry;
   exports.extend = _extend;
@@ -2972,6 +3415,8 @@ define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/c
   exports.apply = _apply;
   exports.get = _get;
   exports.ofValue = _ofValue;
+  exports.equal = _equal;
+  exports.safeGet = _safeGet;
 });
 define("frampton-utils/apply", ["exports", "module"], function (exports, module) {
   /**
@@ -3097,6 +3542,33 @@ define('frampton-utils/curry', ['exports', 'module', 'frampton-utils/assert', 'f
     return args.length >= arity ? curried() : curried;
   }
 });
+define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsIs_object, _framptonUtilsIs_array) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isObject = _interopRequire(_framptonUtilsIs_object);
+
+  var _isArray = _interopRequire(_framptonUtilsIs_array);
+
+  module.exports = function (obj1, obj2) {
+
+    if (((0, _isObject)(obj1) || (0, _isArray)(obj1)) && ((0, _isObject)(obj1) || (0, _isArray)(obj1))) {
+
+      var key = null;
+
+      for (key in obj1) {
+        if (obj2[key] !== obj1[key]) {
+          return false;
+        }
+      }
+
+      return true;
+    } else {
+      return obj1 === obj2;
+    }
+  };
+});
 define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
   'use strict';
 
@@ -3128,7 +3600,7 @@ define('frampton-utils/get', ['exports', 'module', 'frampton-utils/curry'], func
   var _curry = _interopRequire(_framptonUtilsCurry);
 
   //+ get :: String -> Object -> Any
-  module.exports = (0, _curry)(function (prop, obj) {
+  module.exports = (0, _curry)(function get(prop, obj) {
     return obj[prop] || null;
   });
 });
@@ -3386,19 +3858,54 @@ define("frampton-utils/of_value", ["exports", "module"], function (exports, modu
     };
   }
 });
-define('frampton-window', ['exports', 'module', 'frampton-signals', 'frampton-utils/is_something'], function (exports, module, _framptonSignals, _framptonUtilsIs_something) {
+define('frampton-utils/safe_get', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/get', 'frampton-data/maybe'], function (exports, module, _framptonUtilsCurry, _framptonUtilsGet, _framptonDataMaybe) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _get = _interopRequire(_framptonUtilsGet);
+
+  //+ safeGet :: String -> Object -> Maybe Any
+  module.exports = (0, _curry)(function safe_get(prop, obj) {
+    return _framptonDataMaybe.Maybe.of((0, _get)(prop, obj));
+  });
+});
+define('frampton-window', ['exports', 'frampton-window/window'], function (exports, _framptonWindowWindow) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Window = _interopRequire(_framptonWindowWindow);
+
+  exports.Window = _Window;
+});
+define('frampton-window/window', ['exports', 'module', 'frampton-signals/empty', 'frampton-signals/stepper', 'frampton-signals/event', 'frampton-events/listen', 'frampton-utils/get', 'frampton-utils/is_something'], function (exports, module, _framptonSignalsEmpty, _framptonSignalsStepper, _framptonSignalsEvent, _framptonEventsListen, _framptonUtilsGet, _framptonUtilsIs_something) {
   'use strict';
 
   module.exports = Window;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _empty = _interopRequire(_framptonSignalsEmpty);
+
+  var _stepper = _interopRequire(_framptonSignalsStepper);
+
+  var _listen = _interopRequire(_framptonEventsListen);
+
+  var _get = _interopRequire(_framptonUtilsGet);
+
   var _isSomething = _interopRequire(_framptonUtilsIs_something);
 
   var element = null;
-  var resize = (0, _framptonSignals.listen)('resize', window);
-  var dimensionsStream = (0, _framptonSignals.empty)();
-  var dimensions = (0, _framptonSignals.stepper)([getWidth(), getHeight()], dimensionsStream);
+  var resize = (0, _listen)('resize', window);
+  var dimensionsStream = (0, _empty)();
+  var dimensions = (0, _stepper)([getWidth(), getHeight()], dimensionsStream);
+  var width = (0, _stepper)(getWidth(), dimensionsStream.map((0, _get)(0)));
+  var height = (0, _stepper)(getHeight(), dimensionsStream.map((0, _get)(1)));
 
   function getWidth() {
     return (0, _isSomething)(element) ? element.clientWidth : window.innerWidth;
@@ -3412,7 +3919,7 @@ define('frampton-window', ['exports', 'module', 'frampton-signals', 'frampton-ut
     var w = getWidth();
     var h = getHeight();
     if (w !== dimensions[0] || h !== dimensions[1]) {
-      dimensionsStream.push((0, _framptonSignals.nextEvent)([w, h]));
+      dimensionsStream.push((0, _framptonSignalsEvent.nextEvent)([w, h]));
     }
   }
 
@@ -3426,7 +3933,9 @@ define('frampton-window', ['exports', 'module', 'frampton-signals', 'frampton-ut
   function Window(element) {
     element = element;
     return {
-      dimensions: dimensions
+      dimensions: dimensions,
+      width: width,
+      height: height
     };
   }
 });

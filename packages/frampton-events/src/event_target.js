@@ -1,3 +1,3 @@
-export default function(evt) {
+export default function event_target(evt) {
   return evt.target;
 }
