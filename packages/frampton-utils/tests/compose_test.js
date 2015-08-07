@@ -1,4 +1,4 @@
-import { compose } from 'frampton-utils';
+import compose from 'frampton-utils/compose';
 
 QUnit.module('Frampton.Utils.compose');
 

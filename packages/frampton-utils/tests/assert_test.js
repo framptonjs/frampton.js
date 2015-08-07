@@ -1,4 +1,4 @@
-import { assert } from 'frampton-utils';
+import assert from 'frampton-utils/assert';
 
 QUnit.module('Frampton.Utils.assert');
 

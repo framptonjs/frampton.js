@@ -251,12 +251,22 @@ define("frampton-events/contains.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-events/document_cache.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-events/event_dispatcher.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
 });
 define("frampton-events/event_map.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-events/event_supported.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
@@ -1389,6 +1399,11 @@ define("frampton-utils/identity.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-utils/immediate.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-utils/inherits.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -1464,6 +1479,11 @@ define("frampton-utils/log.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-utils/memoize.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-utils/noop.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -1484,34 +1504,38 @@ define("frampton-utils/safe_get.jshint", ["exports"], function (exports) {
 
   undefined;
 });
-define('frampton-utils/tests/assert_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-utils/tests/assert_test', ['exports', 'frampton-utils/assert'], function (exports, _framptonUtilsAssert) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _assert = _interopRequire(_framptonUtilsAssert);
 
   QUnit.module('Frampton.Utils.assert');
 
   QUnit.test('should throw for falsy value', function () {
     throws(function () {
-      (0, _framptonUtils.assert)('falsy value', 0);
+      (0, _assert)('falsy value', 0);
     }, 'throws for falsy');
   });
 
   QUnit.test('should not throw for truthy value', function () {
-    ok(typeof (0, _framptonUtils.assert)('truthy value', 'true') === 'undefined', 'passes on truthy');
+    ok(typeof (0, _assert)('truthy value', 'true') === 'undefined', 'passes on truthy');
   });
 
   QUnit.test('should throw for false', function () {
     throws(function () {
-      (0, _framptonUtils.assert)('false', false);
+      (0, _assert)('false', false);
     }, 'throws for false');
   });
 
   QUnit.test('should not throw for true', function () {
-    ok(typeof (0, _framptonUtils.assert)('true', true) === 'undefined', 'passes on true');
+    ok(typeof (0, _assert)('true', true) === 'undefined', 'passes on true');
   });
 
   QUnit.test('thrown message should be correct', function () {
     throws(function () {
-      (0, _framptonUtils.assert)('custom message', false);
+      (0, _assert)('custom message', false);
     }, function (err) {
       return err.message === 'custom message';
     }, 'returns correct error message');
@@ -1522,8 +1546,12 @@ define("frampton-utils/tests/assert_test.jshint", ["exports"], function (exports
 
   undefined;
 });
-define('frampton-utils/tests/compose_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-utils/tests/compose_test', ['exports', 'frampton-utils/compose'], function (exports, _framptonUtilsCompose) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _compose = _interopRequire(_framptonUtilsCompose);
 
   QUnit.module('Frampton.Utils.compose');
 
@@ -1534,7 +1562,7 @@ define('frampton-utils/tests/compose_test', ['exports', 'frampton-utils'], funct
     var b = function b(x) {
       return x + 'b';
     };
-    equal((0, _framptonUtils.compose)(a, b)('c'), 'cba', 'correctly composes functions');
+    equal((0, _compose)(a, b)('c'), 'cba', 'correctly composes functions');
   });
 
   QUnit.test('does not compose functions left to right', function () {
@@ -1544,7 +1572,7 @@ define('frampton-utils/tests/compose_test', ['exports', 'frampton-utils'], funct
     var b = function b(x) {
       return x + 'b';
     };
-    notEqual((0, _framptonUtils.compose)(a, b)('c'), 'abc', 'correctly composes functions');
+    notEqual((0, _compose)(a, b)('c'), 'abc', 'correctly composes functions');
   });
 });
 define("frampton-utils/tests/compose_test.jshint", ["exports"], function (exports) {
@@ -1552,33 +1580,37 @@ define("frampton-utils/tests/compose_test.jshint", ["exports"], function (export
 
   undefined;
 });
-define('frampton-utils/tests/equal_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-utils/tests/equal_test', ['exports', 'frampton-utils/equal'], function (exports, _framptonUtilsEqual) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _equal = _interopRequire(_framptonUtilsEqual);
 
   QUnit.module('Frampton.Utils.equal');
 
   QUnit.test('should return true for objects with same key/values', function () {
     var a = { a: 1, b: 2 };
     var b = { a: 1, b: 2 };
-    ok((0, _framptonUtils.equal)(a, b), 'correctly compares objects');
+    ok((0, _equal)(a, b), 'correctly compares objects');
   });
 
   QUnit.test('should return false for objects with different key/values', function () {
     var a = { a: 1, b: 2 };
     var b = { a: 2, b: 1 };
-    notOk((0, _framptonUtils.equal)(a, b), 'correctly compares objects');
+    notOk((0, _equal)(a, b), 'correctly compares objects');
   });
 
   QUnit.test('should return true for the same primitive value', function () {
     var a = 1;
     var b = 1;
-    ok((0, _framptonUtils.equal)(a, b), 'correctly compares values');
+    ok((0, _equal)(a, b), 'correctly compares values');
   });
 
   QUnit.test('should return false for different primitive values', function () {
     var a = 1;
     var b = 2;
-    notOk((0, _framptonUtils.equal)(a, b), 'correctly compares values');
+    notOk((0, _equal)(a, b), 'correctly compares values');
   });
 });
 define("frampton-utils/tests/equal_test.jshint", ["exports"], function (exports) {
@@ -1586,19 +1618,23 @@ define("frampton-utils/tests/equal_test.jshint", ["exports"], function (exports)
 
   undefined;
 });
-define('frampton-utils/tests/get_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-utils/tests/get_test', ['exports', 'frampton-utils/get'], function (exports, _framptonUtilsGet) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _get = _interopRequire(_framptonUtilsGet);
 
   QUnit.module('Frampton.Utils.get');
 
   QUnit.test('should retrieve value by key', function () {
     var temp = { id: 1 };
-    equal((0, _framptonUtils.get)('id', temp), 1, 'correctly returns value');
+    equal((0, _get)('id', temp), 1, 'correctly returns value');
   });
 
   QUnit.test('should return null for invalid key', function () {
     var temp = { id: 1 };
-    equal((0, _framptonUtils.get)('wrong', temp), null, 'correctly returns null');
+    equal((0, _get)('wrong', temp), null, 'correctly returns null');
   });
 });
 define("frampton-utils/tests/get_test.jshint", ["exports"], function (exports) {
@@ -1606,29 +1642,57 @@ define("frampton-utils/tests/get_test.jshint", ["exports"], function (exports) {
 
   undefined;
 });
-define('frampton-utils/tests/safe_get_test', ['exports', 'frampton-utils'], function (exports, _framptonUtils) {
+define('frampton-utils/tests/memoize_test', ['exports', 'frampton-utils/memoize'], function (exports, _framptonUtilsMemoize) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _memoize = _interopRequire(_framptonUtilsMemoize);
+
+  QUnit.module('Frampton.Utils.memoize');
+
+  QUnit.test('should wrap a function so it always returns same value for same argument', function () {
+    var count = 1;
+    var temp = (0, _memoize)(function (key) {
+      return count++;
+    });
+    temp('foo');
+    equal(temp('foo'), 1, 'correctly returns value');
+    equal(temp('bar'), 2, 'correctly returns value');
+  });
+});
+define("frampton-utils/tests/memoize_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-utils/tests/safe_get_test', ['exports', 'frampton-utils/safe_get'], function (exports, _framptonUtilsSafe_get) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _safeGet = _interopRequire(_framptonUtilsSafe_get);
 
   QUnit.module('Frampton.Utils.safeGet');
 
   QUnit.test('should return Just for existing key', function () {
     var temp = { id: 1 };
-    ok((0, _framptonUtils.safeGet)('id', temp).isJust(), 'correctly returns Just');
+    ok((0, _safeGet)('id', temp).isJust(), 'correctly returns Just');
   });
 
   QUnit.test('should return Nothing for invalid key', function () {
     var temp = { id: 1 };
-    ok((0, _framptonUtils.safeGet)('wrong', temp).isNothing(), 'correctly returns Nothing');
+    ok((0, _safeGet)('wrong', temp).isNothing(), 'correctly returns Nothing');
   });
 
   QUnit.test('should return Just for existing key', function () {
     var temp = { id: 1 };
-    equal((0, _framptonUtils.safeGet)('id', temp).toString(), 'Just(1)', 'correctly returns Just');
+    equal((0, _safeGet)('id', temp).toString(), 'Just(1)', 'correctly returns Just');
   });
 
   QUnit.test('should return Nothing for invalid key', function () {
     var temp = { id: 1 };
-    equal((0, _framptonUtils.safeGet)('wrong', temp).toString(), 'Nothing', 'correctly returns Nothing');
+    equal((0, _safeGet)('wrong', temp).toString(), 'Nothing', 'correctly returns Nothing');
   });
 });
 define("frampton-utils/tests/safe_get_test.jshint", ["exports"], function (exports) {

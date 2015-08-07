@@ -1,4 +1,4 @@
-import { safeGet } from 'frampton-utils';
+import safeGet from 'frampton-utils/safe_get';
 
 QUnit.module('Frampton.Utils.safeGet');
 

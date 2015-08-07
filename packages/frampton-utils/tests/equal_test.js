@@ -1,4 +1,4 @@
-import { equal } from 'frampton-utils';
+import equal from 'frampton-utils/equal';
 
 QUnit.module('Frampton.Utils.equal');
 

@@ -1,4 +1,4 @@
-import { get } from 'frampton-utils';
+import get from 'frampton-utils/get';
 
 QUnit.module('Frampton.Utils.get');
 

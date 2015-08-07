@@ -819,6 +819,11 @@ define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry',
     return (0, _isSomething)(target) && (0, _isSomething)(element) && (element === target || element.contains(target));
   });
 });
+define("frampton-events/document_cache", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = {};
+});
 define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function', 'frampton-utils/is_defined', 'frampton-utils/lazy', 'frampton-events/event_map'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_function, _framptonUtilsIs_defined, _framptonUtilsLazy, _framptonEventsEvent_map) {
   'use strict';
 
@@ -887,42 +892,212 @@ define("frampton-events/event_map", ["exports", "module"], function (exports, mo
   "use strict";
 
   module.exports = {
-    focus: { bubbles: false, stream: null },
-    blur: { bubbles: false, stream: null },
-    focusin: { bubbles: true, stream: null },
-    focusout: { bubbles: true, stream: null },
-    input: { bubbles: true, stream: null },
-    change: { bubbles: true, stream: null },
-    click: { bubbles: true, stream: null },
-    mousedown: { bubbles: true, stream: null },
-    mouseup: { bubbles: true, stream: null },
-    mousemove: { bubbles: true, stream: null },
-    mouseenter: { bubbles: true, stream: null },
-    mouseleave: { bubbles: true, stream: null },
-    mouseover: { bubbles: true, stream: null },
-    mouseout: { bubbles: true, stream: null },
-    keyup: { bubbles: true, stream: null },
-    keydown: { bubbles: true, stream: null },
-    keypress: { bubbles: true, stream: null },
-    touchstart: { bubbles: true, stream: null },
-    touchend: { bubbles: true, stream: null },
-    touchcancel: { bubbles: true, stream: null },
-    touchleave: { bubbles: true, stream: null },
-    touchmove: { bubbles: true, stream: null },
-    submit: { bubbles: true, stream: null },
-    animationstart: { bubbles: true, stream: null },
-    animationend: { bubbles: true, stream: null },
-    animationiteration: { bubbles: true, stream: null },
-    transitionend: { bubbles: true, stream: null },
-    drag: { bubbles: true, stream: null },
-    drop: { bubbles: true, stream: null },
-    dragstart: { bubbles: true, stream: null },
-    dragend: { bubbles: true, stream: null },
-    dragenter: { bubbles: true, stream: null },
-    dragleave: { bubbles: true, stream: null },
-    dragover: { bubbles: true, stream: null },
-    wheel: { bubbles: true, stream: null }
+    focus: {
+      bubbles: false,
+      stream: null
+    },
+
+    blur: {
+      bubbles: false,
+      stream: null
+    },
+
+    focusin: {
+      bubbles: true,
+      stream: null
+    },
+
+    focusout: {
+      bubbles: true,
+      stream: null
+    },
+
+    input: {
+      bubbles: true,
+      stream: null
+    },
+
+    change: {
+      bubbles: true,
+      stream: null
+    },
+
+    click: {
+      bubbles: true,
+      stream: null
+    },
+
+    mousedown: {
+      bubbles: true,
+      stream: null
+    },
+
+    mouseup: {
+      bubbles: true,
+      stream: null
+    },
+
+    mousemove: {
+      bubbles: true,
+      stream: null
+    },
+
+    mouseenter: {
+      bubbles: true,
+      stream: null
+    },
+
+    mouseleave: {
+      bubbles: true,
+      stream: null
+    },
+
+    mouseover: {
+      bubbles: true,
+      stream: null
+    },
+
+    mouseout: {
+      bubbles: true,
+      stream: null
+    },
+
+    keyup: {
+      bubbles: true,
+      stream: null
+    },
+
+    keydown: {
+      bubbles: true,
+      stream: null
+    },
+
+    keypress: {
+      bubbles: true,
+      stream: null
+    },
+
+    touchstart: {
+      bubbles: true,
+      stream: null
+    },
+
+    touchend: {
+      bubbles: true,
+      stream: null
+    },
+
+    touchcancel: {
+      bubbles: true,
+      stream: null
+    },
+
+    touchleave: {
+      bubbles: true,
+      stream: null
+    },
+
+    touchmove: {
+      bubbles: true,
+      stream: null
+    },
+
+    submit: {
+      bubbles: true,
+      stream: null
+    },
+
+    animationstart: {
+      bubbles: true,
+      stream: null
+    },
+
+    animationend: {
+      bubbles: true,
+      stream: null
+    },
+
+    animationiteration: {
+      bubbles: true,
+      stream: null
+    },
+
+    transitionend: {
+      bubbles: true,
+      stream: null
+    },
+
+    drag: {
+      bubbles: true,
+      stream: null
+    },
+
+    drop: {
+      bubbles: true,
+      stream: null
+    },
+
+    dragstart: {
+      bubbles: true,
+      stream: null
+    },
+
+    dragend: {
+      bubbles: true,
+      stream: null
+    },
+
+    dragenter: {
+      bubbles: true,
+      stream: null
+    },
+
+    dragleave: {
+      bubbles: true,
+      stream: null
+    },
+
+    dragover: {
+      bubbles: true,
+      stream: null
+    },
+
+    wheel: {
+      bubbles: true,
+      stream: null
+    }
   };
+});
+define('frampton-events/event_supported', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/memoize'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsMemoize) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isFunction = _interopRequire(_framptonUtilsIs_function);
+
+  var _memoize = _interopRequire(_framptonUtilsMemoize);
+
+  var TAGNAMES = {
+    select: 'input',
+    change: 'input',
+    submit: 'form',
+    reset: 'form',
+    error: 'img',
+    load: 'img',
+    abort: 'img'
+  };
+
+  module.exports = (0, _memoize)(function event_supported(eventName) {
+    var el = document.createElement(TAGNAMES[eventName] || 'div');
+    eventName = 'on' + eventName;
+    var isSupported = (eventName in el);
+    if (!isSupported) {
+      el.setAttribute(eventName, 'return;');
+      isSupported = (0, _isFunction)(el[eventName]);
+    }
+    el = null;
+    return isSupported;
+  });
 });
 define("frampton-events/event_target", ["exports", "module"], function (exports, module) {
   "use strict";
@@ -3451,24 +3626,34 @@ define('frampton-style/remove_styles', ['exports', 'module', 'frampton-utils/cur
     }
   });
 });
-define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/extend', 'frampton-utils/guid', 'frampton-utils/inherits', 'frampton-utils/identity', 'frampton-utils/is_array', 'frampton-utils/is_defined', 'frampton-utils/is_equal', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-utils/is_null', 'frampton-utils/is_object', 'frampton-utils/is_string', 'frampton-utils/is_undefined', 'frampton-utils/is_boolean', 'frampton-utils/is_function', 'frampton-utils/is_promise', 'frampton-utils/noop', 'frampton-utils/assert', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/apply', 'frampton-utils/get', 'frampton-utils/of_value', 'frampton-utils/equal', 'frampton-utils/safe_get'], function (exports, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsExtend, _framptonUtilsGuid, _framptonUtilsInherits, _framptonUtilsIdentity, _framptonUtilsIs_array, _framptonUtilsIs_defined, _framptonUtilsIs_equal, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonUtilsIs_null, _framptonUtilsIs_object, _framptonUtilsIs_string, _framptonUtilsIs_undefined, _framptonUtilsIs_boolean, _framptonUtilsIs_function, _framptonUtilsIs_promise, _framptonUtilsNoop, _framptonUtilsAssert, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsApply, _framptonUtilsGet, _framptonUtilsOf_value, _framptonUtilsEqual, _framptonUtilsSafe_get) {
+define('frampton-utils', ['exports', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/equal', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/guid', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/inherits', 'frampton-utils/is_array', 'frampton-utils/is_defined', 'frampton-utils/is_equal', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-utils/is_null', 'frampton-utils/is_object', 'frampton-utils/is_string', 'frampton-utils/is_undefined', 'frampton-utils/is_boolean', 'frampton-utils/is_function', 'frampton-utils/is_promise', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/of_value', 'frampton-utils/safe_get'], function (exports, _framptonUtilsApply, _framptonUtilsAssert, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsEqual, _framptonUtilsExtend, _framptonUtilsGet, _framptonUtilsGuid, _framptonUtilsIdentity, _framptonUtilsImmediate, _framptonUtilsInherits, _framptonUtilsIs_array, _framptonUtilsIs_defined, _framptonUtilsIs_equal, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonUtilsIs_null, _framptonUtilsIs_object, _framptonUtilsIs_string, _framptonUtilsIs_undefined, _framptonUtilsIs_boolean, _framptonUtilsIs_function, _framptonUtilsIs_promise, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsMemoize, _framptonUtilsNoop, _framptonUtilsOf_value, _framptonUtilsSafe_get) {
   'use strict';
 
   exports.__esModule = true;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _apply = _interopRequire(_framptonUtilsApply);
+
+  var _assert = _interopRequire(_framptonUtilsAssert);
+
   var _compose = _interopRequire(_framptonUtilsCompose);
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  var _equal = _interopRequire(_framptonUtilsEqual);
+
   var _extend = _interopRequire(_framptonUtilsExtend);
+
+  var _get = _interopRequire(_framptonUtilsGet);
 
   var _guid = _interopRequire(_framptonUtilsGuid);
 
-  var _inherits = _interopRequire(_framptonUtilsInherits);
-
   var _identity = _interopRequire(_framptonUtilsIdentity);
+
+  var _immediate = _interopRequire(_framptonUtilsImmediate);
+
+  var _inherits = _interopRequire(_framptonUtilsInherits);
 
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
@@ -3494,30 +3679,29 @@ define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/c
 
   var _isPromise = _interopRequire(_framptonUtilsIs_promise);
 
-  var _noop = _interopRequire(_framptonUtilsNoop);
-
-  var _assert = _interopRequire(_framptonUtilsAssert);
-
   var _log = _interopRequire(_framptonUtilsLog);
 
   var _lazy = _interopRequire(_framptonUtilsLazy);
 
-  var _apply = _interopRequire(_framptonUtilsApply);
+  var _memoize = _interopRequire(_framptonUtilsMemoize);
 
-  var _get = _interopRequire(_framptonUtilsGet);
+  var _noop = _interopRequire(_framptonUtilsNoop);
 
   var _ofValue = _interopRequire(_framptonUtilsOf_value);
 
-  var _equal = _interopRequire(_framptonUtilsEqual);
-
   var _safeGet = _interopRequire(_framptonUtilsSafe_get);
 
+  exports.apply = _apply;
+  exports.assert = _assert;
   exports.compose = _compose;
   exports.curry = _curry;
+  exports.equal = _equal;
   exports.extend = _extend;
+  exports.get = _get;
   exports.guid = _guid;
-  exports.inherits = _inherits;
   exports.identity = _identity;
+  exports.immediate = _immediate;
+  exports.inherits = _inherits;
   exports.isArray = _isArray;
   exports.isDefined = _isDefined;
   exports.isEqual = _isEqual;
@@ -3530,14 +3714,11 @@ define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/c
   exports.isBoolean = _isBoolean;
   exports.isFunction = _isFunction;
   exports.isPromise = _isPromise;
-  exports.noop = _noop;
-  exports.assert = _assert;
   exports.log = _log;
   exports.lazy = _lazy;
-  exports.apply = _apply;
-  exports.get = _get;
+  exports.memoize = _memoize;
+  exports.noop = _noop;
   exports.ofValue = _ofValue;
-  exports.equal = _equal;
   exports.safeGet = _safeGet;
 });
 define("frampton-utils/apply", ["exports", "module"], function (exports, module) {
@@ -3743,6 +3924,16 @@ define("frampton-utils/identity", ["exports", "module"], function (exports, modu
 
   function identity(x) {
     return x;
+  }
+});
+define("frampton-utils/immediate", ["exports", "module"], function (exports, module) {
+  // immediate :: Function -> ()
+  "use strict";
+
+  module.exports = immediate;
+
+  function immediate(fn, context) {
+    setTimeout(fn.bind(context || null), 0);
   }
 });
 define("frampton-utils/inherits", ["exports", "module"], function (exports, module) {
@@ -3953,6 +4144,30 @@ define('frampton-utils/log', ['exports', 'module', 'frampton'], function (export
     }
 
     return msg;
+  }
+});
+define("frampton-utils/memoize", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = memoize;
+
+  function memoize(fn, thisArg) {
+
+    var store = {};
+
+    return function () {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var key = JSON.stringify(args);
+
+      if (key in store) {
+        return store[key];
+      } else {
+        return store[key] = fn.apply(thisArg || null, args);
+      }
+    };
   }
 });
 define("frampton-utils/noop", ["exports", "module"], function (exports, module) {
