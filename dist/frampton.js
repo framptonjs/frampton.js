@@ -2250,7 +2250,7 @@ define('frampton-mouse/mouse', ['exports', 'module', 'frampton-signals/stepper',
     }
   }
 });
-define('frampton-object', ['exports', 'frampton-object/filter', 'frampton-object/reduce', 'frampton-object/map', 'frampton-object/for_each'], function (exports, _framptonObjectFilter, _framptonObjectReduce, _framptonObjectMap, _framptonObjectFor_each) {
+define('frampton-object', ['exports', 'frampton-object/filter', 'frampton-object/reduce', 'frampton-object/map', 'frampton-object/for_each', 'frampton-object/as_list'], function (exports, _framptonObjectFilter, _framptonObjectReduce, _framptonObjectMap, _framptonObjectFor_each, _framptonObjectAs_list) {
   'use strict';
 
   exports.__esModule = true;
@@ -2265,19 +2265,40 @@ define('frampton-object', ['exports', 'frampton-object/filter', 'frampton-object
 
   var _forEach = _interopRequire(_framptonObjectFor_each);
 
+  var _asList = _interopRequire(_framptonObjectAs_list);
+
   exports.filter = _filter;
   exports.map = _map;
   exports.reduce = _reduce;
   exports.forEach = _forEach;
+  exports.asList = _asList;
 });
-define('frampton-object/filter', ['exports', 'module', 'frampton-utils', 'frampton-object/for_each'], function (exports, module, _framptonUtils, _framptonObjectFor_each) {
+define('frampton-object/as_list', ['exports', 'module', 'frampton-object/reduce'], function (exports, module, _framptonObjectReduce) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _reduce = _interopRequire(_framptonObjectReduce);
+
+  // as_list :: Object -> Array [String, String]
+
+  module.exports = function (map) {
+    return (0, _reduce)(function (acc, nextValue, nextKey) {
+      acc.push([nextKey, nextValue]);
+      return acc;
+    }, [], map);
+  };
+});
+define('frampton-object/filter', ['exports', 'module', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, module, _framptonUtilsCurry, _framptonObjectFor_each) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
   var _forEach = _interopRequire(_framptonObjectFor_each);
 
-  module.exports = (0, _framptonUtils.curry)(function curried_filter(fn, obj) {
+  module.exports = (0, _curry)(function curried_filter(fn, obj) {
 
     var newObj = {};
 
@@ -2290,10 +2311,14 @@ define('frampton-object/filter', ['exports', 'module', 'frampton-utils', 'frampt
     return newObj;
   });
 });
-define('frampton-object/for_each', ['exports', 'module', 'frampton-utils'], function (exports, module, _framptonUtils) {
+define('frampton-object/for_each', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
 
-  module.exports = (0, _framptonUtils.curry)(function curried_for_each(fn, obj) {
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  module.exports = (0, _curry)(function curried_for_each(fn, obj) {
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
         fn(obj[key], key);
@@ -2301,14 +2326,16 @@ define('frampton-object/for_each', ['exports', 'module', 'frampton-utils'], func
     }
   });
 });
-define('frampton-object/map', ['exports', 'module', 'frampton-utils', 'frampton-object/for_each'], function (exports, module, _framptonUtils, _framptonObjectFor_each) {
+define('frampton-object/map', ['exports', 'module', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, module, _framptonUtilsCurry, _framptonObjectFor_each) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
   var _forEach = _interopRequire(_framptonObjectFor_each);
 
-  module.exports = (0, _framptonUtils.curry)(function curried_map(fn, obj) {
+  module.exports = (0, _curry)(function curried_map(fn, obj) {
 
     var newObj = {};
 
@@ -2319,14 +2346,16 @@ define('frampton-object/map', ['exports', 'module', 'frampton-utils', 'frampton-
     return newObj;
   });
 });
-define('frampton-object/reduce', ['exports', 'module', 'frampton-utils', 'frampton-object/for_each'], function (exports, module, _framptonUtils, _framptonObjectFor_each) {
+define('frampton-object/reduce', ['exports', 'module', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, module, _framptonUtilsCurry, _framptonObjectFor_each) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
   var _forEach = _interopRequire(_framptonObjectFor_each);
 
-  module.exports = (0, _framptonUtils.curry)(function curried_reduce(fn, acc, obj) {
+  module.exports = (0, _curry)(function curried_reduce(fn, acc, obj) {
 
     (0, _forEach)(function (value, key) {
       acc = fn(acc, value, key);

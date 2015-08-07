@@ -661,6 +661,11 @@ define("frampton-object.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-object/as_list.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-object/filter.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -681,8 +686,31 @@ define("frampton-object/reduce.jshint", ["exports"], function (exports) {
 
   undefined;
 });
-define('frampton-object/tests/filter_test', ['exports', 'frampton-object'], function (exports, _framptonObject) {
+define('frampton-object/tests/as_list_test', ['exports', 'frampton-object/as_list'], function (exports, _framptonObjectAs_list) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _asList = _interopRequire(_framptonObjectAs_list);
+
+  QUnit.module('Frampton.Object.reduce');
+
+  QUnit.test('returns a list of pairs for an object', function () {
+    var map = { one: 1, two: 2, three: 3 };
+    deepEqual((0, _asList)(map), [['one', 1], ['two', 2], ['three', 3]]);
+  });
+});
+define("frampton-object/tests/as_list_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-object/tests/filter_test', ['exports', 'frampton-object/filter'], function (exports, _framptonObjectFilter) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _filter = _interopRequire(_framptonObjectFilter);
 
   QUnit.module('Frampton.Object.filter');
 
@@ -693,7 +721,7 @@ define('frampton-object/tests/filter_test', ['exports', 'frampton-object'], func
       return val >= 2;
     };
 
-    deepEqual((0, _framptonObject.filter)(predicate, obj), { two: 2, three: 3 }, 'correctly filters object');
+    deepEqual((0, _filter)(predicate, obj), { two: 2, three: 3 }, 'correctly filters object');
   });
 });
 define("frampton-object/tests/filter_test.jshint", ["exports"], function (exports) {

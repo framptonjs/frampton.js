@@ -1,6 +1,4 @@
-import {
-  filter
-} from 'frampton-object';
+import filter from 'frampton-object/filter';
 
 QUnit.module('Frampton.Object.filter');
 
