@@ -8,6 +8,7 @@ module.exports = {
   'frampton-data' : { trees: null },
   'frampton-monad' : { trees: null },
   'frampton-events' : { trees: null },
+  'frampton-style' : { trees: null },
   'frampton-cache' : { trees: null },
   'frampton-signals' : { trees: null },
   'frampton-window' : { trees: null },

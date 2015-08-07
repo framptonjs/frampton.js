@@ -1041,7 +1041,7 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
       };
     });
 
-    stream.take(3).debounce(30).next(function (val) {
+    stream.take(3).debounce(25).next(function (val) {
       stream.close();
       equal(val, 2, 'debounce correctly regulated events');
       done();
@@ -1061,7 +1061,7 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
       };
     });
 
-    stream.throttle(30).next(function (val) {
+    stream.throttle(25).next(function (val) {
       stream.close();
       equal(val, 2, 'throttle correctly regulated events');
       done();
@@ -1242,6 +1242,99 @@ define("frampton-string/tests/starts_with_test.jshint", ["exports"], function (e
   undefined;
 });
 define("frampton-string/words.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-style.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-style/add_class.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-style/apply_styles.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-style/current_value.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-style/has_class.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-style/remove_class.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-style/remove_styles.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-style/tests/current_value_test', ['exports', 'frampton-style/current_value'], function (exports, _framptonStyleCurrent_value) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _current = _interopRequire(_framptonStyleCurrent_value);
+
+  QUnit.module('Frampton.Style.current');
+
+  QUnit.module('Frampton.Style.current', {
+    beforeEach: function beforeEach() {
+      this.div = document.createElement('div');
+      this.div.style.color = 'rgb(0, 0, 255)';
+      this.container = document.getElementById('qunit-fixture');
+      this.container.appendChild(this.div);
+    },
+    afterEach: function afterEach() {
+      this.container.removeChild(this.div);
+      this.div = null;
+      this.container = null;
+    }
+  });
+
+  QUnit.test('should correctly retrieve current value of style', function () {
+    equal((0, _current)(this.div, 'color'), 'rgb(0, 0, 255)', 'correctly gets value');
+  });
+});
+define("frampton-style/tests/current_value_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-style/tests/has_class_test', ['exports', 'frampton-style/has_class'], function (exports, _framptonStyleHas_class) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _hasClass = _interopRequire(_framptonStyleHas_class);
+
+  QUnit.module('Frampton.Style.hasClass');
+
+  QUnit.test('should return true if element has class', function () {
+    var div = document.createElement('div');
+    div.classList.add('blue');
+    ok((0, _hasClass)(div, 'blue'), 'correctly detects class');
+  });
+
+  QUnit.test('should return false if element has class', function () {
+    var div = document.createElement('div');
+    div.classList.add('blue');
+    notOk((0, _hasClass)(div, 'wrong'), 'correctly detects class');
+  });
+});
+define("frampton-style/tests/has_class_test.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;

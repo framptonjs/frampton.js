@@ -208,7 +208,7 @@ QUnit.test('debounce method should regulate frequency of events', function(asser
     };
   });
 
-  stream.take(3).debounce(30).next((val) => {
+  stream.take(3).debounce(25).next((val) => {
     stream.close();
     equal(val, 2, 'debounce correctly regulated events');
     done();
@@ -228,7 +228,7 @@ QUnit.test('throttle method should regulate frequency of events', function(asser
     };
   });
 
-  stream.throttle(30).next((val) => {
+  stream.throttle(25).next((val) => {
     stream.close();
     equal(val, 2, 'throttle correctly regulated events');
     done();

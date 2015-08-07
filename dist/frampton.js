@@ -3352,6 +3352,105 @@ define("frampton-string/words", ["exports", "module"], function (exports, module
     return str.trim().split(/\s+/g);
   }
 });
+define('frampton-style', ['exports', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/current_value', 'frampton-style/apply_styles', 'frampton-style/remove_styles'], function (exports, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleCurrent_value, _framptonStyleApply_styles, _framptonStyleRemove_styles) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _addClass = _interopRequire(_framptonStyleAdd_class);
+
+  var _removeClass = _interopRequire(_framptonStyleRemove_class);
+
+  var _hasClass = _interopRequire(_framptonStyleHas_class);
+
+  var _current = _interopRequire(_framptonStyleCurrent_value);
+
+  var _applyStyles = _interopRequire(_framptonStyleApply_styles);
+
+  var _removeStyles = _interopRequire(_framptonStyleRemove_styles);
+
+  exports.addClass = _addClass;
+  exports.removeClass = _removeClass;
+  exports.hasClass = _hasClass;
+  exports.current = _current;
+  exports.applyStyles = _applyStyles;
+  exports.removeStyles = _removeStyles;
+});
+define('frampton-style/add_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  module.exports = (0, _curry)(function add_class(element, name) {
+    element.classList.add(name);
+  });
+});
+define('frampton-style/apply_styles', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  module.exports = (0, _curry)(function apply_styles(element, props) {
+    for (var key in props) {
+      element.style.setProperty(key, props[key], '');
+    }
+  });
+});
+define('frampton-style/current_value', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var style = window.getComputedStyle;
+
+  // current :: DomNode -> String -> String
+  module.exports = (0, _curry)(function current(element, prop) {
+    return style(element).getPropertyValue(prop);
+  });
+});
+define('frampton-style/has_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  module.exports = (0, _curry)(function add_class(element, name) {
+    return element.classList.contains(name);
+  });
+});
+define('frampton-style/remove_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  module.exports = (0, _curry)(function remove_class(element, name) {
+    element.classList.remove(name);
+  });
+});
+define('frampton-style/remove_styles', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  module.exports = (0, _curry)(function remove_styles(element, props) {
+    for (var key in props) {
+      element.style.removeProperty(key);
+    }
+  });
+});
 define('frampton-utils', ['exports', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/extend', 'frampton-utils/guid', 'frampton-utils/inherits', 'frampton-utils/identity', 'frampton-utils/is_array', 'frampton-utils/is_defined', 'frampton-utils/is_equal', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-utils/is_null', 'frampton-utils/is_object', 'frampton-utils/is_string', 'frampton-utils/is_undefined', 'frampton-utils/is_boolean', 'frampton-utils/is_function', 'frampton-utils/is_promise', 'frampton-utils/noop', 'frampton-utils/assert', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/apply', 'frampton-utils/get', 'frampton-utils/of_value', 'frampton-utils/equal', 'frampton-utils/safe_get'], function (exports, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsExtend, _framptonUtilsGuid, _framptonUtilsInherits, _framptonUtilsIdentity, _framptonUtilsIs_array, _framptonUtilsIs_defined, _framptonUtilsIs_equal, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonUtilsIs_null, _framptonUtilsIs_object, _framptonUtilsIs_string, _framptonUtilsIs_undefined, _framptonUtilsIs_boolean, _framptonUtilsIs_function, _framptonUtilsIs_promise, _framptonUtilsNoop, _framptonUtilsAssert, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsApply, _framptonUtilsGet, _framptonUtilsOf_value, _framptonUtilsEqual, _framptonUtilsSafe_get) {
   'use strict';
 
