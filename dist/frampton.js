@@ -2219,23 +2219,37 @@ define('frampton-signals/accum_b', ['exports', 'module', 'frampton-utils', 'fram
     });
   });
 });
-define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils', 'frampton-list'], function (exports, module, _framptonUtils, _framptonList) {
+define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/guid', 'frampton-utils/noop', 'frampton-utils/is_defined', 'frampton-utils/equal', 'frampton-list/contains'], function (exports, module, _framptonUtilsAssert, _framptonUtilsGuid, _framptonUtilsNoop, _framptonUtilsIs_defined, _framptonUtilsEqual, _framptonListContains) {
   'use strict';
 
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _assert = _interopRequire(_framptonUtilsAssert);
+
+  var _guid = _interopRequire(_framptonUtilsGuid);
+
+  var _noop = _interopRequire(_framptonUtilsNoop);
+
+  var _isDefined = _interopRequire(_framptonUtilsIs_defined);
+
+  var _equal = _interopRequire(_framptonUtilsEqual);
+
+  var _contains = _interopRequire(_framptonListContains);
+
   function Behavior(initial, seed) {
-    (0, _framptonUtils.assert)('Behavior must have initial value', (0, _framptonUtils.isDefined)(initial));
+    (0, _assert)('Behavior must have initial value', (0, _isDefined)(initial));
     this.value = initial;
     this.listeners = [];
     this.cleanup = null;
-    this.seed = seed || _framptonUtils.noop;
-    this._id = (0, _framptonUtils.guid)();
+    this.seed = seed || _noop;
+    this._id = (0, _guid)();
   }
 
   function addListener(behavior, fn) {
-    if (!(0, _framptonList.contains)(behavior.listeners, fn)) {
+    if (!(0, _contains)(behavior.listeners, fn)) {
       if (behavior.listeners.length === 0) {
         var sink = behavior.update.bind(behavior);
-        behavior.cleanup = behavior.seed(sink) || _framptonUtils.noop;
+        behavior.cleanup = behavior.seed(sink) || _noop;
       }
       behavior.listeners.push(fn);
       fn(behavior.value);
@@ -2256,7 +2270,7 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils', 'fra
   Behavior.prototype.of = Behavior.of;
 
   Behavior.prototype.update = function Behavior_update(val) {
-    if (!(0, _framptonUtils.equal)(val, this.value)) {
+    if (!(0, _equal)(val, this.value)) {
       this.value = val;
       updateListeners(this);
     }
@@ -2284,6 +2298,20 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils', 'fra
   };
 
   module.exports = Behavior;
+});
+define('frampton-signals/constant', ['exports', 'module', 'frampton-signals/behavior'], function (exports, module, _framptonSignalsBehavior) {
+  'use strict';
+
+  // constant :: a -> Behavior a
+  module.exports = constant;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Behavior = _interopRequire(_framptonSignalsBehavior);
+
+  function constant(val) {
+    return _Behavior.of(val);
+  }
 });
 define('frampton-signals/dispatcher', ['exports', 'frampton-utils', 'frampton-list'], function (exports, _framptonUtils, _framptonList) {
   'use strict';
@@ -2927,7 +2955,6 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
 
     var source = this;
     var timerId = null;
-    var saved = null;
     var breakers = [];
 
     return new EventStream(function (sink) {
@@ -2936,13 +2963,10 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
 
         if (event.isNext()) {
 
-          saved = event.get();
-
           if (timerId) clearTimeout(timerId);
 
           timerId = setTimeout(function () {
-            sink((0, _framptonSignalsEvent.nextEvent)(saved));
-            saved = null;
+            sink((0, _framptonSignalsEvent.nextEvent)(event.get()));
             timerId = null;
           }, delay);
         } else {
@@ -2957,7 +2981,6 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
         }
         breakers.forEach(_framptonUtils.apply);
         breakers = null;
-        saved = null;
         source = null;
       };
     });

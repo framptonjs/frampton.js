@@ -706,6 +706,11 @@ define("frampton-signals/behavior.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-signals/constant.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-signals/dispatcher.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -751,13 +756,17 @@ define("frampton-signals/stepper.jshint", ["exports"], function (exports) {
 
   undefined;
 });
-define('frampton-signals/tests/behavior_test', ['exports', 'frampton-signals'], function (exports, _framptonSignals) {
+define('frampton-signals/tests/behavior_test', ['exports', 'frampton-signals/behavior'], function (exports, _framptonSignalsBehavior) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Behavior = _interopRequire(_framptonSignalsBehavior);
 
   QUnit.module('Frampton.Signals.Behavior');
 
   QUnit.test('of method should return Behavior with initial value', function () {
-    var behavior = _framptonSignals.Behavior.of(5);
+    var behavior = _Behavior.of(5);
     equal(behavior.value, 5, 'has initial value');
     behavior.changes(function (val) {
       equal(val, 5, 'persists initial value');
@@ -765,7 +774,7 @@ define('frampton-signals/tests/behavior_test', ['exports', 'frampton-signals'], 
   });
 
   QUnit.test('update method should notify listeners', function () {
-    var behavior = _framptonSignals.Behavior.of(5);
+    var behavior = _Behavior.of(5);
     var count = 0;
     behavior.changes(function (val) {
       if (count === 0) {
@@ -780,7 +789,7 @@ define('frampton-signals/tests/behavior_test', ['exports', 'frampton-signals'], 
 
   QUnit.test('destroy method should call cleanup', function (assert) {
     var done = assert.async();
-    var behavior = new _framptonSignals.Behavior(0, function seed(sink) {
+    var behavior = new _Behavior(0, function seed(sink) {
 
       var timerId = null;
       var frame = 0;
@@ -811,14 +820,24 @@ define("frampton-signals/tests/behavior_test.jshint", ["exports"], function (exp
 
   undefined;
 });
-define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals'], function (exports, _framptonSignals) {
+define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals/behavior', 'frampton-signals/event_stream', 'frampton-signals/event', 'frampton-signals/empty', 'frampton-signals/interval'], function (exports, _framptonSignalsBehavior, _framptonSignalsEvent_stream, _framptonSignalsEvent, _framptonSignalsEmpty, _framptonSignalsInterval) {
   'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Behavior = _interopRequire(_framptonSignalsBehavior);
+
+  var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
+
+  var _empty = _interopRequire(_framptonSignalsEmpty);
+
+  var _interval = _interopRequire(_framptonSignalsInterval);
 
   QUnit.module('Frampton.Signals.EventStream', {
     beforeEach: function beforeEach() {
-      this.stream = new _framptonSignals.EventStream(function (sink) {
+      this.stream = new _EventStream(function (sink) {
         setTimeout(function () {
-          sink((0, _framptonSignals.nextEvent)(10));
+          sink((0, _framptonSignalsEvent.nextEvent)(10));
         }, 100);
       });
     },
@@ -857,7 +876,7 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
 
   QUnit.test('take method should close after limit reached', function (assert) {
     var done = assert.async();
-    var stream = (0, _framptonSignals.interval)();
+    var stream = (0, _interval)();
     var stream2 = stream.take(5);
     var count = 0;
     stream2.next(function (val) {
@@ -871,8 +890,8 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
 
   QUnit.test('merge method creates a stream from parent streams', function (assert) {
     var done = assert.async();
-    var stream1 = (0, _framptonSignals.empty)();
-    var stream2 = (0, _framptonSignals.empty)();
+    var stream1 = (0, _empty)();
+    var stream2 = (0, _empty)();
     var merged = stream1.merge(stream2);
     var count = 0;
     merged.next(function (val) {
@@ -884,21 +903,21 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
       }
       count++;
     });
-    stream1.push((0, _framptonSignals.nextEvent)(1));
-    stream2.push((0, _framptonSignals.nextEvent)(2));
+    stream1.push((0, _framptonSignalsEvent.nextEvent)(1));
+    stream2.push((0, _framptonSignalsEvent.nextEvent)(2));
   });
 
   QUnit.test('removing all listeners should invoke cleanup', function (assert) {
     var done = assert.async();
     var breakers = [];
-    var stream = new _framptonSignals.EventStream(function (sink) {
+    var stream = new _EventStream(function (sink) {
 
       var frame = 0;
       var requestId = null;
       var isStopped = false;
 
       requestId = requestAnimationFrame(function step() {
-        sink((0, _framptonSignals.nextEvent)(frame++));
+        sink((0, _framptonSignalsEvent.nextEvent)(frame++));
         if (!isStopped) requestId = requestAnimationFrame(step);
       });
 
@@ -926,9 +945,9 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
     var done = assert.async();
 
     var mapping = function mapping(val) {
-      return new _framptonSignals.EventStream(function (sink) {
+      return new _EventStream(function (sink) {
         setTimeout(function () {
-          sink((0, _framptonSignals.nextEvent)(val + 10));
+          sink((0, _framptonSignalsEvent.nextEvent)(val + 10));
         }, 200);
       });
     };
@@ -948,8 +967,8 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
 
   QUnit.test('and method should only allow values if behavior is truthy', function () {
 
-    var behavior = _framptonSignals.Behavior.of(false);
-    var stream1 = (0, _framptonSignals.empty)();
+    var behavior = _Behavior.of(false);
+    var stream1 = (0, _empty)();
     var stream2 = stream1.and(behavior);
     var count = 0;
 
@@ -957,16 +976,16 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
       count++;
     });
 
-    stream1.push((0, _framptonSignals.nextEvent)(1));
+    stream1.push((0, _framptonSignalsEvent.nextEvent)(1));
     behavior.update(true);
-    stream1.push((0, _framptonSignals.nextEvent)(1));
+    stream1.push((0, _framptonSignalsEvent.nextEvent)(1));
     equal(count, 1, 'and method correctly gated callback');
   });
 
   QUnit.test('and method should only allow values if behavior is falsy', function () {
 
-    var behavior = _framptonSignals.Behavior.of(true);
-    var stream1 = (0, _framptonSignals.empty)();
+    var behavior = _Behavior.of(true);
+    var stream1 = (0, _empty)();
     var stream2 = stream1.not(behavior);
     var count = 0;
 
@@ -974,18 +993,18 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
       count++;
     });
 
-    stream1.push((0, _framptonSignals.nextEvent)(1));
+    stream1.push((0, _framptonSignalsEvent.nextEvent)(1));
     behavior.update(false);
-    stream1.push((0, _framptonSignals.nextEvent)(1));
-    stream1.push((0, _framptonSignals.nextEvent)(1));
+    stream1.push((0, _framptonSignalsEvent.nextEvent)(1));
+    stream1.push((0, _framptonSignalsEvent.nextEvent)(1));
     equal(count, 2, 'not method correctly gated callback');
   });
 
   QUnit.test('sample method should take values from associated behavior', function (assert) {
 
     var done = assert.async();
-    var behavior = _framptonSignals.Behavior.of(1);
-    var stream1 = (0, _framptonSignals.empty)();
+    var behavior = _Behavior.of(1);
+    var stream1 = (0, _empty)();
     var stream2 = stream1.sample(behavior);
 
     stream2.next(function (val) {
@@ -993,7 +1012,7 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
       done();
     });
 
-    stream1.push((0, _framptonSignals.nextEvent)(10));
+    stream1.push((0, _framptonSignalsEvent.nextEvent)(10));
   });
 
   QUnit.test('recover method should produce next from error', function (assert) {
@@ -1005,6 +1024,46 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
 
     stream.recover(5).next(function (val) {
       equal(val, 5, 'recover generated correct value from error');
+      done();
+    });
+  });
+
+  QUnit.test('debounce method should regulate frequency of events', function (assert) {
+
+    var done = assert.async();
+    var count = 0;
+    var stream = new _EventStream(function (sink) {
+      var interval = setInterval(function () {
+        sink((0, _framptonSignalsEvent.nextEvent)(count++));
+      }, 10);
+      return function () {
+        clearInterval(interval);
+      };
+    });
+
+    stream.take(3).debounce(30).next(function (val) {
+      stream.close();
+      equal(val, 2, 'debounce correctly regulated events');
+      done();
+    });
+  });
+
+  QUnit.test('throttle method should regulate frequency of events', function (assert) {
+
+    var done = assert.async();
+    var count = 0;
+    var stream = new _EventStream(function (sink) {
+      var interval = setInterval(function () {
+        sink((0, _framptonSignalsEvent.nextEvent)(count++));
+      }, 10);
+      return function () {
+        clearInterval(interval);
+      };
+    });
+
+    stream.throttle(30).next(function (val) {
+      stream.close();
+      equal(val, 2, 'throttle correctly regulated events');
       done();
     });
   });
@@ -1058,14 +1117,6 @@ define('frampton-signals/tests/event_test', ['exports', 'frampton-signals'], fun
   });
 });
 define("frampton-signals/tests/event_test.jshint", ["exports"], function (exports) {
-  "use strict";
-
-  undefined;
-});
-define("frampton-signals/tests/listen_test", ["exports"], function (exports) {
-  "use strict";
-});
-define("frampton-signals/tests/listen_test.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;

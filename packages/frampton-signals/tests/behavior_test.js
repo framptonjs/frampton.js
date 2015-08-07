@@ -1,4 +1,4 @@
-import { Behavior } from 'frampton-signals';
+import Behavior from 'frampton-signals/behavior';
 
 QUnit.module('Frampton.Signals.Behavior');
 

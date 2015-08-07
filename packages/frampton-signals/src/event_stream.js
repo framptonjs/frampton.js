@@ -362,7 +362,6 @@ EventStream.prototype.debounce = function EventStream_debounce(delay) {
 
   var source   = this;
   var timerId  = null;
-  var saved    = null;
   var breakers = [];
 
   return new EventStream((sink) => {
@@ -371,13 +370,10 @@ EventStream.prototype.debounce = function EventStream_debounce(delay) {
 
       if (event.isNext()) {
 
-        saved = event.get();
-
         if (timerId) clearTimeout(timerId);
 
         timerId = setTimeout(() => {
-          sink(nextEvent(saved));
-          saved = null;
+          sink(nextEvent(event.get()));
           timerId = null;
         }, delay);
       } else {
@@ -392,7 +388,6 @@ EventStream.prototype.debounce = function EventStream_debounce(delay) {
       }
       breakers.forEach(apply);
       breakers = null;
-      saved = null;
       source = null;
     };
   });
@@ -419,7 +414,7 @@ EventStream.prototype.throttle = function EventStream_throttle(delay) {
 
     function applyTimeout() {
 
-      return setTimeout(function() {
+      return setTimeout(() => {
 
         timer = null;
 

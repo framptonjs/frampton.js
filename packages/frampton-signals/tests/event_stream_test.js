@@ -1,10 +1,8 @@
-import {
-  Behavior,
-  EventStream,
-  nextEvent,
-  empty,
-  interval
-} from 'frampton-signals';
+import Behavior from 'frampton-signals/behavior';
+import EventStream from 'frampton-signals/event_stream';
+import { nextEvent } from 'frampton-signals/event';
+import empty from 'frampton-signals/empty';
+import interval from 'frampton-signals/interval';
 
 QUnit.module('Frampton.Signals.EventStream', {
   beforeEach() {
@@ -193,6 +191,46 @@ QUnit.test('recover method should produce next from error', function(assert) {
 
   stream.recover(5).next((val) => {
     equal(val, 5, 'recover generated correct value from error');
+    done();
+  });
+});
+
+QUnit.test('debounce method should regulate frequency of events', function(assert) {
+
+  var done = assert.async();
+  var count = 0;
+  var stream = new EventStream((sink) => {
+    var interval = setInterval(() => {
+      sink(nextEvent(count++));
+    }, 10);
+    return function() {
+      clearInterval(interval);
+    };
+  });
+
+  stream.take(3).debounce(30).next((val) => {
+    stream.close();
+    equal(val, 2, 'debounce correctly regulated events');
+    done();
+  });
+});
+
+QUnit.test('throttle method should regulate frequency of events', function(assert) {
+
+  var done = assert.async();
+  var count = 0;
+  var stream = new EventStream((sink) => {
+    var interval = setInterval(() => {
+      sink(nextEvent(count++));
+    }, 10);
+    return function() {
+      clearInterval(interval);
+    };
+  });
+
+  stream.throttle(30).next((val) => {
+    stream.close();
+    equal(val, 2, 'throttle correctly regulated events');
     done();
   });
 });

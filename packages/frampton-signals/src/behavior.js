@@ -1,12 +1,9 @@
-import {
-  assert,
-  guid,
-  noop,
-  isDefined,
-  equal
-} from 'frampton-utils';
-
-import { contains } from 'frampton-list';
+import assert from 'frampton-utils/assert';
+import guid from 'frampton-utils/guid';
+import noop from 'frampton-utils/noop';
+import isDefined from 'frampton-utils/is_defined';
+import equal from 'frampton-utils/equal';
+import contains from 'frampton-list/contains';
 
 function Behavior(initial, seed) {
   assert('Behavior must have initial value', isDefined(initial));
