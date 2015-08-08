@@ -729,6 +729,54 @@ define("frampton-object/tests/filter_test.jshint", ["exports"], function (export
 
   undefined;
 });
+define('frampton-object/tests/map_test', ['exports', 'frampton-object/map'], function (exports, _framptonObjectMap) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _map = _interopRequire(_framptonObjectMap);
+
+  QUnit.module('Frampton.Object.map');
+
+  QUnit.test('should map the values of an object', function () {
+
+    var obj = { one: 1, two: 2, three: 3 };
+    var mapping = function mapping(val) {
+      return val + 1;
+    };
+
+    deepEqual((0, _map)(mapping, obj), { one: 2, two: 3, three: 4 }, 'correctly maps object');
+  });
+});
+define("frampton-object/tests/map_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-object/tests/reduce_test', ['exports', 'frampton-object/reduce'], function (exports, _framptonObjectReduce) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _reduce = _interopRequire(_framptonObjectReduce);
+
+  QUnit.module('Frampton.Object.reduce');
+
+  QUnit.test('should reduce an object to another value', function () {
+
+    var obj = { one: 1, two: 2, three: 3 };
+    var reduction = function reduction(acc, val) {
+      return acc + val;
+    };
+
+    equal((0, _reduce)(reduction, 0, obj), 6, 'correctly reduces object');
+  });
+});
+define("frampton-object/tests/reduce_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-signals.jshint", ["exports"], function (exports) {
   "use strict";
 
