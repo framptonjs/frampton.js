@@ -134,6 +134,36 @@ QUnit.test('chain method should correctly flatten nested streams', function(asse
   });
 });
 
+QUnit.test('chainLatest method should return newest of multiple nested streams', function(assert) {
+
+  var done  = assert.async();
+  var count = 0;
+  var vals  = [10, 20];
+  var times = [100, 200];
+
+  var stream = empty();
+
+  var mapping = function() {
+    return new EventStream((sink) => {
+      var val = vals[count];
+      setTimeout(() => {
+        sink(nextEvent(val));
+      }, times[count]);
+      count++;
+    });
+  };
+
+  var stream1 = stream.chainLatest(mapping);
+
+  stream1.next((val) => {
+    equal(val, 20, 'chain correctly returns newest');
+    done();
+  });
+
+  stream.push(nextEvent('test 1'));
+  stream.push(nextEvent('test 2'));
+});
+
 QUnit.test('and method should only allow values if behavior is truthy', function() {
 
   var behavior = Behavior.of(false);

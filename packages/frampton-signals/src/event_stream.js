@@ -78,7 +78,16 @@ EventStream.prototype.subscribe = function EventStream_subscribe(fn) {
   return this.dispatcher.subscribe(fn);
 };
 
-// Gets next value
+/**
+ * Registers a callback for the next value on the stream
+ *
+ * @name next
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @param {Function} fn   Function to call when there is a value
+ * @returns {EventStream} A function to unsubscribe from the EventStream
+ */
 EventStream.prototype.next = function EventStream_next(fn) {
   return this.subscribe(function(event) {
     if (event.isNext()) {
@@ -87,7 +96,16 @@ EventStream.prototype.next = function EventStream_next(fn) {
   });
 };
 
-// Gets next error
+/**
+ * Registers a callback for errors on the stream
+ *
+ * @name error
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @param {Function} fn   Function to call when there is an error
+ * @returns {EventStream} A function to unsubscribe from the EventStream
+ */
 EventStream.prototype.error = function EventStream_error(fn) {
   return this.subscribe(function(event) {
     if (event.isError()) {
@@ -96,7 +114,16 @@ EventStream.prototype.error = function EventStream_error(fn) {
   });
 };
 
-// Get done event
+/**
+ * Registers a callback for when the stream closes
+ *
+ * @name next
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @param {Function} fn   Function to call when the stream closes
+ * @returns {EventStream} A function to unsubscribe from the EventStream
+ */
 EventStream.prototype.done = function EventStream_done(fn) {
   return this.subscribe(function(event) {
     if (event.isEnd()) {
@@ -106,8 +133,12 @@ EventStream.prototype.done = function EventStream_done(fn) {
 };
 
 /**
+ * Closes the stream by removing all subscribers and calling cleanup function (if any)
+ *
  * @name close
+ * @method
  * @memberOf EventStream
+ * @instance
  */
 EventStream.prototype.close = function EventStream_close() {
   if (!this.isClosed) {
@@ -118,7 +149,17 @@ EventStream.prototype.close = function EventStream_close() {
   }
 };
 
-// join :: EventStream ( EventStream a ) -> EventStream a
+/**
+ * join :: EventStream ( EventStream a ) -> EventStream a
+ *
+ * Given an EventStream of an EventStream it will remove one layer of nesting.
+ *
+ * @name close
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @returns {EventStream} A new EventStream with a level of nesting removed
+ */
 EventStream.prototype.join = function EventStream_join() {
 
   var source = this;
@@ -144,7 +185,20 @@ EventStream.prototype.join = function EventStream_join() {
   });
 };
 
-// chain(>>=) :: EventStream a -> (a -> EventStream b) -> EventStream b
+/**
+ * chain(>>=) :: EventStream a -> (a -> EventStream b) -> EventStream b
+ *
+ * Given a function that returns an EventStream this will create a new EventStream
+ * that passes the value of the parent EventStream to the function and returns the value
+ * of the nested EventStream
+ *
+ * @name chain
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @param {Function} fn   A function that returns an EventStream
+ * @returns {EventStream} A new EventStream with a level of nesting removed
+ */
 EventStream.prototype.chain = function EventStream_chain(fn) {
   return this.map(fn).join();
 };
@@ -450,7 +504,15 @@ EventStream.prototype.throttle = function EventStream_throttle(delay) {
   });
 };
 
-// dropRepeats :: EventStream a -> EventStream a
+/**
+ * dropRepeats :: EventStream a -> EventStream a
+ *
+ * @name dropRepeats
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @returns {EventStream} A new Stream with repeated values dropped.
+ */
 EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
   var prevVal = null;
   return this.filter((val) => {
@@ -462,7 +524,16 @@ EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
   });
 };
 
-// and :: EventStream a -> Behavior b -> EventStream a
+/**
+ * and :: EventStream a -> Behavior b -> EventStream a
+ *
+ * @name and
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @param {Behavior} behavior - A behavior to test against
+ * @returns {EventStream} A new EventStream that only produces values if the behavior is truthy.
+ */
 EventStream.prototype.and = function(behavior) {
 
   var source   = this;
@@ -490,7 +561,16 @@ EventStream.prototype.and = function(behavior) {
   });
 };
 
-// not :: EventStream a -> Behavior b -> EventStream a
+/**
+ * not :: EventStream a -> Behavior b -> EventStream a
+ *
+ * @name not
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @param {Behavior} behavior - A behavior to test against
+ * @returns {EventStream} A new EventStream that only produces values if the behavior is falsy.
+ */
 EventStream.prototype.not = function(behavior) {
 
   var source   = this;
@@ -518,6 +598,15 @@ EventStream.prototype.not = function(behavior) {
   });
 };
 
+/**
+ * log :: EventStream a
+ *
+ * @name log
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @returns {EventStream} A new EventStream that logs its values to the console.
+ */
 EventStream.prototype.log = function EventStream_log() {
   return withTransform(this, (event) => {
     log(event.get());

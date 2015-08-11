@@ -1,4 +1,4 @@
-import { curry } from 'frampton-utils';
+import curry from 'frampton-utils/curry';
 import { nextEvent } from 'frampton-signals/event';
 
 // send :: EventStream a -> EventStream b -> Task [a, b] -> ()

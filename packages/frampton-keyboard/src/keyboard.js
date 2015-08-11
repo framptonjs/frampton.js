@@ -1,4 +1,4 @@
-import { curry } from 'frampton-utils';
+import curry from 'frampton-utils/curry';
 
 import {
   contains,
@@ -6,18 +6,24 @@ import {
   remove
 } from 'frampton-list';
 
-import {
-  listen,
-  stepper
-} from 'frampton-signals';
-
+import { listen } from 'frampton-events';
+import { stepper } from 'frampton-signals';
 import KEY_MAP from 'frampton-keyboard/key_map';
 import keyCode from 'frampton-keyboard/key_code';
 
+//+ keyUp :: EventStream DomEvent
 var keyUp = listen('keyup', document);
+
+//+ keyDown :: EventStream DomEvent
 var keyDown = listen('keydown', document);
+
+//+ keyPress :: EventStream DomEvent
 var keyPress = listen('keypress', document);
+
+//+ keyUpCodes :: EventStream KeyCode
 var keyUpCodes = keyUp.map(keyCode);
+
+//+ keyDownCodes :: EventStream KeyCode
 var keyDownCodes = keyDown.map(keyCode);
 
 var addKey = function(keyCode) {
@@ -52,16 +58,21 @@ var keyIsDown = function(keyCode) {
   });
 };
 
+//+ direction :: KeyCode -> [KeyCode] -> Boolean
 var direction = curry(function(keyCode, arr) {
   return (contains(arr, keyCode)) ? 1 : 0;
 });
 
+//+ isUp :: [KeyCode] -> Boolean
 var isUp = direction(KEY_MAP.UP);
 
+//+ isDown :: [KeyCode] -> Boolean
 var isDown = direction(KEY_MAP.DOWN);
 
+//+ isRight :: [KeyCode] -> Boolean
 var isRight = direction(KEY_MAP.RIGHT);
 
+//+ isLeft :: [KeyCode] -> Boolean
 var isLeft = direction(KEY_MAP.LEFT);
 
 //+ arrows :: EventStream [horizontal, vertical]
@@ -85,6 +96,6 @@ var defaultKeyboard = {
   space   : stepper(false, keyIsDown(KEY_MAP.SPACE))
 };
 
-export default function Keyboard(element) {
+export default function Keyboard() {
   return defaultKeyboard;
 }

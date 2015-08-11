@@ -10,8 +10,10 @@ export default curry(function curried_diff(xs, ys) {
 
   var diff = [];
 
-  xs.forEach(function(item) {
-    if (!contains(ys, item)) diff.push(item);
+  xs.forEach((item) => {
+    if (!contains(ys, item)) {
+      diff.push(item);
+    }
   });
 
   return diff;

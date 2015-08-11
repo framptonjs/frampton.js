@@ -6,7 +6,7 @@ import isArray from 'frampton-utils/is_array';
  * @memberOf Frampton
  * @static
  */
-export function init(xs) {
+export default function init(xs) {
   assert("Frampton.init recieved a non-array", isArray(xs));
   switch (xs.length) {
     case 0: return [];

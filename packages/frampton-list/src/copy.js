@@ -2,23 +2,14 @@
  * @name copy
  * @memberOf Frampton
  */
-export default function(args, begin, end) {
+export default function(xs) {
 
-  var argLen = args.length,
-      arrLen = 0,
-      idx    = 0,
-      arr, i;
+  var len = xs.length;
+  var arr = new Array(len);
 
-  begin = (begin || 0);
-  end = (end || argLen);
-  arrLen = (end - begin);
-
-  if (argLen > 0) {
-    arr = new Array(arrLen);
-    for (i=begin;i<end;i++) {
-      arr[idx++] = args[i];
-    }
+  for (let i = 0; i < len; i++) {
+    arr[i] = xs[i];
   }
 
-  return arr || [];
+  return arr;
 }

@@ -1404,21 +1404,32 @@ define("frampton-keyboard/key_map", ["exports", "module"], function (exports, mo
     RIGHT: 39
   };
 });
-define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils', 'frampton-list', 'frampton-signals', 'frampton-keyboard/key_map', 'frampton-keyboard/key_code'], function (exports, module, _framptonUtils, _framptonList, _framptonSignals, _framptonKeyboardKey_map, _framptonKeyboardKey_code) {
+define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry', 'frampton-list', 'frampton-events', 'frampton-signals', 'frampton-keyboard/key_map', 'frampton-keyboard/key_code'], function (exports, module, _framptonUtilsCurry, _framptonList, _framptonEvents, _framptonSignals, _framptonKeyboardKey_map, _framptonKeyboardKey_code) {
   'use strict';
 
   module.exports = Keyboard;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
   var _KEY_MAP = _interopRequire(_framptonKeyboardKey_map);
 
   var _keyCode = _interopRequire(_framptonKeyboardKey_code);
 
-  var keyUp = (0, _framptonSignals.listen)('keyup', document);
-  var keyDown = (0, _framptonSignals.listen)('keydown', document);
-  var keyPress = (0, _framptonSignals.listen)('keypress', document);
+  //+ keyUp :: EventStream DomEvent
+  var keyUp = (0, _framptonEvents.listen)('keyup', document);
+
+  //+ keyDown :: EventStream DomEvent
+  var keyDown = (0, _framptonEvents.listen)('keydown', document);
+
+  //+ keyPress :: EventStream DomEvent
+  var keyPress = (0, _framptonEvents.listen)('keypress', document);
+
+  //+ keyUpCodes :: EventStream KeyCode
   var keyUpCodes = keyUp.map(_keyCode);
+
+  //+ keyDownCodes :: EventStream KeyCode
   var keyDownCodes = keyDown.map(_keyCode);
 
   var addKey = function addKey(keyCode) {
@@ -1453,16 +1464,21 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils', 'fr
     });
   };
 
-  var direction = (0, _framptonUtils.curry)(function (keyCode, arr) {
+  //+ direction :: KeyCode -> [KeyCode] -> Boolean
+  var direction = (0, _curry)(function (keyCode, arr) {
     return (0, _framptonList.contains)(arr, keyCode) ? 1 : 0;
   });
 
+  //+ isUp :: [KeyCode] -> Boolean
   var isUp = direction(_KEY_MAP.UP);
 
+  //+ isDown :: [KeyCode] -> Boolean
   var isDown = direction(_KEY_MAP.DOWN);
 
+  //+ isRight :: [KeyCode] -> Boolean
   var isRight = direction(_KEY_MAP.RIGHT);
 
+  //+ isLeft :: [KeyCode] -> Boolean
   var isLeft = direction(_KEY_MAP.LEFT);
 
   //+ arrows :: EventStream [horizontal, vertical]
@@ -1483,7 +1499,7 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils', 'fr
     space: (0, _framptonSignals.stepper)(false, keyIsDown(_KEY_MAP.SPACE))
   };
 
-  function Keyboard(element) {
+  function Keyboard() {
     return defaultKeyboard;
   }
 });
@@ -1601,26 +1617,16 @@ define("frampton-list/copy", ["exports", "module"], function (exports, module) {
    */
   "use strict";
 
-  module.exports = function (args, begin, end) {
+  module.exports = function (xs) {
 
-    var argLen = args.length,
-        arrLen = 0,
-        idx = 0,
-        arr,
-        i;
+    var len = xs.length;
+    var arr = new Array(len);
 
-    begin = begin || 0;
-    end = end || argLen;
-    arrLen = end - begin;
-
-    if (argLen > 0) {
-      arr = new Array(arrLen);
-      for (i = begin; i < end; i++) {
-        arr[idx++] = args[i];
-      }
+    for (var i = 0; i < len; i++) {
+      arr[i] = xs[i];
     }
 
-    return arr || [];
+    return arr;
   };
 });
 define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains'], function (exports, module, _framptonUtilsCurry, _framptonListContains) {
@@ -1642,13 +1648,15 @@ define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'fram
     var diff = [];
 
     xs.forEach(function (item) {
-      if (!(0, _contains)(ys, item)) diff.push(item);
+      if (!(0, _contains)(ys, item)) {
+        diff.push(item);
+      }
     });
 
     return diff;
   });
 });
-define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-list/copy'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry, _framptonUtilsIs_array, _framptonListCopy) {
+define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry, _framptonUtilsIs_array) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -1659,15 +1667,15 @@ define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'fra
 
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
-  var _copy = _interopRequire(_framptonListCopy);
-
   /**
    * @name drop
    * @memberOf Frampton
    */
   module.exports = (0, _curry)(function curried_drop(n, xs) {
     (0, _assert)('Frampton.drop recieved a non-array', (0, _isArray)(xs));
-    return (0, _copy)(xs, n);
+    return xs.filter(function (next) {
+      return next !== n;
+    });
   });
 });
 define('frampton-list/each', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -1767,17 +1775,15 @@ define('frampton-list/head', ['exports', 'module', 'frampton-utils/assert', 'fra
     return (0, _isDefined)(xs[0]) ? xs[0] : null;
   }
 });
-define('frampton-list/init', ['exports', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_array) {
+define('frampton-list/init', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsIs_array) {
   'use strict';
-
-  exports.__esModule = true;
 
   /**
    * @name init
    * @memberOf Frampton
    * @static
    */
-  exports.init = init;
+  module.exports = init;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -1795,17 +1801,15 @@ define('frampton-list/init', ['exports', 'frampton-utils/assert', 'frampton-util
     }
   }
 });
-define('frampton-list/last', ['exports', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_array) {
+define('frampton-list/last', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsIs_array) {
   'use strict';
-
-  exports.__esModule = true;
 
   /**
    * @name last
    * @memberOf Frampton
    * @static
    */
-  exports.last = last;
+  module.exports = last;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -1841,7 +1845,7 @@ define('frampton-list/length', ['exports', 'module', 'frampton-utils/is_array'],
     return (0, _isArray)(xs) ? xs.length : 0;
   }
 });
-define('frampton-list/maximum', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
+define('frampton-list/maximum', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
   'use strict';
 
   /**
@@ -1854,14 +1858,18 @@ define('frampton-list/maximum', ['exports', 'module', 'frampton-list/foldl'], fu
 
   var _foldl = _interopRequire(_framptonListFoldl);
 
+  var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
+
   function maximum(xs) {
-    (0, _foldl)(function (acc, next) {
-      if (!acc || next > acc) return acc = next;
+    return (0, _foldl)(function (acc, next) {
+      if ((0, _isNothing)(acc) || next > acc) {
+        acc = next;
+      }
       return acc;
     }, null, xs);
   }
 });
-define('frampton-list/minimum', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
+define('frampton-list/minimum', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
   'use strict';
 
   /**
@@ -1874,9 +1882,13 @@ define('frampton-list/minimum', ['exports', 'module', 'frampton-list/foldl'], fu
 
   var _foldl = _interopRequire(_framptonListFoldl);
 
+  var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
+
   function minimum(xs) {
-    (0, _foldl)(function (acc, next) {
-      if (!acc || next < acc) return acc = next;
+    return (0, _foldl)(function (acc, next) {
+      if ((0, _isNothing)(acc) || next < acc) {
+        acc = next;
+      }
       return acc;
     }, null, xs);
   }
@@ -1889,12 +1901,12 @@ define('frampton-list/prepend', ['exports', 'module', 'frampton-utils/curry'], f
   var _curry = _interopRequire(_framptonUtilsCurry);
 
   /**
-   * @name cons
-   * @param {Any} obj
+   * @name prepend
    * @param {Array} xs
+   * @param {Any} obj
    */
-  module.exports = (0, _curry)(function (obj, ys) {
-    return [].concat(obj).concat(ys);
+  module.exports = (0, _curry)(function (xs, obj) {
+    return [].concat(obj).concat(xs);
   });
 });
 define('frampton-list/product', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
@@ -1971,7 +1983,21 @@ define('frampton-list/split', ['exports', 'module', 'frampton-utils/curry'], fun
   /**
    * + split :: Number -> List a -> (List a, List a)
    */
-  module.exports = (0, _curry)(function (n, xs) {});
+  module.exports = (0, _curry)(function split(n, xs) {
+    var ys = [];
+    var zs = [];
+    var len = xs.length;
+
+    for (var i = 0; i < len; i++) {
+      if (i < n) {
+        ys.push(xs[i]);
+      } else {
+        zs.push(xs[i]);
+      }
+    }
+
+    return [ys, zs];
+  });
 });
 define('frampton-list/sum', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
   'use strict';
@@ -1993,19 +2019,17 @@ define('frampton-list/sum', ['exports', 'module', 'frampton-list/foldl'], functi
     }, 0, xs);
   }
 });
-define('frampton-list/tail', ['exports', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_array) {
-  'use strict';
-
-  exports.__esModule = true;
-  exports.tail = tail;
-
-  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-
+define('frampton-list/tail', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsIs_array) {
   /**
    * @name tail
    * @memberOf Frampton
    * @static
    */
+  'use strict';
+
+  module.exports = tail;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _assert = _interopRequire(_framptonUtilsAssert);
 
@@ -2877,7 +2901,16 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     return this.dispatcher.subscribe(fn);
   };
 
-  // Gets next value
+  /**
+   * Registers a callback for the next value on the stream
+   *
+   * @name next
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @param {Function} fn   Function to call when there is a value
+   * @returns {EventStream} A function to unsubscribe from the EventStream
+   */
   EventStream.prototype.next = function EventStream_next(fn) {
     return this.subscribe(function (event) {
       if (event.isNext()) {
@@ -2886,7 +2919,16 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     });
   };
 
-  // Gets next error
+  /**
+   * Registers a callback for errors on the stream
+   *
+   * @name error
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @param {Function} fn   Function to call when there is an error
+   * @returns {EventStream} A function to unsubscribe from the EventStream
+   */
   EventStream.prototype.error = function EventStream_error(fn) {
     return this.subscribe(function (event) {
       if (event.isError()) {
@@ -2895,7 +2937,16 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     });
   };
 
-  // Get done event
+  /**
+   * Registers a callback for when the stream closes
+   *
+   * @name next
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @param {Function} fn   Function to call when the stream closes
+   * @returns {EventStream} A function to unsubscribe from the EventStream
+   */
   EventStream.prototype.done = function EventStream_done(fn) {
     return this.subscribe(function (event) {
       if (event.isEnd()) {
@@ -2905,8 +2956,12 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
   };
 
   /**
+   * Closes the stream by removing all subscribers and calling cleanup function (if any)
+   *
    * @name close
+   * @method
    * @memberOf EventStream
+   * @instance
    */
   EventStream.prototype.close = function EventStream_close() {
     if (!this.isClosed) {
@@ -2917,7 +2972,17 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     }
   };
 
-  // join :: EventStream ( EventStream a ) -> EventStream a
+  /**
+   * join :: EventStream ( EventStream a ) -> EventStream a
+   *
+   * Given an EventStream of an EventStream it will remove one layer of nesting.
+   *
+   * @name close
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @returns {EventStream} A new EventStream with a level of nesting removed
+   */
   EventStream.prototype.join = function EventStream_join() {
 
     var source = this;
@@ -2943,7 +3008,20 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     });
   };
 
-  // chain(>>=) :: EventStream a -> (a -> EventStream b) -> EventStream b
+  /**
+   * chain(>>=) :: EventStream a -> (a -> EventStream b) -> EventStream b
+   *
+   * Given a function that returns an EventStream this will create a new EventStream
+   * that passes the value of the parent EventStream to the function and returns the value
+   * of the nested EventStream
+   *
+   * @name chain
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @param {Function} fn   A function that returns an EventStream
+   * @returns {EventStream} A new EventStream with a level of nesting removed
+   */
   EventStream.prototype.chain = function EventStream_chain(fn) {
     return this.map(fn).join();
   };
@@ -3245,7 +3323,15 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     });
   };
 
-  // dropRepeats :: EventStream a -> EventStream a
+  /**
+   * dropRepeats :: EventStream a -> EventStream a
+   *
+   * @name dropRepeats
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @returns {EventStream} A new Stream with repeated values dropped.
+   */
   EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
     var prevVal = null;
     return this.filter(function (val) {
@@ -3257,7 +3343,16 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     });
   };
 
-  // and :: EventStream a -> Behavior b -> EventStream a
+  /**
+   * and :: EventStream a -> Behavior b -> EventStream a
+   *
+   * @name and
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @param {Behavior} behavior - A behavior to test against
+   * @returns {EventStream} A new EventStream that only produces values if the behavior is truthy.
+   */
   EventStream.prototype.and = function (behavior) {
 
     var source = this;
@@ -3284,7 +3379,16 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     });
   };
 
-  // not :: EventStream a -> Behavior b -> EventStream a
+  /**
+   * not :: EventStream a -> Behavior b -> EventStream a
+   *
+   * @name not
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @param {Behavior} behavior - A behavior to test against
+   * @returns {EventStream} A new EventStream that only produces values if the behavior is falsy.
+   */
   EventStream.prototype.not = function (behavior) {
 
     var source = this;
@@ -3311,6 +3415,15 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
     });
   };
 
+  /**
+   * log :: EventStream a
+   *
+   * @name log
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @returns {EventStream} A new EventStream that logs its values to the console.
+   */
   EventStream.prototype.log = function EventStream_log() {
     return withTransform(this, function (event) {
       (0, _framptonUtils.log)(event.get());
@@ -3371,11 +3484,15 @@ define('frampton-signals/null', ['exports', 'module', 'frampton-signals/event_st
     return instance !== null ? instance : instance = new _EventStream(null, null);
   }
 });
-define('frampton-signals/send', ['exports', 'module', 'frampton-utils', 'frampton-signals/event'], function (exports, module, _framptonUtils, _framptonSignalsEvent) {
+define('frampton-signals/send', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/event'], function (exports, module, _framptonUtilsCurry, _framptonSignalsEvent) {
   'use strict';
 
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
   // send :: EventStream a -> EventStream b -> Task [a, b] -> ()
-  module.exports = (0, _framptonUtils.curry)(function send(errors, values, task) {
+  module.exports = (0, _curry)(function send(errors, values, task) {
     task.run(function (err) {
       return errors.push((0, _framptonSignalsEvent.nextEvent)(err));
     }, function (val) {
@@ -3654,6 +3771,41 @@ define('frampton-style/remove_styles', ['exports', 'module', 'frampton-utils/cur
       element.style.removeProperty(key);
     }
   });
+});
+define('frampton-ui', ['exports', 'frampton-ui/input'], function (exports, _framptonUiInput) {
+  'use strict';
+
+  exports.__esModule = true;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Input = _interopRequire(_framptonUiInput);
+
+  exports.Input = _Input;
+});
+define('frampton-ui/input', ['exports', 'module', 'frampton-signals', 'frampton-events'], function (exports, module, _framptonSignals, _framptonEvents) {
+  'use strict';
+
+  module.exports = ui_input;
+
+  function ui_input(element) {
+
+    var localInputs = (0, _framptonEvents.listen)('input', element);
+    var localChanges = (0, _framptonEvents.listen)('change', element);
+    var localBlurs = (0, _framptonEvents.listen)('blur', element);
+    var localFocuses = (0, _framptonEvents.listen)('focus', element);
+    var focused = localBlurs.map(false).merge(localFocuses.map(true));
+    var values = localInputs.merge(localChanges).map(_framptonEvents.eventValue);
+
+    return {
+      change: localChanges,
+      input: localInputs,
+      blur: localBlurs,
+      focus: localFocuses,
+      isFocused: (0, _framptonSignals.stepper)(false, focused),
+      value: (0, _framptonSignals.stepper)('', values)
+    };
+  }
 });
 define('frampton-utils', ['exports', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/equal', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/guid', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/inherits', 'frampton-utils/is_array', 'frampton-utils/is_defined', 'frampton-utils/is_equal', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-utils/is_null', 'frampton-utils/is_object', 'frampton-utils/is_string', 'frampton-utils/is_undefined', 'frampton-utils/is_boolean', 'frampton-utils/is_function', 'frampton-utils/is_promise', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/of_value', 'frampton-utils/safe_get'], function (exports, _framptonUtilsApply, _framptonUtilsAssert, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsEqual, _framptonUtilsExtend, _framptonUtilsGet, _framptonUtilsGuid, _framptonUtilsIdentity, _framptonUtilsImmediate, _framptonUtilsInherits, _framptonUtilsIs_array, _framptonUtilsIs_defined, _framptonUtilsIs_equal, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonUtilsIs_null, _framptonUtilsIs_object, _framptonUtilsIs_string, _framptonUtilsIs_undefined, _framptonUtilsIs_boolean, _framptonUtilsIs_function, _framptonUtilsIs_promise, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsMemoize, _framptonUtilsNoop, _framptonUtilsOf_value, _framptonUtilsSafe_get) {
   'use strict';

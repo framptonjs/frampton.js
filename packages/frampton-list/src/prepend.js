@@ -1,10 +1,10 @@
 import curry from 'frampton-utils/curry';
 
 /**
- * @name cons
- * @param {Any} obj
+ * @name prepend
  * @param {Array} xs
+ * @param {Any} obj
  */
-export default curry(function(obj, ys) {
-  return [].concat(obj).concat(ys);
+export default curry(function(xs, obj) {
+  return [].concat(obj).concat(xs);
 });

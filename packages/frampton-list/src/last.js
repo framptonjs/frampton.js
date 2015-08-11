@@ -6,7 +6,7 @@ import isArray from 'frampton-utils/is_array';
  * @memberOf Frampton
  * @static
  */
-export function last(xs) {
+export default function last(xs) {
   assert("Frampton.last recieved a non-array", isArray(xs));
   switch (xs.length) {
     case 0: return null;

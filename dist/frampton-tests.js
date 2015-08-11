@@ -486,6 +486,337 @@ define("frampton-list/tail.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define('frampton-list/tests/append_test', ['exports', 'frampton-list/append'], function (exports, _framptonListAppend) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _append = _interopRequire(_framptonListAppend);
+
+  QUnit.module('Frampton.List.append');
+
+  QUnit.test('should return a new array with value appended', function () {
+    var xs = [1, 2, 3];
+    var ys = (0, _append)(xs, 4);
+    notEqual(xs, ys, 'is not the same reference');
+    deepEqual(ys, [1, 2, 3, 4], 'has correct values');
+  });
+});
+define("frampton-list/tests/append_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/contains_test', ['exports', 'frampton-list/contains'], function (exports, _framptonListContains) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _contains = _interopRequire(_framptonListContains);
+
+  QUnit.module('Frampton.List.contains');
+
+  QUnit.test('should return true if a list contains a value', function () {
+    var xs = [1, 2, 3];
+    ok((0, _contains)(xs, 3), 'correctly detected value');
+  });
+
+  QUnit.test('should return false if a list does not contain a value', function () {
+    var xs = [1, 2, 3];
+    notOk((0, _contains)(xs, 5), 'correctly detected value');
+  });
+});
+define("frampton-list/tests/contains_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/copy_test', ['exports', 'frampton-list/copy'], function (exports, _framptonListCopy) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _copy = _interopRequire(_framptonListCopy);
+
+  QUnit.module('Frampton.List.copy');
+
+  QUnit.test('should return a new object', function () {
+    var xs = [1, 2, 3];
+    var ys = (0, _copy)(xs);
+    notEqual(xs, ys, 'is not the same reference');
+  });
+
+  QUnit.test('should return an array with the values of the given array', function () {
+    var xs = [1, 2, 3];
+    var ys = (0, _copy)(xs);
+    deepEqual(ys, xs, 'has correct values');
+  });
+});
+define("frampton-list/tests/copy_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/diff_test', ['exports', 'frampton-list/diff'], function (exports, _framptonListDiff) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _diff = _interopRequire(_framptonListDiff);
+
+  QUnit.module('Frampton.List.diff');
+
+  QUnit.test('should return array of all values from first array not in second', function () {
+    var xs = [1, 2, 3];
+    var ys = [2, 3, 4];
+    deepEqual((0, _diff)(xs, ys), [1], 'has correct values');
+    deepEqual((0, _diff)(ys, xs), [4], 'has correct values');
+  });
+});
+define("frampton-list/tests/diff_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/drop_test', ['exports', 'frampton-list/drop'], function (exports, _framptonListDrop) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _drop = _interopRequire(_framptonListDrop);
+
+  QUnit.module('Frampton.List.drop');
+
+  QUnit.test('should return a new array with the given value removed', function () {
+    var xs = [1, 2, 3];
+    deepEqual((0, _drop)(1, xs), [2, 3], 'has correct values');
+  });
+});
+define("frampton-list/tests/drop_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/foldl_test', ['exports', 'frampton-list/foldl'], function (exports, _framptonListFoldl) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _foldl = _interopRequire(_framptonListFoldl);
+
+  QUnit.module('Frampton.List.foldl');
+
+  QUnit.test('should combine values in array with given function', function () {
+    var xs = ['a', 'b', 'c'];
+    var fn = function fn(acc, next) {
+      return acc + next;
+    };
+    equal((0, _foldl)(fn, '', xs), 'abc');
+  });
+});
+define("frampton-list/tests/foldl_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/foldr_test', ['exports', 'frampton-list/foldr'], function (exports, _framptonListFoldr) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _foldr = _interopRequire(_framptonListFoldr);
+
+  QUnit.module('Frampton.List.foldr');
+
+  QUnit.test('should combine values in array with given function', function () {
+    var xs = ['a', 'b', 'c'];
+    var fn = function fn(acc, next) {
+      return acc + next;
+    };
+    equal((0, _foldr)(fn, '', xs), 'cba');
+  });
+});
+define("frampton-list/tests/foldr_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/init_test', ['exports', 'frampton-list/init'], function (exports, _framptonListInit) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _init = _interopRequire(_framptonListInit);
+
+  QUnit.module('Frampton.List.init');
+
+  QUnit.test('should return new array with all but last element', function () {
+    var xs = [1, 2, 3];
+    deepEqual((0, _init)(xs), [1, 2]);
+  });
+});
+define("frampton-list/tests/init_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/last_test', ['exports', 'frampton-list/last'], function (exports, _framptonListLast) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _last = _interopRequire(_framptonListLast);
+
+  QUnit.module('Frampton.List.last');
+
+  QUnit.test('should return last element in array', function () {
+    var xs = [1, 2, 3];
+    equal((0, _last)(xs), 3);
+  });
+});
+define("frampton-list/tests/last_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/maximum_test', ['exports', 'frampton-list/maximum'], function (exports, _framptonListMaximum) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _max = _interopRequire(_framptonListMaximum);
+
+  QUnit.module('Frampton.List.maximum');
+
+  QUnit.test('should return the max value in an array', function () {
+    var xs = [1, 2, 9, 4, 0, 3];
+    equal((0, _max)(xs), 9);
+  });
+});
+define("frampton-list/tests/maximum_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/minimum_test', ['exports', 'frampton-list/minimum'], function (exports, _framptonListMinimum) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _min = _interopRequire(_framptonListMinimum);
+
+  QUnit.module('Frampton.List.minimum');
+
+  QUnit.test('should return the min value in an array', function () {
+    var xs = [1, 2, 9, 4, 0, 3];
+    equal((0, _min)(xs), 0);
+  });
+});
+define("frampton-list/tests/minimum_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/prepend_test', ['exports', 'frampton-list/prepend'], function (exports, _framptonListPrepend) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _prepend = _interopRequire(_framptonListPrepend);
+
+  QUnit.module('Frampton.List.prepend');
+
+  QUnit.test('should return a new array with value prepended', function () {
+    var xs = [1, 2, 3];
+    var ys = (0, _prepend)(xs, 0);
+    notEqual(xs, ys, 'is not the same reference');
+    deepEqual(ys, [0, 1, 2, 3], 'has correct values');
+  });
+});
+define("frampton-list/tests/prepend_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/reverse_test', ['exports', 'frampton-list/reverse'], function (exports, _framptonListReverse) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _reverse = _interopRequire(_framptonListReverse);
+
+  QUnit.module('Frampton.List.reverse');
+
+  QUnit.test('should return a new array values of given array reversed', function () {
+    var xs = [1, 2, 3];
+    var ys = (0, _reverse)(xs);
+    notEqual(xs, ys, 'is not the same reference');
+    deepEqual(ys, [3, 2, 1], 'has correct values');
+  });
+});
+define("frampton-list/tests/reverse_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/split_test', ['exports', 'frampton-list/split'], function (exports, _framptonListSplit) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _split = _interopRequire(_framptonListSplit);
+
+  QUnit.module('Frampton.List.split');
+
+  QUnit.test('should split an array at given index, returning two new arrays', function () {
+    var xs = [1, 2, 3, 4, 5, 6];
+    deepEqual((0, _split)(3, xs), [[1, 2, 3], [4, 5, 6]]);
+  });
+});
+define("frampton-list/tests/split_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/tail_test', ['exports', 'frampton-list/tail'], function (exports, _framptonListTail) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _tail = _interopRequire(_framptonListTail);
+
+  QUnit.module('Frampton.List.tail');
+
+  QUnit.test('should return new array with all but first element', function () {
+    var xs = [1, 2, 3];
+    deepEqual((0, _tail)(xs), [2, 3]);
+  });
+});
+define("frampton-list/tests/tail_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-list/tests/zip_test', ['exports', 'frampton-list/zip'], function (exports, _framptonListZip) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _zip = _interopRequire(_framptonListZip);
+
+  QUnit.module('Frampton.List.zip');
+
+  QUnit.test('should combine two arrays into an array of pairs', function () {
+    var xs = [1, 2, 3];
+    var ys = [4, 5, 6];
+    deepEqual((0, _zip)(xs, ys), [[1, 4], [2, 5], [3, 6]]);
+  });
+});
+define("frampton-list/tests/zip_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-list/zip.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -1051,6 +1382,36 @@ define('frampton-signals/tests/event_stream_test', ['exports', 'frampton-signals
     });
   });
 
+  QUnit.test('chainLatest method should return newest of multiple nested streams', function (assert) {
+
+    var done = assert.async();
+    var count = 0;
+    var vals = [10, 20];
+    var times = [100, 200];
+
+    var stream = (0, _empty)();
+
+    var mapping = function mapping() {
+      return new _EventStream(function (sink) {
+        var val = vals[count];
+        setTimeout(function () {
+          sink((0, _framptonSignalsEvent.nextEvent)(val));
+        }, times[count]);
+        count++;
+      });
+    };
+
+    var stream1 = stream.chainLatest(mapping);
+
+    stream1.next(function (val) {
+      equal(val, 20, 'chain correctly returns newest');
+      done();
+    });
+
+    stream.push((0, _framptonSignalsEvent.nextEvent)('test 1'));
+    stream.push((0, _framptonSignalsEvent.nextEvent)('test 2'));
+  });
+
   QUnit.test('and method should only allow values if behavior is truthy', function () {
 
     var behavior = _Behavior.of(false);
@@ -1421,6 +1782,16 @@ define('frampton-style/tests/has_class_test', ['exports', 'frampton-style/has_cl
   });
 });
 define("frampton-style/tests/has_class_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-ui.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-ui/input.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;

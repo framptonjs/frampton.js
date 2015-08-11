@@ -1,12 +1,15 @@
 import foldl from 'frampton-list/foldl';
+import isNothing from 'frampton-utils/is_nothing';
 
 /**
  * @name minimum
  * @param {Array} xs
  */
 export default function minimum(xs) {
-  foldl((acc, next) => {
-    if (!acc || next < acc) return (acc = next);
+  return foldl((acc, next) => {
+    if (isNothing(acc) || next < acc) {
+      acc = next;
+    }
     return acc;
   }, null, xs);
 }
