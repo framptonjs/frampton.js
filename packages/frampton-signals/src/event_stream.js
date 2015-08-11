@@ -505,26 +505,6 @@ EventStream.prototype.throttle = function EventStream_throttle(delay) {
 };
 
 /**
- * dropRepeats :: EventStream a -> EventStream a
- *
- * @name dropRepeats
- * @method
- * @memberOf EventStream
- * @instance
- * @returns {EventStream} A new Stream with repeated values dropped.
- */
-EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
-  var prevVal = null;
-  return this.filter((val) => {
-    if (val !== prevVal) {
-      prevVal = val;
-      return true;
-    }
-    return false;
-  });
-};
-
-/**
  * and :: EventStream a -> Behavior b -> EventStream a
  *
  * @name and

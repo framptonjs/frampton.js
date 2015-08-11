@@ -3760,26 +3760,6 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils', 'frampton-
   };
 
   /**
-   * dropRepeats :: EventStream a -> EventStream a
-   *
-   * @name dropRepeats
-   * @method
-   * @memberOf EventStream
-   * @instance
-   * @returns {EventStream} A new Stream with repeated values dropped.
-   */
-  EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
-    var prevVal = null;
-    return this.filter(function (val) {
-      if (val !== prevVal) {
-        prevVal = val;
-        return true;
-      }
-      return false;
-    });
-  };
-
-  /**
    * and :: EventStream a -> Behavior b -> EventStream a
    *
    * @name and
@@ -3904,6 +3884,109 @@ define('frampton-signals/interval', ['exports', 'module', 'frampton-signals/even
       };
     });
   }
+});
+define('frampton-signals/map', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/map_many'], function (exports, module, _framptonUtilsCurry, _framptonSignalsMap_many) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _mapMany = _interopRequire(_framptonSignalsMap_many);
+
+  // map :: (a -> b) -> Behavior a -> Behavior b
+  module.exports = (0, _curry)(function map(fn, a) {
+    return (0, _mapMany)(function () {
+      return fn(a.value);
+    }, a);
+  });
+});
+define('frampton-signals/map2', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/map_many'], function (exports, module, _framptonUtilsCurry, _framptonSignalsMap_many) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _mapMany = _interopRequire(_framptonSignalsMap_many);
+
+  // map2 :: (a -> b -> c) -> Behavior a -> Behavior b -> Behavior c
+  module.exports = (0, _curry)(function map2(fn, a, b) {
+    return (0, _mapMany)(function () {
+      return fn(a.value, b.value);
+    }, a, b);
+  });
+});
+define('frampton-signals/map3', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/map_many'], function (exports, module, _framptonUtilsCurry, _framptonSignalsMap_many) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _mapMany = _interopRequire(_framptonSignalsMap_many);
+
+  // map3 :: (a -> b -> c -> d) -> Behavior a -> Behavior b -> Behavior c -> Behavior d
+  module.exports = (0, _curry)(function map3(fn, a, b, c) {
+    return (0, _mapMany)(function () {
+      return fn(a.value, b.value, c.value);
+    }, a, b, c);
+  });
+});
+define('frampton-signals/map4', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/map_many'], function (exports, module, _framptonUtilsCurry, _framptonSignalsMap_many) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _mapMany = _interopRequire(_framptonSignalsMap_many);
+
+  // map4 :: (a -> b -> c -> d -> e) -> Behavior a -> Behavior b -> Behavior c -> Behavior d -> Behavior e
+  module.exports = (0, _curry)(function map4(fn, a, b, c, d) {
+    return (0, _mapMany)(function () {
+      return fn(a.value, b.value, c.value, d.value);
+    }, a, b, c, d);
+  });
+});
+define('frampton-signals/map5', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/map_many'], function (exports, module, _framptonUtilsCurry, _framptonSignalsMap_many) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _mapMany = _interopRequire(_framptonSignalsMap_many);
+
+  // map5 :: (a -> b -> c -> d -> e -> f) -> Behavior a -> Behavior b -> Behavior c -> Behavior d -> Behavior e -> Behavior f
+  module.exports = (0, _curry)(function map5(fn, a, b, c, d, e) {
+    return (0, _mapMany)(function () {
+      return fn(a.value, b.value, c.value, d.value, e.value);
+    }, a, b, c, d, e);
+  });
+});
+define('frampton-signals/map_many', ['exports', 'module', 'frampton-signals/behavior'], function (exports, module, _framptonSignalsBehavior) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Behavior = _interopRequire(_framptonSignalsBehavior);
+
+  // map_many :: Function -> [Behavior] -> Behavior
+
+  module.exports = function (mapping) {
+    for (var _len = arguments.length, behaviors = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      behaviors[_key - 1] = arguments[_key];
+    }
+
+    return new _Behavior(mapping(), function (sink) {
+      behaviors.forEach(function (behavior) {
+        behavior.changes(function () {
+          return sink(mapping());
+        });
+      });
+    });
+  };
 });
 define('frampton-signals/null', ['exports', 'module', 'frampton-signals/event_stream'], function (exports, module, _framptonSignalsEvent_stream) {
   'use strict';

@@ -1475,6 +1475,36 @@ define("frampton-signals/interval.jshint", ["exports"], function (exports) {
 
   undefined;
 });
+define("frampton-signals/map.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-signals/map2.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-signals/map3.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-signals/map4.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-signals/map5.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define("frampton-signals/map_many.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
 define("frampton-signals/null.jshint", ["exports"], function (exports) {
   "use strict";
 
@@ -1886,6 +1916,76 @@ define('frampton-signals/tests/event_test', ['exports', 'frampton-signals'], fun
   });
 });
 define("frampton-signals/tests/event_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-signals/tests/map2_test', ['exports', 'frampton-signals/map2', 'frampton-signals/behavior'], function (exports, _framptonSignalsMap2, _framptonSignalsBehavior) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _map2 = _interopRequire(_framptonSignalsMap2);
+
+  var _Behavior = _interopRequire(_framptonSignalsBehavior);
+
+  QUnit.module('Frampton.Signals.map2');
+
+  QUnit.test('should map a Behavior to a new Behavior with given function', function () {
+    var b1 = new _Behavior(0);
+    var b2 = new _Behavior(1);
+    var b3 = (0, _map2)(function (num1, num2) {
+      return num1 + num2;
+    }, b1, b2);
+    var count = 0;
+    b3.changes(function (val) {
+      if (count === 0) {
+        equal(val, 1);
+      } else if (count === 1) {
+        equal(val, 3);
+      } else if (count === 2) {
+        equal(val, 5);
+      }
+      count += 1;
+    });
+    b2.update(3);
+    b1.update(2);
+  });
+});
+define("frampton-signals/tests/map2_test.jshint", ["exports"], function (exports) {
+  "use strict";
+
+  undefined;
+});
+define('frampton-signals/tests/map_test', ['exports', 'frampton-signals/map', 'frampton-signals/behavior'], function (exports, _framptonSignalsMap, _framptonSignalsBehavior) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _map = _interopRequire(_framptonSignalsMap);
+
+  var _Behavior = _interopRequire(_framptonSignalsBehavior);
+
+  QUnit.module('Frampton.Signals.map');
+
+  QUnit.test('should map a Behavior to a new Behavior with given function', function () {
+    var b1 = new _Behavior(0);
+    var b2 = (0, _map)(function (num) {
+      return num + 1;
+    }, b1);
+    var count = 0;
+    b2.changes(function (val) {
+      if (count === 0) {
+        equal(val, 1);
+      } else if (count === 1) {
+        equal(val, 2);
+      }
+      count += 1;
+    });
+    b1.update(1);
+  });
+});
+define("frampton-signals/tests/map_test.jshint", ["exports"], function (exports) {
   "use strict";
 
   undefined;
