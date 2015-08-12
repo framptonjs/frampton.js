@@ -20,6 +20,6 @@ export default function ui_input(element) {
     blur      : localBlurs,
     focus     : localFocuses,
     isFocused : stepper(false, focused),
-    value     : stepper('', values)
+    value     : stepper((element.value || ''), values)
   };
 }
