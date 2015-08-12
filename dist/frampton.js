@@ -848,6 +848,24 @@ define("frampton-events/document_cache", ["exports", "module"], function (export
 
   module.exports = {};
 });
+define('frampton-events/event_contains_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/contains', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleContains, _framptonEventsEvent_target) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _compose = _interopRequire(_framptonUtilsCompose);
+
+  var _contains = _interopRequire(_framptonStyleContains);
+
+  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
+
+  // eventHasSelector :: String -> DomEvent -> Boolean
+  module.exports = (0, _curry)(function event_contains_selector(selector, evt) {
+    return (0, _compose)((0, _contains)(selector), _eventTarget)(evt);
+  });
+});
 define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function', 'frampton-utils/is_defined', 'frampton-utils/lazy', 'frampton-events/event_map'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_function, _framptonUtilsIs_defined, _framptonUtilsLazy, _framptonEventsEvent_map) {
   'use strict';
 
@@ -4438,6 +4456,19 @@ define('frampton-style/closest', ['exports', 'module', 'frampton-utils/curry', '
     }
 
     return element || null;
+  });
+});
+define('frampton-style/contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/matches'], function (exports, module, _framptonUtilsCurry, _framptonStyleMatches) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _matches = _interopRequire(_framptonStyleMatches);
+
+  module.exports = (0, _curry)(function contains(selector, element) {
+    return (0, _matches)(selector, element) || element.querySelectorAll(selector).length > 0;
   });
 });
 define('frampton-style/current_value', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
