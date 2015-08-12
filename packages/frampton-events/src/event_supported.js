@@ -11,6 +11,15 @@ var TAGNAMES = {
   abort  : 'img'
 };
 
+/**
+ * Tests whether a given event is supported by the current browser.
+ *
+ * @name eventSupported
+ * @static
+ * @memberOf Frampton.Events
+ * @param {String} eventName The name of the event to test
+ * @returns {Boolean} Is the event supported
+ */
 export default memoize(function event_supported(eventName) {
   var el = document.createElement(TAGNAMES[eventName] || 'div');
   eventName = 'on' + eventName;

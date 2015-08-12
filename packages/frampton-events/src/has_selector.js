@@ -3,7 +3,16 @@ import compose from 'frampton-utils/compose';
 import matches from 'frampton-style/matches';
 import eventTarget from 'frampton-events/event_target';
 
-// hasSelector :: String -> DomEvent -> Boolean
+/**
+ * hasSelector :: String -> DomEvent -> Boolean
+ *
+ * @name hasSelector
+ * @memberOf Frampton.Events
+ * @static
+ * @param {String} selector
+ * @param {Object} evt
+ * @returns {Boolean}
+ */
 export default curry(function has_selector(selector, evt) {
   return compose(matches(selector), eventTarget)(evt);
 });

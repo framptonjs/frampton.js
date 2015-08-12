@@ -827,7 +827,16 @@ define('frampton-events/closest_to_event', ['exports', 'module', 'frampton-utils
 
   var _eventTarget = _interopRequire(_framptonEventsEvent_target);
 
-  // closestToEvent :: String -> DomEvent -> DomNode
+  /**
+   * closestToEvent :: String -> DomEvent -> DomNode
+   *
+   * @name closestToEvent
+   * @memberOf Frampton.Events
+   * @static
+   * @param {String} selector
+   * @param {Object} evt
+   * @returns {Object} A DomNode matching the given selector
+   */
   module.exports = (0, _curry)(function closest_to_event(selector, evt) {
     return (0, _compose)((0, _closest)(selector), _eventTarget)(evt);
   });
@@ -845,6 +854,16 @@ define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry',
 
   var _eventTarget = _interopRequire(_framptonEventsEvent_target);
 
+  /**
+   * contains :: DomNode -> DomEvent -> Boolean
+   *
+   * @name contains
+   * @memberOf Frampton.Events
+   * @static
+   * @param {Object} element
+   * @param {Object} evt
+   * @returns {Boolean}
+   */
   module.exports = (0, _curry)(function curried_contains(element, evt) {
     return (0, _compose)((0, _contains)(element), _eventTarget)(evt);
   });
@@ -862,7 +881,16 @@ define('frampton-events/contains_selector', ['exports', 'module', 'frampton-util
 
   var _eventTarget = _interopRequire(_framptonEventsEvent_target);
 
-  // containsSelector :: String -> DomEvent -> Boolean
+  /**
+   * containsSelector :: String -> DomEvent -> Boolean
+   *
+   * @name containsSelector
+   * @static
+   * @memberOf Frampton.Events
+   * @param {String} selector A selector to test
+   * @param {Object} evt      An event object whose target will be tested against
+   * @returns {Boolean}       Does the event target, or one of its children, have the given selector
+   */
   module.exports = (0, _curry)(function contains_selector(selector, evt) {
     return (0, _compose)((0, _contains)(selector), _eventTarget)(evt);
   });
@@ -1139,6 +1167,15 @@ define('frampton-events/event_supported', ['exports', 'module', 'frampton-utils/
     abort: 'img'
   };
 
+  /**
+   * Tests whether a given event is supported by the current browser.
+   *
+   * @name eventSupported
+   * @static
+   * @memberOf Frampton.Events
+   * @param {String} eventName The name of the event to test
+   * @returns {Boolean} Is the event supported
+   */
   module.exports = (0, _memoize)(function event_supported(eventName) {
     var el = document.createElement(TAGNAMES[eventName] || 'div');
     eventName = 'on' + eventName;
@@ -1152,6 +1189,15 @@ define('frampton-events/event_supported', ['exports', 'module', 'frampton-utils/
   });
 });
 define("frampton-events/event_target", ["exports", "module"], function (exports, module) {
+  /**
+   * eventTarget :: DomEvent -> Object
+   *
+   * @name eventTarget
+   * @memberOf Frampton.Events
+   * @static
+   * @param {Object} evt
+   * @returns {Object} The target value of the event object, usually a DomNode
+   */
   "use strict";
 
   module.exports = event_target;
@@ -1171,9 +1217,27 @@ define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/comp
 
   var _targetValue = _interopRequire(_framptonEventsTarget_value);
 
+  /**
+   * eventValue :: DomEvent -> String
+   *
+   * @name eventValue
+   * @memberOf Frampton.Events
+   * @static
+   * @param {Object} evt
+   * @returns {String} The value property of the event target
+   */
   module.exports = (0, _compose)(_targetValue, _eventTarget);
 });
 define("frampton-events/get_position", ["exports", "module"], function (exports, module) {
+  /**
+   * getPosition :: DomEvent -> [Number, Number]
+   *
+   * @name getPosition
+   * @memberOf Frampton.Events
+   * @static
+   * @param {Object} evt
+   * @returns {Array} A pair where the 0 index is the x coord and the 1 index is the y coord
+   */
   "use strict";
 
   module.exports = get_position;
@@ -1205,6 +1269,16 @@ define('frampton-events/get_position_relative', ['exports', 'module', 'frampton-
 
   var _getPosition = _interopRequire(_framptonEventsGet_position);
 
+  /**
+   * getPositionRelative :: DomNode -> DomEvent -> [Number, Number]
+   *
+   * @name getPositionRelative
+   * @memberOf Frampton.Events
+   * @static
+   * @param {Object} node
+   * @param {Object} evt
+   * @returns {Array} A pair where the 0 index is the x coord and the 1 index is the y coord
+   */
   module.exports = (0, _curry)(function get_position_relative(node, evt) {
 
     var position = (0, _getPosition)(evt);
@@ -1232,7 +1306,16 @@ define('frampton-events/has_selector', ['exports', 'module', 'frampton-utils/cur
 
   var _eventTarget = _interopRequire(_framptonEventsEvent_target);
 
-  // hasSelector :: String -> DomEvent -> Boolean
+  /**
+   * hasSelector :: String -> DomEvent -> Boolean
+   *
+   * @name hasSelector
+   * @memberOf Frampton.Events
+   * @static
+   * @param {String} selector
+   * @param {Object} evt
+   * @returns {Boolean}
+   */
   module.exports = (0, _curry)(function has_selector(selector, evt) {
     return (0, _compose)((0, _matches)(selector), _eventTarget)(evt);
   });
@@ -1287,6 +1370,15 @@ define('frampton-events/listen', ['exports', 'module', 'frampton-utils/curry', '
   });
 });
 define("frampton-events/target_value", ["exports", "module"], function (exports, module) {
+  /**
+   * targetValue :: Object -> Any
+   *
+   * @name targetValue
+   * @memberOf Frampton.Events
+   * @static
+   * @param {Object} target
+   * @returns {Any}
+   */
   "use strict";
 
   module.exports = target_value;

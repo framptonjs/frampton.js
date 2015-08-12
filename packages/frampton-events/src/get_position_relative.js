@@ -1,6 +1,16 @@
 import curry from 'frampton-utils/curry';
 import getPosition from 'frampton-events/get_position';
 
+/**
+ * getPositionRelative :: DomNode -> DomEvent -> [Number, Number]
+ *
+ * @name getPositionRelative
+ * @memberOf Frampton.Events
+ * @static
+ * @param {Object} node
+ * @param {Object} evt
+ * @returns {Array} A pair where the 0 index is the x coord and the 1 index is the y coord
+ */
 export default curry(function get_position_relative(node, evt) {
 
   var position = getPosition(evt);
