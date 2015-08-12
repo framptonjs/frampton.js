@@ -1,3 +1,4 @@
+import Frampton from 'frampton/namespace';
 import { Either, Left, Right } from 'frampton-data/either';
 import { Maybe, Just, Nothing } from 'frampton-data/maybe';
 import Task from 'frampton-data/task';
@@ -8,18 +9,17 @@ import fork from 'frampton-data/fork';
 import fail from 'frampton-data/fail';
 import succeed from 'frampton-data/succeed';
 
-export {
-  Either,
-  Left,
-  Right,
-  Maybe,
-  Just,
-  Nothing,
-  Task,
-  when,
-  sequence,
-  runTask,
-  fork,
-  fail,
-  succeed
-};
+Frampton.Data          = {};
+Frampton.Data.Either   = Either;
+Frampton.Data.Left     = Left;
+Frampton.Data.Right    = Right;
+Frampton.Data.Maybe    = Maybe;
+Frampton.Data.Just     = Just;
+Frampton.Data.Nothing  = Nothing;
+Frampton.Data.Task     = Task;
+Frampton.Data.when     = when;
+Frampton.Data.sequence = sequence;
+Frampton.Data.runTask  = runTask;
+Frampton.Data.fork     = fork;
+Frampton.Data.fail     = fail;
+Frampton.Data.succeed  = succeed;

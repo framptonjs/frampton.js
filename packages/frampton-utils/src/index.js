@@ -1,3 +1,4 @@
+import Frampton from 'frampton/namespace';
 import apply from 'frampton-utils/apply';
 import assert from 'frampton-utils/assert';
 import compose from 'frampton-utils/compose';
@@ -5,10 +6,8 @@ import curry from 'frampton-utils/curry';
 import equal from 'frampton-utils/equal';
 import extend from 'frampton-utils/extend';
 import get from 'frampton-utils/get';
-import guid from 'frampton-utils/guid';
 import identity from 'frampton-utils/identity';
 import immediate from 'frampton-utils/immediate';
-import inherits from 'frampton-utils/inherits';
 import isArray from 'frampton-utils/is_array';
 import isDefined from 'frampton-utils/is_defined';
 import isEqual from 'frampton-utils/is_equal';
@@ -28,34 +27,31 @@ import noop from 'frampton-utils/noop';
 import ofValue from 'frampton-utils/of_value';
 import safeGet from 'frampton-utils/safe_get';
 
-export {
-  apply,
-  assert,
-  compose,
-  curry,
-  equal,
-  extend,
-  get,
-  guid,
-  identity,
-  immediate,
-  inherits,
-  isArray,
-  isDefined,
-  isEqual,
-  isNothing,
-  isSomething,
-  isNull,
-  isObject,
-  isString,
-  isUndefined,
-  isBoolean,
-  isFunction,
-  isPromise,
-  log,
-  lazy,
-  memoize,
-  noop,
-  ofValue,
-  safeGet
-};
+Frampton.Utils = {};
+Frampton.Utils.apply = apply;
+Frampton.Utils.assert = assert;
+Frampton.Utils.compose = compose;
+Frampton.Utils.curry = curry;
+Frampton.Utils.equal = equal;
+Frampton.Utils.extend = extend;
+Frampton.Utils.get = get;
+Frampton.Utils.identity = identity;
+Frampton.Utils.immediate = immediate;
+Frampton.Utils.isArray = isArray;
+Frampton.Utils.isDefined = isDefined;
+Frampton.Utils.isEqual = isEqual;
+Frampton.Utils.isNothing = isNothing;
+Frampton.Utils.isSomething = isSomething;
+Frampton.Utils.isNull = isNull;
+Frampton.Utils.isObject = isObject;
+Frampton.Utils.isString = isString;
+Frampton.Utils.isUndefined = isUndefined;
+Frampton.Utils.isBoolean = isBoolean;
+Frampton.Utils.isFunction = isFunction;
+Frampton.Utils.isPromise = isPromise;
+Frampton.Utils.log = log;
+Frampton.Utils.lazy = lazy;
+Frampton.Utils.memoize = memoize;
+Frampton.Utils.noop = noop;
+Frampton.Utils.ofValue = ofValue;
+Frampton.Utils.safeGet = safeGet;

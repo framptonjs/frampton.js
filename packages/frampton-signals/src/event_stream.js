@@ -1,14 +1,12 @@
-import {
-  apply,
-  guid,
-  identity,
-  isEqual,
-  isFunction,
-  isUndefined,
-  log,
-  noop,
-  ofValue
-} from 'frampton-utils';
+import apply from 'frampton-utils/apply';
+import guid from 'frampton-utils/guid';
+import identity from 'frampton-utils/identity';
+import isEqual from 'frampton-utils/is_equal';
+import isFunction from 'frampton-utils/is_function';
+import isUndefined from 'frampton-utils/is_undefined';
+import log from 'frampton-utils/log';
+import noop from 'frampton-utils/noop';
+import ofValue from 'frampton-utils/of_value';
 
 import {
   errorEvent,

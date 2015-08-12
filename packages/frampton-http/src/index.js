@@ -1,3 +1,4 @@
+import Frampton from 'frampton/namespace';
 import send from 'frampton-http/send';
 import get from 'frampton-http/get';
 import getNewest from 'frampton-http/get_newest';
@@ -13,19 +14,18 @@ import queryEscape from 'frampton-http/query_escape';
 import uriEncode from 'frampton-http/uri_encode';
 import uriDecode from 'frampton-http/uri_decode';
 
-export {
-  get,
-  getNewest,
-  post,
-  upload,
-  send,
-  start,
-  error,
-  progress,
-  complete,
-  url,
-  queryPair,
-  queryEscape,
-  uriEncode,
-  uriDecode
-};
+Frampton.Http = {};
+Frampton.Http.send        = send;
+Frampton.Http.get         = get;
+Frampton.Http.post        = post;
+Frampton.Http.getNewest   = getNewest;
+Frampton.Http.upload      = upload;
+Frampton.Http.complete    = complete;
+Frampton.Http.progress    = progress;
+Frampton.Http.error       = error;
+Frampton.Http.start       = start;
+Frampton.Http.url         = url;
+Frampton.Http.queryPair   = queryPair;
+Frampton.Http.queryEscape = queryEscape;
+Frampton.Http.uriEncode   = uriEncode;
+Frampton.Http.uriDecode   = uriDecode;

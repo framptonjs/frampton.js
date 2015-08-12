@@ -1,4 +1,4 @@
-import Frampton from 'frampton';
+import Frampton from 'frampton/namespace';
 import apply from 'frampton-utils/apply';
 
 function MockXMLHttpRequest() {

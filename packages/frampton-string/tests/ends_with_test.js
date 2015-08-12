@@ -1,6 +1,4 @@
-import {
-  endsWith
-} from 'frampton-string';
+import endsWith from 'frampton-string/ends_with';
 
 QUnit.module('Frampton.String.endsWith');
 

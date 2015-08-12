@@ -1,14 +1,12 @@
 /*globals Frampton:true */
-
-if (typeof Frampton === 'undefined') {
-  Frampton = {};
-}
-
-if (typeof define === 'undefined' && typeof require === 'undefined') {
-  var define, require
-}
+var define, require;
+var global = this;
 
 (function() {
+
+  if (typeof Frampton === 'undefined') {
+    Frampton = {};
+  };
 
   if (typeof Frampton.__loader === 'undefined') {
 
@@ -30,7 +28,7 @@ if (typeof define === 'undefined' && typeof require === 'undefined') {
       registry[name] = value;
     };
 
-    requirejs = require = requireModule = function(name) {
+    require = function(name) {
       return internalRequire(name, null);
     };
 

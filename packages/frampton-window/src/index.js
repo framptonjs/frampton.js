@@ -1,5 +1,4 @@
+import Frampton from 'frampton/namespace';
 import Window from 'frampton-window/window';
 
-export {
-  Window
-};
+Frampton.Window = Window;

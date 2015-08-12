@@ -1,6 +1,4 @@
-import {
-  contains
-} from 'frampton-string';
+import contains from 'frampton-string/contains';
 
 QUnit.module('Frampton.String.contains');
 

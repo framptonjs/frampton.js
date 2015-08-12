@@ -1,13 +1,10 @@
 import curry from 'frampton-utils/curry';
+import contains from 'frampton-list/contains';
+import append from 'frampton-list/append';
+import remove from 'frampton-list/remove';
 
-import {
-  contains,
-  append,
-  remove
-} from 'frampton-list';
-
-import { listen } from 'frampton-events';
-import { stepper } from 'frampton-signals';
+import listen from 'frampton-events/listen';
+import stepper from 'frampton-signals/stepper';
 import KEY_MAP from 'frampton-keyboard/key_map';
 import keyCode from 'frampton-keyboard/key_code';
 

@@ -1,4 +1,5 @@
-import { extend, isNothing } from 'frampton-utils';
+import extend from 'frampton-utils/extend';
+import isNothing from 'frampton-utils/is_nothing';
 
 var defaults = {
   LIMIT   : 1000,

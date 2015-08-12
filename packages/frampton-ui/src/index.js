@@ -1,5 +1,5 @@
+import Frampton from 'frampton/namespace';
 import Input from 'frampton-ui/input';
 
-export {
-  Input
-};
+Frampton.UI = {};
+Frampton.UI.Input = Input;

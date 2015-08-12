@@ -1,5 +1,4 @@
+import Frampton from 'frampton/namespace';
 import Mouse from 'frampton-mouse/mouse';
 
-export {
-  Mouse
-};
+Frampton.Mouse = Mouse;

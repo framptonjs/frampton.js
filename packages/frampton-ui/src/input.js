@@ -1,9 +1,6 @@
-import { stepper } from 'frampton-signals';
-
-import {
-  eventValue,
-  listen
-} from 'frampton-events';
+import stepper from 'frampton-signals/stepper';
+import eventValue from 'frampton-events/event_value';
+import listen from 'frampton-events/listen';
 
 export default function ui_input(element) {
 

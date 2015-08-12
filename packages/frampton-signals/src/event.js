@@ -1,9 +1,7 @@
-import {
-  assert,
-  inherits,
-  isString,
-  notImplemented
-} from 'frampton-utils';
+import assert from 'frampton-utils/assert';
+import inherits from 'frampton-utils/inherits';
+import isString from 'frampton-utils/is_string';
+import notImplemented from 'frampton-utils/not_implemented';
 
 /**
  * The value of a observable

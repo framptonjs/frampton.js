@@ -1,4 +1,4 @@
-import { curry } from 'frampton-utils';
+import curry from 'frampton-utils/curry';
 
 //+ chain(>>=) :: Monad a -> Monad b -> Monad b
 export default curry(function curried_ap(monad1, monad2) {

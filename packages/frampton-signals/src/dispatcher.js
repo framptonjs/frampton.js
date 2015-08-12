@@ -1,5 +1,5 @@
-import { noop } from 'frampton-utils';
-import { remove } from 'frampton-list';
+import noop from 'frampton-utils/noop';
+import remove from 'frampton-list/remove';
 
 /**
  * Dispatcher is a helper object that helps the a stream manage its Outlets. A

@@ -1,5 +1,5 @@
-import { curry } from 'frampton-utils';
-import { drop } from 'frampton-list';
+import curry from 'frampton-utils/curry';
+import drop from 'frampton-list/drop';
 import EventStream from 'frampton-signals/event_stream';
 import { nextEvent } from 'frampton-signals/event';
 

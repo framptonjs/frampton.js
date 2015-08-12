@@ -1,8 +1,4 @@
-import {
-  addListener,
-  removeListener
-} from 'frampton-events/event_dispatcher';
-
+import Frampton from 'frampton/namespace';
 import listen from 'frampton-events/listen';
 import contains from 'frampton-events/contains';
 import eventTarget from 'frampton-events/event_target';
@@ -11,14 +7,11 @@ import getPosition from 'frampton-events/get_position';
 import getPositionRelative from 'frampton-events/get_position_relative';
 import targetValue from 'frampton-events/target_value';
 
-export {
-  addListener,
-  removeListener,
-  listen,
-  contains,
-  eventTarget,
-  eventValue,
-  getPosition,
-  getPositionRelative,
-  targetValue
-};
+Frampton.Events                     = {};
+Frampton.Events.listen              = listen;
+Frampton.Events.contains            = contains;
+Frampton.Events.eventTarget         = eventTarget;
+Frampton.Events.eventValue          = eventValue;
+Frampton.Events.targetValue         = targetValue;
+Frampton.Events.getPosition         = getPosition;
+Frampton.Events.getPositionRelative = getPositionRelative;

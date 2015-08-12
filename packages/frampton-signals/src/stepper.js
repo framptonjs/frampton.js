@@ -1,4 +1,4 @@
-import { curry } from 'frampton-utils';
+import curry from 'frampton-utils/curry';
 import Behavior from 'frampton-signals/behavior';
 
 // stepper :: a -> EventStream a -> Behavior a

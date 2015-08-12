@@ -1,6 +1,4 @@
-import {
-  startsWith
-} from 'frampton-string';
+import startsWith from 'frampton-string/starts_with';
 
 QUnit.module('Frampton.String.startsWith');
 

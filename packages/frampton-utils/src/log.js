@@ -1,4 +1,4 @@
-import Frampton from 'frampton';
+import Frampton from 'frampton/namespace';
 
 export default function log(msg, data) {
 

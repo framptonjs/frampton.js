@@ -3,7 +3,7 @@ import {
   nextEvent,
   errorEvent,
   endEvent
-} from 'frampton-signals';
+} from 'frampton-signals/event';
 
 QUnit.module('Frampton.Signals.Event');
 

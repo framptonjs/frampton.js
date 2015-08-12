@@ -1,3 +1,4 @@
+import Frampton from 'frampton/namespace';
 import append from 'frampton-list/append';
 import contains from 'frampton-list/contains';
 import copy from 'frampton-list/copy';
@@ -22,28 +23,27 @@ import sum from 'frampton-list/sum';
 import tail from 'frampton-list/tail';
 import zip from 'frampton-list/zip';
 
-export {
-  append,
-  contains,
-  copy,
-  diff,
-  drop,
-  each,
-  filter,
-  foldl,
-  foldr,
-  head,
-  init,
-  last,
-  length,
-  maximum,
-  minimum,
-  prepend,
-  product,
-  reverse,
-  remove,
-  split,
-  sum,
-  tail,
-  zip
-};
+Frampton.List = {};
+Frampton.List.append   = append;
+Frampton.List.contains = contains;
+Frampton.List.copy     = copy;
+Frampton.List.diff     = diff;
+Frampton.List.drop     = drop;
+Frampton.List.each     = each;
+Frampton.List.filter   = filter;
+Frampton.List.foldl    = foldl;
+Frampton.List.foldr    = foldr;
+Frampton.List.head     = head;
+Frampton.List.init     = init;
+Frampton.List.last     = last;
+Frampton.List.length   = length;
+Frampton.List.maximum  = maximum;
+Frampton.List.minimum  = minimum;
+Frampton.List.prepend  = prepend;
+Frampton.List.product  = product;
+Frampton.List.remove   = remove;
+Frampton.List.reverse  = reverse;
+Frampton.List.split    = split;
+Frampton.List.sum      = sum;
+Frampton.List.tail     = tail;
+Frampton.List.zip      = zip;

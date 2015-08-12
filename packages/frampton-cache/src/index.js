@@ -1,5 +1,4 @@
+import Frampton from 'frampton/namespace';
 import Cache from 'frampton-cache/Cache';
 
-export {
-  Cache
-};
+Frampton.Cache = Cache;

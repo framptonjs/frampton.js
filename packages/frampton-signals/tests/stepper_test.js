@@ -1,8 +1,6 @@
-import {
-  nextEvent,
-  empty,
-  stepper
-} from 'frampton-signals';
+import { nextEvent } from 'frampton-signals/event';
+import empty from 'frampton-signals/empty';
+import stepper from 'frampton-signals/stepper';
 
 QUnit.module('Frampton.Signals.stepper');
 
