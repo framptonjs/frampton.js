@@ -1,7 +1,8 @@
 import curry from 'frampton-utils/curry';
-import isSomething from 'frampton-utils/is_something';
+import compose from 'frampton-utils/compose';
+import contains from 'frampton-html/contains';
+import eventTarget from 'frampton-events/event_target';
 
 export default curry(function curried_contains(element, evt) {
-  var target = evt.target;
-  return (isSomething(target) && isSomething(element) && (element === target || element.contains(target)));
+  return compose(contains(element), eventTarget)(evt);
 });

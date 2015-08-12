@@ -808,18 +808,39 @@ define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/lis
   _Frampton.Events.getPosition = _getPosition;
   _Frampton.Events.getPositionRelative = _getPositionRelative;
 });
-define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something) {
+define('frampton-events/closest_to_event', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/closest', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleClosest, _framptonEventsEvent_target) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  var _isSomething = _interopRequire(_framptonUtilsIs_something);
+  var _compose = _interopRequire(_framptonUtilsCompose);
+
+  var _closest = _interopRequire(_framptonStyleClosest);
+
+  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
+
+  // closestToEvent :: String -> DomEvent -> DomNode
+  module.exports = (0, _curry)(function closest_to_event(selector, evt) {
+    return (0, _compose)((0, _closest)(selector), _eventTarget)(evt);
+  });
+});
+define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-html/contains', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonHtmlContains, _framptonEventsEvent_target) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _compose = _interopRequire(_framptonUtilsCompose);
+
+  var _contains = _interopRequire(_framptonHtmlContains);
+
+  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
 
   module.exports = (0, _curry)(function curried_contains(element, evt) {
-    var target = evt.target;
-    return (0, _isSomething)(target) && (0, _isSomething)(element) && (element === target || element.contains(target));
+    return (0, _compose)((0, _contains)(element), _eventTarget)(evt);
   });
 });
 define("frampton-events/document_cache", ["exports", "module"], function (exports, module) {
@@ -890,6 +911,24 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
 
   exports.addListener = addListener;
   exports.removeListener = removeListener;
+});
+define('frampton-events/event_has_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/matches', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleMatches, _framptonEventsEvent_target) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _compose = _interopRequire(_framptonUtilsCompose);
+
+  var _matches = _interopRequire(_framptonStyleMatches);
+
+  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
+
+  // eventHasSelector :: String -> DomEvent -> Boolean
+  module.exports = (0, _curry)(function event_has_selector(selector, evt) {
+    return (0, _compose)((0, _matches)(selector), _eventTarget)(evt);
+  });
 });
 define("frampton-events/event_map", ["exports", "module"], function (exports, module) {
   "use strict";
@@ -1217,6 +1256,30 @@ define("frampton-events/target_value", ["exports", "module"], function (exports,
   function target_value(target) {
     return target.value;
   }
+});
+define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/contains'], function (exports, _framptonNamespace, _framptonHtmlContains) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Frampton = _interopRequire(_framptonNamespace);
+
+  var _contains = _interopRequire(_framptonHtmlContains);
+
+  _Frampton.Html = {};
+  _Frampton.Html.contains = _contains;
+});
+define('frampton-html/contains', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  // contains :: Dom -> Dom -> Boolean
+  module.exports = (0, _curry)(function contains(parent, child) {
+    return parent === child || parent.contains(child);
+  });
 });
 define('frampton-http', ['exports', 'frampton/namespace', 'frampton-http/send', 'frampton-http/get', 'frampton-http/get_newest', 'frampton-http/post', 'frampton-http/upload', 'frampton-http/complete', 'frampton-http/progress', 'frampton-http/error', 'frampton-http/start', 'frampton-http/url', 'frampton-http/query_pair', 'frampton-http/query_escape', 'frampton-http/uri_encode', 'frampton-http/uri_decode'], function (exports, _framptonNamespace, _framptonHttpSend, _framptonHttpGet, _framptonHttpGet_newest, _framptonHttpPost, _framptonHttpUpload, _framptonHttpComplete, _framptonHttpProgress, _framptonHttpError, _framptonHttpStart, _framptonHttpUrl, _framptonHttpQuery_pair, _framptonHttpQuery_escape, _framptonHttpUri_encode, _framptonHttpUri_decode) {
   'use strict';
@@ -4302,7 +4365,7 @@ define("frampton-string/words", ["exports", "module"], function (exports, module
     return str.trim().split(/\s+/g);
   }
 });
-define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/current_value', 'frampton-style/apply_styles', 'frampton-style/remove_styles'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleCurrent_value, _framptonStyleApply_styles, _framptonStyleRemove_styles) {
+define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/apply_styles', 'frampton-style/remove_styles'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleApply_styles, _framptonStyleRemove_styles) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -4315,6 +4378,8 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
 
   var _hasClass = _interopRequire(_framptonStyleHas_class);
 
+  var _matches = _interopRequire(_framptonStyleMatches);
+
   var _current = _interopRequire(_framptonStyleCurrent_value);
 
   var _applyStyles = _interopRequire(_framptonStyleApply_styles);
@@ -4325,6 +4390,7 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
   _Frampton.Style.addClass = _addClass;
   _Frampton.Style.removeClass = _removeClass;
   _Frampton.Style.hasClass = _hasClass;
+  _Frampton.Style.matches = _matches;
   _Frampton.Style.current = _current;
   _Frampton.Style.applyStyles = _applyStyles;
   _Frampton.Style.removeStyles = _removeStyles;
@@ -4353,6 +4419,27 @@ define('frampton-style/apply_styles', ['exports', 'module', 'frampton-utils/curr
     }
   });
 });
+define('frampton-style/closest', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/matches'], function (exports, module, _framptonUtilsCurry, _framptonStyleMatches) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _matches = _interopRequire(_framptonStyleMatches);
+
+  module.exports = (0, _curry)(function closest(selector, element) {
+
+    while (element) {
+      if ((0, _matches)(selector, element)) {
+        break;
+      }
+      element = element.parentElement;
+    }
+
+    return element || null;
+  });
+});
 define('frampton-style/current_value', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
 
@@ -4376,6 +4463,25 @@ define('frampton-style/has_class', ['exports', 'module', 'frampton-utils/curry']
 
   module.exports = (0, _curry)(function add_class(element, name) {
     return element.classList.contains(name);
+  });
+});
+define('frampton-style/matches', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  module.exports = (0, _curry)(function matches(selector, element) {
+
+    var elementList = (element.document || element.ownerDocument).querySelectorAll(selector);
+    var i = 0;
+
+    while (elementList[i] && elementList[i] !== element) {
+      i++;
+    }
+
+    return elementList[i] ? true : false;
   });
 });
 define('frampton-style/remove_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
