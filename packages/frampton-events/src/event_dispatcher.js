@@ -33,7 +33,7 @@ function removeCustomEvent(name, target, callback) {
 
 function addListener(eventName, callback, target) {
 
-  if (isDefined(EVENT_MAP[eventName])) {
+  if (isDefined(EVENT_MAP[eventName]) && isFunction(target.addEventListener)) {
     addDomEvent(eventName, target, callback);
   } else {
     addCustomEvent(eventName, target, callback);
@@ -43,7 +43,7 @@ function addListener(eventName, callback, target) {
 }
 
 function removeListener(eventName, callback, target) {
-  if (isDefined(EVENT_MAP[eventName])) {
+  if (isDefined(EVENT_MAP[eventName]) && isFunction(target.removeEventListener)) {
     removeDomEvent(eventName, target, callback);
   } else {
     removeCustomEvent(eventName, target, callback);

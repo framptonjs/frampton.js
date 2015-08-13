@@ -920,7 +920,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
 
   function addListener(eventName, callback, target) {
 
-    if ((0, _isDefined)(_EVENT_MAP[eventName])) {
+    if ((0, _isDefined)(_EVENT_MAP[eventName]) && (0, _isFunction)(target.addEventListener)) {
       addDomEvent(eventName, target, callback);
     } else {
       addCustomEvent(eventName, target, callback);
@@ -930,7 +930,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   }
 
   function removeListener(eventName, callback, target) {
-    if ((0, _isDefined)(_EVENT_MAP[eventName])) {
+    if ((0, _isDefined)(_EVENT_MAP[eventName]) && (0, _isFunction)(target.removeEventListener)) {
       removeDomEvent(eventName, target, callback);
     } else {
       removeCustomEvent(eventName, target, callback);
