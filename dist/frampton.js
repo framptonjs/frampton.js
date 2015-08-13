@@ -2181,17 +2181,29 @@ define("frampton-list/copy", ["exports", "module"], function (exports, module) {
    */
   "use strict";
 
-  module.exports = function (xs) {
+  module.exports = copy;
 
-    var len = xs.length;
-    var arr = new Array(len);
+  function copy(xs, begin, end) {
 
-    for (var i = 0; i < len; i++) {
-      arr[i] = xs[i];
+    var argLen = xs.length,
+        idx = 0,
+        arrLen,
+        arr,
+        i;
+
+    begin = begin || 0;
+    end = end || argLen;
+    arrLen = end - begin;
+
+    if (argLen > 0) {
+      arr = new Array(arrLen);
+      for (i = begin; i < end; i++) {
+        arr[idx++] = xs[i];
+      }
     }
 
-    return arr;
-  };
+    return arr || [];
+  }
 });
 define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains'], function (exports, module, _framptonUtilsCurry, _framptonListContains) {
   'use strict';

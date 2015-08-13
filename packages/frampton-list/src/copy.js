@@ -2,14 +2,22 @@
  * @name copy
  * @memberOf Frampton
  */
-export default function(xs) {
+export default function copy(xs, begin, end) {
 
-  var len = xs.length;
-  var arr = new Array(len);
+  var argLen = xs.length,
+      idx    = 0,
+      arrLen, arr, i;
 
-  for (let i = 0; i < len; i++) {
-    arr[i] = xs[i];
+  begin = (begin || 0);
+  end = (end || argLen);
+  arrLen = (end - begin);
+
+  if (argLen > 0) {
+    arr = new Array(arrLen);
+    for (i=begin;i<end;i++) {
+      arr[idx++] = xs[i];
+    }
   }
 
-  return arr;
+  return (arr || []);
 }

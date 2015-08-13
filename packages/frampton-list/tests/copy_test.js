@@ -13,3 +13,15 @@ QUnit.test('should return an array with the values of the given array', function
   var ys = copy(xs);
   deepEqual(ys, xs, 'has correct values');
 });
+
+QUnit.test('should take optional parameter to trim beginning of copied array', function() {
+  var xs = [1,2,3];
+  var ys = copy(xs, 1);
+  deepEqual(ys, [2,3], 'has correct values');
+});
+
+QUnit.test('should take optional parameter to trim end of copied array', function() {
+  var xs = [1,2,3];
+  var ys = copy(xs, 0, 2);
+  deepEqual(ys, [1,2], 'has correct values');
+});
