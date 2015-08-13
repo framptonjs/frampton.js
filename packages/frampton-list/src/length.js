@@ -1,4 +1,5 @@
-import isArray from 'frampton-utils/is_array';
+import isSomething from 'frampton-utils/is_something';
+import isDefined from 'frampton-utils/is_defined';
 
 /**
  * @name length
@@ -6,5 +7,5 @@ import isArray from 'frampton-utils/is_array';
  * @static
  */
 export default function length(xs) {
-  return (isArray(xs)) ? xs.length : 0;
+  return (isSomething(xs) && isDefined(xs.length)) ? xs.length : 0;
 }
