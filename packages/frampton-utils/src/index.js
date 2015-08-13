@@ -26,6 +26,7 @@ import log from 'frampton-utils/log';
 import lazy from 'frampton-utils/lazy';
 import memoize from 'frampton-utils/memoize';
 import noop from 'frampton-utils/noop';
+import not from 'frampton-utils/not';
 import ofValue from 'frampton-utils/of_value';
 import safeGet from 'frampton-utils/safe_get';
 
@@ -57,5 +58,6 @@ Frampton.Utils.log = log;
 Frampton.Utils.lazy = lazy;
 Frampton.Utils.memoize = memoize;
 Frampton.Utils.noop = noop;
+Frampton.Utils.not = not;
 Frampton.Utils.ofValue = ofValue;
 Frampton.Utils.safeGet = safeGet;
