@@ -4096,6 +4096,26 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
   };
 
   /**
+   * preventDefault :: EventStream DomEvent
+   *
+   * @name preventDefault
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @returns {EventStream}
+   */
+  EventStream.prototype.preventDefault = function EventStream_preventDefault() {
+    return withTransform(this, function (event) {
+      var value = event.get();
+      if ((0, _isFunction)(value.preventDefault)) {
+        value.preventDefault();
+        value.stopPropagation();
+      }
+      return (0, _framptonSignalsEvent.nextEvent)(value);
+    });
+  };
+
+  /**
    * log :: EventStream a
    *
    * @name log

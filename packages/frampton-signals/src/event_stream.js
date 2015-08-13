@@ -624,6 +624,26 @@ EventStream.prototype.not = function(behavior) {
 };
 
 /**
+ * preventDefault :: EventStream DomEvent
+ *
+ * @name preventDefault
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @returns {EventStream}
+ */
+EventStream.prototype.preventDefault = function EventStream_preventDefault() {
+  return withTransform(this, (event) => {
+    var value = event.get();
+    if (isFunction(value.preventDefault)) {
+      value.preventDefault();
+      value.stopPropagation();
+    }
+    return nextEvent(value);
+  });
+};
+
+/**
  * log :: EventStream a
  *
  * @name log

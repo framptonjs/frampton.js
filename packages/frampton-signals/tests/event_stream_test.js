@@ -264,3 +264,26 @@ QUnit.test('throttle method should regulate frequency of events', function(asser
     done();
   });
 });
+
+QUnit.test('preventDefault method should call stopPropagation and preventDefault methods of event object', function(assert) {
+
+  var done = assert.async();
+  var preventCalled = false;
+  var stopCalled = false;
+  var stream = empty();
+
+  stream.preventDefault().next((evt) => {
+    ok(preventCalled, 'prevent called');
+    ok(stopCalled, 'stop called');
+    done();
+  });
+
+  stream.push(nextEvent({
+    preventDefault : function() {
+      preventCalled = true;
+    },
+    stopPropagation : function() {
+      stopCalled = true;
+    }
+  }));
+});
