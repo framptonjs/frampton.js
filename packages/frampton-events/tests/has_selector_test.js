@@ -1,6 +1,6 @@
-import eventHasSelector from 'frampton-events/event_has_selector';
+import hasSelector from 'frampton-events/has_selector';
 
-QUnit.module('Frampton.Events.eventHasSelector', {
+QUnit.module('Frampton.Events.hasSelector', {
   beforeEach() {
     this.div1 = document.createElement('div');
     this.container = document.getElementById('qunit-fixture');
@@ -15,5 +15,5 @@ QUnit.module('Frampton.Events.eventHasSelector', {
 
 QUnit.test('should return true if event target has given selector', function() {
   this.div1.classList.add('blue');
-  ok(eventHasSelector('.blue', { target: this.div1 }));
+  ok(hasSelector('.blue', { target: this.div1 }));
 });

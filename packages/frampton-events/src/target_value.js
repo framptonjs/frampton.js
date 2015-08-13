@@ -1,3 +1,3 @@
 export default function target_value(target) {
-  return target.value;
+  return (target.value || null);
 }

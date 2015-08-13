@@ -299,12 +299,12 @@ EventStream.prototype.filter = function EventStream_filter(predicate) {
 };
 
 // scan :: EventStream a -> (a -> b) -> Behavior b
-EventStream.prototype.scan = function(initial, fn) {
+EventStream.prototype.scan = function EventStream_scan(initial, fn) {
   return stepper(initial, this.map(fn));
 };
 
 // sample :: EventStream a -> Behavior b -> EventStream b
-EventStream.prototype.sample = function(behavior) {
+EventStream.prototype.sample = function EventStream_sample(behavior) {
   var source = this;
   var breakers = [];
   return new EventStream((sink) => {
@@ -324,7 +324,7 @@ EventStream.prototype.sample = function(behavior) {
 };
 
 // fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
-EventStream.prototype.fold = function(fn, acc) {
+EventStream.prototype.fold = function EventStream_fold(fn, acc) {
   return withTransform(this, (event) => {
     acc = (isUndefined(acc)) ? event.get() : fn(acc, event.get());
     return nextEvent(acc);
@@ -332,7 +332,7 @@ EventStream.prototype.fold = function(fn, acc) {
 };
 
 // take :: EventStream a -> Number n -> EventStream a
-EventStream.prototype.take = function(limit) {
+EventStream.prototype.take = function EventStream_take(limit) {
 
   var source = this;
   var breaker = null;
@@ -348,6 +348,53 @@ EventStream.prototype.take = function(limit) {
           sink(event);
         } else {
           stream.close();
+        }
+      } else {
+        sink(event);
+      }
+    });
+
+    return function take_cleanup() {
+      breaker();
+      breaker = null;
+      source = null;
+    };
+  });
+};
+
+/**
+ * @name first
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @returns {EventStream} A new EventStream
+ */
+EventStream.prototype.first = function EventStream_first() {
+  return this.take(1);
+};
+
+/**
+ * Skips the first n number of values on the stream.
+ *
+ * @name skip
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @param {EventStream} number - Number of values to skip.
+ * @returns {EventStream} A new EventStream
+ */
+EventStream.prototype.skip = function EventStream_skip(number) {
+
+  var source = this;
+  var breaker = null;
+
+  return new EventStream(function(sink) {
+
+    breaker = source.subscribe((event) => {
+      if (event.isNext()) {
+        if (number === 0) {
+          number = number - 1;
+          sink(event);
         }
       } else {
         sink(event);

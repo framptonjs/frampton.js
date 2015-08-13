@@ -5,7 +5,7 @@ import { nextEvent } from 'frampton-signals/event';
 import contains from 'frampton-events/contains';
 import EVENT_MAP from 'frampton-events/event_map';
 import { addListener } from 'frampton-events/event_dispatcher';
-import DOCUMENT_CACHE from 'frampton-events/document_cache';
+import documentCache from 'frampton-events/document_cache';
 
 function getEventStream(name, target) {
   return new EventStream((sink) => {
@@ -18,10 +18,9 @@ function getEventStream(name, target) {
 }
 
 function getDocumentStream(name) {
-  if (!DOCUMENT_CACHE[name]) {
-    DOCUMENT_CACHE[name] = getEventStream(name, document);
-  }
-  return DOCUMENT_CACHE[name];
+  return documentCache.get(name, function() {
+    return getEventStream(name, document);
+  });
 }
 
 /**

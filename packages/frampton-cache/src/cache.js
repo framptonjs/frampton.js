@@ -85,7 +85,7 @@ Cache.prototype.get = function Cache_get(key, fn) {
     // if we have a key but it's expired, blow the mother up.
     if (isExpired(this.store[key], this.config.TIMEOUT)) {
       this.remove(key);
-      return null;
+      return this.put(key, fn());
     }
 
     // otherwise, yeah b@$%#!, let's return the value and get moving.
@@ -94,7 +94,7 @@ Cache.prototype.get = function Cache_get(key, fn) {
     return this.store[key].value;
   }
 
-  return null;
+  return this.put(key, fn());
 };
 
 /**

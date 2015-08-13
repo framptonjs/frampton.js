@@ -220,7 +220,7 @@ define('frampton-cache/cache', ['exports', 'module', 'frampton-utils/extend', 'f
       // if we have a key but it's expired, blow the mother up.
       if (isExpired(this.store[key], this.config.TIMEOUT)) {
         this.remove(key);
-        return null;
+        return this.put(key, fn());
       }
 
       // otherwise, yeah b@$%#!, let's return the value and get moving.
@@ -229,7 +229,7 @@ define('frampton-cache/cache', ['exports', 'module', 'frampton-utils/extend', 'f
       return this.store[key].value;
     }
 
-    return null;
+    return this.put(key, fn());
   };
 
   /**
@@ -778,7 +778,7 @@ define('frampton-data/when', ['exports', 'module', 'frampton-data/task'], functi
     });
   }
 });
-define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/listen', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/target_value'], function (exports, _framptonNamespace, _framptonEventsListen, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsTarget_value) {
+define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/listen', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/target_value', 'frampton-events/has_selector', 'frampton-events/contains_selector'], function (exports, _framptonNamespace, _framptonEventsListen, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsTarget_value, _framptonEventsHas_selector, _framptonEventsContains_selector) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -799,12 +799,18 @@ define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/lis
 
   var _targetValue = _interopRequire(_framptonEventsTarget_value);
 
+  var _hasSelector = _interopRequire(_framptonEventsHas_selector);
+
+  var _containsSelector = _interopRequire(_framptonEventsContains_selector);
+
   _Frampton.Events = {};
   _Frampton.Events.listen = _listen;
   _Frampton.Events.contains = _contains;
   _Frampton.Events.eventTarget = _eventTarget;
   _Frampton.Events.eventValue = _eventValue;
   _Frampton.Events.targetValue = _targetValue;
+  _Frampton.Events.hasSelector = _hasSelector;
+  _Frampton.Events.containsSelector = _containsSelector;
   _Frampton.Events.getPosition = _getPosition;
   _Frampton.Events.getPositionRelative = _getPositionRelative;
 });
@@ -843,12 +849,7 @@ define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry',
     return (0, _compose)((0, _contains)(element), _eventTarget)(evt);
   });
 });
-define("frampton-events/document_cache", ["exports", "module"], function (exports, module) {
-  "use strict";
-
-  module.exports = {};
-});
-define('frampton-events/event_contains_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/contains', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleContains, _framptonEventsEvent_target) {
+define('frampton-events/contains_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/contains', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleContains, _framptonEventsEvent_target) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -861,10 +862,19 @@ define('frampton-events/event_contains_selector', ['exports', 'module', 'frampto
 
   var _eventTarget = _interopRequire(_framptonEventsEvent_target);
 
-  // eventHasSelector :: String -> DomEvent -> Boolean
-  module.exports = (0, _curry)(function event_contains_selector(selector, evt) {
+  // containsSelector :: String -> DomEvent -> Boolean
+  module.exports = (0, _curry)(function contains_selector(selector, evt) {
     return (0, _compose)((0, _contains)(selector), _eventTarget)(evt);
   });
+});
+define('frampton-events/document_cache', ['exports', 'module', 'frampton-cache/cache'], function (exports, module, _framptonCacheCache) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _Cache = _interopRequire(_framptonCacheCache);
+
+  module.exports = new _Cache();
 });
 define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function', 'frampton-utils/is_defined', 'frampton-utils/lazy', 'frampton-events/event_map'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_function, _framptonUtilsIs_defined, _framptonUtilsLazy, _framptonEventsEvent_map) {
   'use strict';
@@ -929,24 +939,6 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
 
   exports.addListener = addListener;
   exports.removeListener = removeListener;
-});
-define('frampton-events/event_has_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/matches', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleMatches, _framptonEventsEvent_target) {
-  'use strict';
-
-  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-
-  var _curry = _interopRequire(_framptonUtilsCurry);
-
-  var _compose = _interopRequire(_framptonUtilsCompose);
-
-  var _matches = _interopRequire(_framptonStyleMatches);
-
-  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
-
-  // eventHasSelector :: String -> DomEvent -> Boolean
-  module.exports = (0, _curry)(function event_has_selector(selector, evt) {
-    return (0, _compose)((0, _matches)(selector), _eventTarget)(evt);
-  });
 });
 define("frampton-events/event_map", ["exports", "module"], function (exports, module) {
   "use strict";
@@ -1227,6 +1219,24 @@ define('frampton-events/get_position_relative', ['exports', 'module', 'frampton-
     return [posx, posy];
   });
 });
+define('frampton-events/has_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/matches', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleMatches, _framptonEventsEvent_target) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _compose = _interopRequire(_framptonUtilsCompose);
+
+  var _matches = _interopRequire(_framptonStyleMatches);
+
+  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
+
+  // hasSelector :: String -> DomEvent -> Boolean
+  module.exports = (0, _curry)(function has_selector(selector, evt) {
+    return (0, _compose)((0, _matches)(selector), _eventTarget)(evt);
+  });
+});
 define('frampton-events/listen', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_function', 'frampton-signals/event_stream', 'frampton-signals/event', 'frampton-events/contains', 'frampton-events/event_map', 'frampton-events/event_dispatcher', 'frampton-events/document_cache'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_function, _framptonSignalsEvent_stream, _framptonSignalsEvent, _framptonEventsContains, _framptonEventsEvent_map, _framptonEventsEvent_dispatcher, _framptonEventsDocument_cache) {
   'use strict';
 
@@ -1242,7 +1252,7 @@ define('frampton-events/listen', ['exports', 'module', 'frampton-utils/curry', '
 
   var _EVENT_MAP = _interopRequire(_framptonEventsEvent_map);
 
-  var _DOCUMENT_CACHE = _interopRequire(_framptonEventsDocument_cache);
+  var _documentCache = _interopRequire(_framptonEventsDocument_cache);
 
   function getEventStream(name, target) {
     return new _EventStream(function (sink) {
@@ -1253,10 +1263,9 @@ define('frampton-events/listen', ['exports', 'module', 'frampton-utils/curry', '
   }
 
   function getDocumentStream(name) {
-    if (!_DOCUMENT_CACHE[name]) {
-      _DOCUMENT_CACHE[name] = getEventStream(name, document);
-    }
-    return _DOCUMENT_CACHE[name];
+    return _documentCache.get(name, function () {
+      return getEventStream(name, document);
+    });
   }
 
   /**
@@ -1283,7 +1292,7 @@ define("frampton-events/target_value", ["exports", "module"], function (exports,
   module.exports = target_value;
 
   function target_value(target) {
-    return target.value;
+    return target.value || null;
   }
 });
 define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/contains'], function (exports, _framptonNamespace, _framptonHtmlContains) {
@@ -3766,12 +3775,12 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
   };
 
   // scan :: EventStream a -> (a -> b) -> Behavior b
-  EventStream.prototype.scan = function (initial, fn) {
+  EventStream.prototype.scan = function EventStream_scan(initial, fn) {
     return (0, _stepper)(initial, this.map(fn));
   };
 
   // sample :: EventStream a -> Behavior b -> EventStream b
-  EventStream.prototype.sample = function (behavior) {
+  EventStream.prototype.sample = function EventStream_sample(behavior) {
     var source = this;
     var breakers = [];
     return new EventStream(function (sink) {
@@ -3791,7 +3800,7 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
   };
 
   // fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
-  EventStream.prototype.fold = function (fn, acc) {
+  EventStream.prototype.fold = function EventStream_fold(fn, acc) {
     return withTransform(this, function (event) {
       acc = (0, _isUndefined)(acc) ? event.get() : fn(acc, event.get());
       return (0, _framptonSignalsEvent.nextEvent)(acc);
@@ -3799,7 +3808,7 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
   };
 
   // take :: EventStream a -> Number n -> EventStream a
-  EventStream.prototype.take = function (limit) {
+  EventStream.prototype.take = function EventStream_take(limit) {
 
     var source = this;
     var breaker = null;
@@ -3815,6 +3824,53 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
             sink(event);
           } else {
             stream.close();
+          }
+        } else {
+          sink(event);
+        }
+      });
+
+      return function take_cleanup() {
+        breaker();
+        breaker = null;
+        source = null;
+      };
+    });
+  };
+
+  /**
+   * @name first
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @returns {EventStream} A new EventStream
+   */
+  EventStream.prototype.first = function EventStream_first() {
+    return this.take(1);
+  };
+
+  /**
+   * Skips the first n number of values on the stream.
+   *
+   * @name skip
+   * @method
+   * @memberOf EventStream
+   * @instance
+   * @param {EventStream} number - Number of values to skip.
+   * @returns {EventStream} A new EventStream
+   */
+  EventStream.prototype.skip = function EventStream_skip(number) {
+
+    var source = this;
+    var breaker = null;
+
+    return new EventStream(function (sink) {
+
+      breaker = source.subscribe(function (event) {
+        if (event.isNext()) {
+          if (number === 0) {
+            number = number - 1;
+            sink(event);
           }
         } else {
           sink(event);
