@@ -298,7 +298,14 @@ EventStream.prototype.filter = function EventStream_filter(predicate) {
   });
 };
 
-// scan :: EventStream a -> (a -> b) -> Behavior b
+// filterJust :: EventStream Maybe a -> EventStream a
+EventStream.prototype.filterJust = function EventStream_filterJust() {
+  return this.filter((val) => {
+    return (isFunction(val.isJust) && val.isJust());
+  });
+};
+
+// scan :: EventStream a -> b -> (a -> b) -> Behavior b
 EventStream.prototype.scan = function EventStream_scan(initial, fn) {
   return stepper(initial, this.map(fn));
 };
@@ -331,6 +338,15 @@ EventStream.prototype.fold = function EventStream_fold(fn, acc) {
   });
 };
 
+// withPrevious :: EventStream a -> EventStream a
+EventStream.prototype.withPrevious = function EventStream_withPrevious(limit) {
+  return this.fold((acc, next) => {
+    if (acc.length >= (limit || 2)) acc.shift();
+    acc.push(next);
+    return acc;
+  }, []);
+};
+
 // take :: EventStream a -> Number n -> EventStream a
 EventStream.prototype.take = function EventStream_take(limit) {
 
@@ -355,6 +371,36 @@ EventStream.prototype.take = function EventStream_take(limit) {
     });
 
     return function take_cleanup() {
+      breaker();
+      breaker = null;
+      source = null;
+    };
+  });
+};
+
+// takeWhile :: EventStream a -> (a -> Boolean) -> EventStream a
+EventStream.prototype.takeWhile = function EventStream_takeWhile(predicate) {
+
+  var source = this;
+  var breaker = null;
+
+  return new EventStream(function take_while_seed(sink) {
+
+    var stream = this;
+
+    breaker = source.subscribe((event) => {
+      if (event.isNext()) {
+        if (predicate(event.get())) {
+          sink(event);
+        } else {
+          stream.close();
+        }
+      } else {
+        sink(event);
+      }
+    });
+
+    return function takeWhile_cleanup() {
       breaker();
       breaker = null;
       source = null;

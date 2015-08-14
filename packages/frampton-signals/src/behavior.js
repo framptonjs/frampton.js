@@ -26,7 +26,7 @@ function addListener(behavior, fn) {
 }
 
 function updateListeners(behavior) {
-  behavior.listeners.forEach(function(listener) {
+  behavior.listeners.forEach((listener) => {
     listener(behavior.value);
   });
 }
@@ -46,16 +46,65 @@ Behavior.prototype.update = function Behavior_update(val) {
   return this;
 };
 
+// ap(<*>) :: Behavior (a -> b) -> Behavior a -> Behavior b
+Behavior.prototype.ap = function Behavior_ap(behavior) {
+  var source = this;
+  return new Behavior(source.value(behavior.value), (sink) => {
+    source.changes((val) => {
+      sink(val(behavior.value));
+    });
+    behavior.changes((val) => {
+      sink(source.value(val));
+    })
+  });
+};
+
+// join :: Behavior (Behavior a) -> Behavior a
+Behavior.prototype.join = function Behavior_join() {
+  var source = this;
+  return new Behavior(source.value.value, (sink) => {
+    source.changes((val) => {
+      sink(val.value);
+    });
+  });
+};
+
+// chain(>>=) :: Behavior a -> (a -> Behavior b) -> Behavior b
+Behavior.prototype.chain = function Behavior_chain(fn) {
+  return this.map(fn).join();
+};
+
+// map :: Behavior a -> (a -> b) -> Behavior b
+Behavior.prototype.map = function Behavior_map(fn) {
+  var source = this;
+  return new Behavior(fn(source.value), (sink) => {
+    source.changes((val) => {
+      sink(fn(val));
+    });
+  });
+};
+
+// zip :: Behavior a -> Behavior b -> Behavior [a, b]
+Behavior.prototype.zip = function Behavior_map(b2) {
+  var b1 = this;
+  return new Behavior([b1.value, b2.value], (sink) => {
+    b1.changes((val) => {
+      sink([val, b2.value]);
+    });
+    b2.changes((val) => {
+      sink([b1.value, val]);
+    });
+  });
+};
+
 Behavior.prototype.changes = function Behavior_changes(fn) {
   addListener(this, fn);
-  return this;
 };
 
 Behavior.prototype.bind = function Behavior_bind(obj, prop) {
   this.changes((val) => {
     obj[prop] = val;
   });
-  return this;
 };
 
 Behavior.prototype.destroy = function Behavior_destroy() {

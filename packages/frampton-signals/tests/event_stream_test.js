@@ -225,6 +225,25 @@ QUnit.test('recover method should produce next from error', function(assert) {
   });
 });
 
+QUnit.test('withPrevious method should generate a stream with past values in an array', function() {
+
+  var stream = empty();
+  var stream2 = stream.withPrevious();
+  var i = 0;
+
+  stream2.next((val) => {
+    if (i === 0) {
+      deepEqual(val, [1], 'first occurance is correct');
+    } else {
+      deepEqual(val, [1,2], 'correctly saves first value');
+    }
+    i = i + 1;
+  });
+
+  stream.push(nextEvent(1));
+  stream.push(nextEvent(2));
+});
+
 QUnit.test('debounce method should regulate frequency of events', function(assert) {
 
   var done = assert.async();

@@ -10,6 +10,32 @@ QUnit.test('of method should return Behavior with initial value', function() {
   });
 });
 
+QUnit.test('join method should flatten nested Behaviors', function() {
+  var behavior = Behavior.of(Behavior.of(5)).join();
+  equal(behavior.value, 5, 'has initial value');
+  behavior.changes((val) => {
+    equal(val, 5, 'persists initial value');
+  });
+});
+
+QUnit.test('map method should update value correclty', function() {
+  var behavior = Behavior.of(5).map((val) => val + 1);
+  equal(behavior.value, 6, 'has initial value');
+  behavior.changes((val) => {
+    equal(val, 6, 'persists initial value');
+  });
+});
+
+QUnit.test('chain method should produce a new Behavior from mapping', function() {
+  var behavior = Behavior.of(5).chain(function(val) {
+    return Behavior.of(val + 1);
+  });
+  equal(behavior.value, 6, 'has initial value');
+  behavior.changes((val) => {
+    equal(val, 6, 'persists initial value');
+  });
+});
+
 QUnit.test('update method should notify listeners', () => {
   var behavior = Behavior.of(5);
   var count = 0;

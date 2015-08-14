@@ -1,7 +1,7 @@
-import EventStream from 'frampton-signals/event_stream';
+import empty from 'frampton-signals/empty';
 
 var instance = null;
 
 export default function null_stream() {
-  return (instance !== null) ? instance : (instance = new EventStream(null, null));
+  return (instance !== null) ? instance : (instance = empty());
 }

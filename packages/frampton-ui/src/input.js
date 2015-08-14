@@ -1,6 +1,7 @@
 import stepper from 'frampton-signals/stepper';
 import eventValue from 'frampton-events/event_value';
 import listen from 'frampton-events/listen';
+import length from 'frampton-list/length';
 
 export default function ui_input(element) {
 
@@ -12,11 +13,13 @@ export default function ui_input(element) {
   var values = localInputs.merge(localChanges).map(eventValue);
 
   return {
+    element   : element,
     change    : localChanges,
     input     : localInputs,
     blur      : localBlurs,
     focus     : localFocuses,
     isFocused : stepper(false, focused),
-    value     : stepper((element.value || ''), values)
+    value     : stepper((element.value || ''), values),
+    length    : stepper((element.value.length), values.map(length))
   };
 }
