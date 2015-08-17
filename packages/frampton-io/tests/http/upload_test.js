@@ -1,8 +1,8 @@
-import upload from 'frampton-http/upload';
+import upload from 'frampton-io/http/upload';
 
-QUnit.module('Frampton.Http.upload');
+QUnit.module('Frampton.IO.Http.upload');
 
-QUnit.test('should return an EventStream of an ajax response', function(assert) {
+QUnit.test('should return an EventStream of a response', function(assert) {
   var done = assert.async();
   var req = upload('test', 'test data');
   req.next((val) => {

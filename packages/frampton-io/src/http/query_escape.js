@@ -1,4 +1,4 @@
-import uriEncode from 'frampton-http/uri_encode';
+import uriEncode from 'frampton-io/http/uri_encode';
 import join from 'frampton-string/join';
 import split from 'frampton-string/split';
 

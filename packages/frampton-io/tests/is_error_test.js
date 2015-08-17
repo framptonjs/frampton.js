@@ -1,7 +1,7 @@
-import isError from 'frampton-http/is_error';
-import Response from 'frampton-http/response';
+import isError from 'frampton-io/is_error';
+import Response from 'frampton-io/response';
 
-QUnit.module('Frampton.Http.isError');
+QUnit.module('Frampton.IO.isError');
 
 QUnit.test('should return true for error response', function() {
   var response = Response('error', 0, null);

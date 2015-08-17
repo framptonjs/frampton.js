@@ -1,4 +1,4 @@
-import queryEscape from 'frampton-http/query_escape';
+import queryEscape from 'frampton-io/http/query_escape';
 
 // query_pair :: [String, String] -> String
 export default function(pair) {

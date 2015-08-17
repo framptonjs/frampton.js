@@ -1,4 +1,4 @@
-import isStart from 'frampton-http/is_start';
+import isStart from 'frampton-io/is_start';
 
 //+ start :: EventStream Respose -> EventStream Response
 export default function start(stream) {

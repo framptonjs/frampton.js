@@ -1,5 +1,5 @@
 import curry from 'frampton-utils/curry';
-import post from 'frampton-http/post';
+import post from 'frampton-io/http/post';
 
 export default curry(function upload(url, ...files) {
 

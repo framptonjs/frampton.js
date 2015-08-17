@@ -1,7 +1,7 @@
-import isComplete from 'frampton-http/is_complete';
-import Response from 'frampton-http/response';
+import isComplete from 'frampton-io/is_complete';
+import Response from 'frampton-io/response';
 
-QUnit.module('Frampton.Http.isComplete');
+QUnit.module('Frampton.IO.isComplete');
 
 QUnit.test('should return true for complete response', function() {
   var response = Response('complete', 1, null);

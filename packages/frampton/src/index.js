@@ -12,7 +12,7 @@ import 'frampton-mouse';
 import 'frampton-keyboard';
 import 'frampton-window';
 import 'frampton-ui';
-import 'frampton-http';
+import 'frampton-io';
 import 'frampton-style';
 
 export default Frampton;

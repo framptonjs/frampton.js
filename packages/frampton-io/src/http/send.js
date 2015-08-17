@@ -1,8 +1,8 @@
 import extend from 'frampton-utils/extend';
 import EventStream from 'frampton-signals/event_stream';
 import { nextEvent, errorEvent } from 'frampton-signals/event';
-import ajax from 'frampton-http/ajax';
-import Response from 'frampton-http/response';
+import AjaxApi from 'frampton-io/http/ajax_api';
+import Response from 'frampton-io/response';
 
 var defaultSettings = {
   timeout : (10 * 1000)
@@ -10,9 +10,9 @@ var defaultSettings = {
 
 export default function send(settings, request) {
 
-  return new EventStream((sink) => {
+  return new EventStream(function seed_send(sink) {
 
-    var req = ajax();
+    var req = AjaxApi();
     var settings = extend({}, defaultSettings, settings);
 
     req.open(request.method, request.url, true);

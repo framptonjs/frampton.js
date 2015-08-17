@@ -1,8 +1,8 @@
-import post from 'frampton-http/post';
+import post from 'frampton-io/http/post';
 
-QUnit.module('Frampton.Http.post');
+QUnit.module('Frampton.IO.Http.post');
 
-QUnit.test('should return an EventStream of an ajax response', function(assert) {
+QUnit.test('should return an EventStream of a response', function(assert) {
   var done = assert.async();
   var req = post('test', {});
   req.next((val) => {

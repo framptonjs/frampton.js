@@ -11,8 +11,8 @@ import start from 'frampton-http/start';
 import url from 'frampton-http/url';
 import queryPair from 'frampton-http/query_pair';
 import queryEscape from 'frampton-http/query_escape';
-import uriEncode from 'frampton-http/uri_encode';
-import uriDecode from 'frampton-http/uri_decode';
+import uriEncode from 'frampton-io/http/uri_encode';
+import uriDecode from 'frampton-io/http/uri_decode';
 
 Frampton.Http = {};
 Frampton.Http.send        = send;

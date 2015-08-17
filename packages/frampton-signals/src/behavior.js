@@ -55,7 +55,7 @@ Behavior.prototype.ap = function Behavior_ap(behavior) {
     });
     behavior.changes((val) => {
       sink(source.value(val));
-    })
+    });
   });
 };
 

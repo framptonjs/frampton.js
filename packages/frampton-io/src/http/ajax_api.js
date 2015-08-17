@@ -1,18 +1,18 @@
 import Frampton from 'frampton/namespace';
 import apply from 'frampton-utils/apply';
 
-function MockXMLHttpRequest() {
+function MockAjax() {
   this.listeners = {};
   this.headers = {};
   this.requestTime = ((Math.random() * 3000) + 300);
   this.progress = 0;
 }
 
-MockXMLHttpRequest.prototype.timeout = 10000;
+MockAjax.prototype.timeout = 10000;
 
-MockXMLHttpRequest.prototype.open = function(method, url) {};
+MockAjax.prototype.open = function(method, url) {};
 
-MockXMLHttpRequest.prototype.send = function() {
+MockAjax.prototype.send = function() {
 
   this.progressInterval = setInterval(() => {
     if (this.listeners['progress']) {
@@ -35,7 +35,9 @@ MockXMLHttpRequest.prototype.send = function() {
 
     if (this.listeners['load']) {
       this.listeners['load'].forEach((next) => {
-        next('test');
+        next({
+          response: 'test'
+        });
       });
     }
   }, this.requestTime);
@@ -45,7 +47,7 @@ MockXMLHttpRequest.prototype.send = function() {
   }
 };
 
-MockXMLHttpRequest.prototype.addEventListener = function(name, callback) {
+MockAjax.prototype.addEventListener = function(name, callback) {
 
   if (!this.listeners[name]) {
     this.listeners[name] = [];
@@ -56,13 +58,13 @@ MockXMLHttpRequest.prototype.addEventListener = function(name, callback) {
   }
 };
 
-MockXMLHttpRequest.prototype.setRequestHeader = function(key, value) {
+MockAjax.prototype.setRequestHeader = function(key, value) {
   this.headers[key] = value;
 };
 
 export default function ajax() {
   if (Frampton.isTest()) {
-    return new MockXMLHttpRequest();
+    return new MockAjax();
   } else {
     return new XMLHttpRequest();
   }

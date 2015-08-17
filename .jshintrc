@@ -25,7 +25,8 @@
     "requestAnimationFrame",
     "cancelAnimationFrame",
     "XMLHttpRequest",
-    "FormData"
+    "FormData",
+    "FileReader"
   ],
 
   "esnext": true,
