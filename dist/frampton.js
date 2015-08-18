@@ -5892,7 +5892,8 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signals/empty',
     return {
       dimensions: dimensions,
       width: width,
-      height: height
+      height: height,
+      resize: resize
     };
   }
 });

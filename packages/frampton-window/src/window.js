@@ -39,7 +39,8 @@ export default function Window(element) {
   element = element;
   return {
     dimensions : dimensions,
-    width : width,
-    height : height
+    width      : width,
+    height     : height,
+    resize     : resize
   };
 }

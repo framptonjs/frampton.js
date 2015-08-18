@@ -7,7 +7,7 @@ Frampton is written with the opinion that reactive programming is best suited fo
 
 ## Events vs Values
 
-Like Reactive Banana for Haskell, Frampton differentiates between a stream of events and a value that changes over time. Events are discrete and essentially stateless. The statelessness is not strictly enforced, but should be treated as such in client code. EventStreams model the discrete moments in time when an event occurs as an array of one value [a]. However, a time-varying value is modeled as a function of time t -> a, current time produces current value. In implementation current time is implicit and value will always produce the current value.
+Like Reactive Banana for Haskell, Frampton differentiates between a stream of events (EventStreams, duh) and a value that changes over time (Behaviors, ok, less obvious). Events are discrete and essentially stateless. The statelessness is not strictly enforced, but should be treated as such in client code. EventStreams model the discrete moments in time when an event occurs as an array of one value [a]. However, a time-varying value is modeled as a function of time t -> a, a Behavior, current time produces current value. In implementation current time is implicit and value will always produce the current value.
 
 
 ### EventStreams
@@ -94,13 +94,13 @@ var behavior = toggle(stream1, stream2);
 
 ### Frampton.Mouse
 
-The Mouse package only exports one function the Mouse function. It takes an optional first parameter of a DomNode. If no parameter is passed in the function will return an object whose EventStreams and Behaviors are relative to the window, otherwise they will be relative to the DomNode passed in.
+The Mouse package only exports one function, the Mouse function. It takes an optional first parameter of a DomNode. If no parameter is passed in the function will return an object whose EventStreams and Behaviors are relative to the window, otherwise they will be relative to the DomNode passed in.
 
 ```
-var mouse = Mouse();
+var mouse = Frampton.Mouse();
 
 var div = document.getElementById('my-id');
-var relativeMouse = Mouse(div);
+var relativeMouse = Frampton.Mouse(div);
 
 // An EventStream of all clicks
 mouse.clicks
@@ -116,4 +116,125 @@ mouse.position
 
 // A Boolean Behavior indicating if the mouse is down
 mouse.isDown
+```
+
+
+### Frampton.Keyboard
+
+The Keyboard package is similar to the Mouse package in that it exports a Keyboard function that returns an object with EventStreams and Behaviors. The Keyboard package also exports a number of utilities for dealing with keyboard input.
+
+```
+var keyboard = Frampton.Keyboard();
+
+// EventStream
+keyboard.downs
+
+// EventStream
+keyboard.ups
+
+// EventStream
+keyboard.presses
+
+// EventStream
+keyboard.codes
+
+// Behavior
+keyboard.arrows
+
+// Boolean Behavior is shift key down
+keyboard.shift
+
+// Boolean Behavior is control key down
+keyboard.ctrl
+
+// Boolean Behavior is escape key down
+keyboard.escape
+
+// Boolean Behavior is enter key down
+keyboard.enter
+
+// Boolean Behavior is space key down
+keyboard.space
+```
+
+
+### Frampton.Window
+
+The Window function from the Window module returns an object with info about the dimensions of the window. The Window function optionally takes a DomNode if your application is nested inside a DomNode the window sizing will be that of the containing node.
+
+```
+var win = Window();
+
+// EventStream of resize events
+win.resize
+
+// The size of the window as a Behavior [width Number, height Number]
+win.deminsions
+
+// The width of the window as a Behavior Number
+win.width
+
+// The height of the window as a Behavior Number
+win.height
+```
+
+
+### Frampton.IO
+
+The IO module provides utilities for dealing with file handling and network requests. EventStreams returned by these utilities emit a Response object.
+
+```
+// A response has this form:
+var response = Response();
+
+// A string representing the status of the IO (complete, progress, error...)
+response.status
+
+// A number from 0 to 1 representing the progress
+response.progress
+
+// A boolean telling us if the response is complete
+response.complete
+
+// Any data associated with the response
+response.data
+```
+
+
+#### Frampton.IO.Http
+
+All utilities for handling network requests are in the Http submodule.
+
+```
+var get = Frampton.IO.Http.get;
+
+// To perform a get:
+var req = get('http://fake-url.com');
+
+// To have a stream of requests:
+var urlStream = urlGeneratingFunction();
+var requestStream = urlStream.chain(get);
+
+// There are additional methods for post and file upload
+```
+
+
+#### Frampton.IO.File
+
+All utilities for handling a file are in the File submodule.
+
+```
+var readFile = Frampton.IO.File.read;
+
+// To read a file (first parameter is how to read file):
+var fileData = readFile('DATA_URL', file);
+
+/**
+ * There are convinience methods for reading the contents of a file in
+ * different formats:
+ * Frampton.IO.File.dataUrl
+ * Frampton.IO.File.binaryString
+ * Frampton.IO.File.arrayBuffer
+ * Frampton.IO.File.text
+ */
 ```
