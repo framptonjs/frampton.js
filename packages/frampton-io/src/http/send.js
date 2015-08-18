@@ -26,7 +26,7 @@ export default function send(settings, request) {
     });
 
     req.addEventListener('error', function(err) {
-      sink(errorEvent(Response('error', 0, err.message)));
+      sink(errorEvent(Response('error', 0, (err.message || 'ajax error'))));
     });
 
     req.addEventListener('timeout', function(err) {
@@ -34,7 +34,13 @@ export default function send(settings, request) {
     });
 
     req.addEventListener('load', function(evt) {
-      sink(nextEvent(Response('complete', 1, evt.response)));
+      var response;
+      try {
+        response = JSON.parse(evt.target.response);
+      } catch(e) {
+        response = evt.target.response;
+      }
+      sink(nextEvent(Response('complete', 1, response)));
     });
 
     for (let key in request.headers) {

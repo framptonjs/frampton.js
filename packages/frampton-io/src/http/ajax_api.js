@@ -36,7 +36,11 @@ MockAjax.prototype.send = function() {
     if (this.listeners['load']) {
       this.listeners['load'].forEach((next) => {
         next({
-          response: 'test'
+          target: {
+            response: 'test'
+          },
+          total: 500,
+          loaded: 500
         });
       });
     }

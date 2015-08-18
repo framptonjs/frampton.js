@@ -11,6 +11,7 @@ import 'frampton-signals';
 import 'frampton-mouse';
 import 'frampton-keyboard';
 import 'frampton-window';
+import 'frampton-html';
 import 'frampton-ui';
 import 'frampton-io';
 import 'frampton-style';

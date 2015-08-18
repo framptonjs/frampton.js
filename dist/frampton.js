@@ -1400,24 +1400,6 @@ define('frampton-events/selector_contains', ['exports', 'module', 'frampton-util
     return (0, _isSomething)((0, _closestToEvent)(selector, evt));
   });
 });
-define("frampton-events/target_value", ["exports", "module"], function (exports, module) {
-  /**
-   * targetValue :: Object -> Any
-   *
-   * @name targetValue
-   * @memberOf Frampton.Events
-   * @static
-   * @param {Object} target
-   * @returns {Any}
-   */
-  "use strict";
-
-  module.exports = target_value;
-
-  function target_value(target) {
-    return target.value || null;
-  }
-});
 define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/contains', 'frampton-html/element_value', 'frampton-html/data'], function (exports, _framptonNamespace, _framptonHtmlContains, _framptonHtmlElement_value, _framptonHtmlData) {
   'use strict';
 
@@ -1844,7 +1826,11 @@ define('frampton-io/http/ajax_api', ['exports', 'module', 'frampton/namespace', 
       if (_this.listeners['load']) {
         _this.listeners['load'].forEach(function (next) {
           next({
-            response: 'test'
+            target: {
+              response: 'test'
+            },
+            total: 500,
+            loaded: 500
           });
         });
       }
@@ -1896,6 +1882,7 @@ define('frampton-io/http/get', ['exports', 'module', 'frampton-io/http/request',
 define('frampton-io/http/get_newest', ['exports', 'module', 'frampton-io/http/get'], function (exports, module, _framptonIoHttpGet) {
   'use strict';
 
+  // get_newest :: EventStream Url -> EventStream Response
   module.exports = get_newest;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -2053,7 +2040,7 @@ define('frampton-io/http/send', ['exports', 'module', 'frampton-utils/extend', '
       });
 
       req.addEventListener('error', function (err) {
-        sink((0, _framptonSignalsEvent.errorEvent)((0, _Response)('error', 0, err.message)));
+        sink((0, _framptonSignalsEvent.errorEvent)((0, _Response)('error', 0, err.message || 'ajax error')));
       });
 
       req.addEventListener('timeout', function (err) {
@@ -2061,7 +2048,13 @@ define('frampton-io/http/send', ['exports', 'module', 'frampton-utils/extend', '
       });
 
       req.addEventListener('load', function (evt) {
-        sink((0, _framptonSignalsEvent.nextEvent)((0, _Response)('complete', 1, evt.response)));
+        var response;
+        try {
+          response = JSON.parse(evt.target.response);
+        } catch (e) {
+          response = evt.target.response;
+        }
+        sink((0, _framptonSignalsEvent.nextEvent)((0, _Response)('complete', 1, response)));
       });
 
       for (var key in request.headers) {
@@ -2142,7 +2135,7 @@ define('frampton-io/is_complete', ['exports', 'module'], function (exports, modu
   module.exports = is_complete;
 
   function is_complete(response) {
-    return response.status === 'complete';
+    return response && response.status === 'complete';
   }
 });
 define('frampton-io/is_error', ['exports', 'module'], function (exports, module) {
@@ -2152,7 +2145,7 @@ define('frampton-io/is_error', ['exports', 'module'], function (exports, module)
   module.exports = is_error;
 
   function is_error(response) {
-    return response.status === 'error';
+    return response && response.status === 'error';
   }
 });
 define('frampton-io/is_start', ['exports', 'module'], function (exports, module) {
@@ -2162,7 +2155,7 @@ define('frampton-io/is_start', ['exports', 'module'], function (exports, module)
   module.exports = is_start;
 
   function is_start(response) {
-    return response.status === 'start';
+    return response && response.status === 'start';
   }
 });
 define('frampton-io/progress', ['exports', 'module', 'frampton-utils/get'], function (exports, module, _framptonUtilsGet) {
@@ -6120,7 +6113,7 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signals/empty',
     };
   }
 });
-define('frampton', ['exports', 'module', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-object', 'frampton-string', 'frampton-math', 'frampton-data', 'frampton-events', 'frampton-signals', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-ui', 'frampton-io', 'frampton-style'], function (exports, module, _framptonNamespace, _framptonUtils, _framptonList, _framptonObject, _framptonString, _framptonMath, _framptonData, _framptonEvents, _framptonSignals, _framptonMouse, _framptonKeyboard, _framptonWindow, _framptonUi, _framptonIo, _framptonStyle) {
+define('frampton', ['exports', 'module', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-object', 'frampton-string', 'frampton-math', 'frampton-data', 'frampton-events', 'frampton-signals', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-html', 'frampton-ui', 'frampton-io', 'frampton-style'], function (exports, module, _framptonNamespace, _framptonUtils, _framptonList, _framptonObject, _framptonString, _framptonMath, _framptonData, _framptonEvents, _framptonSignals, _framptonMouse, _framptonKeyboard, _framptonWindow, _framptonHtml, _framptonUi, _framptonIo, _framptonStyle) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
