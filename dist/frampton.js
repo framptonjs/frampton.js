@@ -3446,9 +3446,9 @@ define('frampton-signals/accum_b', ['exports', 'module', 'frampton-utils/curry',
 
   // accumB :: a -> EventStream (a -> b) -> Behavior b
   module.exports = (0, _curry)(function accumB(initial, stream) {
-    return new _Behavior(initial, function (behavior) {
+    return new _Behavior(initial, function (sink) {
       return stream.next(function (fn) {
-        behavior.update(fn(initial));
+        sink(fn(initial));
       });
     });
   });
@@ -3581,6 +3581,41 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils/assert
   };
 
   module.exports = Behavior;
+});
+define('frampton-signals/changes', ['exports', 'module', 'frampton-signals/event_stream', 'frampton-signals/event'], function (exports, module, _framptonSignalsEvent_stream, _framptonSignalsEvent) {
+  'use strict';
+
+  /**
+   * changes :: Behavior a -> EventStream a
+   *
+   * Takes a Behavior and returns and EventStream that updates when the
+   * value of the Behavior changes
+   *
+   * @name changes
+   * @memberOf Frampton.Signals
+   * @static
+   * @param {Behavior} behavior A behavior to feed the EventStream
+   * @returns {EventStream}
+   */
+  module.exports = changes;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
+
+  function changes(behavior) {
+    return new _EventStream(function (sink) {
+
+      behavior.changes(function (val) {
+        sink((0, _framptonSignalsEvent.nextEvent)(val));
+      });
+
+      return function changes_cleanup() {
+        behavior.destroy();
+        behavior = null;
+      };
+    });
+  }
 });
 define('frampton-signals/constant', ['exports', 'module', 'frampton-signals/behavior'], function (exports, module, _framptonSignalsBehavior) {
   'use strict';
