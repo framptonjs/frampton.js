@@ -14,6 +14,36 @@ QUnit.test('should return false for objects with different key/values', function
   notOk(equal(a, b), 'correctly compares objects');
 });
 
+QUnit.test('should return true for objects with the same nested values', function() {
+  var a = { a: { x: 1, y: { r: 'one', s: 'three'}}, b: 2 };
+  var b = { a: { x: 1, y: { r: 'one', s: 'three'}}, b: 2 };
+  ok(equal(a, b), 'correctly compares objects');
+});
+
+QUnit.test('should return false for objects with different nested values', function() {
+  var a = { a: { x: 1, y: { r: 'one', s: 'four'}}, b: 2 };
+  var b = { a: { x: 1, y: { r: 'one', s: 'three'}}, b: 2 };
+  notOk(equal(a, b), 'correctly compares objects');
+});
+
+QUnit.test('should return true for objects with the same nested null values', function() {
+  var a = { a: { x: 1, y: { r: 'one', s: null}}, b: 2 };
+  var b = { a: { x: 1, y: { r: 'one', s: null}}, b: 2 };
+  ok(equal(a, b), 'correctly compares objects');
+});
+
+QUnit.test('should return false for objects with different nested null values', function() {
+  var a = { a: { x: 1, y: { r: 'one', s: 'four'}}, b: 2 };
+  var b = { a: { x: 1, y: { r: 'one', s: null}}, b: 2 };
+  notOk(equal(a, b), 'correctly compares objects');
+});
+
+QUnit.test('should return false for objects with different keys', function() {
+  var a = { a: { x: 1, y: { r: 'one', s: 'four'}}, b: 2 };
+  var b = { a: { x: 1, y: { r: 'one', t: 'four'}}, b: 2 };
+  notOk(equal(a, b), 'correctly compares objects');
+});
+
 QUnit.test('should return true for the same primitive value', function() {
   var a = 1;
   var b = 1;

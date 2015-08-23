@@ -5435,20 +5435,23 @@ define('frampton-utils/curry', ['exports', 'module', 'frampton-utils/assert', 'f
 define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsIs_object, _framptonUtilsIs_array) {
   'use strict';
 
+  // equal :: Object -> Object -> Boolean
+  module.exports = deep_equal;
+
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _isObject = _interopRequire(_framptonUtilsIs_object);
 
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
-  module.exports = function (obj1, obj2) {
+  function deep_equal(obj1, obj2) {
 
     if (((0, _isObject)(obj1) || (0, _isArray)(obj1)) && ((0, _isObject)(obj1) || (0, _isArray)(obj1))) {
 
       var key = null;
 
       for (key in obj1) {
-        if (obj2[key] !== obj1[key]) {
+        if (!deep_equal(obj1[key], obj2[key])) {
           return false;
         }
       }
@@ -5457,7 +5460,7 @@ define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object',
     } else {
       return obj1 === obj2;
     }
-  };
+  }
 });
 define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
   'use strict';
