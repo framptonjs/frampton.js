@@ -3,7 +3,9 @@ import guid from 'frampton-utils/guid';
 import noop from 'frampton-utils/noop';
 import isDefined from 'frampton-utils/is_defined';
 import equal from 'frampton-utils/equal';
+import lazy from 'frampton-utils/lazy';
 import contains from 'frampton-list/contains';
+import remove from 'frampton-list/remove';
 
 function Behavior(initial, seed) {
   assert('Behavior must have initial value', isDefined(initial));
@@ -22,6 +24,17 @@ function addListener(behavior, fn) {
     }
     behavior.listeners.push(fn);
     fn(behavior.value);
+  }
+
+  return lazy(removeListener, behavior, fn);
+}
+
+function removeListener(behavior, fn) {
+  behavior.listeners = remove(behavior.listeners, fn);
+  if (behavior.listeners.length === 0) {
+    behavior.cleanup();
+    behavior.cleanup = null;
+    behavior.value = null;
   }
 }
 
@@ -98,11 +111,11 @@ Behavior.prototype.zip = function Behavior_map(b2) {
 };
 
 Behavior.prototype.changes = function Behavior_changes(fn) {
-  addListener(this, fn);
+  return addListener(this, fn);
 };
 
 Behavior.prototype.bind = function Behavior_bind(obj, prop) {
-  this.changes((val) => {
+  return this.changes((val) => {
     obj[prop] = val;
   });
 };

@@ -34,6 +34,33 @@ QUnit.test('map method should take a primitive value', function(assert) {
   });
 });
 
+QUnit.test('dropRepeats method should return a stream that will not emit same value successively', function() {
+  var stream = empty();
+  var count = 0;
+  stream.dropRepeats().next((val) => {
+    if (count === 1 && val === 2) {
+      ok(true);
+    }
+    count++;
+  });
+  stream.pushNext(1);
+  stream.pushNext(1);
+  stream.pushNext(1);
+  stream.pushNext(1);
+  stream.pushNext(2);
+});
+
+QUnit.test('concat method should return result of inner stream', function(assert) {
+  var stream1 = empty();
+  var stream2 = empty();
+  var stream3 = stream1.concat(stream2);
+  stream3.next((val) => {
+    equal(val, 2);
+  });
+  stream1.pushNext(1);
+  stream2.pushNext(2);
+});
+
 QUnit.test('map method should take a function', function(assert) {
   var done = assert.async();
   var mapping = (val) => {
@@ -59,6 +86,16 @@ QUnit.test('take method should close after limit reached', function(assert) {
   });
 });
 
+QUnit.test('skip method should skip a set number of events', function() {
+  var stream = empty();
+  stream.skip(2).next((val) => {
+    equal(val, 2);
+  });
+  stream.pushNext(0);
+  stream.pushNext(1);
+  stream.pushNext(2);
+});
+
 QUnit.test('merge method creates a stream from parent streams', function(assert) {
   var done = assert.async();
   var stream1 = empty();
@@ -74,8 +111,8 @@ QUnit.test('merge method creates a stream from parent streams', function(assert)
     }
     count++;
   });
-  stream1.push(nextEvent(1));
-  stream2.push(nextEvent(2));
+  stream1.pushNext(1);
+  stream2.pushNext(2);
 });
 
 QUnit.test('removing all listeners should invoke cleanup', function(assert) {
@@ -160,8 +197,8 @@ QUnit.test('chainLatest method should return newest of multiple nested streams',
     done();
   });
 
-  stream.push(nextEvent('test 1'));
-  stream.push(nextEvent('test 2'));
+  stream.pushNext('test 1');
+  stream.pushNext('test 2');
 });
 
 QUnit.test('and method should only allow values if behavior is truthy', function() {
@@ -175,9 +212,9 @@ QUnit.test('and method should only allow values if behavior is truthy', function
     count++;
   });
 
-  stream1.push(nextEvent(1));
+  stream1.pushNext(1);
   behavior.update(true);
-  stream1.push(nextEvent(1));
+  stream1.pushNext(1);
   equal(count, 1, 'and method correctly gated callback');
 });
 
@@ -192,10 +229,10 @@ QUnit.test('and method should only allow values if behavior is falsy', function(
     count++;
   });
 
-  stream1.push(nextEvent(1));
+  stream1.pushNext(1);
   behavior.update(false);
-  stream1.push(nextEvent(1));
-  stream1.push(nextEvent(1));
+  stream1.pushNext(1);
+  stream1.pushNext(1);
   equal(count, 2, 'not method correctly gated callback');
 });
 
@@ -211,7 +248,7 @@ QUnit.test('sample method should take values from associated behavior', function
     done();
   });
 
-  stream1.push(nextEvent(10));
+  stream1.pushNext(10);
 });
 
 QUnit.test('recover method should produce next from error', function(assert) {
@@ -240,8 +277,8 @@ QUnit.test('withPrevious method should generate a stream with past values in an 
     i = i + 1;
   });
 
-  stream.push(nextEvent(1));
-  stream.push(nextEvent(2));
+  stream.pushNext(1);
+  stream.pushNext(2);
 });
 
 QUnit.test('debounce method should regulate frequency of events', function(assert) {

@@ -59,6 +59,7 @@ function EventStream(seed, transform) {
 /**
  * @name push
  * @memberOf EventStream
+ * @instance
  */
 EventStream.prototype.push = function EventStream_push(event) {
   try {
@@ -69,6 +70,24 @@ EventStream.prototype.push = function EventStream_push(event) {
     log('error: ', e);
     this.dispatcher.push(errorEvent(e.message));
   }
+};
+
+/**
+ * @name pushNext
+ * @memberOf EventStream
+ * @instance
+ */
+EventStream.prototype.pushNext = function EventStream_pushNext(val) {
+  this.push(nextEvent(val));
+};
+
+/**
+ * @name pushError
+ * @memberOf EventStream
+ * @instance
+ */
+EventStream.prototype.pushError = function EventStream_pushError(err) {
+  this.push(errorEvent(err));
 };
 
 // Gets raw event, including empty events discarded by filter actions
@@ -179,6 +198,35 @@ EventStream.prototype.join = function EventStream_join() {
       breakers.forEach(apply);
       breakers = null;
       source = null;
+    };
+  });
+};
+
+/**
+ * concat(>>) :: EventStream a -> EventStream b -> EventStream b
+ *
+ * @name concat
+ * @memberOf EventStream
+ * @instance
+ * @param {EventStream} stream
+ * @returns {EventStream}
+ */
+EventStream.prototype.concat = function EventStream_concat(stream) {
+
+  var source = this;
+  var breakers = [];
+
+  return new EventStream((sink) => {
+
+    breakers.push(source.next((_) => {
+      breakers.push(stream.next((val) => {
+        sink(nextEvent(val));
+      }));
+    }));
+
+    return function concat_cleanup() {
+      breakers.forEach(apply);
+      breakers = null;
     };
   });
 };
@@ -305,6 +353,26 @@ EventStream.prototype.filterJust = function EventStream_filterJust() {
   });
 };
 
+/**
+ * dropRepeats :: EventStream a -> EventStream a
+ *
+ * @name dropRepeats
+ * @method
+ * @memberOf EventStream
+ * @instance
+ * @returns {EventStream}
+ */
+EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
+  var saved;
+  return this.filter((val) => {
+    if (val !== saved) {
+      saved = val;
+      return true;
+    }
+    return false;
+  });
+};
+
 // scan :: EventStream a -> b -> (a -> b) -> Behavior b
 EventStream.prototype.scan = function EventStream_scan(initial, fn) {
   return stepper(initial, this.map(fn));
@@ -315,6 +383,7 @@ EventStream.prototype.sample = function EventStream_sample(behavior) {
   var source = this;
   var breakers = [];
   return new EventStream((sink) => {
+    breakers.push(behavior.changes(noop));
     breakers.push(source.subscribe((event) => {
       if (event.isNext()) {
         sink(nextEvent(behavior.value));
@@ -333,8 +402,12 @@ EventStream.prototype.sample = function EventStream_sample(behavior) {
 // fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
 EventStream.prototype.fold = function EventStream_fold(fn, acc) {
   return withTransform(this, (event) => {
-    acc = (isUndefined(acc)) ? event.get() : fn(acc, event.get());
-    return nextEvent(acc);
+    if (event.isNext()) {
+      acc = (isUndefined(acc)) ? event.get() : fn(acc, event.get());
+      return nextEvent(acc);
+    } else {
+      return event;
+    }
   });
 };
 
@@ -438,8 +511,7 @@ EventStream.prototype.skip = function EventStream_skip(number) {
 
     breaker = source.subscribe((event) => {
       if (event.isNext()) {
-        if (number === 0) {
-          number = number - 1;
+        if ((number--) === 0) {
           sink(event);
         }
       } else {
@@ -680,12 +752,11 @@ EventStream.prototype.not = function(behavior) {
  */
 EventStream.prototype.preventDefault = function EventStream_preventDefault() {
   return withTransform(this, (event) => {
-    var value = event.get();
-    if (isFunction(value.preventDefault)) {
-      value.preventDefault();
-      value.stopPropagation();
-    }
-    return nextEvent(value);
+    return event.map((evt) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      return evt;
+    });
   });
 };
 
@@ -698,9 +769,13 @@ EventStream.prototype.preventDefault = function EventStream_preventDefault() {
  * @instance
  * @returns {EventStream} A new EventStream that logs its values to the console.
  */
-EventStream.prototype.log = function EventStream_log() {
+EventStream.prototype.log = function EventStream_log(msg) {
   return withTransform(this, (event) => {
-    log(event.get());
+    if (msg) {
+      log(msg, event.get());
+    } else {
+      log(event.get());
+    }
     return event;
   });
 };
