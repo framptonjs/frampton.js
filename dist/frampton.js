@@ -5225,12 +5225,25 @@ define('frampton-ui/input', ['exports', 'module', 'frampton-signals/stepper', 'f
 
   function ui_input(element) {
 
+    var tagName = element.tagName.toLowerCase();
     var localInputs = (0, _listen)('input', element);
     var localChanges = (0, _listen)('change', element);
     var localBlurs = (0, _listen)('blur', element);
     var localFocuses = (0, _listen)('focus', element);
     var focused = localBlurs.map(false).merge(localFocuses.map(true));
     var values = localInputs.merge(localChanges).map(_eventValue);
+
+    var initialValue = (function () {
+      switch (tagName) {
+        case 'input':
+        case 'select':
+        case 'textarea':
+          return element.value;
+        default:
+          var temp = element.querySelector('input, select, textarea');
+          return temp && temp.value ? temp.value : '';
+      }
+    })();
 
     return {
       element: element,
@@ -5239,8 +5252,8 @@ define('frampton-ui/input', ['exports', 'module', 'frampton-signals/stepper', 'f
       blur: localBlurs,
       focus: localFocuses,
       isFocused: (0, _stepper)(false, focused),
-      value: (0, _stepper)(element.value || '', values),
-      length: (0, _stepper)(element.value.length, values.map(_length))
+      value: (0, _stepper)(initialValue, values),
+      length: (0, _stepper)(initialValue.length, values.map(_length))
     };
   }
 });
