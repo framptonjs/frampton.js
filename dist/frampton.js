@@ -4976,7 +4976,7 @@ define('frampton-signals/null', ['exports', 'module', 'frampton-signals/empty'],
     return instance !== null ? instance : instance = (0, _empty)();
   }
 });
-define('frampton-signals/send', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/event'], function (exports, module, _framptonUtilsCurry, _framptonSignalsEvent) {
+define('frampton-signals/send', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -4986,9 +4986,9 @@ define('frampton-signals/send', ['exports', 'module', 'frampton-utils/curry', 'f
   // send :: EventStream a -> EventStream b -> Task [a, b] -> ()
   module.exports = (0, _curry)(function send(errors, values, task) {
     task.run(function (err) {
-      return errors.push((0, _framptonSignalsEvent.nextEvent)(err));
+      return errors.pushNext(err);
     }, function (val) {
-      return values.push((0, _framptonSignalsEvent.nextEvent)(val));
+      return values.pushNext(val);
     });
   });
 });
@@ -6056,7 +6056,7 @@ define('frampton-window', ['exports', 'frampton/namespace', 'frampton-window/win
 
   _Frampton.Window = _Window;
 });
-define('frampton-window/window', ['exports', 'module', 'frampton-signals/empty', 'frampton-signals/stepper', 'frampton-signals/event', 'frampton-events/listen', 'frampton-utils/get', 'frampton-utils/is_something'], function (exports, module, _framptonSignalsEmpty, _framptonSignalsStepper, _framptonSignalsEvent, _framptonEventsListen, _framptonUtilsGet, _framptonUtilsIs_something) {
+define('frampton-window/window', ['exports', 'module', 'frampton-signals/empty', 'frampton-signals/stepper', 'frampton-events/listen', 'frampton-utils/get', 'frampton-utils/is_something'], function (exports, module, _framptonSignalsEmpty, _framptonSignalsStepper, _framptonEventsListen, _framptonUtilsGet, _framptonUtilsIs_something) {
   'use strict';
 
   module.exports = Window;
@@ -6092,7 +6092,7 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signals/empty',
     var w = getWidth();
     var h = getHeight();
     if (w !== dimensions[0] || h !== dimensions[1]) {
-      dimensionsStream.push((0, _framptonSignalsEvent.nextEvent)([w, h]));
+      dimensionsStream.pushNext([w, h]);
     }
   }
 

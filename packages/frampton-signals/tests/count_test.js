@@ -1,6 +1,5 @@
 import count from 'frampton-signals/count';
 import empty from 'frampton-signals/empty';
-import { nextEvent } from 'frampton-signals/event';
 
 QUnit.module('Frampton.Signals.count');
 
@@ -16,5 +15,5 @@ QUnit.test('should count the number of occurances of a stream', function() {
     }
     i = i + 1;
   });
-  stream.push(nextEvent('test'));
+  stream.pushNext('test');
 });

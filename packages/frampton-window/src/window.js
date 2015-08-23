@@ -1,6 +1,5 @@
 import empty from 'frampton-signals/empty';
 import stepper from 'frampton-signals/stepper';
-import { nextEvent } from 'frampton-signals/event';
 import listen from 'frampton-events/listen';
 import get from 'frampton-utils/get';
 import isSomething from 'frampton-utils/is_something';
@@ -24,7 +23,7 @@ function updateIfNeeded() {
   var w = getWidth();
   var h = getHeight();
   if (w !== dimensions[0] || h !== dimensions[1]) {
-    dimensionsStream.push(nextEvent([w, h]));
+    dimensionsStream.pushNext([w, h]);
   }
 }
 

@@ -334,12 +334,12 @@ QUnit.test('preventDefault method should call stopPropagation and preventDefault
     done();
   });
 
-  stream.push(nextEvent({
+  stream.pushNext({
     preventDefault : function() {
       preventCalled = true;
     },
     stopPropagation : function() {
       stopCalled = true;
     }
-  }));
+  });
 });

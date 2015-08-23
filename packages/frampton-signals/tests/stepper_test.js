@@ -1,4 +1,3 @@
-import { nextEvent } from 'frampton-signals/event';
 import empty from 'frampton-signals/empty';
 import stepper from 'frampton-signals/stepper';
 
@@ -22,5 +21,5 @@ QUnit.test('creates a Behavior that updates with EventStream', function() {
     }
     count++;
   });
-  stream.push(nextEvent(6));
+  stream.pushNext(6);
 });
