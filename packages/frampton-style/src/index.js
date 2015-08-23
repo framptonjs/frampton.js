@@ -6,12 +6,16 @@ import matches from 'frampton-style/matches';
 import current from 'frampton-style/current_value';
 import applyStyles from 'frampton-style/apply_styles';
 import removeStyles from 'frampton-style/remove_styles';
+import closest from 'frampton-style/closest';
+import contains from 'frampton-style/contains';
 
 Frampton.Style = {};
 Frampton.Style.addClass     = addClass;
+Frampton.Style.closest      = closest;
 Frampton.Style.removeClass  = removeClass;
 Frampton.Style.hasClass     = hasClass;
 Frampton.Style.matches      = matches;
 Frampton.Style.current      = current;
 Frampton.Style.applyStyles  = applyStyles;
 Frampton.Style.removeStyles = removeStyles;
+Frampton.Style.contains     = contains;

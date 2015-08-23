@@ -778,7 +778,7 @@ define('frampton-data/when', ['exports', 'module', 'frampton-data/task'], functi
     });
   }
 });
-define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/listen', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/target_value', 'frampton-events/has_selector', 'frampton-events/contains_selector'], function (exports, _framptonNamespace, _framptonEventsListen, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsTarget_value, _framptonEventsHas_selector, _framptonEventsContains_selector) {
+define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/listen', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/has_selector', 'frampton-events/contains_selector', 'frampton-events/selector_contains', 'frampton-events/closest_to_event'], function (exports, _framptonNamespace, _framptonEventsListen, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsHas_selector, _framptonEventsContains_selector, _framptonEventsSelector_contains, _framptonEventsClosest_to_event) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -797,22 +797,25 @@ define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/lis
 
   var _getPositionRelative = _interopRequire(_framptonEventsGet_position_relative);
 
-  var _targetValue = _interopRequire(_framptonEventsTarget_value);
-
   var _hasSelector = _interopRequire(_framptonEventsHas_selector);
 
   var _containsSelector = _interopRequire(_framptonEventsContains_selector);
+
+  var _selectorContains = _interopRequire(_framptonEventsSelector_contains);
+
+  var _closestToEvent = _interopRequire(_framptonEventsClosest_to_event);
 
   _Frampton.Events = {};
   _Frampton.Events.listen = _listen;
   _Frampton.Events.contains = _contains;
   _Frampton.Events.eventTarget = _eventTarget;
   _Frampton.Events.eventValue = _eventValue;
-  _Frampton.Events.targetValue = _targetValue;
   _Frampton.Events.hasSelector = _hasSelector;
   _Frampton.Events.containsSelector = _containsSelector;
+  _Frampton.Events.selectorContains = _selectorContains;
   _Frampton.Events.getPosition = _getPosition;
   _Frampton.Events.getPositionRelative = _getPositionRelative;
+  _Frampton.Events.closestToEvent = _closestToEvent;
 });
 define('frampton-events/closest_to_event', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/closest', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleClosest, _framptonEventsEvent_target) {
   'use strict';
@@ -1206,16 +1209,16 @@ define("frampton-events/event_target", ["exports", "module"], function (exports,
     return evt.target;
   }
 });
-define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/compose', 'frampton-events/event_target', 'frampton-events/target_value'], function (exports, module, _framptonUtilsCompose, _framptonEventsEvent_target, _framptonEventsTarget_value) {
+define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/compose', 'frampton-html/element_value', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCompose, _framptonHtmlElement_value, _framptonEventsEvent_target) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _compose = _interopRequire(_framptonUtilsCompose);
 
-  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
+  var _elementValue = _interopRequire(_framptonHtmlElement_value);
 
-  var _targetValue = _interopRequire(_framptonEventsTarget_value);
+  var _eventTarget = _interopRequire(_framptonEventsEvent_target);
 
   /**
    * eventValue :: DomEvent -> String
@@ -1226,7 +1229,7 @@ define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/comp
    * @param {Object} evt
    * @returns {String} The value property of the event target
    */
-  module.exports = (0, _compose)(_targetValue, _eventTarget);
+  module.exports = (0, _compose)(_elementValue, _eventTarget);
 });
 define("frampton-events/get_position", ["exports", "module"], function (exports, module) {
   /**
@@ -1369,6 +1372,34 @@ define('frampton-events/listen', ['exports', 'module', 'frampton-utils/curry', '
     }
   });
 });
+define('frampton-events/selector_contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-events/closest_to_event'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonEventsClosest_to_event) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _isSomething = _interopRequire(_framptonUtilsIs_something);
+
+  var _closestToEvent = _interopRequire(_framptonEventsClosest_to_event);
+
+  /**
+   * selectorContains :: String -> DomEvent -> Boolean
+   *
+   * Tests if the target of a given event is contained in a node that matches
+   * the given selector.
+   *
+   * @name selectorContains
+   * @memberOf Frampton.Events
+   * @static
+   * @param {String} selector
+   * @param {Object} evt
+   * @returns {Boolean} Is the event contained in a node that matches the given selector
+   */
+  module.exports = (0, _curry)(function selector_contains(selector, evt) {
+    return (0, _isSomething)((0, _closestToEvent)(selector, evt));
+  });
+});
 define("frampton-events/target_value", ["exports", "module"], function (exports, module) {
   /**
    * targetValue :: Object -> Any
@@ -1387,7 +1418,7 @@ define("frampton-events/target_value", ["exports", "module"], function (exports,
     return target.value || null;
   }
 });
-define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/contains'], function (exports, _framptonNamespace, _framptonHtmlContains) {
+define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/contains', 'frampton-html/element_value', 'frampton-html/data'], function (exports, _framptonNamespace, _framptonHtmlContains, _framptonHtmlElement_value, _framptonHtmlData) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -1396,8 +1427,14 @@ define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/contain
 
   var _contains = _interopRequire(_framptonHtmlContains);
 
+  var _elementValue = _interopRequire(_framptonHtmlElement_value);
+
+  var _data = _interopRequire(_framptonHtmlData);
+
   _Frampton.Html = {};
   _Frampton.Html.contains = _contains;
+  _Frampton.Html.elementValue = _elementValue;
+  _Frampton.Html.data = _data;
 });
 define('frampton-html/contains', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
@@ -1410,6 +1447,36 @@ define('frampton-html/contains', ['exports', 'module', 'frampton-utils/curry'], 
   module.exports = (0, _curry)(function contains(parent, child) {
     return parent === child || parent.contains(child);
   });
+});
+define('frampton-html/data', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  // data :: String -> Dom -> String
+  module.exports = (0, _curry)(function data(name, dom) {
+    return dom.getAttribute('data-' + name);
+  });
+});
+define("frampton-html/element_value", ["exports", "module"], function (exports, module) {
+  /**
+   * elementValue :: Object -> Any
+   *
+   * @name elementValue
+   * @memberOf Frampton.Html
+   * @static
+   * @param {Object} element
+   * @returns {Any}
+   */
+  "use strict";
+
+  module.exports = element_value;
+
+  function element_value(element) {
+    return element.value || null;
+  }
 });
 define('frampton-html/set_html', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
@@ -5136,7 +5203,7 @@ define("frampton-string/words", ["exports", "module"], function (exports, module
     return str.trim().split(/\s+/g);
   }
 });
-define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/apply_styles', 'frampton-style/remove_styles'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleApply_styles, _framptonStyleRemove_styles) {
+define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/closest', 'frampton-style/contains'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleClosest, _framptonStyleContains) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -5157,14 +5224,20 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
 
   var _removeStyles = _interopRequire(_framptonStyleRemove_styles);
 
+  var _closest = _interopRequire(_framptonStyleClosest);
+
+  var _contains = _interopRequire(_framptonStyleContains);
+
   _Frampton.Style = {};
   _Frampton.Style.addClass = _addClass;
+  _Frampton.Style.closest = _closest;
   _Frampton.Style.removeClass = _removeClass;
   _Frampton.Style.hasClass = _hasClass;
   _Frampton.Style.matches = _matches;
   _Frampton.Style.current = _current;
   _Frampton.Style.applyStyles = _applyStyles;
   _Frampton.Style.removeStyles = _removeStyles;
+  _Frampton.Style.contains = _contains;
 });
 define('frampton-style/add_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
@@ -5220,6 +5293,9 @@ define('frampton-style/contains', ['exports', 'module', 'frampton-utils/curry', 
 
   var _matches = _interopRequire(_framptonStyleMatches);
 
+  /**
+   *
+   */
   module.exports = (0, _curry)(function contains(selector, element) {
     return (0, _matches)(selector, element) || element.querySelectorAll(selector).length > 0;
   });

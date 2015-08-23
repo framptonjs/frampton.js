@@ -1,6 +1,6 @@
 import compose from 'frampton-utils/compose';
+import elementValue from 'frampton-html/element_value';
 import eventTarget from 'frampton-events/event_target';
-import targetValue from 'frampton-events/target_value';
 
 /**
  * eventValue :: DomEvent -> String
@@ -11,4 +11,4 @@ import targetValue from 'frampton-events/target_value';
  * @param {Object} evt
  * @returns {String} The value property of the event target
  */
-export default compose(targetValue, eventTarget);
+export default compose(elementValue, eventTarget);
