@@ -3548,21 +3548,13 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils/assert
 
   var _remove = _interopRequire(_framptonListRemove);
 
-  function Behavior(initial, seed) {
-    (0, _assert)('Behavior must have initial value', (0, _isDefined)(initial));
-    this.value = initial;
-    this.listeners = [];
-    this.cleanup = null;
-    this.seed = seed || _noop;
-    this._id = (0, _guid)();
+  function init(behavior) {
+    var sink = behavior.update.bind(behavior);
+    behavior.cleanup = behavior.seed(sink) || _noop;
   }
 
   function addListener(behavior, fn) {
     if (!(0, _contains)(behavior.listeners, fn)) {
-      if (behavior.listeners.length === 0) {
-        var sink = behavior.update.bind(behavior);
-        behavior.cleanup = behavior.seed(sink) || _noop;
-      }
       behavior.listeners.push(fn);
       fn(behavior.value);
     }
@@ -3572,17 +3564,22 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils/assert
 
   function removeListener(behavior, fn) {
     behavior.listeners = (0, _remove)(fn, behavior.listeners);
-    if (behavior.listeners.length === 0) {
-      behavior.cleanup();
-      behavior.cleanup = null;
-      behavior.value = null;
-    }
   }
 
   function updateListeners(behavior) {
     behavior.listeners.forEach(function (listener) {
       listener(behavior.value);
     });
+  }
+
+  function Behavior(initial, seed) {
+    (0, _assert)('Behavior must have initial value', (0, _isDefined)(initial));
+    this._id = (0, _guid)();
+    this.value = initial;
+    this.listeners = [];
+    this.cleanup = null;
+    this.seed = seed || _noop;
+    init(this);
   }
 
   // of :: a -> Behavior a
@@ -4435,7 +4432,6 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
     var source = this;
     var breakers = [];
     return new EventStream(function (sink) {
-      breakers.push(behavior.changes(_noop));
       breakers.push(source.subscribe(function (event) {
         if (event.isNext()) {
           sink((0, _framptonSignalsEvent.nextEvent)(behavior.value));

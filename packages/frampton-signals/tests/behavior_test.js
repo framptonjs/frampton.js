@@ -27,7 +27,7 @@ QUnit.test('map method should update value correclty', function() {
 });
 
 QUnit.test('chain method should produce a new Behavior from mapping', function() {
-  var behavior = Behavior.of(5).chain(function(val) {
+  var behavior = Behavior.of(5).chain((val) => {
     return Behavior.of(val + 1);
   });
   equal(behavior.value, 6, 'has initial value');
@@ -68,7 +68,7 @@ QUnit.test('destroy method should call cleanup', function(assert) {
     return function() {
       clearTimeout(timerId);
       isStopped = true;
-      ok(true, 'cleanup called');
+      ok(true);
       done();
     };
   });

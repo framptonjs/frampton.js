@@ -383,7 +383,6 @@ EventStream.prototype.sample = function EventStream_sample(behavior) {
   var source = this;
   var breakers = [];
   return new EventStream((sink) => {
-    breakers.push(behavior.changes(noop));
     breakers.push(source.subscribe((event) => {
       if (event.isNext()) {
         sink(nextEvent(behavior.value));

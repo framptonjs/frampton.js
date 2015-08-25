@@ -7,21 +7,13 @@ import lazy from 'frampton-utils/lazy';
 import contains from 'frampton-list/contains';
 import remove from 'frampton-list/remove';
 
-function Behavior(initial, seed) {
-  assert('Behavior must have initial value', isDefined(initial));
-  this.value = initial;
-  this.listeners = [];
-  this.cleanup = null;
-  this.seed = seed || noop;
-  this._id = guid();
+function init(behavior) {
+  let sink = behavior.update.bind(behavior);
+  behavior.cleanup = behavior.seed(sink) || noop;
 }
 
 function addListener(behavior, fn) {
   if (!contains(behavior.listeners, fn)) {
-    if (behavior.listeners.length === 0) {
-      let sink = behavior.update.bind(behavior);
-      behavior.cleanup = behavior.seed(sink) || noop;
-    }
     behavior.listeners.push(fn);
     fn(behavior.value);
   }
@@ -31,17 +23,22 @@ function addListener(behavior, fn) {
 
 function removeListener(behavior, fn) {
   behavior.listeners = remove(fn, behavior.listeners);
-  if (behavior.listeners.length === 0) {
-    behavior.cleanup();
-    behavior.cleanup = null;
-    behavior.value = null;
-  }
 }
 
 function updateListeners(behavior) {
   behavior.listeners.forEach((listener) => {
     listener(behavior.value);
   });
+}
+
+function Behavior(initial, seed) {
+  assert('Behavior must have initial value', isDefined(initial));
+  this._id = guid();
+  this.value = initial;
+  this.listeners = [];
+  this.cleanup = null;
+  this.seed = seed || noop;
+  init(this);
 }
 
 // of :: a -> Behavior a
