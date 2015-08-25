@@ -21,11 +21,7 @@ export default function curry(fn, ...args) {
   function curried(...args2) {
 
     // an array of arguments for this instance of the curried function
-    var locals = args;
-
-    if (arguments.length > 0) {
-      locals = locals.concat(args2);
-    }
+    var locals = args.concat(args2);
 
     if (locals.length >= arity) {
       return fn.apply(null, locals);

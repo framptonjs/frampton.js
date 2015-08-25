@@ -3436,7 +3436,7 @@ define('frampton-object/reduce', ['exports', 'module', 'frampton-utils/curry', '
     return acc;
   });
 });
-define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/event_stream', 'frampton-signals/behavior', 'frampton-signals/empty', 'frampton-signals/interval', 'frampton-signals/sequential', 'frampton-signals/null', 'frampton-signals/send', 'frampton-signals/changes', 'frampton-signals/stepper', 'frampton-signals/accum_b', 'frampton-signals/toggle', 'frampton-signals/map', 'frampton-signals/map2', 'frampton-signals/map3', 'frampton-signals/map4', 'frampton-signals/map5', 'frampton-signals/map_many', 'frampton-signals/event'], function (exports, _framptonNamespace, _framptonSignalsEvent_stream, _framptonSignalsBehavior, _framptonSignalsEmpty, _framptonSignalsInterval, _framptonSignalsSequential, _framptonSignalsNull, _framptonSignalsSend, _framptonSignalsChanges, _framptonSignalsStepper, _framptonSignalsAccum_b, _framptonSignalsToggle, _framptonSignalsMap, _framptonSignalsMap2, _framptonSignalsMap3, _framptonSignalsMap4, _framptonSignalsMap5, _framptonSignalsMap_many, _framptonSignalsEvent) {
+define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/event_stream', 'frampton-signals/behavior', 'frampton-signals/empty', 'frampton-signals/interval', 'frampton-signals/sequential', 'frampton-signals/null', 'frampton-signals/send', 'frampton-signals/once', 'frampton-signals/changes', 'frampton-signals/stepper', 'frampton-signals/accum_b', 'frampton-signals/toggle', 'frampton-signals/map', 'frampton-signals/map2', 'frampton-signals/map3', 'frampton-signals/map4', 'frampton-signals/map5', 'frampton-signals/map_many', 'frampton-signals/event'], function (exports, _framptonNamespace, _framptonSignalsEvent_stream, _framptonSignalsBehavior, _framptonSignalsEmpty, _framptonSignalsInterval, _framptonSignalsSequential, _framptonSignalsNull, _framptonSignalsSend, _framptonSignalsOnce, _framptonSignalsChanges, _framptonSignalsStepper, _framptonSignalsAccum_b, _framptonSignalsToggle, _framptonSignalsMap, _framptonSignalsMap2, _framptonSignalsMap3, _framptonSignalsMap4, _framptonSignalsMap5, _framptonSignalsMap_many, _framptonSignalsEvent) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -3456,6 +3456,8 @@ define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/e
   var _nullStream = _interopRequire(_framptonSignalsNull);
 
   var _send = _interopRequire(_framptonSignalsSend);
+
+  var _once = _interopRequire(_framptonSignalsOnce);
 
   var _changes = _interopRequire(_framptonSignalsChanges);
 
@@ -3490,6 +3492,7 @@ define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/e
   _Frampton.Signals.sequential = _sequential;
   _Frampton.Signals.nullStream = _nullStream;
   _Frampton.Signals.send = _send;
+  _Frampton.Signals.once = _once;
   _Frampton.Signals.changes = _changes;
   _Frampton.Signals.stepper = _stepper;
   _Frampton.Signals.accumB = _accumB;
@@ -4820,7 +4823,7 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
     });
   };
 
-  var isEventStream = function isEventStream(obj) {
+  var isEventStream = function is_event_stream(obj) {
     return obj instanceof EventStream;
   };
 
@@ -4974,6 +4977,30 @@ define('frampton-signals/null', ['exports', 'module', 'frampton-signals/empty'],
 
   function null_stream() {
     return instance !== null ? instance : instance = (0, _empty)();
+  }
+});
+define('frampton-signals/once', ['exports', 'module', 'frampton-signals/event_stream', 'frampton-signals/event'], function (exports, module, _framptonSignalsEvent_stream, _framptonSignalsEvent) {
+  'use strict';
+
+  /**
+   * once :: a -> EventStream a
+   *
+   * @name of
+   * @memberOf Frampton.Signals
+   * @static
+   * @param {Any} An initial value for the EventStream
+   * @returns {EventStream}
+   */
+  module.exports = once;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
+
+  function once(val) {
+    return new _EventStream(function (sink) {
+      sink((0, _framptonSignalsEvent.nextEvent)(val));
+    });
   }
 });
 define('frampton-signals/send', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -5629,11 +5656,7 @@ define('frampton-utils/curry', ['exports', 'module', 'frampton-utils/assert', 'f
       }
 
       // an array of arguments for this instance of the curried function
-      var locals = args;
-
-      if (arguments.length > 0) {
-        locals = locals.concat(args2);
-      }
+      var locals = args.concat(args2);
 
       if (locals.length >= arity) {
         return fn.apply(null, locals);

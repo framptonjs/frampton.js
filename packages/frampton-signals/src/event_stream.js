@@ -780,7 +780,7 @@ EventStream.prototype.log = function EventStream_log(msg) {
   });
 };
 
-var isEventStream = function(obj) {
+var isEventStream = function is_event_stream(obj) {
   return (obj instanceof EventStream);
 };
 
