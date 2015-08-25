@@ -37,7 +37,7 @@ function Dispatcher(stream) {
     }
 
     return function unsub() {
-      subscribers = remove(subscribers, fn);
+      subscribers = remove(fn, subscribers);
       if (subscribers.length === 0) {
         stream.cleanup();
         stream.cleanup = null;

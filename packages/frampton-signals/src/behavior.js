@@ -30,7 +30,7 @@ function addListener(behavior, fn) {
 }
 
 function removeListener(behavior, fn) {
-  behavior.listeners = remove(behavior.listeners, fn);
+  behavior.listeners = remove(fn, behavior.listeners);
   if (behavior.listeners.length === 0) {
     behavior.cleanup();
     behavior.cleanup = null;

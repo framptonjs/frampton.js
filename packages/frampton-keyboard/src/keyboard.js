@@ -34,7 +34,7 @@ var addKey = function(keyCode) {
 
 var removeKey = function(keyCode) {
   return function(arr) {
-    return remove(arr, keyCode);
+    return remove(keyCode, arr);
   };
 };
 

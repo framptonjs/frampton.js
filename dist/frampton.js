@@ -2438,7 +2438,7 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
 
   var removeKey = function removeKey(keyCode) {
     return function (arr) {
-      return (0, _remove)(arr, keyCode);
+      return (0, _remove)(keyCode, arr);
     };
   };
 
@@ -2682,7 +2682,12 @@ define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'fra
   module.exports = (0, _curry)(function curried_drop(n, xs) {
     (0, _assert)('Frampton.drop recieved a non-array', (0, _isArray)(xs));
     return xs.filter(function (next) {
-      return next !== n;
+      if (n === 0) {
+        return true;
+      } else {
+        n--;
+      }
+      return false;
     });
   });
 });
@@ -2954,7 +2959,7 @@ define('frampton-list/remove', ['exports', 'module', 'frampton-utils/curry'], fu
    * @param {Array} xs
    * @param {Object} obj
    */
-  module.exports = (0, _curry)(function curried_remove(xs, obj) {
+  module.exports = (0, _curry)(function curried_remove(obj, xs) {
     return xs.filter(function (next) {
       return next !== obj;
     });
@@ -3566,7 +3571,7 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils/assert
   }
 
   function removeListener(behavior, fn) {
-    behavior.listeners = (0, _remove)(behavior.listeners, fn);
+    behavior.listeners = (0, _remove)(fn, behavior.listeners);
     if (behavior.listeners.length === 0) {
       behavior.cleanup();
       behavior.cleanup = null;
@@ -3778,7 +3783,7 @@ define('frampton-signals/dispatcher', ['exports', 'frampton-utils/noop', 'frampt
       }
 
       return function unsub() {
-        subscribers = (0, _remove)(subscribers, fn);
+        subscribers = (0, _remove)(fn, subscribers);
         if (subscribers.length === 0) {
           stream.cleanup();
           stream.cleanup = null;

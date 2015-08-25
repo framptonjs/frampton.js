@@ -9,7 +9,7 @@ import curry from 'frampton-utils/curry';
  * @param {Array} xs
  * @param {Object} obj
  */
-export default curry(function curried_remove(xs, obj) {
+export default curry(function curried_remove(obj, xs) {
   return xs.filter(function(next) {
     return next !== obj;
   });
