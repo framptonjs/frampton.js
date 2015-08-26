@@ -2076,18 +2076,26 @@ define('frampton-io/http/upload', ['exports', 'module', 'frampton-utils/curry', 
 
   var _post = _interopRequire(_framptonIoHttpPost);
 
-  module.exports = (0, _curry)(function upload(url) {
-    for (var _len = arguments.length, files = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      files[_key - 1] = arguments[_key];
-    }
-
+  module.exports = (0, _curry)(function upload(url, file) {
     var formData = new FormData();
-    var len = files.length;
+    formData.append('file-0', file);
+    return (0, _post)(url, formData);
+  });
+});
+define('frampton-io/http/upload_many', ['exports', 'module', 'frampton-utils/curry', 'frampton-io/http/post'], function (exports, module, _framptonUtilsCurry, _framptonIoHttpPost) {
+  'use strict';
 
-    for (var i = 0; i < len; i++) {
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _post = _interopRequire(_framptonIoHttpPost);
+
+  module.exports = (0, _curry)(function upload(url, files) {
+    var formData = new FormData();
+    for (var i = 0; i < files.length; i++) {
       formData.append('file-' + i, files[i]);
     }
-
     return (0, _post)(url, formData);
   });
 });
