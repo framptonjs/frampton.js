@@ -1,4 +1,5 @@
 import Frampton from 'frampton/namespace';
+import add from 'frampton-list/add';
 import append from 'frampton-list/append';
 import contains from 'frampton-list/contains';
 import copy from 'frampton-list/copy';
@@ -24,6 +25,7 @@ import tail from 'frampton-list/tail';
 import zip from 'frampton-list/zip';
 
 Frampton.List = {};
+Frampton.List.add      = add;
 Frampton.List.append   = append;
 Frampton.List.contains = contains;
 Frampton.List.copy     = copy;

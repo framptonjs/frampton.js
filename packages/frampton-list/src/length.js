@@ -3,7 +3,7 @@ import isDefined from 'frampton-utils/is_defined';
 
 /**
  * @name length
- * @memberOf Frampton
+ * @memberOf Frampton.List
  * @static
  */
 export default function length(xs) {

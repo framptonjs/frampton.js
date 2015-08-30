@@ -2506,12 +2506,14 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
     return defaultKeyboard;
   }
 });
-define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/append', 'frampton-list/contains', 'frampton-list/copy', 'frampton-list/diff', 'frampton-list/drop', 'frampton-list/each', 'frampton-list/filter', 'frampton-list/foldl', 'frampton-list/foldr', 'frampton-list/head', 'frampton-list/init', 'frampton-list/last', 'frampton-list/length', 'frampton-list/maximum', 'frampton-list/minimum', 'frampton-list/prepend', 'frampton-list/product', 'frampton-list/remove', 'frampton-list/reverse', 'frampton-list/split', 'frampton-list/sum', 'frampton-list/tail', 'frampton-list/zip'], function (exports, _framptonNamespace, _framptonListAppend, _framptonListContains, _framptonListCopy, _framptonListDiff, _framptonListDrop, _framptonListEach, _framptonListFilter, _framptonListFoldl, _framptonListFoldr, _framptonListHead, _framptonListInit, _framptonListLast, _framptonListLength, _framptonListMaximum, _framptonListMinimum, _framptonListPrepend, _framptonListProduct, _framptonListRemove, _framptonListReverse, _framptonListSplit, _framptonListSum, _framptonListTail, _framptonListZip) {
+define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', 'frampton-list/append', 'frampton-list/contains', 'frampton-list/copy', 'frampton-list/diff', 'frampton-list/drop', 'frampton-list/each', 'frampton-list/filter', 'frampton-list/foldl', 'frampton-list/foldr', 'frampton-list/head', 'frampton-list/init', 'frampton-list/last', 'frampton-list/length', 'frampton-list/maximum', 'frampton-list/minimum', 'frampton-list/prepend', 'frampton-list/product', 'frampton-list/remove', 'frampton-list/reverse', 'frampton-list/split', 'frampton-list/sum', 'frampton-list/tail', 'frampton-list/zip'], function (exports, _framptonNamespace, _framptonListAdd, _framptonListAppend, _framptonListContains, _framptonListCopy, _framptonListDiff, _framptonListDrop, _framptonListEach, _framptonListFilter, _framptonListFoldl, _framptonListFoldr, _framptonListHead, _framptonListInit, _framptonListLast, _framptonListLength, _framptonListMaximum, _framptonListMinimum, _framptonListPrepend, _framptonListProduct, _framptonListRemove, _framptonListReverse, _framptonListSplit, _framptonListSum, _framptonListTail, _framptonListZip) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _Frampton = _interopRequire(_framptonNamespace);
+
+  var _add = _interopRequire(_framptonListAdd);
 
   var _append = _interopRequire(_framptonListAppend);
 
@@ -2560,6 +2562,7 @@ define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/append'
   var _zip = _interopRequire(_framptonListZip);
 
   _Frampton.List = {};
+  _Frampton.List.add = _add;
   _Frampton.List.append = _append;
   _Frampton.List.contains = _contains;
   _Frampton.List.copy = _copy;
@@ -2584,6 +2587,31 @@ define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/append'
   _Frampton.List.tail = _tail;
   _Frampton.List.zip = _zip;
 });
+define('frampton-list/add', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append', 'frampton-list/copy'], function (exports, module, _framptonUtilsCurry, _framptonListContains, _framptonListAppend, _framptonListCopy) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _contains = _interopRequire(_framptonListContains);
+
+  var _append = _interopRequire(_framptonListAppend);
+
+  var _copy = _interopRequire(_framptonListCopy);
+
+  /**
+   * @name addToList
+   * @memberOf Frampton.List
+   * @static
+   * @param {Array} xs  Array to add object to
+   * @param {Any}   obj Object to add to array
+   * @returns {Array} A new array with the object added
+   */
+  module.exports = (0, _curry)(function add_to_list(xs, obj) {
+    return !(0, _contains)(xs, obj) ? (0, _append)(xs, obj) : (0, _copy)(xs);
+  });
+});
 define('frampton-list/append', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
 
@@ -2595,6 +2623,7 @@ define('frampton-list/append', ['exports', 'module', 'frampton-utils/curry'], fu
    * @name append
    * @param {Array} xs
    * @param {Any} obj
+   * @returns {Array}
    */
   module.exports = (0, _curry)(function (xs, obj) {
     return xs.concat([].concat(obj));
@@ -2608,7 +2637,12 @@ define('frampton-list/contains', ['exports', 'module', 'frampton-utils/curry'], 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
   /**
-   *
+   * @name contains
+   * @memberOf Frampton.List
+   * @static
+   * @param {Array} xs
+   * @param {Any}   obj
+   * @retruns {Boolean}
    */
   module.exports = (0, _curry)(function (xs, obj) {
     return xs.indexOf(obj) > -1;
@@ -2853,7 +2887,7 @@ define('frampton-list/length', ['exports', 'module', 'frampton-utils/is_somethin
 
   /**
    * @name length
-   * @memberOf Frampton
+   * @memberOf Frampton.List
    * @static
    */
   module.exports = length;
