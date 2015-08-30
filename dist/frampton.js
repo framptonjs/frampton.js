@@ -5122,7 +5122,7 @@ define('frampton-signals/toggle', ['exports', 'module', 'frampton-utils/curry', 
     return (0, _stepper)(false, stream1.map(true).merge(stream2.map(false)));
   });
 });
-define('frampton-string', ['exports', 'frampton/namespace', 'frampton-string/join', 'frampton-string/split', 'frampton-string/lines', 'frampton-string/words', 'frampton-string/starts_with', 'frampton-string/ends_with', 'frampton-string/contains'], function (exports, _framptonNamespace, _framptonStringJoin, _framptonStringSplit, _framptonStringLines, _framptonStringWords, _framptonStringStarts_with, _framptonStringEnds_with, _framptonStringContains) {
+define('frampton-string', ['exports', 'frampton/namespace', 'frampton-string/join', 'frampton-string/split', 'frampton-string/lines', 'frampton-string/words', 'frampton-string/starts_with', 'frampton-string/ends_with', 'frampton-string/contains', 'frampton-string/capitalize', 'frampton-string/dash_to_camel', 'frampton-string/length', 'frampton-string/normalize_newline'], function (exports, _framptonNamespace, _framptonStringJoin, _framptonStringSplit, _framptonStringLines, _framptonStringWords, _framptonStringStarts_with, _framptonStringEnds_with, _framptonStringContains, _framptonStringCapitalize, _framptonStringDash_to_camel, _framptonStringLength, _framptonStringNormalize_newline) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -5143,6 +5143,14 @@ define('frampton-string', ['exports', 'frampton/namespace', 'frampton-string/joi
 
   var _contains = _interopRequire(_framptonStringContains);
 
+  var _capitalize = _interopRequire(_framptonStringCapitalize);
+
+  var _dashToCamel = _interopRequire(_framptonStringDash_to_camel);
+
+  var _length = _interopRequire(_framptonStringLength);
+
+  var _normalizeNewline = _interopRequire(_framptonStringNormalize_newline);
+
   _Frampton.String = {};
   _Frampton.String.join = _join;
   _Frampton.String.split = _split;
@@ -5151,6 +5159,19 @@ define('frampton-string', ['exports', 'frampton/namespace', 'frampton-string/joi
   _Frampton.String.startsWith = _startsWith;
   _Frampton.String.endsWith = _endsWith;
   _Frampton.String.contains = _contains;
+  _Frampton.String.capitalize = _capitalize;
+  _Frampton.String.dashToCamel = _dashToCamel;
+  _Frampton.String.length = _length;
+  _Frampton.String.normalizeNewline = _normalizeNewline;
+});
+define("frampton-string/capitalize", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = capitalize;
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 });
 define('frampton-string/contains', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
@@ -5163,6 +5184,17 @@ define('frampton-string/contains', ['exports', 'module', 'frampton-utils/curry']
   module.exports = (0, _curry)(function contains(sub, str) {
     return str.indexOf(sub) > -1;
   });
+});
+define("frampton-string/dash_to_camel", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = dash_to_camel;
+
+  function dash_to_camel(str) {
+    return str.replace(/-([a-z])/g, function (m, w) {
+      return w.toUpperCase();
+    });
+  }
 });
 define('frampton-string/ends_with', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
@@ -5188,6 +5220,30 @@ define('frampton-string/join', ['exports', 'module', 'frampton-utils/curry'], fu
     return strs.join(sep);
   });
 });
+define('frampton-string/length', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_defined', 'frampton-string/normalize_newline'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_defined, _framptonStringNormalize_newline) {
+  'use strict';
+
+  /**
+   * @name length
+   * @memberOf Frampton.String
+   * @static
+   * @param {String}
+   * @returns {Number}
+   */
+  module.exports = length;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isSomething = _interopRequire(_framptonUtilsIs_something);
+
+  var _isDefined = _interopRequire(_framptonUtilsIs_defined);
+
+  var _normalizeNewline = _interopRequire(_framptonStringNormalize_newline);
+
+  function length(str) {
+    return (0, _isSomething)(str) && (0, _isDefined)(str.length) ? (0, _normalizeNewline)(str).length : 0;
+  }
+});
 define("frampton-string/lines", ["exports", "module"], function (exports, module) {
   // lines :: String -> Array String
   "use strict";
@@ -5196,6 +5252,25 @@ define("frampton-string/lines", ["exports", "module"], function (exports, module
 
   function lines(str) {
     return str.split(/\r\n|\r|\n/g);
+  }
+});
+define('frampton-string/normalize_newline', ['exports', 'module'], function (exports, module) {
+  /**
+   * Returns a string with newlines normalized to \n. Windows machines will use
+   * \r\n for newlines which can lead to irregularities when dealing with strings
+   *
+   * @name normalizeNewline
+   * @memberOf Frampton.String
+   * @static
+   * @param {String} str
+   * @returns {String}
+   */
+  'use strict';
+
+  module.exports = normalize_newline;
+
+  function normalize_newline(str) {
+    return str.replace(/\r\n/g, '\n');
   }
 });
 define('frampton-string/split', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
