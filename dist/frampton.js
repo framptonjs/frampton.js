@@ -3449,7 +3449,7 @@ define('frampton-object/reduce', ['exports', 'module', 'frampton-utils/curry', '
     return acc;
   });
 });
-define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/event_stream', 'frampton-signals/behavior', 'frampton-signals/empty', 'frampton-signals/interval', 'frampton-signals/sequential', 'frampton-signals/null', 'frampton-signals/send', 'frampton-signals/once', 'frampton-signals/changes', 'frampton-signals/stepper', 'frampton-signals/accum_b', 'frampton-signals/toggle', 'frampton-signals/map', 'frampton-signals/map2', 'frampton-signals/map3', 'frampton-signals/map4', 'frampton-signals/map5', 'frampton-signals/map_many', 'frampton-signals/event'], function (exports, _framptonNamespace, _framptonSignalsEvent_stream, _framptonSignalsBehavior, _framptonSignalsEmpty, _framptonSignalsInterval, _framptonSignalsSequential, _framptonSignalsNull, _framptonSignalsSend, _framptonSignalsOnce, _framptonSignalsChanges, _framptonSignalsStepper, _framptonSignalsAccum_b, _framptonSignalsToggle, _framptonSignalsMap, _framptonSignalsMap2, _framptonSignalsMap3, _framptonSignalsMap4, _framptonSignalsMap5, _framptonSignalsMap_many, _framptonSignalsEvent) {
+define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/event_stream', 'frampton-signals/behavior', 'frampton-signals/empty', 'frampton-signals/delayed', 'frampton-signals/interval', 'frampton-signals/sequential', 'frampton-signals/null', 'frampton-signals/send', 'frampton-signals/once', 'frampton-signals/changes', 'frampton-signals/stepper', 'frampton-signals/accum_b', 'frampton-signals/swap', 'frampton-signals/toggle', 'frampton-signals/map', 'frampton-signals/map2', 'frampton-signals/map3', 'frampton-signals/map4', 'frampton-signals/map5', 'frampton-signals/map_many', 'frampton-signals/event'], function (exports, _framptonNamespace, _framptonSignalsEvent_stream, _framptonSignalsBehavior, _framptonSignalsEmpty, _framptonSignalsDelayed, _framptonSignalsInterval, _framptonSignalsSequential, _framptonSignalsNull, _framptonSignalsSend, _framptonSignalsOnce, _framptonSignalsChanges, _framptonSignalsStepper, _framptonSignalsAccum_b, _framptonSignalsSwap, _framptonSignalsToggle, _framptonSignalsMap, _framptonSignalsMap2, _framptonSignalsMap3, _framptonSignalsMap4, _framptonSignalsMap5, _framptonSignalsMap_many, _framptonSignalsEvent) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -3461,6 +3461,8 @@ define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/e
   var _Behavior = _interopRequire(_framptonSignalsBehavior);
 
   var _empty = _interopRequire(_framptonSignalsEmpty);
+
+  var _delayed = _interopRequire(_framptonSignalsDelayed);
 
   var _interval = _interopRequire(_framptonSignalsInterval);
 
@@ -3477,6 +3479,8 @@ define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/e
   var _stepper = _interopRequire(_framptonSignalsStepper);
 
   var _accumB = _interopRequire(_framptonSignalsAccum_b);
+
+  var _swap = _interopRequire(_framptonSignalsSwap);
 
   var _toggle = _interopRequire(_framptonSignalsToggle);
 
@@ -3500,6 +3504,7 @@ define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/e
   _Frampton.Signals.emptyEvent = _framptonSignalsEvent.emptyEvent;
   _Frampton.Signals.errorEvent = _framptonSignalsEvent.errorEvent;
   _Frampton.Signals.empty = _empty;
+  _Frampton.Signals.delayed = _delayed;
   _Frampton.Signals.interval = _interval;
   _Frampton.Signals.merge = _framptonSignalsEvent_stream.merge;
   _Frampton.Signals.sequential = _sequential;
@@ -3509,6 +3514,7 @@ define('frampton-signals', ['exports', 'frampton/namespace', 'frampton-signals/e
   _Frampton.Signals.changes = _changes;
   _Frampton.Signals.stepper = _stepper;
   _Frampton.Signals.accumB = _accumB;
+  _Frampton.Signals.swap = _swap;
   _Frampton.Signals.toggle = _toggle;
   _Frampton.Signals.map = _map;
   _Frampton.Signals.map2 = _map2;
@@ -3740,6 +3746,30 @@ define('frampton-signals/count', ['exports', 'module', 'frampton-signals/stepper
       return ++i;
     }));
   }
+});
+define('frampton-signals/delayed', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/event_stream', 'frampton-signals/event'], function (exports, module, _framptonUtilsCurry, _framptonSignalsEvent_stream, _framptonSignalsEvent) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
+
+  // delayed :: Number -> a -> EventStream a
+  module.exports = (0, _curry)(function delayed(delay, val) {
+    return new _EventStream(function (sink) {
+      var timer = setTimeout(function () {
+        sink((0, _framptonSignalsEvent.nextEvent)(val));
+      }, delay || 0);
+      return function delayed_cleanup() {
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+      };
+    });
+  });
 });
 define('frampton-signals/dispatcher', ['exports', 'frampton-utils/noop', 'frampton-list/remove'], function (exports, _framptonUtilsNoop, _framptonListRemove) {
   'use strict';
@@ -5109,7 +5139,7 @@ define('frampton-signals/stepper', ['exports', 'module', 'frampton-utils/curry',
     });
   });
 });
-define('frampton-signals/toggle', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/stepper'], function (exports, module, _framptonUtilsCurry, _framptonSignalsStepper) {
+define('frampton-signals/swap', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/stepper'], function (exports, module, _framptonUtilsCurry, _framptonSignalsStepper) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -5120,6 +5150,30 @@ define('frampton-signals/toggle', ['exports', 'module', 'frampton-utils/curry', 
 
   module.exports = (0, _curry)(function toggle(stream1, stream2) {
     return (0, _stepper)(false, stream1.map(true).merge(stream2.map(false)));
+  });
+});
+define('frampton-signals/toggle', ['exports', 'module', 'frampton-utils/curry', 'frampton-signals/behavior'], function (exports, module, _framptonUtilsCurry, _framptonSignalsBehavior) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _Behavior = _interopRequire(_framptonSignalsBehavior);
+
+  // toggle :: Boolean -> EventStream a -> Behavior Boolean
+  module.exports = (0, _curry)(function toggle(initial, stream) {
+    return new _Behavior(!!initial, function (sink) {
+      return stream.next(function (val) {
+        setTimeout(function () {
+          if (initial) {
+            sink(initial = false);
+          } else {
+            sink(initial = true);
+          }
+        }, 0);
+      });
+    });
   });
 });
 define('frampton-string', ['exports', 'frampton/namespace', 'frampton-string/join', 'frampton-string/split', 'frampton-string/lines', 'frampton-string/words', 'frampton-string/starts_with', 'frampton-string/ends_with', 'frampton-string/contains', 'frampton-string/capitalize', 'frampton-string/dash_to_camel', 'frampton-string/length', 'frampton-string/normalize_newline'], function (exports, _framptonNamespace, _framptonStringJoin, _framptonStringSplit, _framptonStringLines, _framptonStringWords, _framptonStringStarts_with, _framptonStringEnds_with, _framptonStringContains, _framptonStringCapitalize, _framptonStringDash_to_camel, _framptonStringLength, _framptonStringNormalize_newline) {

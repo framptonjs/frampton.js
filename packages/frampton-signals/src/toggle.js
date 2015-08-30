@@ -1,6 +1,17 @@
 import curry from 'frampton-utils/curry';
-import stepper from 'frampton-signals/stepper';
+import Behavior from 'frampton-signals/behavior';
 
-export default curry(function toggle(stream1, stream2) {
-  return stepper(false, stream1.map(true).merge(stream2.map(false)));
+// toggle :: Boolean -> EventStream a -> Behavior Boolean
+export default curry(function toggle(initial, stream) {
+  return new Behavior(!!initial, function(sink) {
+    return stream.next((val) => {
+      setTimeout(() => {
+        if (initial) {
+          sink((initial = false));
+        } else {
+          sink((initial = true));
+        }
+      }, 0);
+    });
+  });
 });
