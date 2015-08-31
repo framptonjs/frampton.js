@@ -80,6 +80,21 @@ function withDefaultRun(element, frame, dir) {
   return trans;
 }
 
+function withFrame(transition, props) {
+
+  var frame = (isSomething(transition.frame) ? copy(transition.frame) : {});
+
+  for (let key in props) {
+    frame[key] = props[key];
+  }
+
+  return withDefaultRun(
+    transition.element,
+    frame,
+    transition.direction
+  );
+}
+
 function Transition(element, frame, dir) {
 
   assert('Browser does not support CSS transitions', isSomething(transitionend));
@@ -127,13 +142,9 @@ Transition.prototype.run = notImplemented;
  * @returns {Transition}
  */
 Transition.prototype.delay = function Transition_delay(time) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['transition-delay'] = (isString(time) ? time : (time + 'ms'));
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    'transition-delay' : (isString(time) ? time : (time + 'ms'))
+  });
 };
 
 /**
@@ -144,13 +155,9 @@ Transition.prototype.delay = function Transition_delay(time) {
  * @returns {Transition}
  */
 Transition.prototype.duration = function Transition_duration(time) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['transition-duration'] = (isString(time) ? time : (time + 'ms'));
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    'transition-duration' : (isString(time) ? time : (time + 'ms'))
+  });
 };
 
 /**
@@ -161,13 +168,9 @@ Transition.prototype.duration = function Transition_duration(time) {
  * @returns {Transition}
  */
 Transition.prototype.width = function Transition_width(width) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['width'] = (isString(width) ? width : (width + 'px'));
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    width : (isString(width) ? width : (width + 'px'))
+  });
 };
 
 /**
@@ -178,13 +181,9 @@ Transition.prototype.width = function Transition_width(width) {
  * @returns {Transition}
  */
 Transition.prototype.height = function Transition_width(height) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['height'] = (isString(height) ? height : (height + 'px'));
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    height : (isString(height) ? height : (height + 'px'))
+  });
 };
 
 /**
@@ -196,14 +195,10 @@ Transition.prototype.height = function Transition_width(height) {
  * @returns {Transition}
  */
 Transition.prototype.dimensions = function Transition_width(width, height) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['width'] = (isString(width) ? width : (width + 'px'));
-  frame['height'] = (isString(height) ? height : (height + 'px'));
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    width : (isString(width) ? width : (width + 'px')),
+    height : (isString(height) ? height : (height + 'px'))
+  });
 };
 
 /**
@@ -214,13 +209,9 @@ Transition.prototype.dimensions = function Transition_width(width, height) {
  * @returns {Transition}
  */
 Transition.prototype.top = function Transition_top(position) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['top'] = position;
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    top : (isString(position) ? position : (position + 'px'))
+  });
 };
 
 /**
@@ -231,13 +222,24 @@ Transition.prototype.top = function Transition_top(position) {
  * @returns {Transition}
  */
 Transition.prototype.left = function Transition_left(position) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['left'] = position;
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    left : (isString(position) ? position : (position + 'px'))
+  });
+};
+
+/**
+ * @name position
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} left
+ * @param {Number} top
+ * @returns {Transition}
+ */
+Transition.prototype.position = function Transition_position(left, top) {
+  return withFrame(this, {
+    top : (isString(left) ? left : (left + 'px')),
+    left : (isString(top) ? top : (top + 'px'))
+  });
 };
 
 /**
@@ -248,13 +250,9 @@ Transition.prototype.left = function Transition_left(position) {
  * @returns {Transition}
  */
 Transition.prototype.opacity = function Transition_opacity(opacity) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['opacity'] = opacity;
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    opacity : opacity
+  });
 };
 
 /**
@@ -265,17 +263,13 @@ Transition.prototype.opacity = function Transition_opacity(opacity) {
  * @returns {Transition}
  */
 Transition.prototype.translateX = function Transition_translateX(distance) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['transform'] = updateTransform(
-    (frame['transform'] || ''),
-    'translateX',
-    (isString(distance) ? distance : (distance + 'px'))
-  );
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    transform : updateTransform(
+      (isSomething(this.frame) ? this.frame['transform'] : null),
+      'translateX',
+      (isString(distance) ? distance : (distance + 'px'))
+    )
+  });
 };
 
 /**
@@ -286,17 +280,13 @@ Transition.prototype.translateX = function Transition_translateX(distance) {
  * @returns {Transition}
  */
 Transition.prototype.translateY = function Transition_translateY(distance) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['transform'] = updateTransform(
-    (frame['transform'] || ''),
-    'translateY',
-    (isString(distance) ? distance : (distance + 'px'))
-  );
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    transform : updateTransform(
+      (isSomething(this.frame) ? this.frame['transform'] : null),
+      'translateY',
+      (isString(distance) ? distance : (distance + 'px'))
+    )
+  });
 };
 
 /**
@@ -307,17 +297,13 @@ Transition.prototype.translateY = function Transition_translateY(distance) {
  * @returns {Transition}
  */
 Transition.prototype.translateZ = function Transition_translateZ(distance) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['transform'] = updateTransform(
-    (frame['transform'] || ''),
-    'translateZ',
-    (isString(distance) ? distance : (distance + 'px'))
-  );
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    transform : updateTransform(
+      (isSomething(this.frame) ? this.frame['transform'] : null),
+      'translateZ',
+      (isString(distance) ? distance : (distance + 'px'))
+    )
+  });
 };
 
 /**
@@ -328,17 +314,13 @@ Transition.prototype.translateZ = function Transition_translateZ(distance) {
  * @returns {Transition}
  */
 Transition.prototype.rotate = function Transition_translateZ(degrees) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['transform'] = updateTransform(
-    (frame['transform'] || ''),
-    'rotate',
-    (isString(degrees) ? degrees : (degrees + 'deg'))
-  );
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    transform : updateTransform(
+      (isSomething(this.frame) ? this.frame['transform'] : null),
+      'rotate',
+      (isString(degrees) ? degrees : (degrees + 'deg'))
+    )
+  });
 };
 
 /**
@@ -349,17 +331,13 @@ Transition.prototype.rotate = function Transition_translateZ(degrees) {
  * @returns {Transition}
  */
 Transition.prototype.scale = function Transition_scale(scale) {
-  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
-  frame['transform'] = updateTransform(
-    (frame['transform'] || ''),
-    'scale',
-    scale
-  );
-  return withDefaultRun(
-    this.element,
-    frame,
-    this.direction
-  );
+  return withFrame(this, {
+    transform : updateTransform(
+      (isSomething(this.frame) ? this.frame['transform'] : null),
+      'scale',
+      scale
+    )
+  });
 };
 
 /**

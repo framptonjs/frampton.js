@@ -71,6 +71,9 @@ function Cache(options) {
 }
 
 /**
+ * Gets a value with the given key. It the key is expired, or doens't exist,
+ * it uses the function to populate the value.
+ *
  * @name get
  * @memberOf Cache
  * @method
@@ -98,6 +101,8 @@ Cache.prototype.get = function Cache_get(key, fn) {
 };
 
 /**
+ * Assigns a value to a given key.
+ *
  * @name put
  * @memberOf Cache
  * @method
@@ -135,6 +140,8 @@ Cache.prototype.put = function Cache_put(key, value) {
 };
 
 /**
+ * Removes the value with the given key.
+ *
  * @name remove
  * @memberOf Cache
  * @method

@@ -206,6 +206,9 @@ define('frampton-cache/cache', ['exports', 'module', 'frampton-utils/extend', 'f
   }
 
   /**
+   * Gets a value with the given key. It the key is expired, or doens't exist,
+   * it uses the function to populate the value.
+   *
    * @name get
    * @memberOf Cache
    * @method
@@ -233,6 +236,8 @@ define('frampton-cache/cache', ['exports', 'module', 'frampton-utils/extend', 'f
   };
 
   /**
+   * Assigns a value to a given key.
+   *
    * @name put
    * @memberOf Cache
    * @method
@@ -269,6 +274,8 @@ define('frampton-cache/cache', ['exports', 'module', 'frampton-utils/extend', 'f
   };
 
   /**
+   * Removes the value with the given key.
+   *
    * @name remove
    * @memberOf Cache
    * @method
@@ -3626,6 +3633,17 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
     return trans;
   }
 
+  function withFrame(transition, props) {
+
+    var frame = (0, _isSomething)(transition.frame) ? (0, _copy)(transition.frame) : {};
+
+    for (var key in props) {
+      frame[key] = props[key];
+    }
+
+    return withDefaultRun(transition.element, frame, transition.direction);
+  }
+
   function Transition(element, frame, dir) {
 
     (0, _assert)('Browser does not support CSS transitions', (0, _isSomething)(_transitionend));
@@ -3670,9 +3688,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.delay = function Transition_delay(time) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['transition-delay'] = (0, _isString)(time) ? time : time + 'ms';
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      'transition-delay': (0, _isString)(time) ? time : time + 'ms'
+    });
   };
 
   /**
@@ -3683,9 +3701,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.duration = function Transition_duration(time) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['transition-duration'] = (0, _isString)(time) ? time : time + 'ms';
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      'transition-duration': (0, _isString)(time) ? time : time + 'ms'
+    });
   };
 
   /**
@@ -3696,9 +3714,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.width = function Transition_width(width) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['width'] = (0, _isString)(width) ? width : width + 'px';
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      width: (0, _isString)(width) ? width : width + 'px'
+    });
   };
 
   /**
@@ -3709,9 +3727,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.height = function Transition_width(height) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['height'] = (0, _isString)(height) ? height : height + 'px';
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      height: (0, _isString)(height) ? height : height + 'px'
+    });
   };
 
   /**
@@ -3723,10 +3741,10 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.dimensions = function Transition_width(width, height) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['width'] = (0, _isString)(width) ? width : width + 'px';
-    frame['height'] = (0, _isString)(height) ? height : height + 'px';
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      width: (0, _isString)(width) ? width : width + 'px',
+      height: (0, _isString)(height) ? height : height + 'px'
+    });
   };
 
   /**
@@ -3737,9 +3755,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.top = function Transition_top(position) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['top'] = position;
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      top: (0, _isString)(position) ? position : position + 'px'
+    });
   };
 
   /**
@@ -3750,9 +3768,24 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.left = function Transition_left(position) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['left'] = position;
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      left: (0, _isString)(position) ? position : position + 'px'
+    });
+  };
+
+  /**
+   * @name position
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} left
+   * @param {Number} top
+   * @returns {Transition}
+   */
+  Transition.prototype.position = function Transition_position(left, top) {
+    return withFrame(this, {
+      top: (0, _isString)(left) ? left : left + 'px',
+      left: (0, _isString)(top) ? top : top + 'px'
+    });
   };
 
   /**
@@ -3763,9 +3796,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.opacity = function Transition_opacity(opacity) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['opacity'] = opacity;
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      opacity: opacity
+    });
   };
 
   /**
@@ -3776,9 +3809,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.translateX = function Transition_translateX(distance) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'translateX', (0, _isString)(distance) ? distance : distance + 'px');
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      transform: (0, _updateTransform)((0, _isSomething)(this.frame) ? this.frame['transform'] : null, 'translateX', (0, _isString)(distance) ? distance : distance + 'px')
+    });
   };
 
   /**
@@ -3789,9 +3822,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.translateY = function Transition_translateY(distance) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'translateY', (0, _isString)(distance) ? distance : distance + 'px');
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      transform: (0, _updateTransform)((0, _isSomething)(this.frame) ? this.frame['transform'] : null, 'translateY', (0, _isString)(distance) ? distance : distance + 'px')
+    });
   };
 
   /**
@@ -3802,9 +3835,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.translateZ = function Transition_translateZ(distance) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'translateZ', (0, _isString)(distance) ? distance : distance + 'px');
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      transform: (0, _updateTransform)((0, _isSomething)(this.frame) ? this.frame['transform'] : null, 'translateZ', (0, _isString)(distance) ? distance : distance + 'px')
+    });
   };
 
   /**
@@ -3815,9 +3848,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.rotate = function Transition_translateZ(degrees) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'rotate', (0, _isString)(degrees) ? degrees : degrees + 'deg');
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      transform: (0, _updateTransform)((0, _isSomething)(this.frame) ? this.frame['transform'] : null, 'rotate', (0, _isString)(degrees) ? degrees : degrees + 'deg')
+    });
   };
 
   /**
@@ -3828,9 +3861,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.scale = function Transition_scale(scale) {
-    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
-    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'scale', scale);
-    return withDefaultRun(this.element, frame, this.direction);
+    return withFrame(this, {
+      transform: (0, _updateTransform)((0, _isSomething)(this.frame) ? this.frame['transform'] : null, 'scale', scale)
+    });
   };
 
   /**
@@ -3938,12 +3971,14 @@ define('frampton-motion/transition_props', ['exports', 'module'], function (expo
 
   module.exports = ['transition-delay', 'transition-duration', 'transition-property', 'transition-timing-function'];
 });
-define('frampton-motion/update_transform', ['exports', 'module', 'frampton-string/contains'], function (exports, module, _framptonStringContains) {
+define('frampton-motion/update_transform', ['exports', 'module', 'frampton-utils/is_string', 'frampton-string/contains'], function (exports, module, _framptonUtilsIs_string, _framptonStringContains) {
   'use strict';
 
   module.exports = updateTransform;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isString = _interopRequire(_framptonUtilsIs_string);
 
   var _contains = _interopRequire(_framptonStringContains);
 
@@ -3953,6 +3988,7 @@ define('frampton-motion/update_transform', ['exports', 'module', 'frampton-strin
 
   function updateTransform(transform, prop, value) {
     var reg;
+    transform = (0, _isString)(transform) ? transform : '';
     if ((0, _contains)(prop, transform)) {
       reg = new RegExp(prop + '\\([^)]*\\)');
       transform = transform.replace(reg, propValue(prop, value));
@@ -3962,14 +3998,26 @@ define('frampton-motion/update_transform', ['exports', 'module', 'frampton-strin
       }
       transform = transform + propValue(prop, value);
     }
-
     return transform;
   }
 });
 define('frampton-motion/when', ['exports', 'module', 'frampton-utils/noop', 'frampton-motion/transition'], function (exports, module, _framptonUtilsNoop, _framptonMotionTransition) {
   'use strict';
 
-  //+ when :: [Transition] -> Transition
+  /**
+   * when :: [Transition] -> Transition
+   *
+   * Takes one or more Transitions and returns a new Transition that represents
+   * all of the given Transitions running in parallel. The new Transition completes
+   * once all of its child Transitions have completed.
+   *
+   * @name when
+   * @memberOf Frampton.Motion
+   * @static
+   * @param {Transition} transitions One or more transitions to run
+   * @returns {Transition} A new Transition that runs the given tranisitions
+   in parallel
+   */
   module.exports = when;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -3995,7 +4043,6 @@ define('frampton-motion/when', ['exports', 'module', 'frampton-utils/noop', 'fra
       var count = 0;
 
       transitions.forEach(function (trans) {
-        console.log('trans: ', trans);
         trans.run(function () {
           count = count + 1;
           if (count === len) {

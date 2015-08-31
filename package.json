@@ -19,7 +19,7 @@
   "devDependencies": {
     "broccoli": "^0.16.2",
     "broccoli-cli": "^1.0.0",
-    "frampton-build": "0.0.4",
+    "frampton-build": "*",
     "qunitjs": "^1.16.0"
   }
 }
