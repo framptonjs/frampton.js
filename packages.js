@@ -13,7 +13,6 @@ module.exports = {
   'frampton-cache' : { trees: null },
   'frampton-signals' : { trees: null },
   'frampton-io' : { trees: null },
-  'frampton-motion' : { trees: null },
   'frampton-window' : { trees: null },
   'frampton-mouse' : { trees: null },
   'frampton-keyboard' : { trees: null },

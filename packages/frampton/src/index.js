@@ -15,6 +15,5 @@ import 'frampton-html';
 import 'frampton-ui';
 import 'frampton-io';
 import 'frampton-style';
-import 'frampton-motion';
 
 export default Frampton;
