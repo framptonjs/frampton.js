@@ -1,4 +1,5 @@
 import assert from 'frampton-utils/assert';
+import immediate from 'frampton-utils/immediate';
 import isSomething from 'frampton-utils/is_something';
 import isString from 'frampton-utils/is_string';
 import isObject from 'frampton-utils/is_object';
@@ -8,6 +9,7 @@ import notImplemented from 'frampton-utils/not_implemented';
 import add from 'frampton-list/add';
 import remove from 'frampton-list/remove';
 import reverse from 'frampton-list/reverse';
+import copy from 'frampton-object/copy';
 import merge from 'frampton-object/merge';
 import applyStyles from 'frampton-style/apply_styles';
 import removeStyles from 'frampton-style/remove_styles';
@@ -20,6 +22,7 @@ import setState from 'frampton-motion/set_state';
 import parsedTransitions from 'frampton-motion/parsed_transitions';
 import parsedProps from 'frampton-motion/parsed_props';
 import parsedTiming from 'frampton-motion/parsed_timing';
+import updateTransform from 'frampton-motion/update_transform';
 
 function inverseDirection(dir) {
   return ((dir === Transition.DIR_IN) ? Transition.DIR_OUT : Transition.DIR_IN);
@@ -43,7 +46,9 @@ function defaultRun(resolve) {
       setState(this, Transition.CLEANUP);
       reflow(this.element);
       setState(this, Transition.DONE);
-      (resolve || noop)(this.element);
+      immediate(() => {
+        (resolve || noop)(this.element);
+      });
     }
   }, this.element);
 
@@ -118,12 +123,12 @@ Transition.prototype.run = notImplemented;
  * @name delay
  * @memberOf Frampton.Motion.Transition
  * @instance
- * @param {Number} delay Miliseconds to delay transition
+ * @param {Number} time Miliseconds to delay transition
  * @returns {Transition}
  */
-Transition.prototype.delay = function Transition_delay(delay) {
-  var frame = (this.frame || {});
-  frame['transition-delay'] = (delay + 'ms');
+Transition.prototype.delay = function Transition_delay(time) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['transition-delay'] = (isString(time) ? time : (time + 'ms'));
   return withDefaultRun(
     this.element,
     frame,
@@ -139,8 +144,217 @@ Transition.prototype.delay = function Transition_delay(delay) {
  * @returns {Transition}
  */
 Transition.prototype.duration = function Transition_duration(time) {
-  var frame = (this.frame || {});
-  frame['transition-duration'] = (time + 'ms');
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['transition-duration'] = (isString(time) ? time : (time + 'ms'));
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name width
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} width
+ * @returns {Transition}
+ */
+Transition.prototype.width = function Transition_width(width) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['width'] = (isString(width) ? width : (width + 'px'));
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name height
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} height
+ * @returns {Transition}
+ */
+Transition.prototype.height = function Transition_width(height) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['height'] = (isString(height) ? height : (height + 'px'));
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name dimensions
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} width
+ * @param {Number} height
+ * @returns {Transition}
+ */
+Transition.prototype.dimensions = function Transition_width(width, height) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['width'] = (isString(width) ? width : (width + 'px'));
+  frame['height'] = (isString(height) ? height : (height + 'px'));
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name top
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} position
+ * @returns {Transition}
+ */
+Transition.prototype.top = function Transition_top(position) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['top'] = position;
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name left
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} position
+ * @returns {Transition}
+ */
+Transition.prototype.left = function Transition_left(position) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['left'] = position;
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name opacity
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} opacity
+ * @returns {Transition}
+ */
+Transition.prototype.opacity = function Transition_opacity(opacity) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['opacity'] = opacity;
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name translateX
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} distance
+ * @returns {Transition}
+ */
+Transition.prototype.translateX = function Transition_translateX(distance) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['transform'] = updateTransform(
+    (frame['transform'] || ''),
+    'translateX',
+    (isString(distance) ? distance : (distance + 'px'))
+  );
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name translateY
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} distance
+ * @returns {Transition}
+ */
+Transition.prototype.translateY = function Transition_translateY(distance) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['transform'] = updateTransform(
+    (frame['transform'] || ''),
+    'translateY',
+    (isString(distance) ? distance : (distance + 'px'))
+  );
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name translateZ
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} distance
+ * @returns {Transition}
+ */
+Transition.prototype.translateZ = function Transition_translateZ(distance) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['transform'] = updateTransform(
+    (frame['transform'] || ''),
+    'translateZ',
+    (isString(distance) ? distance : (distance + 'px'))
+  );
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name rotate
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} degrees
+ * @returns {Transition}
+ */
+Transition.prototype.rotate = function Transition_translateZ(degrees) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['transform'] = updateTransform(
+    (frame['transform'] || ''),
+    'rotate',
+    (isString(degrees) ? degrees : (degrees + 'deg'))
+  );
+  return withDefaultRun(
+    this.element,
+    frame,
+    this.direction
+  );
+};
+
+/**
+ * @name scale
+ * @memberOf Frampton.Motion.Transition
+ * @instance
+ * @param {Number} scale
+ * @returns {Transition}
+ */
+Transition.prototype.scale = function Transition_scale(scale) {
+  var frame = (isSomething(this.frame) ? copy(this.frame) : {});
+  frame['transform'] = updateTransform(
+    (frame['transform'] || ''),
+    'scale',
+    scale
+  );
   return withDefaultRun(
     this.element,
     frame,
@@ -187,7 +401,7 @@ Transition.prototype.removeClass = function Transition_removeClass(name) {
 Transition.prototype.reverse = function Transition_reverse() {
   return withDefaultRun(
     this.element,
-    (isSomething(this.frame) ? this.frame : this.classList.join(' ')),
+    (isSomething(this.frame) ? copy(this.frame) : this.classList.join(' ')),
     inverseDirection(this.direction)
   );
 };

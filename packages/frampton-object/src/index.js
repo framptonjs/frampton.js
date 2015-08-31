@@ -5,8 +5,10 @@ import map from 'frampton-object/map';
 import merge from 'frampton-object/merge';
 import forEach from 'frampton-object/for_each';
 import asList from 'frampton-object/as_list';
+import copy from 'frampton-object/copy';
 
 Frampton.Object = {};
+Frampton.Object.copy   = copy;
 Frampton.Object.filter = filter;
 Frampton.Object.reduce = reduce;
 Frampton.Object.map    = map;

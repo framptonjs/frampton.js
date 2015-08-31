@@ -3514,7 +3514,7 @@ define('frampton-motion/set_state', ['exports', 'module'], function (exports, mo
     transition.state = state;
   }
 });
-define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_object', 'frampton-utils/guid', 'frampton-utils/noop', 'frampton-utils/not_implemented', 'frampton-list/add', 'frampton-list/remove', 'frampton-list/reverse', 'frampton-object/merge', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-events/event_dispatcher', 'frampton-motion/transition_end', 'frampton-motion/reflow', 'frampton-motion/set_state', 'frampton-motion/parsed_transitions', 'frampton-motion/parsed_props', 'frampton-motion/parsed_timing'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_object, _framptonUtilsGuid, _framptonUtilsNoop, _framptonUtilsNot_implemented, _framptonListAdd, _framptonListRemove, _framptonListReverse, _framptonObjectMerge, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonEventsEvent_dispatcher, _framptonMotionTransition_end, _framptonMotionReflow, _framptonMotionSet_state, _framptonMotionParsed_transitions, _framptonMotionParsed_props, _framptonMotionParsed_timing) {
+define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'frampton-utils/immediate', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_object', 'frampton-utils/guid', 'frampton-utils/noop', 'frampton-utils/not_implemented', 'frampton-list/add', 'frampton-list/remove', 'frampton-list/reverse', 'frampton-object/copy', 'frampton-object/merge', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-events/event_dispatcher', 'frampton-motion/transition_end', 'frampton-motion/reflow', 'frampton-motion/set_state', 'frampton-motion/parsed_transitions', 'frampton-motion/parsed_props', 'frampton-motion/parsed_timing', 'frampton-motion/update_transform'], function (exports, _framptonUtilsAssert, _framptonUtilsImmediate, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_object, _framptonUtilsGuid, _framptonUtilsNoop, _framptonUtilsNot_implemented, _framptonListAdd, _framptonListRemove, _framptonListReverse, _framptonObjectCopy, _framptonObjectMerge, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonEventsEvent_dispatcher, _framptonMotionTransition_end, _framptonMotionReflow, _framptonMotionSet_state, _framptonMotionParsed_transitions, _framptonMotionParsed_props, _framptonMotionParsed_timing, _framptonMotionUpdate_transform) {
   'use strict';
 
   exports.__esModule = true;
@@ -3522,6 +3522,8 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _assert = _interopRequire(_framptonUtilsAssert);
+
+  var _immediate = _interopRequire(_framptonUtilsImmediate);
 
   var _isSomething = _interopRequire(_framptonUtilsIs_something);
 
@@ -3540,6 +3542,8 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
   var _remove = _interopRequire(_framptonListRemove);
 
   var _reverse = _interopRequire(_framptonListReverse);
+
+  var _copy = _interopRequire(_framptonObjectCopy);
 
   var _merge = _interopRequire(_framptonObjectMerge);
 
@@ -3562,6 +3566,8 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
   var _parsedProps = _interopRequire(_framptonMotionParsed_props);
 
   var _parsedTiming = _interopRequire(_framptonMotionParsed_timing);
+
+  var _updateTransform = _interopRequire(_framptonMotionUpdate_transform);
 
   function inverseDirection(dir) {
     return dir === Transition.DIR_IN ? Transition.DIR_OUT : Transition.DIR_IN;
@@ -3586,7 +3592,9 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
         (0, _setState)(_this, Transition.CLEANUP);
         (0, _reflow)(_this.element);
         (0, _setState)(_this, Transition.DONE);
-        (resolve || _noop)(_this.element);
+        (0, _immediate)(function () {
+          (resolve || _noop)(_this.element);
+        });
       }
     }, this.element);
 
@@ -3658,12 +3666,12 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @name delay
    * @memberOf Frampton.Motion.Transition
    * @instance
-   * @param {Number} delay Miliseconds to delay transition
+   * @param {Number} time Miliseconds to delay transition
    * @returns {Transition}
    */
-  Transition.prototype.delay = function Transition_delay(delay) {
-    var frame = this.frame || {};
-    frame['transition-delay'] = delay + 'ms';
+  Transition.prototype.delay = function Transition_delay(time) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['transition-delay'] = (0, _isString)(time) ? time : time + 'ms';
     return withDefaultRun(this.element, frame, this.direction);
   };
 
@@ -3675,8 +3683,153 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.duration = function Transition_duration(time) {
-    var frame = this.frame || {};
-    frame['transition-duration'] = time + 'ms';
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['transition-duration'] = (0, _isString)(time) ? time : time + 'ms';
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name width
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} width
+   * @returns {Transition}
+   */
+  Transition.prototype.width = function Transition_width(width) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['width'] = (0, _isString)(width) ? width : width + 'px';
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name height
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} height
+   * @returns {Transition}
+   */
+  Transition.prototype.height = function Transition_width(height) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['height'] = (0, _isString)(height) ? height : height + 'px';
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name dimensions
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} width
+   * @param {Number} height
+   * @returns {Transition}
+   */
+  Transition.prototype.dimensions = function Transition_width(width, height) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['width'] = (0, _isString)(width) ? width : width + 'px';
+    frame['height'] = (0, _isString)(height) ? height : height + 'px';
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name top
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} position
+   * @returns {Transition}
+   */
+  Transition.prototype.top = function Transition_top(position) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['top'] = position;
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name left
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} position
+   * @returns {Transition}
+   */
+  Transition.prototype.left = function Transition_left(position) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['left'] = position;
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name opacity
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} opacity
+   * @returns {Transition}
+   */
+  Transition.prototype.opacity = function Transition_opacity(opacity) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['opacity'] = opacity;
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name translateX
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} distance
+   * @returns {Transition}
+   */
+  Transition.prototype.translateX = function Transition_translateX(distance) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'translateX', (0, _isString)(distance) ? distance : distance + 'px');
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name translateY
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} distance
+   * @returns {Transition}
+   */
+  Transition.prototype.translateY = function Transition_translateY(distance) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'translateY', (0, _isString)(distance) ? distance : distance + 'px');
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name translateZ
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} distance
+   * @returns {Transition}
+   */
+  Transition.prototype.translateZ = function Transition_translateZ(distance) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'translateZ', (0, _isString)(distance) ? distance : distance + 'px');
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name rotate
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} degrees
+   * @returns {Transition}
+   */
+  Transition.prototype.rotate = function Transition_translateZ(degrees) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'rotate', (0, _isString)(degrees) ? degrees : degrees + 'deg');
+    return withDefaultRun(this.element, frame, this.direction);
+  };
+
+  /**
+   * @name scale
+   * @memberOf Frampton.Motion.Transition
+   * @instance
+   * @param {Number} scale
+   * @returns {Transition}
+   */
+  Transition.prototype.scale = function Transition_scale(scale) {
+    var frame = (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : {};
+    frame['transform'] = (0, _updateTransform)(frame['transform'] || '', 'scale', scale);
     return withDefaultRun(this.element, frame, this.direction);
   };
 
@@ -3709,7 +3862,7 @@ define('frampton-motion/transition', ['exports', 'frampton-utils/assert', 'framp
    * @returns {Transition}
    */
   Transition.prototype.reverse = function Transition_reverse() {
-    return withDefaultRun(this.element, (0, _isSomething)(this.frame) ? this.frame : this.classList.join(' '), inverseDirection(this.direction));
+    return withDefaultRun(this.element, (0, _isSomething)(this.frame) ? (0, _copy)(this.frame) : this.classList.join(' '), inverseDirection(this.direction));
   };
 
   /**
@@ -3784,6 +3937,34 @@ define('frampton-motion/transition_props', ['exports', 'module'], function (expo
   'use strict';
 
   module.exports = ['transition-delay', 'transition-duration', 'transition-property', 'transition-timing-function'];
+});
+define('frampton-motion/update_transform', ['exports', 'module', 'frampton-string/contains'], function (exports, module, _framptonStringContains) {
+  'use strict';
+
+  module.exports = updateTransform;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _contains = _interopRequire(_framptonStringContains);
+
+  function propValue(prop, value) {
+    return prop + '(' + value + ')';
+  }
+
+  function updateTransform(transform, prop, value) {
+    var reg;
+    if ((0, _contains)(prop, transform)) {
+      reg = new RegExp(prop + '\\([^)]*\\)');
+      transform = transform.replace(reg, propValue(prop, value));
+    } else {
+      if (transform.length > 0) {
+        transform = transform + ' ';
+      }
+      transform = transform + propValue(prop, value);
+    }
+
+    return transform;
+  }
 });
 define('frampton-motion/when', ['exports', 'module', 'frampton-utils/noop', 'frampton-motion/transition'], function (exports, module, _framptonUtilsNoop, _framptonMotionTransition) {
   'use strict';
@@ -3883,7 +4064,7 @@ define('frampton-mouse/mouse', ['exports', 'module', 'frampton-signals/stepper',
     }
   }
 });
-define('frampton-object', ['exports', 'frampton/namespace', 'frampton-object/filter', 'frampton-object/reduce', 'frampton-object/map', 'frampton-object/merge', 'frampton-object/for_each', 'frampton-object/as_list'], function (exports, _framptonNamespace, _framptonObjectFilter, _framptonObjectReduce, _framptonObjectMap, _framptonObjectMerge, _framptonObjectFor_each, _framptonObjectAs_list) {
+define('frampton-object', ['exports', 'frampton/namespace', 'frampton-object/filter', 'frampton-object/reduce', 'frampton-object/map', 'frampton-object/merge', 'frampton-object/for_each', 'frampton-object/as_list', 'frampton-object/copy'], function (exports, _framptonNamespace, _framptonObjectFilter, _framptonObjectReduce, _framptonObjectMap, _framptonObjectMerge, _framptonObjectFor_each, _framptonObjectAs_list, _framptonObjectCopy) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -3902,7 +4083,10 @@ define('frampton-object', ['exports', 'frampton/namespace', 'frampton-object/fil
 
   var _asList = _interopRequire(_framptonObjectAs_list);
 
+  var _copy = _interopRequire(_framptonObjectCopy);
+
   _Frampton.Object = {};
+  _Frampton.Object.copy = _copy;
   _Frampton.Object.filter = _filter;
   _Frampton.Object.reduce = _reduce;
   _Frampton.Object.map = _map;
@@ -3925,6 +4109,23 @@ define('frampton-object/as_list', ['exports', 'module', 'frampton-object/reduce'
       return acc;
     }, [], map);
   };
+});
+define('frampton-object/copy', ['exports', 'module', 'frampton-object/for_each'], function (exports, module, _framptonObjectFor_each) {
+  'use strict';
+
+  module.exports = copy_object;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _forEach = _interopRequire(_framptonObjectFor_each);
+
+  function copy_object(obj) {
+    var newObj = {};
+    (0, _forEach)(function (value, key) {
+      newObj[key] = value;
+    }, obj);
+    return newObj;
+  }
 });
 define('frampton-object/filter', ['exports', 'module', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, module, _framptonUtilsCurry, _framptonObjectFor_each) {
   'use strict';
