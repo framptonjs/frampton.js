@@ -1,7 +1,16 @@
 import isObject from 'frampton-utils/is_object';
 import isArray from 'frampton-utils/is_array';
 
-// equal :: Object -> Object -> Boolean
+/**
+ * equal :: Object -> Object -> Boolean
+ *
+ * @name equal
+ * @memberOf Frampton.Utils
+ * @static
+ * @param {Any} obj1
+ * @param {Any} obj2
+ * @returns {Boolean}
+ */
 export default function deep_equal(obj1, obj2) {
 
   if ((isObject(obj1) || isArray(obj1)) && (isObject(obj1) || isArray(obj1))) {

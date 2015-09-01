@@ -8,7 +8,7 @@ import isFunction from 'frampton-utils/is_function';
  * remaining arguments.
  *
  * @name curry
- * @memberOf Frampton
+ * @memberOf Frampton.Utils
  * @static
  * @param {Function} curry - Function to curry.
  */

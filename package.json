@@ -1,6 +1,6 @@
 {
   "name": "frampton",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A functional reactive library",
   "main": "frampton.js",
   "scripts": {

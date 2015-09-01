@@ -4,7 +4,7 @@ import apply from 'frampton-utils/apply';
 function MockAjax() {
   this.listeners = {};
   this.headers = {};
-  this.requestTime = ((Math.random() * 3000) + 300);
+  this.requestTime = ((Math.random() * 1000) + 300);
   this.progress = 0;
 }
 

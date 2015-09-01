@@ -1,7 +1,7 @@
 /**
  * Takes a function and warps it to be called at a later time.
  * @name apply
- * @memberOf Frampton
+ * @memberOf Frampton.Utils
  * @method
  * @static
  * @param {Function} fn      The function to wrap.

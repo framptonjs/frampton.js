@@ -4,7 +4,7 @@ if (typeof Frampton === 'undefined') {
   Frampton = {};
 }
 
-Frampton.VERSION = '0.0.3';
+Frampton.VERSION = '0.0.4';
 
 Frampton.TEST = 'test';
 

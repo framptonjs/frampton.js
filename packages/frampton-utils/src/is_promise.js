@@ -1,6 +1,15 @@
 import isObject from 'frampton-utils/is_object';
 import isFunction from 'frampton-utils/is_function';
 
-export default function isPromise(promise) {
-  return (isObject(promise) && isFunction(promise.then));
+/**
+ * Returns true/false indicating if object appears to be a Promise
+ *
+ * @name isPromise
+ * @memberOf Frampton.Utils
+ * @static
+ * @param {Any} obj
+ * @returns {Boolean}
+ */
+export default function is_promise(obj) {
+  return (isObject(obj) && isFunction(obj.then));
 }

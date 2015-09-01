@@ -9,7 +9,7 @@ import head from 'frampton-list/head';
  * each function to the next function in the execution order.
  *
  * @name compose
- * @memberOf Frampton
+ * @memberOf Frampton.Utils
  * @static
  * @param {Function} functions - Any number of function used to build the composition.
  */

@@ -1813,7 +1813,7 @@ define('frampton-io/http/ajax_api', ['exports', 'module', 'frampton/namespace', 
   function MockAjax() {
     this.listeners = {};
     this.headers = {};
-    this.requestTime = Math.random() * 3000 + 300;
+    this.requestTime = Math.random() * 1000 + 300;
     this.progress = 0;
   }
 
@@ -5601,7 +5601,7 @@ define('frampton-style/has_class', ['exports', 'module', 'frampton-utils/curry']
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  module.exports = (0, _curry)(function add_class(element, name) {
+  module.exports = (0, _curry)(function has_class(element, name) {
     return element.classList.contains(name);
   });
 });
@@ -5930,7 +5930,7 @@ define("frampton-utils/apply", ["exports", "module"], function (exports, module)
   /**
    * Takes a function and warps it to be called at a later time.
    * @name apply
-   * @memberOf Frampton
+   * @memberOf Frampton.Utils
    * @method
    * @static
    * @param {Function} fn      The function to wrap.
@@ -5948,6 +5948,8 @@ define('frampton-utils/assert', ['exports', 'module'], function (exports, module
   /**
    * Occassionally we need to blow things up if something isn't right.
    * @name assert
+   * @memberOf Frampton.Utils
+   * @static
    * @param {String} msg  - Message to throw with error.
    * @param {Any}    cond - A condition that evaluates to a Boolean. If false, an error is thrown.
    */
@@ -5970,7 +5972,7 @@ define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 
    * each function to the next function in the execution order.
    *
    * @name compose
-   * @memberOf Frampton
+   * @memberOf Frampton.Utils
    * @static
    * @param {Function} functions - Any number of function used to build the composition.
    */
@@ -6007,7 +6009,7 @@ define('frampton-utils/curry', ['exports', 'module', 'frampton-utils/assert', 'f
    * remaining arguments.
    *
    * @name curry
-   * @memberOf Frampton
+   * @memberOf Frampton.Utils
    * @static
    * @param {Function} curry - Function to curry.
    */
@@ -6049,7 +6051,16 @@ define('frampton-utils/curry', ['exports', 'module', 'frampton-utils/assert', 'f
 define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsIs_object, _framptonUtilsIs_array) {
   'use strict';
 
-  // equal :: Object -> Object -> Boolean
+  /**
+   * equal :: Object -> Object -> Boolean
+   *
+   * @name equal
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj1
+   * @param {Any} obj2
+   * @returns {Boolean}
+   */
   module.exports = deep_equal;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -6079,6 +6090,16 @@ define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object',
 define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
   'use strict';
 
+  /**
+   * Extends one object with one or more other objects
+   *
+   * @name extend
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Object} base
+   * @param {Object} args
+   * @returns {Object}
+   */
   module.exports = extend;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -6106,7 +6127,16 @@ define('frampton-utils/get', ['exports', 'module', 'frampton-utils/curry'], func
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  //+ get :: String -> Object -> Any
+  /**
+   * get :: String -> Object -> Any
+   *
+   * @name get
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {String} prop
+   * @param {Object} obj
+   * @returns {Any}
+   */
   module.exports = (0, _curry)(function get(prop, obj) {
     return obj[prop] || null;
   });
@@ -6128,7 +6158,16 @@ define('frampton-utils/has_length', ['exports', 'module', 'frampton-utils/curry'
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  // hasLength :: Int -> [a] -> Boolean
+  /**
+   * hasLength :: Int -> [a] -> Boolean
+   *
+   * @name hasLength
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Number} len
+   * @param {Object} obj
+   * @returns {Boolean}
+   */
   module.exports = (0, _curry)(function has_length(len, obj) {
     return obj && obj.length && obj.length >= len ? true : false;
   });
@@ -6181,37 +6220,73 @@ define("frampton-utils/inherits", ["exports", "module"], function (exports, modu
   }
 });
 define("frampton-utils/is_array", ["exports", "module"], function (exports, module) {
+  /**
+   * Returns a boolean telling us if a given object is an array
+   *
+   * @name isArray
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Object} arr
+   * @returns {Boolean}
+   */
   "use strict";
 
-  module.exports = isArray;
+  module.exports = is_array;
 
-  function isArray(arr) {
+  function is_array(arr) {
     return Object.prototype.toString.call(arr) === "[object Array]";
   }
 });
 define('frampton-utils/is_boolean', ['exports', 'module'], function (exports, module) {
+  /**
+   * Returns a boolean telling us if a given value is a boolean
+   *
+   * @name isBoolean
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
   'use strict';
 
-  module.exports = isBoolean;
+  module.exports = is_boolean;
 
-  function isBoolean(obj) {
+  function is_boolean(obj) {
     return typeof obj === 'boolean';
   }
 });
 define('frampton-utils/is_defined', ['exports', 'module', 'frampton-utils/is_undefined'], function (exports, module, _framptonUtilsIs_undefined) {
   'use strict';
 
-  module.exports = isDefined;
+  /**
+   * Returns a boolean telling us if a given value is defined
+   *
+   * @name isDefined
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
+  module.exports = is_defined;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _isUndefined = _interopRequire(_framptonUtilsIs_undefined);
 
-  function isDefined(obj) {
+  function is_defined(obj) {
     return !(0, _isUndefined)(obj);
   }
 });
 define("frampton-utils/is_empty", ["exports", "module"], function (exports, module) {
+  /**
+   * Returns a boolean telling us if a given value doesn't exist or has length 0
+   *
+   * @name isEmpty
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
   "use strict";
 
   module.exports = is_empty;
@@ -6227,23 +6302,51 @@ define('frampton-utils/is_equal', ['exports', 'module', 'frampton-utils/curry'],
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  /**
+   * (===) equality between two values
+   *
+   * @name isEqual
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} a
+   * @param {Any} b
+   * @returns {Boolean}
+   */
   module.exports = (0, _curry)(function is_equal(a, b) {
     return a === b;
   });
 });
 define('frampton-utils/is_function', ['exports', 'module'], function (exports, module) {
+  /**
+   * Returns true/false is the object a fucntion
+   *
+   * @name isFunction
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} fn
+   * @returns {Boolean}
+   */
   'use strict';
 
-  module.exports = isFunction;
+  module.exports = is_function;
 
-  function isFunction(fn) {
+  function is_function(fn) {
     return typeof fn === 'function';
   }
 });
 define('frampton-utils/is_nothing', ['exports', 'module', 'frampton-utils/is_undefined', 'frampton-utils/is_null'], function (exports, module, _framptonUtilsIs_undefined, _framptonUtilsIs_null) {
   'use strict';
 
-  module.exports = isNothing;
+  /**
+   * Returns true/false is the object null or undefined
+   *
+   * @name isNothing
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
+  module.exports = is_nothing;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -6251,22 +6354,58 @@ define('frampton-utils/is_nothing', ['exports', 'module', 'frampton-utils/is_und
 
   var _isNull = _interopRequire(_framptonUtilsIs_null);
 
-  function isNothing(obj) {
+  function is_nothing(obj) {
     return (0, _isUndefined)(obj) || (0, _isNull)(obj);
   }
 });
 define("frampton-utils/is_null", ["exports", "module"], function (exports, module) {
+  /**
+   * Returns true/false is the object null
+   *
+   * @name isNull
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
   "use strict";
 
-  module.exports = isNull;
+  module.exports = is_null;
 
-  function isNull(obj) {
+  function is_null(obj) {
     return obj === null;
+  }
+});
+define('frampton-utils/is_number', ['exports', 'module'], function (exports, module) {
+  /**
+   * Returns true/false is the object a number
+   *
+   * @name isNumber
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
+  'use strict';
+
+  module.exports = is_number;
+
+  function is_number(obj) {
+    return typeof obj === 'number';
   }
 });
 define('frampton-utils/is_object', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_array) {
   'use strict';
 
+  /**
+   * Returns true/false is the object a regular Object
+   *
+   * @name isObject
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
   module.exports = isObject;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -6282,7 +6421,16 @@ define('frampton-utils/is_object', ['exports', 'module', 'frampton-utils/is_some
 define('frampton-utils/is_promise', ['exports', 'module', 'frampton-utils/is_object', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsIs_object, _framptonUtilsIs_function) {
   'use strict';
 
-  module.exports = isPromise;
+  /**
+   * Returns true/false indicating if object appears to be a Promise
+   *
+   * @name isPromise
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
+  module.exports = is_promise;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -6290,38 +6438,65 @@ define('frampton-utils/is_promise', ['exports', 'module', 'frampton-utils/is_obj
 
   var _isFunction = _interopRequire(_framptonUtilsIs_function);
 
-  function isPromise(promise) {
-    return (0, _isObject)(promise) && (0, _isFunction)(promise.then);
+  function is_promise(obj) {
+    return (0, _isObject)(obj) && (0, _isFunction)(obj.then);
   }
 });
 define('frampton-utils/is_something', ['exports', 'module', 'frampton-utils/is_nothing'], function (exports, module, _framptonUtilsIs_nothing) {
   'use strict';
 
-  module.exports = isSomething;
+  /**
+   * Returns true/false indicating if object is not null or undefined
+   *
+   * @name isSomething
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
+  module.exports = is_something;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
 
-  function isSomething(obj) {
+  function is_something(obj) {
     return !(0, _isNothing)(obj);
   }
 });
 define('frampton-utils/is_string', ['exports', 'module'], function (exports, module) {
+  /**
+   * Returns true/false indicating if object is a String
+   *
+   * @name isString
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
   'use strict';
 
-  module.exports = isString;
+  module.exports = is_string;
 
-  function isString(obj) {
+  function is_string(obj) {
     return typeof obj === 'string';
   }
 });
 define('frampton-utils/is_undefined', ['exports', 'module'], function (exports, module) {
+  /**
+   * Returns true/false indicating if object is undefined
+   *
+   * @name isUndefined
+   * @memberOf Frampton.Utils
+   * @static
+   * @param {Any} obj
+   * @returns {Boolean}
+   */
   'use strict';
 
-  module.exports = isUndefined;
+  module.exports = is_undefined;
 
-  function isUndefined(obj) {
+  function is_undefined(obj) {
     return typeof obj === 'undefined';
   }
 });
@@ -6532,7 +6707,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
     Frampton = {};
   }
 
-  Frampton.VERSION = '0.0.3';
+  Frampton.VERSION = '0.0.4';
 
   Frampton.TEST = 'test';
 
