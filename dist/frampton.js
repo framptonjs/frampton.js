@@ -3,6 +3,10 @@
 var define, require;
 var global = this;
 
+/**
+ * This loader code is taken from the guys over at Ember
+ * https://github.com/emberjs/ember.js/
+ */
 (function() {
 
   if (typeof Frampton === 'undefined') {

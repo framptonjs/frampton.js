@@ -126,19 +126,20 @@ The Keyboard package is similar to the Mouse package in that it exports a Keyboa
 ```
 var keyboard = Frampton.Keyboard();
 
-// EventStream
+// EventStream of keydown events
 keyboard.downs
 
-// EventStream
+// EventStream of keyup events
 keyboard.ups
 
-// EventStream
+// EventStream of keypress events
 keyboard.presses
 
-// EventStream
+// EventStream of keyCodes tied to keyup events
 keyboard.codes
 
-// Behavior
+// Behavior of arrow keys currently pressed as a pair.
+// For example [-1,1] indicated left and up are pressed.
 keyboard.arrows
 
 // Boolean Behavior is shift key down
