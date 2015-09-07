@@ -1,4 +1,6 @@
 import Frampton from 'frampton/namespace';
+import replace from 'frampton-string/replace';
+import trim from 'frampton-string/trim';
 import join from 'frampton-string/join';
 import split from 'frampton-string/split';
 import lines from 'frampton-string/lines';
@@ -17,6 +19,8 @@ import normalizeNewline from 'frampton-string/normalize_newline';
  * @memberof Frampton
  */
 Frampton.String                  = {};
+Frampton.String.replace          = replace;
+Frampton.String.trim             = trim;
 Frampton.String.join             = join;
 Frampton.String.split            = split;
 Frampton.String.lines            = lines;

@@ -74,7 +74,7 @@ MockAjax.prototype.setRequestHeader = function(key, value) {
  * @memberof Frampton.IO.Http
  * @returns {Object} Instance of XMLHttpRequest for current environment
  */
-export default function ajax() {
+export default function ajax_api() {
   if (Frampton.isTest()) {
     return new MockAjax();
   } else {

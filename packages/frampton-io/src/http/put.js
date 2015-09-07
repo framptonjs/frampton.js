@@ -12,6 +12,6 @@ import send from 'frampton-io/http/send';
  * @param {Object} data Data to send with request
  * @returns {Frampton.Signals.EventStream} An EventStream of Response objects
  */
-export default curry(function post(url, data) {
+export default curry(function put(url, data) {
   return send(null, Request(url, 'PUT', (data || null)));
 });

@@ -1,3 +1,5 @@
-export default function uri_encode(string) {
-  return encodeURIComponent(string);
-}
+import memoize from 'frampton-utils/memoize';
+
+export default memoize(function uri_encode(str) {
+  return encodeURIComponent(str);
+});
