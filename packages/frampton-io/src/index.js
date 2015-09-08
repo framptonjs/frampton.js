@@ -23,6 +23,11 @@ import binaryString from 'frampton-io/file/binary_string';
 import arrayBuffer from 'frampton-io/file/array_buffer';
 import text from 'frampton-io/file/text';
 
+/**
+ * @name IO
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.IO = {};
 
 Frampton.IO.Response          = Response;
@@ -31,6 +36,11 @@ Frampton.IO.progress          = progress;
 Frampton.IO.error             = error;
 Frampton.IO.start             = start;
 
+/**
+ * @name Http
+ * @memberof Frampton.IO
+ * @namespace
+ */
 Frampton.IO.Http = {};
 Frampton.IO.Http.send         = send;
 Frampton.IO.Http.get          = get;
@@ -43,6 +53,11 @@ Frampton.IO.Http.queryEscape  = queryEscape;
 Frampton.IO.Http.uriEncode    = uriEncode;
 Frampton.IO.Http.uriDecode    = uriDecode;
 
+/**
+ * @name File
+ * @memberof Frampton.IO
+ * @namespace
+ */
 Frampton.IO.File = {};
 Frampton.IO.File.read         = read;
 Frampton.IO.File.dataUrl      = dataUrl;

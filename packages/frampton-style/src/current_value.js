@@ -7,8 +7,8 @@ var style = window.getComputedStyle;
  * current :: DomNode -> String -> String
  *
  * @name currentValue
- * @memberOf Frampton.Style
- * @static
+ * @method
+ * @memberof Frampton.Style
  * @param {Object} element DomNode whose property to check
  * @param {String} prop    Name of property to check
  * @returns {String} String representation of current property value

@@ -1,10 +1,12 @@
 /*globals Frampton:true */
 
-if (typeof Frampton === 'undefined') {
-  Frampton = {};
-}
-
-Frampton.VERSION = '0.0.4';
+/**
+ * The parent namespace for everything else in Frampton
+ *
+ * @name Frampton
+ * @namespace
+ */
+Frampton.VERSION = '0.0.5';
 
 Frampton.TEST = 'test';
 

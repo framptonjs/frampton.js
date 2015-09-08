@@ -11,17 +11,25 @@ var vendors = {
   'Ms'     : 'ms'
 };
 
-export default curry(function supported_by_element(el, prop) {
+/**
+ * @name supportedByElement
+ * @method
+ * @memberof Frampton.Style
+ * @param {Object} element
+ * @param {String} prop
+ * @returns {String}
+ */
+export default curry(function supported_by_element(element, prop) {
 
   var camelProp = dashToCamel(prop);
 
-  if (isSomething(el.style[camelProp])) {
+  if (isSomething(element.style[camelProp])) {
     return prop;
   }
 
   for (let key in vendors) {
     let propToCheck = key + capitalize(camelProp);
-    if (isSomething(el.style[propToCheck])) {
+    if (isSomething(element.style[propToCheck])) {
       return ('-' + vendors[key] + '-' + prop).toLowerCase();
     }
   }

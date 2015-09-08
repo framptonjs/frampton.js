@@ -1,4 +1,5 @@
 import Frampton from 'frampton/namespace';
+import Union from 'frampton-data/union';
 import { Either, Left, Right } from 'frampton-data/either';
 import { Maybe, Just, Nothing } from 'frampton-data/maybe';
 import Task from 'frampton-data/task';
@@ -9,7 +10,13 @@ import fork from 'frampton-data/fork';
 import fail from 'frampton-data/fail';
 import succeed from 'frampton-data/succeed';
 
+/**
+ * @name Data
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.Data          = {};
+Frampton.Data.Union    = Union;
 Frampton.Data.Either   = Either;
 Frampton.Data.Left     = Left;
 Frampton.Data.Right    = Right;

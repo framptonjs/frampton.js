@@ -13,6 +13,11 @@ import contains from 'frampton-style/contains';
 import supported from 'frampton-style/supported';
 import supportedProps from 'frampton-style/supported_props';
 
+/**
+ * @name Style
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.Style                = {};
 Frampton.Style.addClass       = addClass;
 Frampton.Style.closest        = closest;

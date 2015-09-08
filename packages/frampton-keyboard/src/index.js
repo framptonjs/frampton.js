@@ -12,6 +12,11 @@ import isSpace from 'frampton-keyboard/is_space';
 import isCtrl from 'frampton-keyboard/is_ctrl';
 import isShift from 'frampton-keyboard/is_shift';
 
+/**
+ * @name Keyboard
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.Keyboard = Keyboard;
 Frampton.Keyboard.keyCode = keyCode;
 Frampton.Keyboard.isKey   = isKey;

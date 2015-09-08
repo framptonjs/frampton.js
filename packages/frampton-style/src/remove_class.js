@@ -2,8 +2,8 @@ import curry from 'frampton-utils/curry';
 
 /**
  * @name removeClass
- * @memberOf Frampton.Style
- * @instance
+ * @method
+ * @memberof Frampton.Style
  * @param {Object} element
  * @param {String} name
  */

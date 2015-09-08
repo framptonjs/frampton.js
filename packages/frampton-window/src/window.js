@@ -1,6 +1,6 @@
 import empty from 'frampton-signals/empty';
 import stepper from 'frampton-signals/stepper';
-import listen from 'frampton-events/listen';
+import { listen } from 'frampton-events/listen';
 import get from 'frampton-utils/get';
 import isSomething from 'frampton-utils/is_something';
 
@@ -34,6 +34,13 @@ function update() {
 
 resize.next(update);
 
+/**
+ * @name Window
+ * @method
+ * @memberof Frampton
+ * @param {Object} [element] DomNode to act as applicaton window
+ * @returns {Object}
+ */
 export default function Window(element) {
   element = element;
   return {

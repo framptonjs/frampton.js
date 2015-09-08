@@ -27,6 +27,11 @@ import {
   errorEvent
 } from 'frampton-signals/event';
 
+/**
+ * @name Signals
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.Signals             = {};
 Frampton.Signals.EventStream = EventStream;
 Frampton.Signals.Behavior    = Behavior;

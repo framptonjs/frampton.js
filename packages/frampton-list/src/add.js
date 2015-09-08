@@ -5,10 +5,10 @@ import copy from 'frampton-list/copy';
 
 /**
  * @name addToList
- * @memberOf Frampton.List
- * @static
+ * @method
+ * @memberof Frampton.List
  * @param {Array} xs  Array to add object to
- * @param {Any}   obj Object to add to array
+ * @param {*}   obj Object to add to array
  * @returns {Array} A new array with the object added
  */
 export default curry(function add_to_list(xs, obj) {

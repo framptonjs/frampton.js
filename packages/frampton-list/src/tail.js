@@ -1,7 +1,7 @@
 /**
  * @name tail
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 import assert from 'frampton-utils/assert';
 import isArray from 'frampton-utils/is_array';

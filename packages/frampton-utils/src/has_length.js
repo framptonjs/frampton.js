@@ -4,8 +4,8 @@ import curry from 'frampton-utils/curry';
  * hasLength :: Int -> [a] -> Boolean
  *
  * @name hasLength
- * @memberOf Frampton.Utils
- * @static
+ * @method
+ * @memberof Frampton.Utils
  * @param {Number} len
  * @param {Object} obj
  * @returns {Boolean}

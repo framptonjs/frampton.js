@@ -3,7 +3,7 @@
  * \r\n for newlines which can lead to irregularities when dealing with strings
  *
  * @name normalizeNewline
- * @memberOf Frampton.String
+ * @memberof Frampton.String
  * @static
  * @param {String} str
  * @returns {String}

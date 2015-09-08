@@ -47,6 +47,14 @@ function fromMerge(...streams) {
   });
 }
 
+/**
+ * @name EventStream
+ * @alias EventStream
+ * @class
+ * @memberof Frampton.Signals
+ * @param {Function} seed      A function to seed values to the EventStream
+ * @param {Function} transform A function to transform values on the EventStream
+ */
 function EventStream(seed, transform) {
   this._id        = guid();
   this.seed       = seed || noop;
@@ -57,9 +65,11 @@ function EventStream(seed, transform) {
 }
 
 /**
+ * Push a new Event onto the EventStream
  * @name push
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
+ * @method
+ * @param {Event} event A new Event to put on the stream
  */
 EventStream.prototype.push = function EventStream_push(event) {
   try {
@@ -73,24 +83,38 @@ EventStream.prototype.push = function EventStream_push(event) {
 };
 
 /**
+ * Push a new value onto the EventStream, wrapping it in an Event object
+ *
  * @name pushNext
- * @memberOf EventStream
- * @instance
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {*} val A new value to put on the stream
  */
 EventStream.prototype.pushNext = function EventStream_pushNext(val) {
   this.push(nextEvent(val));
 };
 
 /**
+ * Push a new error onto the EventStream, wrapping it in an Event object
+ *
  * @name pushError
- * @memberOf EventStream
- * @instance
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {String} err A new error message to put on the stream
  */
 EventStream.prototype.pushError = function EventStream_pushError(err) {
   this.push(errorEvent(err));
 };
 
-// Gets raw event, including empty events discarded by filter actions
+/**
+ * Gets raw event, including empty events discarded by filter actions
+ *
+ * @name subscribe
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Function} fn A function to call when there's a new Event on the stream
+ * @returns {Function} A function to unsubscribe
+ */
 EventStream.prototype.subscribe = function EventStream_subscribe(fn) {
   return this.dispatcher.subscribe(fn);
 };
@@ -100,10 +124,9 @@ EventStream.prototype.subscribe = function EventStream_subscribe(fn) {
  *
  * @name next
  * @method
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
  * @param {Function} fn   Function to call when there is a value
- * @returns {EventStream} A function to unsubscribe from the EventStream
+ * @returns {Function} A function to unsubscribe from the EventStream
  */
 EventStream.prototype.next = function EventStream_next(fn) {
   return this.subscribe(function(event) {
@@ -118,10 +141,9 @@ EventStream.prototype.next = function EventStream_next(fn) {
  *
  * @name error
  * @method
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
  * @param {Function} fn   Function to call when there is an error
- * @returns {EventStream} A function to unsubscribe from the EventStream
+ * @returns {Function} A function to unsubscribe from the EventStream
  */
 EventStream.prototype.error = function EventStream_error(fn) {
   return this.subscribe(function(event) {
@@ -136,10 +158,9 @@ EventStream.prototype.error = function EventStream_error(fn) {
  *
  * @name next
  * @method
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
  * @param {Function} fn   Function to call when the stream closes
- * @returns {EventStream} A function to unsubscribe from the EventStream
+ * @returns {Function} A function to unsubscribe from the EventStream
  */
 EventStream.prototype.done = function EventStream_done(fn) {
   return this.subscribe(function(event) {
@@ -154,8 +175,7 @@ EventStream.prototype.done = function EventStream_done(fn) {
  *
  * @name close
  * @method
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
  */
 EventStream.prototype.close = function EventStream_close() {
   if (!this.isClosed) {
@@ -171,11 +191,10 @@ EventStream.prototype.close = function EventStream_close() {
  *
  * Given an EventStream of an EventStream it will remove one layer of nesting.
  *
- * @name close
+ * @name join
  * @method
- * @memberOf EventStream
- * @instance
- * @returns {EventStream} A new EventStream with a level of nesting removed
+ * @memberof Frampton.Signals.EventStream#
+ * @returns {Frampton.Signals.EventStream} A new EventStream with a level of nesting removed
  */
 EventStream.prototype.join = function EventStream_join() {
 
@@ -206,10 +225,10 @@ EventStream.prototype.join = function EventStream_join() {
  * concat(>>) :: EventStream a -> EventStream b -> EventStream b
  *
  * @name concat
- * @memberOf EventStream
- * @instance
- * @param {EventStream} stream
- * @returns {EventStream}
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Frampton.Signals.EventStream} stream
+ * @returns {Frampton.Signals.EventStream}
  */
 EventStream.prototype.concat = function EventStream_concat(stream) {
 
@@ -240,16 +259,23 @@ EventStream.prototype.concat = function EventStream_concat(stream) {
  *
  * @name chain
  * @method
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
  * @param {Function} fn   A function that returns an EventStream
- * @returns {EventStream} A new EventStream with a level of nesting removed
+ * @returns {Frampton.Signals.EventStream} A new EventStream with a level of nesting removed
  */
 EventStream.prototype.chain = function EventStream_chain(fn) {
   return this.map(fn).join();
 };
 
-// chainLatest :: EventStream a -> (a -> EventStream b) -> EventStream b
+/**
+ * chainLatest :: EventStream a -> (a -> EventStream b) -> EventStream b
+ *
+ * @name chainLatest
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Function} fn   A function that returns an EventStream
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.chainLatest = function EventStream_chainLatest(fn) {
 
   var source      = this;
@@ -290,7 +316,15 @@ EventStream.prototype.chainLatest = function EventStream_chainLatest(fn) {
   });
 };
 
-// ap(<*>) :: EventStream (a -> b) -> EventStream a -> EventStream b
+/**
+ * ap(<*>) :: EventStream (a -> b) -> EventStream a -> EventStream b
+ *
+ * @name ap
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Frampton.Signals.EventStream} stream
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.ap = function EventStream_ap(stream) {
 
   var source = this;
@@ -322,7 +356,15 @@ EventStream.prototype.ap = function EventStream_ap(stream) {
   });
 };
 
-// map :: EventStream a -> (a -> b) -> EventStream b
+/**
+ * map :: EventStream a -> (a -> b) -> EventStream b
+ *
+ * @name map
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Function} mapping A function to transform values on the stream
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.map = function EventStream_map(mapping) {
   var mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
   return withTransform(this, (event) => {
@@ -330,7 +372,15 @@ EventStream.prototype.map = function EventStream_map(mapping) {
   });
 };
 
-// recover :: EventStream a -> (err -> a) -> EventStream a
+/**
+ * recover :: EventStream a -> (err -> a) -> EventStream a
+ *
+ * @name recover
+ * @method
+ * @memberof! EventStream.prototype
+ * @param {Function} mapping A function to map an error to a value
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.recover = function EventStream_recover(mapping) {
   var mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
   return withTransform(this, (event) => {
@@ -338,7 +388,15 @@ EventStream.prototype.recover = function EventStream_recover(mapping) {
   });
 };
 
-// filter :: EventStream a -> (a -> Bool) -> EventStream a
+/**
+ * filter :: EventStream a -> (a -> Bool) -> EventStream a
+ *
+ * @name filter
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Function} predicate A function to filter values on the stream
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.filter = function EventStream_filter(predicate) {
   var filterFn = isFunction(predicate) ? predicate : isEqual(predicate);
   return withTransform(this, (event) => {
@@ -346,7 +404,14 @@ EventStream.prototype.filter = function EventStream_filter(predicate) {
   });
 };
 
-// filterJust :: EventStream Maybe a -> EventStream a
+/**
+ * filterJust :: EventStream Maybe a -> EventStream a
+ *
+ * @name filterJust
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.filterJust = function EventStream_filterJust() {
   return this.filter((val) => {
     return (isFunction(val.isJust) && val.isJust());
@@ -358,9 +423,8 @@ EventStream.prototype.filterJust = function EventStream_filterJust() {
  *
  * @name dropRepeats
  * @method
- * @memberOf EventStream
- * @instance
- * @returns {EventStream}
+ * @memberof Frampton.Signals.EventStream#
+ * @returns {Frampton.Signals.EventStream}
  */
 EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
   var saved;
@@ -373,12 +437,27 @@ EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
   });
 };
 
-// scan :: EventStream a -> b -> (a -> b) -> Behavior b
-EventStream.prototype.scan = function EventStream_scan(initial, fn) {
-  return stepper(initial, this.map(fn));
+/**
+ * scan :: EventStream a -> b -> (a -> b) -> Behavior b
+ * @name scan
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {*} initial An initial value for the returned Behavior
+ * @param {Function} mapping A function to map values on the stream before giving them to Behavior
+ * @returns {Frampton.Signals.Behavior}
+ */
+EventStream.prototype.scan = function EventStream_scan(initial, mapping) {
+  return stepper(initial, this.map(mapping));
 };
 
-// sample :: EventStream a -> Behavior b -> EventStream b
+/**
+ * sample :: EventStream a -> Behavior b -> EventStream b
+ * @name sample
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Frampton.Signals.Behavior} behavior
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.sample = function EventStream_sample(behavior) {
   var source = this;
   var breakers = [];
@@ -398,7 +477,15 @@ EventStream.prototype.sample = function EventStream_sample(behavior) {
   });
 };
 
-// fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
+/**
+ * fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
+ * @name fold
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Function} fn  A function to reduce values on the stream
+ * @param {*}        acc An initial value for the fold
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.fold = function EventStream_fold(fn, acc) {
   return withTransform(this, (event) => {
     if (event.isNext()) {
@@ -410,7 +497,14 @@ EventStream.prototype.fold = function EventStream_fold(fn, acc) {
   });
 };
 
-// withPrevious :: EventStream a -> EventStream a
+/**
+ * withPrevious :: EventStream a -> EventStream a
+ * @name withPrevious
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Number} [limit=2] Number of previous values to save
+ * @returns {Frampton.Signals.EventStream}
+ */
 EventStream.prototype.withPrevious = function EventStream_withPrevious(limit) {
   return this.fold((acc, next) => {
     if (acc.length >= (limit || 2)) acc.shift();
@@ -419,7 +513,12 @@ EventStream.prototype.withPrevious = function EventStream_withPrevious(limit) {
   }, []);
 };
 
-// take :: EventStream a -> Number n -> EventStream a
+/**
+ * take :: EventStream a -> Number n -> EventStream a
+ * @name take
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ */
 EventStream.prototype.take = function EventStream_take(limit) {
 
   var source = this;
@@ -450,7 +549,12 @@ EventStream.prototype.take = function EventStream_take(limit) {
   });
 };
 
-// takeWhile :: EventStream a -> (a -> Boolean) -> EventStream a
+/**
+ * takeWhile :: EventStream a -> (a -> Boolean) -> EventStream a
+ * @name takeWhile
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ */
 EventStream.prototype.takeWhile = function EventStream_takeWhile(predicate) {
 
   var source = this;
@@ -483,9 +587,8 @@ EventStream.prototype.takeWhile = function EventStream_takeWhile(predicate) {
 /**
  * @name first
  * @method
- * @memberOf EventStream
- * @instance
- * @returns {EventStream} A new EventStream
+ * @memberof Frampton.Signals.EventStream#
+ * @returns {Frampton.Signals.EventStream} A new EventStream
  */
 EventStream.prototype.first = function EventStream_first() {
   return this.take(1);
@@ -496,10 +599,9 @@ EventStream.prototype.first = function EventStream_first() {
  *
  * @name skip
  * @method
- * @memberOf EventStream
- * @instance
- * @param {EventStream} number - Number of values to skip.
- * @returns {EventStream} A new EventStream
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Frampton.Signals.EventStream} number - Number of values to skip.
+ * @returns {Frampton.Signals.EventStream} A new EventStream
  */
 EventStream.prototype.skip = function EventStream_skip(number) {
 
@@ -531,10 +633,9 @@ EventStream.prototype.skip = function EventStream_skip(number) {
  *
  * @name merge
  * @method
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
  * @param {Object} stream - stream to merge with current stream
- * @returns {EventStream} A new EventStream
+ * @returns {Frampton.Signals.EventStream} A new EventStream
  */
 EventStream.prototype.merge = function Stream_merge(stream) {
   return fromMerge(this, stream);
@@ -545,10 +646,9 @@ EventStream.prototype.merge = function Stream_merge(stream) {
  *
  * @name zip
  * @method
- * @memberOf EventStream
- * @instance
- * @param {Behavior} behavipr - The EventStream to zip with the current EventStream.
- * @returns {EventStream} A new EventStream.
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Frampton.Signals.Behavior} behavipr - The EventStream to zip with the current EventStream.
+ * @returns {Frampton.Signals.EventStream} A new EventStream.
  */
 EventStream.prototype.zip = function Stream_zip(behavior) {
 
@@ -573,7 +673,12 @@ EventStream.prototype.zip = function Stream_zip(behavior) {
   });
 };
 
-// debounce :: EventStream a -> Number -> EventStream a
+/**
+ * debounce :: EventStream a -> Number -> EventStream a
+ * @name debounce
+ * @method
+ * @memberof Frampton.Signals.EventStream#
+ */
 EventStream.prototype.debounce = function EventStream_debounce(delay) {
 
   var source   = this;
@@ -614,10 +719,9 @@ EventStream.prototype.debounce = function EventStream_debounce(delay) {
  *
  * @name throttle
  * @method
- * @memberOf EventStream
- * @instance
+ * @memberof Frampton.Signals.EventStream#
  * @param {Number} delay - Time (milliseconds) to delay each update on the stream.
- * @returns {EventStream} A new Stream with the delay applied.
+ * @returns {Frampton.Signals.EventStream} A new Stream with the delay applied.
  */
 EventStream.prototype.throttle = function EventStream_throttle(delay) {
 
@@ -671,10 +775,9 @@ EventStream.prototype.throttle = function EventStream_throttle(delay) {
  *
  * @name and
  * @method
- * @memberOf EventStream
- * @instance
- * @param {Behavior} behavior - A behavior to test against
- * @returns {EventStream} A new EventStream that only produces values if the behavior is truthy.
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Frampton.Signals.Behavior} behavior - A behavior to test against
+ * @returns {Frampton.Signals.EventStream} A new EventStream that only produces values if the behavior is truthy.
  */
 EventStream.prototype.and = function(behavior) {
 
@@ -708,10 +811,9 @@ EventStream.prototype.and = function(behavior) {
  *
  * @name not
  * @method
- * @memberOf EventStream
- * @instance
- * @param {Behavior} behavior - A behavior to test against
- * @returns {EventStream} A new EventStream that only produces values if the behavior is falsy.
+ * @memberof Frampton.Signals.EventStream#
+ * @param {Frampton.Signals.Behavior} behavior - A behavior to test against
+ * @returns {Frampton.Signals.EventStream} A new EventStream that only produces values if the behavior is falsy.
  */
 EventStream.prototype.not = function(behavior) {
 
@@ -745,9 +847,8 @@ EventStream.prototype.not = function(behavior) {
  *
  * @name preventDefault
  * @method
- * @memberOf EventStream
- * @instance
- * @returns {EventStream}
+ * @memberof Frampton.Signals.EventStream#
+ * @returns {Frampton.Signals.EventStream}
  */
 EventStream.prototype.preventDefault = function EventStream_preventDefault() {
   return withTransform(this, (event) => {
@@ -764,9 +865,8 @@ EventStream.prototype.preventDefault = function EventStream_preventDefault() {
  *
  * @name log
  * @method
- * @memberOf EventStream
- * @instance
- * @returns {EventStream} A new EventStream that logs its values to the console.
+ * @memberof Frampton.Signals.EventStream#
+ * @returns {Frampton.Signals.EventStream} A new EventStream that logs its values to the console.
  */
 EventStream.prototype.log = function EventStream_log(msg) {
   return withTransform(this, (event) => {

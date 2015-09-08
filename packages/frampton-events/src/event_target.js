@@ -2,7 +2,7 @@
  * eventTarget :: DomEvent -> Object
  *
  * @name eventTarget
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {Object} evt
  * @returns {Object} The target value of the event object, usually a DomNode

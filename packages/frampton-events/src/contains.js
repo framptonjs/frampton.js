@@ -7,7 +7,7 @@ import eventTarget from 'frampton-events/event_target';
  * contains :: DomNode -> DomEvent -> Boolean
  *
  * @name contains
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {Object} element
  * @param {Object} evt

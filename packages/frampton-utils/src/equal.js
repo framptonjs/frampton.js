@@ -5,10 +5,10 @@ import isArray from 'frampton-utils/is_array';
  * equal :: Object -> Object -> Boolean
  *
  * @name equal
- * @memberOf Frampton.Utils
- * @static
- * @param {Any} obj1
- * @param {Any} obj2
+ * @memberof Frampton.Utils
+ * @method
+ * @param {*} obj1
+ * @param {*} obj2
  * @returns {Boolean}
  */
 export default function deep_equal(obj1, obj2) {

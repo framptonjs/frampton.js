@@ -1,6 +1,7 @@
 /**
  * @name copy
- * @memberOf Frampton
+ * @method
+ * @memberof Frampton.List
  */
 export default function copy(xs, begin, end) {
 

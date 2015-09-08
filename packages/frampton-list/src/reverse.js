@@ -1,11 +1,11 @@
 import foldr from 'frampton-list/foldr';
 
 /**
- * + reverse :: List a -> List a
+ * reverse :: List a -> List a
  *
  * @name reverse
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 export default function reverse(xs) {
   return foldr((acc, next) => {

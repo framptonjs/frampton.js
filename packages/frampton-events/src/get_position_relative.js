@@ -5,7 +5,7 @@ import getPosition from 'frampton-events/get_position';
  * getPositionRelative :: DomNode -> DomEvent -> [Number, Number]
  *
  * @name getPositionRelative
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {Object} node
  * @param {Object} evt

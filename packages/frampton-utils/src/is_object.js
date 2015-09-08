@@ -5,9 +5,9 @@ import isArray from 'frampton-utils/is_array';
  * Returns true/false is the object a regular Object
  *
  * @name isObject
- * @memberOf Frampton.Utils
- * @static
- * @param {Any} obj
+ * @method
+ * @memberof Frampton.Utils
+ * @param {*} obj
  * @returns {Boolean}
  */
 export default function isObject(obj) {

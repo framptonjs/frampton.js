@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 dist/frampton-tests.js
+docs/fonts/
 ./frampton.js
 notes.txt
 tmp

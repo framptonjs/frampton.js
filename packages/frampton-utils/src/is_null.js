@@ -2,9 +2,9 @@
  * Returns true/false is the object null
  *
  * @name isNull
- * @memberOf Frampton.Utils
- * @static
- * @param {Any} obj
+ * @method
+ * @memberof Frampton.Utils
+ * @param {*} obj
  * @returns {Boolean}
  */
 export default function is_null(obj) {

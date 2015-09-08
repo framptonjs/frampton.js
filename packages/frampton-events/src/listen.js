@@ -1,42 +1,48 @@
 import curry from 'frampton-utils/curry';
 import isFunction from 'frampton-utils/is_function';
-import EventStream from 'frampton-signals/event_stream';
-import { nextEvent } from 'frampton-signals/event';
 import contains from 'frampton-events/contains';
+import selectorContains from 'frampton-events/selector_contains';
 import EVENT_MAP from 'frampton-events/event_map';
-import { addListener } from 'frampton-events/event_dispatcher';
-import documentCache from 'frampton-events/document_cache';
-
-function getEventStream(name, target) {
-  return new EventStream((sink) => {
-    return addListener(
-      name,
-      evt => sink(nextEvent(evt)),
-      target
-    );
-  });
-}
-
-function getDocumentStream(name) {
-  return documentCache.get(name, function() {
-    return getEventStream(name, document);
-  });
-}
+import getDocumentStream from 'frampton-events/get_document_stream';
+import getEventStream from 'frampton-events/get_event_stream';
 
 /**
  * listen :: String -> Dom -> EventStream Event
  *
  * @name listen
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {String} eventName Name of event to listen for
  * @param {Object} target    Object on which to listen for event
- * @returns {EventStream} An EventStream of all occurances of the given event on the given object
+ * @returns {Frampton.Signals.EventStream} An EventStream of all occurances of the given event on the given object
  */
-export default curry(function listen(eventName, target) {
+var onEvent = curry(function on_selector(eventName, target) {
   if (EVENT_MAP[eventName] && isFunction(target.addEventListener)) {
     return getDocumentStream(eventName).filter(contains(target));
   } else {
     return getEventStream(eventName, target);
   }
 });
+
+/**
+ * onSelector :: String -> String -> EventStream Event
+ *
+ * @name listen
+ * @memberof Frampton.Events
+ * @static
+ * @param {String} eventName Name of event to listen for
+ * @param {String} selector  Selector to filter events by
+ * @returns {Frampton.Signals.EventStream} An EventStream of all occurances of the given event within given selector
+ */
+var onSelector = curry(function on_selector(eventName, selector) {
+  if (EVENT_MAP[eventName]) {
+    return getDocumentStream(eventName).filter(selectorContains(selector));
+  } else {
+    throw new Error('Frampton.Events.onSelector given unrecognized event name: ' + eventName);
+  }
+});
+
+export {
+  onEvent as listen,
+  onSelector
+};

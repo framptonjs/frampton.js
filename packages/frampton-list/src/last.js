@@ -3,8 +3,8 @@ import isArray from 'frampton-utils/is_array';
 
 /**
  * @name last
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 export default function last(xs) {
   assert("Frampton.last recieved a non-array", isArray(xs));

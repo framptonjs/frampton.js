@@ -1,21 +1,22 @@
 {
   "name": "frampton",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A functional reactive library",
-  "main": "frampton.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "frampton test",
+    "build": "frampton build",
+    "docs": "rm -rfv docs/* && jsdoc dist/frampton.js -d docs --readme README.md"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/framptonjs/frampton.git"
   },
-  "author": "Kevin Greene",
+  "author": "Kevin Greene <hightimesteddy@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/framptonjs/frampton/issues"
+    "url": "https://github.com/framptonjs/frampton.js/issues"
   },
-  "homepage": "https://github.com/framptonjs/frampton",
+  "homepage": "https://github.com/framptonjs/frampton.js",
   "devDependencies": {
     "broccoli": "^0.16.2",
     "broccoli-cli": "^1.0.0",

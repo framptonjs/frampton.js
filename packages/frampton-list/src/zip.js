@@ -4,7 +4,8 @@ import curry from 'frampton-utils/curry';
  * zip :: List a -> List b - List (a, b)
  *
  * @name zip
- * @memberOf Frampton
+ * @method
+ * @memberof Frampton.List
  * @param {Array} xs
  * @param {Array} ys
  */

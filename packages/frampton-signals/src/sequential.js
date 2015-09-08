@@ -7,9 +7,11 @@ import { nextEvent } from 'frampton-signals/event';
  * Creates a new stream that sequentially emits the values of the given
  * array with the provided delay between each value.
  * @name sequential
+ * @method
+ * @memberof Frampton.Signals
  * @param {Number} delay Millisecond delay
  * @param {Array}  arr   Array of values
- * @returns {EventStream} A new EventStream
+ * @returns {Frampton.Signals.EventStream} A new EventStream
  */
 export default curry(function sequential(delay, arr) {
   return new EventStream(function(sink) {

@@ -5,6 +5,10 @@ import notImplemented from 'frampton-utils/not_implemented';
 
 /**
  * The value of a observable
+ *
+ * @name Event
+ * @memberof Frampton.Signals
+ * @class
  */
 function Event(value) {}
 
@@ -44,7 +48,8 @@ Event.prototype.isError = function() {
 
 /**
  * @class Next
- * @extends Event
+ * @memberof Frampton.Signals
+ * @extends Frampton.Signals.Event
  */
 inherits(Next, Event);
 
@@ -72,13 +77,22 @@ Next.prototype.isNext = function() {
   return true;
 };
 
+/**
+ * Creates a new Next
+ *
+ * @name nextEvent
+ * @method
+ * @memberOf Frampton.Signals
+ * @returns {Frampton.Signals.Next}
+ */
 function nextEvent(value) {
   return new Next(value);
 }
 
 /**
  * @class End
- * @extends Event
+ * @memberof Frampton.Signals
+ * @extends Frampton.Signals.Event
  */
 inherits(End, Event);
 
@@ -106,13 +120,22 @@ End.prototype.isEnd = function() {
   return true;
 };
 
+/**
+ * Creates a new End
+ *
+ * @name endEvent
+ * @method
+ * @memberOf Frampton.Signals
+ * @returns {Frampton.Signals.End}
+ */
 function endEvent(value) {
   return new End(value || null);
 }
 
 /**
  * @class Error
- * @extends Event
+ * @memberof Frampton.Signals
+ * @extends Frampton.Signals.Event
  */
 inherits(Error, Event);
 
@@ -141,13 +164,22 @@ Error.prototype.isError = function() {
   return true;
 };
 
+/**
+ * Creates a new Error
+ *
+ * @name errorEvent
+ * @method
+ * @memberOf Frampton.Signals
+ * @returns {Frampton.Signals.Error}
+ */
 function errorEvent(msg) {
   return new Error(msg);
 }
 
 /**
  * @class Empty
- * @extends Event
+ * @memberof Frampton.Signals
+ * @extends Frampton.Signals.Event
  */
 inherits(Empty, Event);
 
@@ -173,6 +205,14 @@ Empty.prototype.isEmpty = function() {
   return true;
 };
 
+/**
+ * Creates a new Empty
+ *
+ * @name emptyEvent
+ * @method
+ * @memberOf Frampton.Signals
+ * @returns {Frampton.Signals.Emtpy}
+ */
 function emptyEvent() {
   return new Empty();
 }

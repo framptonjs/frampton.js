@@ -6,7 +6,7 @@ import eventTarget from 'frampton-events/event_target';
  * eventValue :: DomEvent -> String
  *
  * @name eventValue
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {Object} evt
  * @returns {String} The value property of the event target

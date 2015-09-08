@@ -5,10 +5,10 @@ import { nextEvent } from 'frampton-signals/event';
  * once :: a -> EventStream a
  *
  * @name of
- * @memberOf Frampton.Signals
+ * @memberof Frampton.Signals
  * @static
- * @param {Any} An initial value for the EventStream
- * @returns {EventStream}
+ * @param {*} An initial value for the EventStream
+ * @returns {Frampton.Signals.EventStream}
  */
 export default function once(val) {
   return new EventStream((sink) => {

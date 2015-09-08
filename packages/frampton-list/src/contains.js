@@ -2,10 +2,10 @@ import curry from 'frampton-utils/curry';
 
 /**
  * @name contains
- * @memberOf Frampton.List
- * @static
+ * @method
+ * @memberof Frampton.List
  * @param {Array} xs
- * @param {Any}   obj
+ * @param {*}   obj
  * @retruns {Boolean}
  */
 export default curry(function(xs, obj) {

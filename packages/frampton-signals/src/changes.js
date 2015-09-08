@@ -8,10 +8,10 @@ import { nextEvent } from 'frampton-signals/event';
  * value of the Behavior changes
  *
  * @name changes
- * @memberOf Frampton.Signals
+ * @memberof Frampton.Signals
  * @static
  * @param {Behavior} behavior A behavior to feed the EventStream
- * @returns {EventStream}
+ * @returns {Frampton.Signals.EventStream}
  */
 export default function changes(behavior) {
   return new EventStream((sink) => {

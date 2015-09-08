@@ -2,8 +2,8 @@ import curry from 'frampton-utils/curry';
 
 /**
  * @name each
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 export default curry(function curried_each(fn, xs) {
   xs.forEach(fn);

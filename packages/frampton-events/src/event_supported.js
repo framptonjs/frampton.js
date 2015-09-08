@@ -16,7 +16,7 @@ var TAGNAMES = {
  *
  * @name eventSupported
  * @static
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @param {String} eventName The name of the event to test
  * @returns {Boolean} Is the event supported
  */

@@ -1,7 +1,11 @@
 import curry from 'frampton-utils/curry';
 
 /**
- * + split :: Number -> List a -> (List a, List a)
+ * split :: Number -> List a -> (List a, List a)
+ *
+ * @name split
+ * @method
+ * @memberof Frampton.List
  */
 export default curry(function split(n, xs) {
   var ys = [];

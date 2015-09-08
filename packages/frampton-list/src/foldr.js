@@ -4,8 +4,8 @@ import isArray from 'frampton-utils/is_array';
 
 /**
  * @name foldr
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 export default curry(function curried_foldr(fn, acc, xs) {
   assert("Frampton.foldr recieved a non-array", isArray(xs));

@@ -4,8 +4,8 @@ import curry from 'frampton-utils/curry';
  * remove :: List a -> Any a -> List a
  *
  * @name remove
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  * @param {Array} xs
  * @param {Object} obj
  */

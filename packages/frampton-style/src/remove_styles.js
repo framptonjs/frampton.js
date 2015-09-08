@@ -4,8 +4,8 @@ import curry from 'frampton-utils/curry';
  * removeStyles :: DomNode -> Object -> ()
  *
  * @name removeStyles
- * @memberOf Frampton.Style
- * @static
+ * @method
+ * @memberof Frampton.Style
  * @param {Object} element A dom node to remove styles from
  * @param {Object} props   A hash of properties to remove
  */

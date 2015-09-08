@@ -1,7 +1,8 @@
 /**
  * Takes a function and warps it to be called at a later time.
  * @name lazy
- * @memberOf Frampton
+ * @memberof Frampton
+ * @method
  * @method
  * @static
  * @param {Function} fn The function to wrap.

@@ -4,7 +4,8 @@ import isArray from 'frampton-utils/is_array';
 
 /**
  * @name drop
- * @memberOf Frampton
+ * @method
+ * @memberof Frampton.List
  */
 export default curry(function curried_drop(n, xs) {
   assert("Frampton.drop recieved a non-array", isArray(xs));

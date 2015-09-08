@@ -7,6 +7,11 @@ import forEach from 'frampton-object/for_each';
 import asList from 'frampton-object/as_list';
 import copy from 'frampton-object/copy';
 
+/**
+ * @name Object
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.Object = {};
 Frampton.Object.copy   = copy;
 Frampton.Object.filter = filter;

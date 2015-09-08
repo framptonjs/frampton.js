@@ -4,7 +4,7 @@ import normalizeNewline from 'frampton-string/normalize_newline';
 
 /**
  * @name length
- * @memberOf Frampton.String
+ * @memberof Frampton.String
  * @static
  * @param {String}
  * @returns {Number}

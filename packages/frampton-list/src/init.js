@@ -3,8 +3,8 @@ import isArray from 'frampton-utils/is_array';
 
 /**
  * @name init
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 export default function init(xs) {
   assert("Frampton.init recieved a non-array", isArray(xs));

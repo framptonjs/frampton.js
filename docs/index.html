@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Frampton</h1><p>Frampton is a functional library written for ES5. Older browsers will require a shim.</p>
+<p>Frampton is written with the opinion that reactive programming is best suited for modeling the user interactions we deal with in the browser. As such it provides an EventStream implementation that should be familiar to anyone who has experience with Bacon or RxJS.</p>
+<h2>Events vs Values</h2><p>Like Reactive Banana for Haskell, Frampton differentiates between a stream of events (EventStreams, duh) and a value that changes over time (Behaviors, ok, less obvious). Events are discrete and essentially stateless. The statelessness is not strictly enforced, but should be treated as such in client code. EventStreams model the discrete moments in time when an event occurs as an array of one value [a]. However, a time-varying value is modeled as a function of time t -&gt; a, a Behavior, current time produces current value. In implementation current time is implicit and value will always produce the current value.</p>
+<h3>EventStreams</h3><p>EventStreams are most often going to be created my one of the many utility functions provided by the library. There are functions to produce streams for ajax operations, dom events and file handling.</p>
+<pre class="prettyprint source"><code>// For example, the following code creates a stream of click events on a div.
+var div = document.getElementById('my-id');
+var stream = listen('click', div);
+
+// handle clicks on the div
+stream.next((evt) => {
+  console.log('event: ', evt);
+});</code></pre><p>The listen utility handles event delegation. What this code does for you is it gets an EventStream of all clicks on the document and filters that stream based on the element you pass it, the div with the class 'my-id'.</p>
+<h3>Behaviors</h3><p>Behaviors represent time-varying values. The most common way for a Behavior to be created is with a utility called stepper. Stepper takes an initial value for the Behavior and an EventStream to update the value of the Behavior. This is how we maintain the state of an EventStream.</p>
+<pre class="prettyprint source"><code>// eventValue is a utility for getting the value property of an event.target
+var input = document.getElementsByTagName('input')[0];
+var valueStream = listen('keyup', input).map(eventValue);
+
+// creates a Behavior that represents the value of the input field.
+var behavior = stepper('', valueStream);
+
+// handle changes to the input value
+behavior.changes((val) => {
+  console.log('input value: ' + val);
+});</code></pre><h2>Utility Packages</h2><p>EventStreams and Behaviors are the building blocks for everything else Frampton provides. Most of the convinience provided by functional reactive programming is by the abstractions that can be built on the core pieces. These are abstractions that Frampton is still developing.</p>
+<h3>Frampton.Signals</h3><p>Most of the lower-level abstractions for creating EventStreams and Behaviors will reside in the Signals package, which is also where the constructors for EventStream and Behavior are.</p>
+<pre class="prettyprint source"><code>// To count all instance of an event
+// This creates a behavior representing the number of times an event is called
+var eventCount = count(stream);
+
+// To create an empty event stream
+// Use this to create a stream that you want to push values to.
+var stream = empty();
+
+// To create a stream that is called once per frame, it uses requestAnimationFrame.
+// A new event is pushed every frame, useful for creating a game loop or similar mechanism
+var stream = interval();
+
+// To push the values of an array onto a stream with a given delay between events
+// This emits the values 1,2,3 as separate events, 20 milliseconds appart.
+var stream = sequential(20, [1,2,3]);
+
+/**
+ * To map Behavior values, the Behavior map functions take a function as the
+ * first parameter and then a number of Behaviors. The function is called
+ * immediately with the current values of the Behaviors and then is called
+ * anytime one of the Behaviors updates. There are 5 curried versions of this
+ * function and then a mapMany function that is not curried, but takes any
+ * number of Behaviors.
+ */
+var mapped = map2((b1, b2) => b1 + b2, behavior1, behavior2);
+
+/**
+ * toggle takes 2 EventStreams and returns a Behavior whose initial value is false.
+ * When the first stream recieves a value the Behavior toggles to true, when the
+ * second stream recieves a value it toggles back to false... and so on.
+ */
+var behavior = toggle(stream1, stream2);</code></pre><h3>Frampton.Mouse</h3><p>The Mouse package only exports one function, the Mouse function. It takes an optional first parameter of a DomNode. If no parameter is passed in the function will return an object whose EventStreams and Behaviors are relative to the window, otherwise they will be relative to the DomNode passed in.</p>
+<pre class="prettyprint source"><code>var mouse = Frampton.Mouse();
+
+var div = document.getElementById('my-id');
+var relativeMouse = Frampton.Mouse(div);
+
+// An EventStream of all clicks
+mouse.clicks
+
+// An EventStream of all mousedown events
+mouse.downs
+
+// An EventStream of all mouseup events
+mouse.ups
+
+// A Behavior representing position as [x Number, y Number]
+mouse.position
+
+// A Boolean Behavior indicating if the mouse is down
+mouse.isDown</code></pre><h3>Frampton.Keyboard</h3><p>The Keyboard package is similar to the Mouse package in that it exports a Keyboard function that returns an object with EventStreams and Behaviors. The Keyboard package also exports a number of utilities for dealing with keyboard input.</p>
+<pre class="prettyprint source"><code>var keyboard = Frampton.Keyboard();
+
+// EventStream of keydown events
+keyboard.downs
+
+// EventStream of keyup events
+keyboard.ups
+
+// EventStream of keypress events
+keyboard.presses
+
+// EventStream of keyCodes tied to keyup events
+keyboard.codes
+
+// Behavior of arrow keys currently pressed as a pair.
+// For example [-1,1] indicated left and up are pressed.
+keyboard.arrows
+
+// Boolean Behavior is shift key down
+keyboard.shift
+
+// Boolean Behavior is control key down
+keyboard.ctrl
+
+// Boolean Behavior is escape key down
+keyboard.escape
+
+// Boolean Behavior is enter key down
+keyboard.enter
+
+// Boolean Behavior is space key down
+keyboard.space</code></pre><h3>Frampton.Window</h3><p>The Window function from the Window module returns an object with info about the dimensions of the window. The Window function optionally takes a DomNode if your application is nested inside a DomNode the window sizing will be that of the containing node.</p>
+<pre class="prettyprint source"><code>var win = Frampton.Window();
+
+// EventStream of resize events
+win.resize
+
+// The size of the window as a Behavior [width Number, height Number]
+win.deminsions
+
+// The width of the window as a Behavior Number
+win.width
+
+// The height of the window as a Behavior Number
+win.height</code></pre><h3>Frampton.IO</h3><p>The IO module provides utilities for dealing with file handling and network requests. EventStreams returned by these utilities emit a Response object.</p>
+<pre class="prettyprint source"><code>// A response has this form:
+var response = Frampton.IO.Response();
+
+// A string representing the status of the IO (complete, progress, error...)
+response.status
+
+// A number from 0 to 1 representing the progress
+response.progress
+
+// A boolean telling us if the response is complete
+response.complete
+
+// Any data associated with the response
+response.data</code></pre><h4>Frampton.IO.Http</h4><p>All utilities for handling network requests are in the Http submodule.</p>
+<pre class="prettyprint source"><code>var get = Frampton.IO.Http.get;
+
+// To perform a get:
+var req = get('http://fake-url.com');
+
+// To have a stream of requests:
+var urlStream = urlGeneratingFunction();
+var requestStream = urlStream.chain(get);
+
+// There are additional methods for post and file upload</code></pre><h4>Frampton.IO.File</h4><p>All utilities for handling a file are in the File submodule.</p>
+<pre class="prettyprint source"><code>var readFile = Frampton.IO.File.read;
+
+// To read a file (first parameter is how to read file):
+var fileData = readFile('DATA_URL', file);
+
+/**
+ * There are convinience methods for reading the contents of a file in
+ * different formats:
+ * Frampton.IO.File.dataUrl
+ * Frampton.IO.File.binaryString
+ * Frampton.IO.File.arrayBuffer
+ * Frampton.IO.File.text
+ */</code></pre></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Frampton.Cache.html">Cache</a></li><li><a href="Frampton.Data.Just.html">Just</a></li><li><a href="Frampton.Data.Maybe.html">Maybe</a></li><li><a href="Frampton.Data.Nothing.html">Nothing</a></li><li><a href="Frampton.Mouse.html">Mouse</a></li><li><a href="Frampton.Signals.Behavior.html">Behavior</a></li><li><a href="Frampton.Signals.Empty.html">Empty</a></li><li><a href="Frampton.Signals.End.html">End</a></li><li><a href="Frampton.Signals.Error.html">Error</a></li><li><a href="Frampton.Signals.Event.html">Event</a></li><li><a href="Frampton.Signals.EventStream.html">EventStream</a></li><li><a href="Frampton.Signals.Next.html">Next</a></li></ul><h3>Namespaces</h3><ul><li><a href="Frampton.html">Frampton</a></li><li><a href="Frampton.Data.html">Data</a></li><li><a href="Frampton.Events.html">Events</a></li><li><a href="Frampton.Html.html">Html</a></li><li><a href="Frampton.IO.html">IO</a></li><li><a href="Frampton.IO.File.html">File</a></li><li><a href="Frampton.IO.Http.html">Http</a></li><li><a href="Frampton.Keyboard.html">Keyboard</a></li><li><a href="Frampton.List.html">List</a></li><li><a href="Frampton.Math.html">Math</a></li><li><a href="Frampton.Monad.html">Monad</a></li><li><a href="Frampton.Object.html">Object</a></li><li><a href="Frampton.Signals.html">Signals</a></li><li><a href="Frampton.String.html">String</a></li><li><a href="Frampton.Style.html">Style</a></li><li><a href="Frampton.UI.html">UI</a></li><li><a href="Frampton.Utils.html">Utils</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Mon Sep 07 2015 21:07:51 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

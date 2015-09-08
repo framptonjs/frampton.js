@@ -9,9 +9,10 @@ import head from 'frampton-list/head';
  * each function to the next function in the execution order.
  *
  * @name compose
- * @memberOf Frampton.Utils
- * @static
- * @param {Function} functions - Any number of function used to build the composition.
+ * @memberof Frampton.Utils
+ * @method
+ * @param {function} functions - Any number of function used to build the composition.
+ * @returns {function} A new function that runs each of the given functions in succession
  */
 export default function compose(/* functions */) {
   var fns = copy(arguments);

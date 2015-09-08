@@ -30,6 +30,11 @@ import not from 'frampton-utils/not';
 import ofValue from 'frampton-utils/of_value';
 import safeGet from 'frampton-utils/safe_get';
 
+/**
+ * @name Utils
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.Utils = {};
 Frampton.Utils.apply = apply;
 Frampton.Utils.assert = assert;

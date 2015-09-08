@@ -3,7 +3,8 @@ import contains from 'frampton-list/contains';
 
 /**
  * @name diff
- * @memberOf Frampton
+ * @method
+ * @memberof Frampton.List
  * @returns {Array}
  */
 export default curry(function curried_diff(xs, ys) {

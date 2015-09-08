@@ -3,6 +3,8 @@ import isNothing from 'frampton-utils/is_nothing';
 
 /**
  * @name minimum
+ * @method
+ * @memberof Frampton.List
  * @param {Array} xs
  */
 export default function minimum(xs) {

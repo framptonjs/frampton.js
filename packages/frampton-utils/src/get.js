@@ -4,11 +4,11 @@ import curry from 'frampton-utils/curry';
  * get :: String -> Object -> Any
  *
  * @name get
- * @memberOf Frampton.Utils
- * @static
+ * @method
+ * @memberof Frampton.Utils
  * @param {String} prop
  * @param {Object} obj
- * @returns {Any}
+ * @returns {*}
  */
 export default curry(function get(prop, obj) {
   return (obj[prop] || null);

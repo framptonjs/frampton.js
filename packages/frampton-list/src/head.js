@@ -4,8 +4,8 @@ import isArray from 'frampton-utils/is_array';
 
 /**
  * @name head
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 export default function head(xs) {
   assert("Frampton.head recieved a non-array", isArray(xs));

@@ -66,6 +66,14 @@ MockAjax.prototype.setRequestHeader = function(key, value) {
   this.headers[key] = value;
 };
 
+/**
+ * Returns either an instance of XMLHttpRequest or a mock instance if in testing mode.
+ *
+ * @name ajaxApi
+ * @method
+ * @memberof Frampton.IO.Http
+ * @returns {Object} Instance of XMLHttpRequest for current environment
+ */
 export default function ajax() {
   if (Frampton.isTest()) {
     return new MockAjax();

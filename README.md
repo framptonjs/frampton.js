@@ -164,7 +164,7 @@ keyboard.space
 The Window function from the Window module returns an object with info about the dimensions of the window. The Window function optionally takes a DomNode if your application is nested inside a DomNode the window sizing will be that of the containing node.
 
 ```
-var win = Window();
+var win = Frampton.Window();
 
 // EventStream of resize events
 win.resize
@@ -186,7 +186,7 @@ The IO module provides utilities for dealing with file handling and network requ
 
 ```
 // A response has this form:
-var response = Response();
+var response = Frampton.IO.Response();
 
 // A string representing the status of the IO (complete, progress, error...)
 response.status

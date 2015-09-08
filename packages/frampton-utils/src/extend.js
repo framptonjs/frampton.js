@@ -4,8 +4,8 @@ import foldl from 'frampton-list/foldl';
  * Extends one object with one or more other objects
  *
  * @name extend
- * @memberOf Frampton.Utils
- * @static
+ * @memberof Frampton.Utils
+ * @method
  * @param {Object} base
  * @param {Object} args
  * @returns {Object}

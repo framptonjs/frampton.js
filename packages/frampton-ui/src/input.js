@@ -1,6 +1,6 @@
 import stepper from 'frampton-signals/stepper';
 import eventValue from 'frampton-events/event_value';
-import listen from 'frampton-events/listen';
+import { listen } from 'frampton-events/listen';
 import length from 'frampton-string/length';
 
 export default function ui_input(element) {

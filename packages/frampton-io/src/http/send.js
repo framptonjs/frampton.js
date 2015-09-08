@@ -8,12 +8,22 @@ var defaultSettings = {
   timeout : (10 * 1000)
 };
 
+/**
+ * Perform an AJAX request and return an EventStream that reports the progress.
+ *
+ * @name send
+ * @method
+ * @memberof Frampton.IO.Http
+ * @param {Object} settings A hash of general settings for the request
+ * @param {Object} request  A hash describing the request to be made
+ * @returns {Frampton.Signals.EventStream} An EventStream of Response objects
+ */
 export default function send(settings, request) {
 
   return new EventStream(function seed_send(sink) {
 
     var req = AjaxApi();
-    var settings = extend({}, defaultSettings, settings);
+    settings = extend({}, defaultSettings, settings);
 
     req.open(request.method, request.url, true);
 

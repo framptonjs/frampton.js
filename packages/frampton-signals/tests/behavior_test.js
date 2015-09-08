@@ -26,6 +26,30 @@ QUnit.test('map method should update value correclty', function() {
   });
 });
 
+QUnit.test('fold method should update value correclty', function(assert) {
+  var done = assert.async();
+  var count = 0;
+  var seed = Behavior.of(5);
+  var behavior = seed.fold((acc, next) => {
+    return acc + next;
+  }, 0);
+  equal(behavior.value, 5, 'has initial value');
+  behavior.changes((val) => {
+    if (count === 0) {
+      equal(val, 5, 'value persists');
+    } else if (count === 1) {
+      equal(val, 11, 'correct 2nd value');
+    } else if (count === 2) {
+      equal(val, 19, 'correct 3rd value');
+      done();
+    }
+  });
+  count++;
+  seed.update(6);
+  count++;
+  seed.update(8);
+});
+
 QUnit.test('chain method should produce a new Behavior from mapping', function() {
   var behavior = Behavior.of(5).chain((val) => {
     return Behavior.of(val + 1);

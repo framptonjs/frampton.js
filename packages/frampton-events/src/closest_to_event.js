@@ -7,7 +7,7 @@ import eventTarget from 'frampton-events/event_target';
  * closestToEvent :: String -> DomEvent -> DomNode
  *
  * @name closestToEvent
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {String} selector
  * @param {Object} evt

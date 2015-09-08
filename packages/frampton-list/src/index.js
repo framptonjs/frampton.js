@@ -24,6 +24,11 @@ import sum from 'frampton-list/sum';
 import tail from 'frampton-list/tail';
 import zip from 'frampton-list/zip';
 
+/**
+ * @name List
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.List = {};
 Frampton.List.add      = add;
 Frampton.List.append   = append;

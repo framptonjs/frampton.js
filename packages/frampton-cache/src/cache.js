@@ -55,6 +55,7 @@ function makeHead(entry, head, tail) {
  * Simple cache that removes items based on least recently used (LRU).
  *
  * @name Cache
+ * @memberof Frampton
  * @class
  * @param {Object} options - A hash of options to configure the cache. Currently only supports
  * LIMIT (the max number of items in cache) and TIMEOUT (how long an entry should be valid).
@@ -75,7 +76,7 @@ function Cache(options) {
  * it uses the function to populate the value.
  *
  * @name get
- * @memberOf Cache
+ * @memberof Cache
  * @method
  * @instance
  * @param {String} key Key lookup in the cache
@@ -104,7 +105,7 @@ Cache.prototype.get = function Cache_get(key, fn) {
  * Assigns a value to a given key.
  *
  * @name put
- * @memberOf Cache
+ * @memberof Cache
  * @method
  * @instance
  */
@@ -143,7 +144,7 @@ Cache.prototype.put = function Cache_put(key, value) {
  * Removes the value with the given key.
  *
  * @name remove
- * @memberOf Cache
+ * @memberof Cache
  * @method
  * @instance
  */
@@ -172,7 +173,7 @@ Cache.prototype.remove = function Cache_remove(key) {
 
 /**
  * @name isCache
- * @memberOf Cache
+ * @memberof Cache
  * @static
  * @param {Object} obj Object to test.
  * @return {Boolean} Is the object an instance of Cache?

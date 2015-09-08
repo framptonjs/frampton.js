@@ -1,5 +1,5 @@
 import stepper from 'frampton-signals/stepper';
-import listen from 'frampton-events/listen';
+import { listen } from 'frampton-events/listen';
 import contains from 'frampton-events/contains';
 import getPosition from 'frampton-events/get_position';
 import getPositionRelative from 'frampton-events/get_position_relative';
@@ -18,6 +18,11 @@ var defaultMouse = {
   isDown   : isDown
 };
 
+/**
+ * @name Mouse
+ * @memberof Frampton
+ * @class
+ */
 export default function Mouse(element) {
   if (!element) {
     return defaultMouse;

@@ -5,9 +5,9 @@ import isFunction from 'frampton-utils/is_function';
  * Returns true/false indicating if object appears to be a Promise
  *
  * @name isPromise
- * @memberOf Frampton.Utils
- * @static
- * @param {Any} obj
+ * @method
+ * @memberof Frampton.Utils
+ * @param {*} obj
  * @returns {Boolean}
  */
 export default function is_promise(obj) {

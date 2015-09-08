@@ -7,10 +7,10 @@ import remove from 'frampton-list/remove';
  * inherits references to its dispatcher's subscribe, broadcast and clear methods.
  *
  * @name Dispatcher
+ * @memberof Frampton.Signals
  * @class
  * @private
- * @param  {EventStream} stream The EventStream that owns this instance of the dispatcher.
- * @returns {Dispatcher}   A new dispatcher.
+ * @param  {Frampton.Signals.EventStream} stream The EventStream that owns this instance of the dispatcher.
  */
 function Dispatcher(stream) {
 
@@ -21,10 +21,9 @@ function Dispatcher(stream) {
    * Add Outlets to the owning stream.
    *
    * @name subscribe
-   * @memberOf Dispatcher
    * @method
-   * @instance
-   * @param   {Function} fn - A callback for this stream
+   * @memberof Frampton.Signals.Dispatcher#
+   * @param   {Function} fn A callback for this stream
    * @returns {Function} A function to cancel the subscription.
    */
   this.subscribe = function Dispatcher_subscribe(fn) {
@@ -49,10 +48,9 @@ function Dispatcher(stream) {
    * Handles notifying outlets of new data on the stream.
    *
    * @name push
-   * @memberOf Dispatcher
    * @method
-   * @instance
-   * @param {Any} data The data to push to subscribers.
+   * @memberof Frampton.Signals.Dispatcher#
+   * @param {*} data The data to push to subscribers.
    */
   this.push = function Dispatcher_push(event) {
     subscribers.forEach((fn) => {
@@ -64,9 +62,8 @@ function Dispatcher(stream) {
    * Used to burn it all down when this stream is destroyed.
    *
    * @name destroy
-   * @memberOf Dispatcher
    * @method
-   * @instance
+   * @memberof Frampton.Signals.Dispatcher#
    */
   this.destroy = function Dispatcher_destroy() {
     if (stream.cleanup) {

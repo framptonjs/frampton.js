@@ -8,7 +8,7 @@ import eventTarget from 'frampton-events/event_target';
  *
  * @name containsSelector
  * @static
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @param {String} selector A selector to test
  * @param {Object} evt      An event object whose target will be tested against
  * @returns {Boolean}       Does the event target, or one of its children, have the given selector

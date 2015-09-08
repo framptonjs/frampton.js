@@ -11,6 +11,11 @@ import dashToCamel from 'frampton-string/dash_to_camel';
 import length from 'frampton-string/length';
 import normalizeNewline from 'frampton-string/normalize_newline';
 
+/**
+ * @name String
+ * @namespace
+ * @memberof Frampton
+ */
 Frampton.String                  = {};
 Frampton.String.join             = join;
 Frampton.String.split            = split;

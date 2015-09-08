@@ -1,7 +1,14 @@
 import EventStream from 'frampton-signals/event_stream';
 import { nextEvent } from 'frampton-signals/event';
 
-// interval :: EventStream Number
+/**
+ * Creates a new stream that fires for each animation frame.
+ *
+ * @name interval
+ * @method
+ * @memberof Frampton.Signals
+ * @returns {Frampton.Signals.EventStream} A new EventStream
+ */
 export default function interval() {
   return new EventStream((sink) => {
 

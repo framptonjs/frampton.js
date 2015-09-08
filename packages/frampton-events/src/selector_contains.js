@@ -9,7 +9,7 @@ import closestToEvent from 'frampton-events/closest_to_event';
  * the given selector.
  *
  * @name selectorContains
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {String} selector
  * @param {Object} evt

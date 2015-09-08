@@ -4,8 +4,8 @@ import isArray from 'frampton-utils/is_array';
 
 /**
  * @name foldl
- * @memberOf Frampton
- * @static
+ * @method
+ * @memberof Frampton.List
  */
 export default curry(function curried_foldl(fn, acc, xs) {
   assert("Frampton.foldl recieved a non-array", isArray(xs));

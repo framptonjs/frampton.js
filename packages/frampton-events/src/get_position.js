@@ -2,7 +2,7 @@
  * getPosition :: DomEvent -> [Number, Number]
  *
  * @name getPosition
- * @memberOf Frampton.Events
+ * @memberof Frampton.Events
  * @static
  * @param {Object} evt
  * @returns {Array} A pair where the 0 index is the x coord and the 1 index is the y coord
