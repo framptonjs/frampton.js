@@ -1,4 +1,5 @@
 import historyStream from 'frampton-history/history_stream';
+import location from 'frampton-history/get_location';
 
 var instance = null;
 
@@ -11,9 +12,7 @@ var instance = null;
  */
 export default function location_stream() {
   if (!instance) {
-    instance = historyStream().map((evt) => {
-      return evt.target.location;
-    });
+    instance = historyStream().map(() => location());
   }
   return instance;
 }

@@ -1,12 +1,12 @@
 import isNothing from 'frampton-utils/is_nothing';
-import { listen } from 'frampton-events/listen';
-import { popHistory, pushHistory, stack } from 'frampton-history/history_stack';
+import history from 'frampton-history/get_history';
+import stack from 'frampton-history/stack_stream';
+import popstate from 'frampton-history/popstate_stream';
 
 var instance = null;
 
 /**
- * Returns a stream of popstate events. Also helps to internally keep track of
- * the current depth of the history stack.
+ * Returns a stream of the current window.history
  *
  * @name historyStream
  * @method
@@ -16,21 +16,8 @@ var instance = null;
  */
 export default function history_stream() {
 
-  if (!window.history || !window.history.pushState) {
-    throw new Error('History API is not supported by this browser');
-  }
-
   if (isNothing(instance)) {
-    instance = listen('popstate', window).map((evt) => {
-      if (evt.state) {
-        if (evt.state.id < stack.current) {
-          popHistory();
-        } else if (evt.state.id > stack.current) {
-          pushHistory(evt.state);
-        }
-      }
-      return evt;
-    });
+    instance = stack().merge(popstate()).map(() => history());
   }
 
   return instance;

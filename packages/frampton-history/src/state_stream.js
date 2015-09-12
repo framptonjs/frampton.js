@@ -1,9 +1,10 @@
-import get from 'frampton-utils/get';
 import historyStream from 'frampton-history/history_stream';
 
 var instance = null;
 
 /**
+ * Returns an EventStream of updates to history.state
+ *
  * @name stateStream
  * @method
  * @private
@@ -12,7 +13,7 @@ var instance = null;
  */
 export default function state_stream() {
   if (!instance) {
-    instance = historyStream().map(get('state'));
+    instance = historyStream().map((h) => h.state);
   }
   return instance;
 }

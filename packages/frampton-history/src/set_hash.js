@@ -1,4 +1,4 @@
-import pushState from 'frampton-history/push_state';
+import { pushState } from 'frampton-history/history_stack';
 
 /**
  * @name setHash

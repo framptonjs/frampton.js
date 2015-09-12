@@ -3,6 +3,8 @@ import locationStream from 'frampton-history/location_stream';
 var instance = null;
 
 /**
+ * Returns an EventStream of the current location.hash
+ *
  * @name hashStream
  * @method
  * @private
@@ -11,9 +13,7 @@ var instance = null;
  */
 export default function hash_stream() {
   if (!instance) {
-    instance = locationStream().map((loc) => {
-      return loc.hash.replace('#', '');
-    });
+    instance = locationStream().map(loc => loc.hash.replace('#', ''));
   }
   return instance;
 }

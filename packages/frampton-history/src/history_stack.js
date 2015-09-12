@@ -1,30 +1,34 @@
 import last from 'frampton-list/last';
 import depth from 'frampton-history/depth';
+import stackStream from 'frampton-history/stack_stream';
 
 var stack = {
   current : 0,
   store : []
 };
 
-function push(state) {
-  stack.store.push(state);
-  stack.current = state.id;
+var pushHistory = function push_state(newState) {
+  stack.store.push(newState);
+  stack.current = newState.id;
   depth().update(stack.store.length);
-}
+  stackStream().pushNext(null);
+};
 
-function replace(state) {
-  stack.current = state.id;
-}
+var replaceHistory = function replace_state(newState) {
+  stack.current = newState.id;
+  stackStream().pushNext(null);
+};
 
-function pop() {
+var popHistory = function pop_history() {
   stack.store.pop();
-  stack.current = (last(stack.store) ? last(stack.store).id : 0);
+  stack.current = ((stack.store.length > 0) ? last(stack.store).id : 0);
   depth().update(stack.store.length);
-}
+  stackStream().pushNext(null);
+};
 
 export {
-  stack as stack,
-  pop as popHistory,
-  push as pushHistory,
-  replace as replaceHistory
+  stack,
+  pushHistory,
+  replaceHistory,
+  popHistory
 };

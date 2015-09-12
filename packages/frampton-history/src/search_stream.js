@@ -4,6 +4,8 @@ import parseSearch from 'frampton-history/parse_search';
 var instance = null;
 
 /**
+ * Returns an EventStream of updates to location.search
+ *
  * @name searchStream
  * @method
  * @private
