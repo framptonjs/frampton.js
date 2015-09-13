@@ -16,6 +16,5 @@ module.exports = {
   'frampton-window' : { trees: null },
   'frampton-mouse' : { trees: null },
   'frampton-keyboard' : { trees: null },
-  'frampton-ui' : { trees: null },
-  'frampton-history' : { trees: null }
+  'frampton-ui' : { trees: null }
 };
