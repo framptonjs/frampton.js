@@ -2,6 +2,7 @@ import curry from 'frampton-utils/curry';
 
 /**
  * filter :: (a -> b) -> Monad a -> Monad b
+ *
  * @name filter
  * @method
  * @memberof Frampton.Monad

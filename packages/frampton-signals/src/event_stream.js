@@ -359,6 +359,8 @@ EventStream.prototype.ap = function EventStream_ap(stream) {
 /**
  * map :: EventStream a -> (a -> b) -> EventStream b
  *
+ * Maps the values on this EventStream with the given function.
+ *
  * @name map
  * @method
  * @memberof Frampton.Signals.EventStream#
@@ -374,6 +376,8 @@ EventStream.prototype.map = function EventStream_map(mapping) {
 
 /**
  * recover :: EventStream a -> (err -> a) -> EventStream a
+ *
+ * Maps an ErrorEvent to a NextEvent if the EventStream gets an error.
  *
  * @name recover
  * @method
@@ -439,6 +443,7 @@ EventStream.prototype.dropRepeats = function EventStream_dropRepeats() {
 
 /**
  * scan :: EventStream a -> b -> (a -> b) -> Behavior b
+ *
  * @name scan
  * @method
  * @memberof Frampton.Signals.EventStream#
@@ -452,6 +457,7 @@ EventStream.prototype.scan = function EventStream_scan(initial, mapping) {
 
 /**
  * sample :: EventStream a -> Behavior b -> EventStream b
+ *
  * @name sample
  * @method
  * @memberof Frampton.Signals.EventStream#
@@ -479,6 +485,7 @@ EventStream.prototype.sample = function EventStream_sample(behavior) {
 
 /**
  * fold :: EventStream a -> (a -> s -> s) -> s -> EventStream s
+ *
  * @name fold
  * @method
  * @memberof Frampton.Signals.EventStream#
@@ -499,6 +506,7 @@ EventStream.prototype.fold = function EventStream_fold(fn, acc) {
 
 /**
  * withPrevious :: EventStream a -> EventStream a
+ *
  * @name withPrevious
  * @method
  * @memberof Frampton.Signals.EventStream#
@@ -515,9 +523,12 @@ EventStream.prototype.withPrevious = function EventStream_withPrevious(limit) {
 
 /**
  * take :: EventStream a -> Number n -> EventStream a
+ *
  * @name take
  * @method
  * @memberof Frampton.Signals.EventStream#
+ * @param {Number} limit The number of events to take
+ * @returns {Frampton.Signals.EventStream}
  */
 EventStream.prototype.take = function EventStream_take(limit) {
 
@@ -551,9 +562,15 @@ EventStream.prototype.take = function EventStream_take(limit) {
 
 /**
  * takeWhile :: EventStream a -> (a -> Boolean) -> EventStream a
+ *
+ * Takes events from the EventStream whitle the function returns true. Once
+ * it returns false the stream is closed.
+ *
  * @name takeWhile
  * @method
  * @memberof Frampton.Signals.EventStream#
+ * @param {Function} predicate A function to test against.
+ * @returns {Frampton.Signals.EventStream}
  */
 EventStream.prototype.takeWhile = function EventStream_takeWhile(predicate) {
 
@@ -585,6 +602,8 @@ EventStream.prototype.takeWhile = function EventStream_takeWhile(predicate) {
 };
 
 /**
+ * Take the first event off an EventStream
+ *
  * @name first
  * @method
  * @memberof Frampton.Signals.EventStream#
@@ -675,6 +694,7 @@ EventStream.prototype.zip = function Stream_zip(behavior) {
 
 /**
  * debounce :: EventStream a -> Number -> EventStream a
+ *
  * @name debounce
  * @method
  * @memberof Frampton.Signals.EventStream#
@@ -853,8 +873,10 @@ EventStream.prototype.not = function(behavior) {
 EventStream.prototype.preventDefault = function EventStream_preventDefault() {
   return withTransform(this, (event) => {
     return event.map((evt) => {
-      evt.preventDefault();
-      evt.stopPropagation();
+      if (isFunction(evt.preventDefault) && isFunction(evt.stopPropagation)) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       return evt;
     });
   });
