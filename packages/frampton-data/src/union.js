@@ -67,7 +67,7 @@ function Constructor(group, name, validators) {
 }
 
 function rawCase(type, cases, action, arg) {
-  assert('wrong type passed to case', (type !== action.of));
+  assert('wrong type passed to case', (type === action.of));
   var name = action.name in cases ? action.name
            : '_' in cases         ? '_'
                                   : undefined;
@@ -81,7 +81,14 @@ function rawCase(type, cases, action, arg) {
 var typeCase = curryN(3, rawCase);
 var caseOn = curryN(4, rawCase);
 
-function Type(desc) {
+/**
+ * @name Union
+ * @class
+ * @memberof Frampton.Data
+ * @param {Object} dex
+ * @returns {Object}
+ */
+function Union(desc) {
   var obj = {};
   for (var key in desc) {
     obj[key] = Constructor(obj, key, desc[key]);
@@ -91,4 +98,4 @@ function Type(desc) {
   return obj;
 }
 
-export default Type;
+export default Union;

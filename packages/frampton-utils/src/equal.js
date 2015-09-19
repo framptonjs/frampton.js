@@ -13,7 +13,7 @@ import isArray from 'frampton-utils/is_array';
  */
 export default function deep_equal(obj1, obj2) {
 
-  if ((isObject(obj1) || isArray(obj1)) && (isObject(obj1) || isArray(obj1))) {
+  if ((isObject(obj1) || isArray(obj1)) && (isObject(obj2) || isArray(obj2))) {
 
     var key = null;
 
