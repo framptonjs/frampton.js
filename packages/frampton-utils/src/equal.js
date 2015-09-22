@@ -13,19 +13,35 @@ import isArray from 'frampton-utils/is_array';
  */
 export default function deep_equal(obj1, obj2) {
 
-  if ((isObject(obj1) || isArray(obj1)) && (isObject(obj2) || isArray(obj2))) {
+  var depth = 0;
+  var original1 = obj1;
+  var original2 = obj2;
 
-    var key = null;
+  function _equal(obj1, obj2) {
 
-    for (key in obj1) {
-      if (!obj2 || !deep_equal(obj1[key], obj2[key])) {
-        return false;
+    depth++;
+
+    if (
+      // If we're dealing with a circular reference, return reference equality.
+      !(depth > 1 && original1 === obj1 && original2 === obj2) &&
+      (isObject(obj1) || isArray(obj1)) &&
+      (isObject(obj2) || isArray(obj2))
+    ) {
+
+      var key = null;
+
+      for (key in obj1) {
+        if (!obj2 || !_equal(obj1[key], obj2[key])) {
+          return false;
+        }
       }
+
+      return true;
+
+    } else {
+      return (obj1 === obj2);
     }
-
-    return true;
-
-  } else {
-    return (obj1 === obj2);
   }
+
+  return _equal(obj1, obj2);
 }

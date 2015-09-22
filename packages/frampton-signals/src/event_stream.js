@@ -381,7 +381,7 @@ EventStream.prototype.map = function EventStream_map(mapping) {
  *
  * @name recover
  * @method
- * @memberof! EventStream.prototype
+ * @memberof EventStream.Signals.EventStream#
  * @param {Function} mapping A function to map an error to a value
  * @returns {Frampton.Signals.EventStream}
  */

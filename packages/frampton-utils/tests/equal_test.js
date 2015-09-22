@@ -38,6 +38,23 @@ QUnit.test('should return false for objects with different nested null values', 
   notOk(equal(a, b), 'correctly compares objects');
 });
 
+QUnit.test('should return reference equality for objects with circular references', function() {
+
+  var a = {},
+      b = {};
+
+  a.a = 1;
+  a.b = 2;
+  a.c = a;
+
+  b.a = 1;
+  b.b = 2;
+  b.c = b;
+
+  notOk(equal(a, b), 'correctly compares different objects');
+  ok(equal(a, a), 'correctly compares same object');
+});
+
 QUnit.test('should return false for objects with different keys', function() {
   var a = { a: { x: 1, y: { r: 'one', s: 'four'}}, b: 2 };
   var b = { a: { x: 1, y: { r: 'one', t: 'four'}}, b: 2 };

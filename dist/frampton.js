@@ -4343,7 +4343,7 @@ define('frampton-signals/event_stream', ['exports', 'frampton-utils/apply', 'fra
    *
    * @name recover
    * @method
-   * @memberof! EventStream.prototype
+   * @memberof EventStream.Signals.EventStream#
    * @param {Function} mapping A function to map an error to a value
    * @returns {Frampton.Signals.EventStream}
    */
@@ -6093,20 +6093,33 @@ define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object',
 
   function deep_equal(obj1, obj2) {
 
-    if (((0, _isObject)(obj1) || (0, _isArray)(obj1)) && ((0, _isObject)(obj2) || (0, _isArray)(obj2))) {
+    var depth = 0;
+    var original1 = obj1;
+    var original2 = obj2;
 
-      var key = null;
+    function _equal(obj1, obj2) {
 
-      for (key in obj1) {
-        if (!obj2 || !deep_equal(obj1[key], obj2[key])) {
-          return false;
+      depth++;
+
+      if (
+      // If we're dealing with a circular reference, return reference equality.
+      !(depth > 1 && original1 === obj1 && original2 === obj2) && ((0, _isObject)(obj1) || (0, _isArray)(obj1)) && ((0, _isObject)(obj2) || (0, _isArray)(obj2))) {
+
+        var key = null;
+
+        for (key in obj1) {
+          if (!obj2 || !_equal(obj1[key], obj2[key])) {
+            return false;
+          }
         }
-      }
 
-      return true;
-    } else {
-      return obj1 === obj2;
+        return true;
+      } else {
+        return obj1 === obj2;
+      }
     }
+
+    return _equal(obj1, obj2);
   }
 });
 define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
@@ -6790,7 +6803,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
    */
   'use strict';
 
-  Frampton.VERSION = '0.0.8';
+  Frampton.VERSION = '0.0.9';
 
   Frampton.TEST = 'test';
 
