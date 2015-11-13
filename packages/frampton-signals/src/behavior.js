@@ -2,7 +2,6 @@ import assert from 'frampton-utils/assert';
 import guid from 'frampton-utils/guid';
 import noop from 'frampton-utils/noop';
 import isDefined from 'frampton-utils/is_defined';
-import equal from 'frampton-utils/equal';
 import lazy from 'frampton-utils/lazy';
 import contains from 'frampton-list/contains';
 import remove from 'frampton-list/remove';
@@ -80,7 +79,7 @@ Behavior.prototype.of = Behavior.of;
  * @returns {Frampton.Signals.Behavior}
  */
 Behavior.prototype.update = function Behavior_update(val) {
-  if (!equal(val, this.value)) {
+  if (val !== this.value) {
     this.value = val;
     updateListeners(this);
   }

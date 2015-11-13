@@ -28,7 +28,6 @@ import memoize from 'frampton-utils/memoize';
 import noop from 'frampton-utils/noop';
 import not from 'frampton-utils/not';
 import ofValue from 'frampton-utils/of_value';
-import safeGet from 'frampton-utils/safe_get';
 
 /**
  * @name Utils
@@ -65,4 +64,3 @@ Frampton.Utils.memoize = memoize;
 Frampton.Utils.noop = noop;
 Frampton.Utils.not = not;
 Frampton.Utils.ofValue = ofValue;
-Frampton.Utils.safeGet = safeGet;

@@ -5,7 +5,6 @@ import 'frampton-list';
 import 'frampton-object';
 import 'frampton-string';
 import 'frampton-math';
-import 'frampton-data';
 import 'frampton-events';
 import 'frampton-signals';
 import 'frampton-mouse';

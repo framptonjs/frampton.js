@@ -5,7 +5,6 @@ module.exports = {
   'frampton-list' : { trees: null },
   'frampton-object' : { trees: null },
   'frampton-string' : { trees: null },
-  'frampton-data' : { trees: null },
   'frampton-monad' : { trees: null },
   'frampton-events' : { trees: null },
   'frampton-html' : { trees: null },

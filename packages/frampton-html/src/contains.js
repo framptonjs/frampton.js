@@ -1,6 +1,18 @@
 import curry from 'frampton-utils/curry';
+import isFunction from 'frampton-utils/is_function';
 
 // contains :: Dom -> Dom -> Boolean
 export default curry(function contains(parent, child) {
-  return (parent === child || parent.contains(child));
+  if (parent === child) {
+    return true;
+  } else if (isFunction(parent.contains)) {
+    return parent.contains(child);
+  } else {
+    while (child = child.parentNode) {
+      if (parent === child) {
+        return true;
+      }
+      return false;
+    }
+  }
 });

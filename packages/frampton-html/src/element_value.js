@@ -2,8 +2,8 @@
  * elementValue :: Object -> Any
  *
  * @name elementValue
+ * @method
  * @memberof Frampton.Html
- * @static
  * @param {Object} element
  * @returns {*}
  */
