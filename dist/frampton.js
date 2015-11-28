@@ -2541,7 +2541,7 @@ define('frampton-object/update', ['exports', 'module', 'frampton-object/for_each
   function update_object(obj, k, v) {
     var newObj = {};
     (0, _forEach)(function (value, key) {
-      if (key === v) {
+      if (key === k) {
         newObj[key] = v;
       } else {
         newObj[key] = value;
@@ -2900,7 +2900,7 @@ define('frampton-signals/behavior', ['exports', 'module', 'frampton-utils/assert
 
   module.exports = Behavior;
 });
-define('frampton-signals/changes', ['exports', 'module', 'frampton-signals/event_stream', 'frampton-signals/event'], function (exports, module, _framptonSignalsEvent_stream, _framptonSignalsEvent) {
+define('frampton-signals/changes', ['exports', 'module', 'frampton-utils/immediate', 'frampton-signals/event_stream', 'frampton-signals/event'], function (exports, module, _framptonUtilsImmediate, _framptonSignalsEvent_stream, _framptonSignalsEvent) {
   'use strict';
 
   /**
@@ -2919,13 +2919,17 @@ define('frampton-signals/changes', ['exports', 'module', 'frampton-signals/event
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _immediate = _interopRequire(_framptonUtilsImmediate);
+
   var _EventStream = _interopRequire(_framptonSignalsEvent_stream);
 
   function changes(behavior) {
     return new _EventStream(function (sink) {
 
       behavior.changes(function (val) {
-        sink((0, _framptonSignalsEvent.nextEvent)(val));
+        (0, _immediate)(function () {
+          sink((0, _framptonSignalsEvent.nextEvent)(val));
+        });
       });
 
       return function changes_cleanup() {
@@ -6183,7 +6187,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
    */
   'use strict';
 
-  Frampton.VERSION = '0.0.12';
+  Frampton.VERSION = '0.0.13';
 
   Frampton.TEST = 'test';
 

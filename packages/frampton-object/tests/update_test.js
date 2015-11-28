@@ -8,5 +8,9 @@ QUnit.test('should return a copy of object with update key', function() {
   var newObj = update(obj, 'one', 3);
 
   ok(obj !== newObj);
-  deepEqual(obj, newObj);
+  deepEqual({
+    one : 3,
+    two : 2,
+    three : 3
+  }, newObj);
 });

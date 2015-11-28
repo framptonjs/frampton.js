@@ -1,3 +1,4 @@
+import immediate from 'frampton-utils/immediate';
 import EventStream from 'frampton-signals/event_stream';
 import { nextEvent } from 'frampton-signals/event';
 
@@ -17,7 +18,9 @@ export default function changes(behavior) {
   return new EventStream((sink) => {
 
     behavior.changes((val) => {
-      sink(nextEvent(val));
+      immediate(() => {
+        sink(nextEvent(val));
+      });
     });
 
     return function changes_cleanup() {

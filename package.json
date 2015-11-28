@@ -1,11 +1,11 @@
 {
   "name": "frampton",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A functional reactive library",
   "scripts": {
     "test": "frampton test",
     "build": "frampton build",
-    "docs": "rm -rfv docs/* && jsdoc dist/frampton.js -d docs --readme README.md  --private"
+    "docs": "frampton build && rm -rfv docs/* && jsdoc dist/frampton.js -d docs --readme README.md  --private"
   },
   "repository": {
     "type": "git",
