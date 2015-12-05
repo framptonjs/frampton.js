@@ -10,6 +10,7 @@ import applyStyles from 'frampton-style/apply_styles';
 import removeStyles from 'frampton-style/remove_styles';
 import closest from 'frampton-style/closest';
 import contains from 'frampton-style/contains';
+import selectorContains from 'frampton-style/selector_contains';
 import supported from 'frampton-style/supported';
 import supportedProps from 'frampton-style/supported_props';
 
@@ -18,17 +19,18 @@ import supportedProps from 'frampton-style/supported_props';
  * @namespace
  * @memberof Frampton
  */
-Frampton.Style                = {};
-Frampton.Style.addClass       = addClass;
-Frampton.Style.closest        = closest;
-Frampton.Style.removeClass    = removeClass;
-Frampton.Style.hasClass       = hasClass;
-Frampton.Style.matches        = matches;
-Frampton.Style.current        = current;
-Frampton.Style.setStyle       = setStyle;
-Frampton.Style.removeStyle    = removeStyle;
-Frampton.Style.applyStyles    = applyStyles;
-Frampton.Style.removeStyles   = removeStyles;
-Frampton.Style.contains       = contains;
-Frampton.Style.supported      = supported;
-Frampton.Style.supportedProps = supportedProps;
+Frampton.Style                  = {};
+Frampton.Style.addClass         = addClass;
+Frampton.Style.closest          = closest;
+Frampton.Style.removeClass      = removeClass;
+Frampton.Style.hasClass         = hasClass;
+Frampton.Style.matches          = matches;
+Frampton.Style.current          = current;
+Frampton.Style.setStyle         = setStyle;
+Frampton.Style.removeStyle      = removeStyle;
+Frampton.Style.applyStyles      = applyStyles;
+Frampton.Style.removeStyles     = removeStyles;
+Frampton.Style.contains         = contains;
+Frampton.Style.selectorContains = selectorContains;
+Frampton.Style.supported        = supported;
+Frampton.Style.supportedProps   = supportedProps;

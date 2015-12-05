@@ -6,7 +6,7 @@
  * @name Frampton
  * @namespace
  */
-Frampton.VERSION = '0.0.13';
+Frampton.VERSION = '0.0.14';
 
 Frampton.TEST = 'test';
 

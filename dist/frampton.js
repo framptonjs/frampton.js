@@ -2395,7 +2395,7 @@ define('frampton-object/as_list', ['exports', 'module', 'frampton-object/reduce'
 
   var _reduce = _interopRequire(_framptonObjectReduce);
 
-  // as_list :: Object -> Array [String, String]
+  // as_list :: Object -> Array [String, *]
 
   module.exports = function (map) {
     return (0, _reduce)(function (acc, nextValue, nextKey) {
@@ -4835,7 +4835,7 @@ define("frampton-string/words", ["exports", "module"], function (exports, module
     return str.trim().split(/\s+/g);
   }
 });
-define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/set_style', 'frampton-style/remove_style', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/closest', 'frampton-style/contains', 'frampton-style/supported', 'frampton-style/supported_props'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleSet_style, _framptonStyleRemove_style, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleClosest, _framptonStyleContains, _framptonStyleSupported, _framptonStyleSupported_props) {
+define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/set_style', 'frampton-style/remove_style', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/closest', 'frampton-style/contains', 'frampton-style/selector_contains', 'frampton-style/supported', 'frampton-style/supported_props'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleSet_style, _framptonStyleRemove_style, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleClosest, _framptonStyleContains, _framptonStyleSelector_contains, _framptonStyleSupported, _framptonStyleSupported_props) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -4864,6 +4864,8 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
 
   var _contains = _interopRequire(_framptonStyleContains);
 
+  var _selectorContains = _interopRequire(_framptonStyleSelector_contains);
+
   var _supported = _interopRequire(_framptonStyleSupported);
 
   var _supportedProps = _interopRequire(_framptonStyleSupported_props);
@@ -4885,6 +4887,7 @@ define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_c
   _Frampton.Style.applyStyles = _applyStyles;
   _Frampton.Style.removeStyles = _removeStyles;
   _Frampton.Style.contains = _contains;
+  _Frampton.Style.selectorContains = _selectorContains;
   _Frampton.Style.supported = _supported;
   _Frampton.Style.supportedProps = _supportedProps;
 });
@@ -5115,6 +5118,38 @@ define('frampton-style/remove_styles', ['exports', 'module', 'frampton-utils/cur
     for (var key in props) {
       element.style.removeProperty(key);
     }
+  });
+});
+define('frampton-style/selector_contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-html/contains'], function (exports, module, _framptonUtilsCurry, _framptonHtmlContains) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _contains = _interopRequire(_framptonHtmlContains);
+
+  /**
+   * Searches inside all elements with the given selector and returns if one of them
+   * contains the given element.
+   *
+   * @name selectorContains
+   * @method
+   * @memberof Frampton.Style
+   * @param {String} selector Selector to search inside of
+   * @param {Object} element  DomNode to search for
+   * @returns {Boolean} Is there a match for the element?
+   */
+  module.exports = (0, _curry)(function selector_contains(selector, element) {
+
+    var elementList = (element.document || element.ownerDocument).querySelectorAll(selector);
+    var i = 0;
+
+    while (elementList[i] && !(0, _contains)(elementList[i], element)) {
+      i++;
+    }
+
+    return elementList[i] ? true : false;
   });
 });
 define('frampton-style/set_style', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, module, _framptonUtilsCurry, _framptonStyleSupported) {
@@ -6187,7 +6222,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
    */
   'use strict';
 
-  Frampton.VERSION = '0.0.13';
+  Frampton.VERSION = '0.0.14';
 
   Frampton.TEST = 'test';
 
