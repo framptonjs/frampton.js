@@ -9,7 +9,7 @@ import contains from 'frampton-list/contains';
  */
 export default curry(function curried_diff(xs, ys) {
 
-  var diff = [];
+  const diff = [];
 
   xs.forEach((item) => {
     if (!contains(ys, item)) {
@@ -17,5 +17,5 @@ export default curry(function curried_diff(xs, ys) {
     }
   });
 
-  return diff;
+  return Object.freeze(diff);
 });

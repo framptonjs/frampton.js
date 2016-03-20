@@ -20,5 +20,5 @@ export default curry(function split(n, xs) {
     }
   }
 
-  return [ys, zs];
+  return Object.freeze([ys, zs]);
 });

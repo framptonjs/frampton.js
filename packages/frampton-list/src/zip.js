@@ -11,15 +11,15 @@ import curry from 'frampton-utils/curry';
  */
 export default curry(function(xs, ys) {
 
-  var xLen = xs.length;
-  var yLen = ys.length;
-  var len  = (xLen > yLen) ? yLen : xLen;
-  var zs   = new Array(len);
+  const xLen = xs.length;
+  const yLen = ys.length;
+  const len  = (xLen > yLen) ? yLen : xLen;
+  const zs   = new Array(len);
   var i    = 0;
 
   for (;i<len;i++) {
     zs[i] = [xs[i], ys[i]];
   }
 
-  return zs;
+  return Object.freeze(zs);
 });

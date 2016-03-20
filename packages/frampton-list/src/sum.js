@@ -9,7 +9,7 @@ import foldl from 'frampton-list/foldl';
  * @param {Array} xs
  */
 export default function sum(xs) {
-  foldl((acc, next) => {
-    return (acc = (acc + next));
+  return foldl((acc, next) => {
+    return (acc + next);
   }, 0, xs);
 }

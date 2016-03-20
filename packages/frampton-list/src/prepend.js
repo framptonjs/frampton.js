@@ -8,5 +8,5 @@ import curry from 'frampton-utils/curry';
  * @param {*} obj
  */
 export default curry(function(xs, obj) {
-  return [].concat(obj).concat(xs);
+  return Object.freeze([].concat(obj).concat(xs));
 });

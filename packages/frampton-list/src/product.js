@@ -7,7 +7,7 @@ import foldl from 'frampton-list/foldl';
  * @param {Array} xs
  */
 export default function product(xs) {
-  foldl((acc, next) => {
-    return (acc = (acc * next));
-  }, 0, xs);
+  return foldl((acc, next) => {
+    return (acc * next);
+  }, 1, xs);
 }

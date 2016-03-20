@@ -6,5 +6,5 @@ import curry from 'frampton-utils/curry';
  * @memberof Frampton.List
  */
 export default curry(function(predicate, xs) {
-  return xs.filter(predicate);
+  return Object.freeze(xs.filter(predicate));
 });

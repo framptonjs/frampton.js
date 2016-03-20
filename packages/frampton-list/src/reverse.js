@@ -8,8 +8,8 @@ import foldr from 'frampton-list/foldr';
  * @memberof Frampton.List
  */
 export default function reverse(xs) {
-  return foldr((acc, next) => {
+  return Object.freeze(foldr((acc, next) => {
     acc.push(next);
     return acc;
-  }, [], xs);
+  }, [], xs));
 }

@@ -20,5 +20,5 @@ export default function copy(xs, begin, end) {
     }
   }
 
-  return (arr || []);
+  return Object.freeze(arr || []);
 }

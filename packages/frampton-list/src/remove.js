@@ -1,4 +1,5 @@
 import curry from 'frampton-utils/curry';
+import filter from 'frampton-list/filter';
 
 /**
  * remove :: List a -> Any a -> List a
@@ -10,7 +11,5 @@ import curry from 'frampton-utils/curry';
  * @param {Object} obj
  */
 export default curry(function curried_remove(obj, xs) {
-  return xs.filter(function(next) {
-    return next !== obj;
-  });
+  return filter((next) => next !== obj, xs);
 });
