@@ -13,5 +13,6 @@ module.exports = {
   'frampton-signal' : { trees: null },
   'frampton-mouse' : { trees: null },
   'frampton-keyboard' : { trees: null },
-  'frampton-window' : { trees: null }
+  'frampton-window' : { trees: null },
+  'frampton-app' : { trees: null }
 };
