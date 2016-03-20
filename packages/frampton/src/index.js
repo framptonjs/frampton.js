@@ -7,7 +7,7 @@ import 'frampton-string';
 import 'frampton-math';
 import 'frampton-events';
 import 'frampton-data';
-import 'frampton-signals';
+import 'frampton-signal';
 import 'frampton-mouse';
 import 'frampton-keyboard';
 import 'frampton-window';

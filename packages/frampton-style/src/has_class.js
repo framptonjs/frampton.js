@@ -6,10 +6,10 @@ import curry from 'frampton-utils/curry';
  * @name hasClass
  * @method
  * @memberof Frampton.Style
- * @param {Object} element DomNode to test
  * @param {String} name    Class to test for
+ * @param {Object} element DomNode to test
  * @returns {Boolean}
  */
-export default curry(function has_class(element, name) {
+export default curry(function has_class(name, element) {
   return element.classList.contains(name);
 });

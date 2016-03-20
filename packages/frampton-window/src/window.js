@@ -1,15 +1,13 @@
-import empty from 'frampton-signals/empty';
-import stepper from 'frampton-signals/stepper';
-import { listen } from 'frampton-events/listen';
+import stepper from 'frampton-signal/stepper';
+import onEvent from 'frampton-events/on_event';
 import get from 'frampton-utils/get';
 import isSomething from 'frampton-utils/is_something';
 
 var element = null;
-var resize = listen('resize', window);
-var dimensionsStream = empty();
-var dimensions = stepper([getWidth(), getHeight()], dimensionsStream);
-var width = stepper(getWidth(), dimensionsStream.map(get(0)));
-var height = stepper(getHeight(), dimensionsStream.map(get(1)));
+var resize = onEvent('resize', window);
+var dimensions = stepper([getWidth(), getHeight()], resize.map(update));
+var width = stepper(getWidth(), dimensions.map(get(0)));
+var height = stepper(getHeight(), dimensions.map(get(1)));
 
 function getWidth() {
   return (isSomething(element)) ? element.clientWidth : window.innerWidth;
@@ -19,20 +17,11 @@ function getHeight() {
   return (isSomething(element)) ? element.clientHeight : window.innerHeight;
 }
 
-function updateIfNeeded() {
+function update() {
   var w = getWidth();
   var h = getHeight();
-  if (w !== dimensions[0] || h !== dimensions[1]) {
-    dimensionsStream.pushNext([w, h]);
-  }
+  return [w, h];
 }
-
-function update() {
-  updateIfNeeded();
-  setTimeout(updateIfNeeded, 0);
-}
-
-resize.next(update);
 
 /**
  * @name Window

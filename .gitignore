@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+npm-debug.log
 dist/frampton-tests.js
 docs/fonts/
 ./frampton.js

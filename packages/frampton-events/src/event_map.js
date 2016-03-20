@@ -9,6 +9,21 @@ export default {
     stream: null
   },
 
+  change : {
+    bubbles: true,
+    stream: null
+  },
+
+  click : {
+    bubbles: true,
+    stream: null
+  },
+
+  error : {
+    bubbles: true,
+    stream: null
+  },
+
   focusin : {
     bubbles: true,
     stream: null
@@ -24,12 +39,22 @@ export default {
     stream: null
   },
 
-  change : {
+  keyup : {
     bubbles: true,
     stream: null
   },
 
-  click : {
+  keydown : {
+    bubbles: true,
+    stream: null
+  },
+
+  keypress : {
+    bubbles: true,
+    stream: null
+  },
+
+  load : {
     bubbles: true,
     stream: null
   },
@@ -65,21 +90,6 @@ export default {
   },
 
   mouseout : {
-    bubbles: true,
-    stream: null
-  },
-
-  keyup : {
-    bubbles: true,
-    stream: null
-  },
-
-  keydown : {
-    bubbles: true,
-    stream: null
-  },
-
-  keypress : {
     bubbles: true,
     stream: null
   },

@@ -1,7 +1,7 @@
 import isFunction from 'frampton-utils/is_function';
 import memoize from 'frampton-utils/memoize';
 
-var TAGNAMES = {
+const TAGNAMES = {
   select : 'input',
   change : 'input',
   submit : 'form',

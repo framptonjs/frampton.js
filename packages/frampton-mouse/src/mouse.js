@@ -1,20 +1,20 @@
-import stepper from 'frampton-signals/stepper';
-import { listen } from 'frampton-events/listen';
+import stepper from 'frampton-signal/stepper';
+import onEvent from 'frampton-events/on_event';
 import contains from 'frampton-events/contains';
 import getPosition from 'frampton-events/get_position';
 import getPositionRelative from 'frampton-events/get_position_relative';
 
-var clickStream = listen('click', document);
-var downStream = listen('mousedown', document);
-var upStream = listen('mouseup', document);
-var moveStream = listen('mousemove', document);
-var isDown = stepper(false, downStream.map(true).merge(upStream.map(false)));
+const clicks = onEvent('click');
+const downs = onEvent('mousedown');
+const ups = onEvent('mouseup');
+const moves = onEvent('mousemove');
+const isDown = stepper(false, downs.map(true).merge(ups.map(false)));
 
-var defaultMouse = {
-  clicks   : clickStream,
-  downs    : downStream,
-  ups      : upStream,
-  position : stepper([0,0], moveStream.map(getPosition)),
+const defaultMouse = {
+  clicks   : clicks,
+  downs    : downs,
+  ups      : ups,
+  position : stepper([0,0], moves.map(getPosition)),
   isDown   : isDown
 };
 
@@ -28,10 +28,10 @@ export default function Mouse(element) {
     return defaultMouse;
   } else {
     return {
-      clicks   : clickStream.filter(contains(element)),
-      downs    : downStream.filter(contains(element)),
-      ups      : upStream.filter(contains(element)),
-      position : stepper([0,0], moveStream.filter(contains(element)).map(getPositionRelative(element))),
+      clicks   : clicks.filter(contains(element)),
+      downs    : downs.filter(contains(element)),
+      ups      : ups.filter(contains(element)),
+      position : stepper([0,0], moves.filter(contains(element)).map(getPositionRelative(element))),
       isDown   : isDown
     };
   }

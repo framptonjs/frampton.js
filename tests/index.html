@@ -3,78 +3,77 @@
   <head>
 
     <meta charset="utf-8">
-
     <title>Frampton Test</title>
-
     <link rel="stylesheet" href="../qunit/qunit.css">
-
-    <script src="../qunit/qunit.js"></script>
-    <script src="/testem.js"></script>
-
-    <script type="text/javascript">
-
-      var Frampton = {};
-
-      Frampton.ENV = {};
-
-      Frampton.ENV.MODE = 'test';
-
-    </script>
-
-    <script src="../frampton.js"></script>
-    <script src="../frampton-tests.js"></script>
-
-    <script>
-
-      (function() {
-        if (QUnit.urlParams.forceskip) {
-          QUnit.skip = function(string, callback) {
-            string = "SKIPPED: " + string;
-            return QUnit.test(string, callback);
-          };
-        } else {
-          var skip = QUnit.skip;
-          QUnit.skip = function(string, callback) {
-            string = "SKIPPED: " + string;
-            return skip(string, callback);
-          }
-        }
-
-        // Tests should time out after 5 seconds
-        QUnit.config.testTimeout = 7500;
-        // Enable/disable livereload
-        QUnit.config.urlConfig.push({ id: 'livereload', label: 'Live Reload'});
-        // Handle JSHint
-        QUnit.config.urlConfig.push('nojshint');
-        QUnit.config.urlConfig.push('forceskip');
-
-      })();
-
-    </script>
-
-    <script>
-
-      var skipPackages = QUnit.urlParams.skipPackage;
-      skipPackages = (skipPackages && skipPackages.split(',')) || [];
-      var skipPackageRegexp   = new RegExp('^('+skipPackages.join('|')+')/');
-
-      for (var moduleName in Frampton.__loader.registry) {
-
-        if (moduleName.match(skipPackageRegexp)) { continue; }
-
-        if (moduleName.match(/[_-]test$/)) {
-          Frampton.__loader.require(moduleName);
-        }
-
-        if (!QUnit.urlParams.nojshint && moduleName.match(/[-_.]jshint$/)) {
-          Frampton.__loader.require(moduleName);
-        }
-      }
-    </script>
 
   </head>
 <body>
+
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
+
+  <script src="../qunit/qunit.js"></script>
+  <script src="/testem.js"></script>
+
+  <script type="text/javascript">
+
+    var Frampton = {};
+    Frampton.ENV = {};
+    Frampton.ENV.MODE = 'test';
+
+  </script>
+
+  <script src="../frampton.js"></script>
+  <script src="../frampton-tests.js"></script>
+
+  <script>
+
+    (function() {
+      if (QUnit.urlParams.forceskip) {
+        QUnit.skip = function(string, callback) {
+          string = "SKIPPED: " + string;
+          return QUnit.test(string, callback);
+        };
+      } else {
+        var skip = QUnit.skip;
+        QUnit.skip = function(string, callback) {
+          string = "SKIPPED: " + string;
+          return skip(string, callback);
+        }
+      }
+
+      // Tests should time out after 5 seconds
+      QUnit.config.testTimeout = 7500;
+      // Enable/disable livereload
+      QUnit.config.urlConfig.push({ id: 'livereload', label: 'Live Reload'});
+      // Handle JSHint
+      QUnit.config.urlConfig.push('nojshint');
+      QUnit.config.urlConfig.push('forceskip');
+
+    })();
+
+  </script>
+
+  <script>
+
+    var skipPackages = QUnit.urlParams.skipPackage;
+    skipPackages = (skipPackages && skipPackages.split(',')) || [];
+    var skipPackageRegexp   = new RegExp('^('+skipPackages.join('|')+')/');
+
+    for (var moduleName in Frampton.__loader.registry) {
+
+      if (moduleName.match(skipPackageRegexp)) { continue; }
+
+      if (moduleName.match(/[_-]test$/)) {
+        Frampton.__loader.require(moduleName);
+      }
+
+      if (!QUnit.urlParams.nojshint && moduleName.match(/[-_.]jshint$/)) {
+        Frampton.__loader.require(moduleName);
+      }
+    }
+  </script>
+
 </body>
+
 </html>

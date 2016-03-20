@@ -31,7 +31,7 @@ function removeCustomEvent(name, target, callback) {
   remove.call(target, name, callback);
 }
 
-function addListener(eventName, callback, target) {
+function addListener(eventName, target, callback) {
 
   if (isDefined(EVENT_MAP[eventName]) && isFunction(target.addEventListener)) {
     addDomEvent(eventName, target, callback);
@@ -39,10 +39,10 @@ function addListener(eventName, callback, target) {
     addCustomEvent(eventName, target, callback);
   }
 
-  return lazy(removeListener, eventName, callback, target);
+  return lazy(removeListener, eventName, target, callback);
 }
 
-function removeListener(eventName, callback, target) {
+function removeListener(eventName, target, callback) {
   if (isDefined(EVENT_MAP[eventName]) && isFunction(target.removeEventListener)) {
     removeDomEvent(eventName, target, callback);
   } else {

@@ -1,5 +1,6 @@
 import Frampton from 'frampton/namespace';
-import { listen, onSelector } from 'frampton-events/listen';
+import onEvent from 'frampton-events/on_event';
+import onSelector from 'frampton-events/on_selector';
 import contains from 'frampton-events/contains';
 import eventTarget from 'frampton-events/event_target';
 import eventValue from 'frampton-events/event_value';
@@ -16,7 +17,7 @@ import closestToEvent from 'frampton-events/closest_to_event';
  * @memberof Frampton
  */
 Frampton.Events                     = {};
-Frampton.Events.listen              = listen;
+Frampton.Events.onEvent             = onEvent;
 Frampton.Events.onSelector          = onSelector;
 Frampton.Events.contains            = contains;
 Frampton.Events.eventTarget         = eventTarget;
