@@ -12,7 +12,9 @@ import forEach from 'frampton-object/for_each';
  * @returns {Object}
  */
 export default function update_object(obj, k, v) {
-  var newObj = {};
+
+  const newObj = {};
+
   forEach((value, key) => {
     if (key === k) {
       newObj[key] = v;
@@ -20,5 +22,6 @@ export default function update_object(obj, k, v) {
       newObj[key] = value;
     }
   }, obj);
-  return newObj;
+
+  return Object.freeze(newObj);
 }

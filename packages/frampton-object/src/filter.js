@@ -3,7 +3,7 @@ import forEach from 'frampton-object/for_each';
 
 export default curry(function curried_filter(fn, obj) {
 
-  var newObj = {};
+  const newObj = {};
 
   forEach((value, key) => {
     if (fn(value, key)) {
@@ -11,5 +11,5 @@ export default curry(function curried_filter(fn, obj) {
     }
   }, obj);
 
-  return newObj;
+  return Object.freeze(newObj);
 });

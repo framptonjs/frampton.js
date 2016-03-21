@@ -10,9 +10,12 @@ import forEach from 'frampton-object/for_each';
  * @returns {Object}
  */
 export default function copy_object(obj) {
-  var newObj = {};
+
+  const newObj = {};
+
   forEach((value, key) => {
     newObj[key] = value;
   }, obj);
-  return newObj;
+
+  return Object.freeze(newObj);
 }
