@@ -1,3 +1,10 @@
-import Cache from 'frampton-cache/cache';
+import isNothing from 'frampton-utils/is_nothing';
 
-export default new Cache();
+const store = {};
+
+export default function(name, fn) {
+  if (isNothing(store[name])) {
+    store[name] = fn();
+  }
+  return store[name];
+}
