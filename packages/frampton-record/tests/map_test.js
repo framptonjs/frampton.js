@@ -1,6 +1,6 @@
-import map from 'frampton-object/map';
+import map from 'frampton-record/map';
 
-QUnit.module('Frampton.Object.map');
+QUnit.module('Frampton.Record.map');
 
 QUnit.test('should map the values of an object', function() {
 

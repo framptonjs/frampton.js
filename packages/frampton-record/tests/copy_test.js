@@ -1,6 +1,6 @@
-import copy from 'frampton-object/copy';
+import copy from 'frampton-record/copy';
 
-QUnit.module('Frampton.Object.copy');
+QUnit.module('Frampton.Record.copy');
 
 QUnit.test('should return a copy of an object', function() {
 

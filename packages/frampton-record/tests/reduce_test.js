@@ -1,6 +1,6 @@
-import reduce from 'frampton-object/reduce';
+import reduce from 'frampton-record/reduce';
 
-QUnit.module('Frampton.Object.reduce');
+QUnit.module('Frampton.Record.reduce');
 
 QUnit.test('should reduce an object to another value', function() {
 

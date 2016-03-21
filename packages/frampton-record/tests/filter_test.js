@@ -1,6 +1,6 @@
-import filter from 'frampton-object/filter';
+import filter from 'frampton-record/filter';
 
-QUnit.module('Frampton.Object.filter');
+QUnit.module('Frampton.Record.filter');
 
 QUnit.test('should filter keys from object if value satisfies predicate', function() {
 

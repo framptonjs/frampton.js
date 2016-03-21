@@ -2,7 +2,7 @@ import Frampton from 'frampton/namespace';
 
 import 'frampton-utils';
 import 'frampton-list';
-import 'frampton-object';
+import 'frampton-record';
 import 'frampton-string';
 import 'frampton-math';
 import 'frampton-events';

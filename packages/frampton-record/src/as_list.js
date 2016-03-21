@@ -1,4 +1,4 @@
-import reduce from 'frampton-object/reduce';
+import reduce from 'frampton-record/reduce';
 
 // as_list :: Object -> Array [String, *]
 export default function(map) {

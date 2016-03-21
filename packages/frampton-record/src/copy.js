@@ -1,4 +1,4 @@
-import forEach from 'frampton-object/for_each';
+import forEach from 'frampton-record/for_each';
 
 /**
  * copy :: Object -> Object
