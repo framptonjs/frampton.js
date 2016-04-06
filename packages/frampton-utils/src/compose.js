@@ -1,7 +1,6 @@
 import assert from 'frampton-utils/assert';
-import copy from 'frampton-list/copy';
 import foldr from 'frampton-list/foldr';
-import head from 'frampton-list/head';
+import first from 'frampton-list/first';
 
 /**
  * Compose takes any number of functions and returns a function that when
@@ -14,12 +13,11 @@ import head from 'frampton-list/head';
  * @param {function} functions - Any number of function used to build the composition.
  * @returns {function} A new function that runs each of the given functions in succession
  */
-export default function compose(/* functions */) {
-  var fns = copy(arguments);
+export default function compose(...fns) {
   assert("Compose did not receive any arguments. You can't compose nothing. Stoopid.", (fns.length > 0));
-  return function composition() {
-    return head(foldr(function(args, fn) {
+  return function composition(...args) {
+    return first(foldr(function(args, fn) {
       return [fn.apply(this, args)];
-    }, copy(arguments), fns));
+    }, args, fns));
   };
 }

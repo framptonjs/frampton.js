@@ -5,3 +5,4 @@ docs/fonts/
 ./frampton.js
 notes.txt
 tmp
+*.log

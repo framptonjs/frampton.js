@@ -3,7 +3,9 @@ import apply from 'frampton-utils/apply';
 import assert from 'frampton-utils/assert';
 import compose from 'frampton-utils/compose';
 import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 import equal from 'frampton-utils/equal';
+import error from 'frampton-utils/error';
 import extend from 'frampton-utils/extend';
 import get from 'frampton-utils/get';
 import hasLength from 'frampton-utils/has_length';
@@ -28,6 +30,7 @@ import memoize from 'frampton-utils/memoize';
 import noop from 'frampton-utils/noop';
 import not from 'frampton-utils/not';
 import ofValue from 'frampton-utils/of_value';
+import warn from 'frampton-utils/warn';
 
 /**
  * @name Utils
@@ -39,7 +42,9 @@ Frampton.Utils.apply = apply;
 Frampton.Utils.assert = assert;
 Frampton.Utils.compose = compose;
 Frampton.Utils.curry = curry;
+Frampton.Utils.curryN = curryN;
 Frampton.Utils.equal = equal;
+Frampton.Utils.error = error;
 Frampton.Utils.extend = extend;
 Frampton.Utils.get = get;
 Frampton.Utils.hasLength = hasLength;
@@ -64,3 +69,4 @@ Frampton.Utils.memoize = memoize;
 Frampton.Utils.noop = noop;
 Frampton.Utils.not = not;
 Frampton.Utils.ofValue = ofValue;
+Frampton.Utils.warn = warn;

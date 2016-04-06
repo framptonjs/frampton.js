@@ -6,6 +6,7 @@ import 'frampton-record';
 import 'frampton-string';
 import 'frampton-math';
 import 'frampton-events';
+import 'frampton-data';
 import 'frampton-signals';
 import 'frampton-mouse';
 import 'frampton-keyboard';

@@ -11,7 +11,7 @@ import foldl from 'frampton-list/foldl';
  * @returns {Object}
  */
 export default function extend(base, ...args) {
-  return foldl(function(acc, next) {
+  return foldl((acc, next) => {
     var key;
     for (key in next) {
       acc[key] = next[key];
