@@ -8,6 +8,7 @@ import isString from 'frampton-utils/is_string';
 import isFunction from 'frampton-utils/is_function';
 import isNothing from 'frampton-utils/is_nothing';
 import isUndefined from 'frampton-utils/is_undefined';
+import getKeys from 'frampton-record/keys';
 
 const wildcard = '_';
 
@@ -110,7 +111,7 @@ export { validator };
 // Creates constructors for each type described in config
 export default function(config) {
   const obj = {};
-  const keys = Object.keys(config);
+  const keys = getKeys(config);
   obj.prototype = {};
   obj.ctor = 'Union';
   obj.keys = keys;

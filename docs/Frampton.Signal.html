@@ -74,7 +74,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line2313">line 2313</a>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3044">line 3044</a>
     </li></ul></dd>
     
 
@@ -95,6 +95,13 @@
     
 
     
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="Frampton.Signal.Signal.html">Signal</a></dt>
+            <dd></dd>
+        </dl>
+    
 
      
 
@@ -110,7 +117,7 @@
 
     
 
-    <h4 class="name" id=".and"><span class="type-signature">(private, static) </span>and<span class="signature">(predicate)</span><span class="type-signature"> &rarr; {<a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a>}</span></h4>
+    <h4 class="name" id=".createSignal"><span class="type-signature">(private, static) </span>createSignal<span class="signature">(update, parents, initial)</span><span class="type-signature"> &rarr; {<a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a>}</span></h4>
 
     
 
@@ -149,13 +156,204 @@
 
         <tr>
             
-                <td class="name"><code>predicate</code></td>
+                <td class="name"><code>update</code></td>
             
 
             <td class="type">
             
                 
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call when this signal updates</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">List of signals this signal depends on</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>initial</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Initial value for this signal</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3073">line 3073</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
 <span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".mergeMany"><span class="type-signature">(static) </span>mergeMany<span class="signature">(parents)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>parents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a>></span>
 
 
             
@@ -206,7 +404,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line2525">line 2525</a>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3085">line 3085</a>
     </li></ul></dd>
     
 
@@ -229,169 +427,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".not"><span class="type-signature">(private, static) </span>not<span class="signature">(predicate)</span><span class="type-signature"> &rarr; {<a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a>}</span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>predicate</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line2542">line 2542</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -411,13 +446,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Frampton.Mouse.html">Mouse</a></li><li><a href="Frampton.Signals.Behavior.html">Behavior</a></li><li><a href="Frampton.Signals.Dispatcher.html">Dispatcher</a></li><li><a href="Frampton.Signals.Empty.html">Empty</a></li><li><a href="Frampton.Signals.End.html">End</a></li><li><a href="Frampton.Signals.Error.html">Error</a></li><li><a href="Frampton.Signals.Event.html">Event</a></li><li><a href="Frampton.Signals.EventStream.html">EventStream</a></li><li><a href="Frampton.Signals.Next.html">Next</a></li></ul><h3>Namespaces</h3><ul><li><a href="Frampton.html">Frampton</a></li><li><a href="Frampton.Events.html">Events</a></li><li><a href="Frampton.Html.html">Html</a></li><li><a href="Frampton.Keyboard.html">Keyboard</a></li><li><a href="Frampton.List.html">List</a></li><li><a href="Frampton.Math.html">Math</a></li><li><a href="Frampton.Record.html">Record</a></li><li><a href="Frampton.Signal.html">Signal</a></li><li><a href="Frampton.Signals.html">Signals</a></li><li><a href="Frampton.String.html">String</a></li><li><a href="Frampton.Style.html">Style</a></li><li><a href="Frampton.Utils.html">Utils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Frampton.Mouse.html">Mouse</a></li><li><a href="Frampton.Signal.Signal.html">Signal</a></li><li><a href="Frampton.Task.Task.html">Task</a></li></ul><h3>Namespaces</h3><ul><li><a href="Frampton.html">Frampton</a></li><li><a href="Frampton.App.html">App</a></li><li><a href="Frampton.Data.html">Data</a></li><li><a href="Frampton.Data.State.html">State</a></li><li><a href="Frampton.Data.Task.html">Task</a></li><li><a href="Frampton.Data.Union.html">Union</a></li><li><a href="Frampton.Events.html">Events</a></li><li><a href="Frampton.Html.html">Html</a></li><li><a href="Frampton.Keyboard.html">Keyboard</a></li><li><a href="Frampton.List.html">List</a></li><li><a href="Frampton.Math.html">Math</a></li><li><a href="Frampton.Record.html">Record</a></li><li><a href="Frampton.Signal.html">Signal</a></li><li><a href="Frampton.String.html">String</a></li><li><a href="Frampton.Style.html">Style</a></li><li><a href="Frampton.Utils.html">Utils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Sun Mar 20 2016 19:21:57 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Fri Apr 22 2016 09:39:02 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

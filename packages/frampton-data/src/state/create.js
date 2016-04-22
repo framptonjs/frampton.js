@@ -1,6 +1,6 @@
 import guid from 'frampton-utils/guid';
 import merge from 'frampton-record/merge';
-import keys from 'frampton-data/state/keys';
+import keys from 'frampton-record/keys';
 
 export default function create_state(data, id, props) {
 

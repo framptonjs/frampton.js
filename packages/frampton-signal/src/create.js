@@ -138,7 +138,7 @@ function dropRepeats() {
     if (self._value !== parent._value) {
       self(parent._value);
     }
-  }, [parent]);
+  }, [parent], parent._value);
 }
 
 /**
@@ -179,6 +179,17 @@ function value(fn) {
   }
 
   return child;
+}
+
+/**
+ * @name changes
+ * @method
+ * @memberof Frampton.Signal.Signal#
+ * @param {Function} fn The function to call
+ * @returns {Frampton.Signal.Signal}
+ */
+function changes(fn) {
+  return this.dropRepeats().log().value(fn);
 }
 
 /**
@@ -394,7 +405,7 @@ function delay(time) {
  * @method
  * @private
  * @param {function}                 update  Function to call when this signal updates
- * @param {[Frampton.Signal.Signal]} parents List of signals this signal depends on
+ * @param {Frampton.Signal.Signal[]} parents List of signals this signal depends on
  * @param {*}                        initial Initial value for this signal
  * @returns {Frampton.Signal.Signal}
  */
@@ -434,6 +445,7 @@ export function createSignal(update, parents, initial) {
   signal.log         = logValue;
   signal.next        = next;
   signal.value       = value;
+  signal.changes     = changes;
   signal.toString    = toString;
 
   for (let i=0;i<signal._parents.length;i++) {
@@ -447,7 +459,7 @@ export function createSignal(update, parents, initial) {
  * @name mergeMany
  * @memberof Frampton.Signal
  * @method
- * @param {Frampton.Signal[]} parents
+ * @param {Frampton.Signal.Signal[]} parents
  */
 export function mergeMany(parents) {
   const initial = ((parents.length > 0) ? parents[0]._value : undefined);

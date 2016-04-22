@@ -162,8 +162,6 @@ define('frampton-app', ['exports', 'frampton/namespace', 'frampton-app/start'], 
 define('frampton-app/start', ['exports', 'module', 'frampton-list/prepend', 'frampton-list/second', 'frampton-data/task/execute', 'frampton-signal/create'], function (exports, module, _framptonListPrepend, _framptonListSecond, _framptonDataTaskExecute, _framptonSignalCreate) {
   'use strict';
 
-  // default actions log_error, log_message, log_warning
-
   module.exports = start;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -190,7 +188,7 @@ define('frampton-app/start', ['exports', 'module', 'frampton-list/prepend', 'fra
     var tasks = modelAndTasks.map(_second);
 
     // Run tasks and publish any resulting actions back into messages
-    (0, _execute)(messages, tasks);
+    (0, _execute)(tasks, messages, messages);
   }
 });
 define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/state/create'], function (exports, _framptonNamespace, _framptonDataTaskCreate, _framptonDataTaskFail, _framptonDataTaskNever, _framptonDataTaskSequence, _framptonDataTaskSucceed, _framptonDataTaskWhen, _framptonDataTaskExecute, _framptonDataUnionCreate, _framptonDataStateCreate) {
@@ -256,7 +254,7 @@ define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/cr
   _Frampton.Data.State = {};
   _Frampton.Data.State.create = _createState;
 });
-define('frampton-data/state/create', ['exports', 'module', 'frampton-utils/guid', 'frampton-record/merge', 'frampton-data/state/keys'], function (exports, module, _framptonUtilsGuid, _framptonRecordMerge, _framptonDataStateKeys) {
+define('frampton-data/state/create', ['exports', 'module', 'frampton-utils/guid', 'frampton-record/merge', 'frampton-record/keys'], function (exports, module, _framptonUtilsGuid, _framptonRecordMerge, _framptonRecordKeys) {
   'use strict';
 
   module.exports = create_state;
@@ -267,7 +265,7 @@ define('frampton-data/state/create', ['exports', 'module', 'frampton-utils/guid'
 
   var _merge = _interopRequire(_framptonRecordMerge);
 
-  var _keys = _interopRequire(_framptonDataStateKeys);
+  var _keys = _interopRequire(_framptonRecordKeys);
 
   function create_state(data, id, props) {
 
@@ -290,36 +288,7 @@ define('frampton-data/state/create', ['exports', 'module', 'frampton-utils/guid'
     return Object.freeze(model);
   }
 });
-define('frampton-data/state/keys', ['exports', 'module', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsIs_function) {
-  'use strict';
-
-  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
-
-  var _isFunction = _interopRequire(_framptonUtilsIs_function);
-
-  var hasOwnProp = Object.prototype.hasOwnProperty;
-
-  function getKeys(obj) {
-    var result = [];
-    for (var key in obj) {
-      if (hasOwnProp.call(obj, key)) {
-        result.push(key);
-      }
-    }
-    return result;
-  }
-
-  module.exports = function (obj) {
-    if ((0, _isFunction)(Object.keys)) {
-      return Object.keys(obj).filter(function (key) {
-        return hasOwnProp.call(obj, key);
-      });
-    } else {
-      return getKeys(obj);
-    }
-  };
-});
-define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immediate'], function (exports, module, _framptonUtilsImmediate) {
+define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immediate', 'frampton-utils/noop'], function (exports, module, _framptonUtilsImmediate, _framptonUtilsNoop) {
   'use strict';
 
   module.exports = create_task;
@@ -328,9 +297,10 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
 
   var _immediate = _interopRequire(_framptonUtilsImmediate);
 
+  var _noop = _interopRequire(_framptonUtilsNoop);
+
   /**
    * Lazy, possibly async, error-throwing tasks
-   * Stream of tasks, executed and return a new signal
    *
    * @name Task
    * @memberof Frampton.Task
@@ -341,82 +311,181 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
     this.fn = task;
   }
 
-  // of(return) :: a -> Success a
+  Task.of = function (val) {
+    return new Task(function (sinks) {
+      sinks.resolve(val);
+    });
+  };
+
+  /**
+   * of(return) :: a -> Success a
+   *
+   * @name of
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @param {*} val Value to resolve task with
+   * @returns {Frampton.Data.Task}
+   */
   Task.prototype.of = function (val) {
-    return new Task(function (_, resolve) {
-      return resolve(val);
+    return new Task(function (sinks) {
+      sinks.resolve(val);
     });
   };
 
   // Wraps the computation of the task to ensure all tasks are async.
-  Task.prototype.run = function (reject, resolve) {
+  Task.prototype.run = function (sinks) {
     var _this = this;
 
     (0, _immediate)(function () {
       try {
-        _this.fn(reject, resolve);
+        _this.fn(sinks);
       } catch (e) {
-        reject(e);
+        sinks.reject(e);
       }
     });
   };
 
-  // join :: Task x (Task x a) -> Task x a
+  /**
+   * join :: Task x (Task x a) -> Task x a
+   *
+   * @name join
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @returns {Frampton.Data.Task}
+   */
   Task.prototype.join = function () {
-    var fn = this.fn;
-    return new Task(function (reject, resolve) {
-      return fn(function (err) {
-        return reject(err);
-      }, function (val) {
-        return val.run(reject, resolve);
+    var source = this;
+    return new Task(function (sinks) {
+      source.run({
+        reject: sinks.reject,
+        resolve: function resolve(val) {
+          val.run(sinks);
+        },
+        progress: _noop
       });
     });
   };
 
-  // concat(>>) :: Task x a -> Task x b -> Task x b
+  /**
+   * concat(>>) :: Task x a -> Task x b -> Task x b
+   *
+   * @name concat
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @param {Frampton.Data.Task} task Task to run after this task
+   * @returns {Frampton.Data.Task}
+   */
   Task.prototype.concat = function (task) {
-    var fn = this.fn;
-    return new Task(function (reject, resolve) {
-      return fn(function (err) {
-        return reject(err);
-      }, function (val) {
-        return task.run(reject, resolve);
+    var source = this;
+    return new Task(function (sinks) {
+      source.run({
+        reject: sinks.reject,
+        resolve: function resolve(val) {
+          task.run(sinks);
+        },
+        progress: _noop
       });
     });
   };
 
-  // chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
+  /**
+   * chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
+   *
+   * @name chain
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @param {Function} mapping Task-returning function to run after this task
+   * @returns {Frampton.Data.Task}
+   */
   Task.prototype.chain = function (mapping) {
     return this.map(mapping).join();
   };
 
-  // ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
+  /**
+   * ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
+   *
+   * @name ap
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @param {Frampton.Data.Task} task
+   * @returns {Frampton.Data.Task}
+   */
   Task.prototype.ap = function (task) {
     return this.chain(function (fn) {
       return task.map(fn);
     });
   };
 
-  // recover :: Task x a -> (a -> Task x b) -> Task x b
+  /**
+   * recover :: Task x a -> (x -> b) -> Task x b
+   *
+   * @name recover
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @param {Function} mapping
+   * @returns {Frampton.Data.Task}
+   */
   Task.prototype.recover = function (mapping) {
-    var fn = this.fn;
-    return new Task(function (reject, resolve) {
-      return fn(function (err) {
-        return mapping(err).run(reject, resolve);
-      }, function (val) {
-        return resolve(val);
+    var source = this;
+    return new Task(function (sinks) {
+      source.run({
+        reject: function reject(err) {
+          sinks.resolve(mapping(err));
+        },
+        resolve: sinks.resolve,
+        progress: sinks.progress
       });
     });
   };
 
-  // map :: Task x a -> (a -> b) -> Task x b
+  /**
+   * progress :: Task x a -> (a -> b) -> Task x a
+   *
+   * @name progress
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @param {Function} mapping
+   * @returns {Frampton.Data.Task}
+   */
+  Task.prototype.progress = function (mapping) {
+    var source = this;
+    return new Task(function (sinks) {
+      source.run({
+        reject: sinks.reject,
+        resolve: sinks.resolve,
+        progress: function progress(val) {
+          sinks.progress(mapping(val));
+        }
+      });
+    });
+  };
+
+  /**
+   * map :: Task x a -> (a -> b) -> Task x b
+   *
+   * @name recover
+   * @method
+   * @private
+   * @memberof Frampton.Data.Task#
+   * @param {Function} mapping
+   * @returns {Frampton.Data.Task}
+   */
   Task.prototype.map = function (mapping) {
-    var fn = this.fn;
-    return new Task(function (reject, resolve) {
-      return fn(function (err) {
-        return reject(err);
-      }, function (val) {
-        return resolve(mapping(val));
+    var source = this;
+    return new Task(function (sinks) {
+      source.run({
+        reject: sinks.reject,
+        resolve: function resolve(val) {
+          sinks.resolve(mapping(val));
+        },
+        progress: sinks.progress
       });
     });
   };
@@ -429,16 +498,19 @@ define('frampton-data/task/execute', ['exports', 'module', 'frampton-utils/warn'
   'use strict';
 
   /**
-   * execute :: Signal a -> Signal Task x a -> ()
+   * execute :: Signal Task x a -> Signal a -> Signal a -> ()
    *
    * When we get a task on the tasks signal, run it and push the value
-   * onto the values signal.
+   * onto the values signal. Tasks that are rejected in execute are
+   * ignored. It is suggested to use task that handle their errors with
+   * the recover method.
    *
    * @name execute
    * @memberof Frampton.Task
    * @static
-   * @param {Frampton.Signal.Signal} values
    * @param {Frampton.Signals.Signal} tasks
+   * @param {Frampton.Signal.Signal} values
+   * @param {Frampton.Signal.Signal} progresses
    */
   module.exports = execute;
 
@@ -446,12 +518,18 @@ define('frampton-data/task/execute', ['exports', 'module', 'frampton-utils/warn'
 
   var _warn = _interopRequire(_framptonUtilsWarn);
 
-  function execute(values, tasks) {
+  function execute(tasks, values, progresses) {
     tasks.value(function (task) {
-      task.run(function (err) {
-        (0, _warn)('Error running task: ', err);
-      }, function (val) {
-        values(val);
+      task.run({
+        reject: function reject(err) {
+          (0, _warn)('Error running task: ', err);
+        },
+        resolve: function resolve(val) {
+          values(val);
+        },
+        progress: function progress(val) {
+          progresses(val);
+        }
       });
     });
   }
@@ -467,8 +545,8 @@ define('frampton-data/task/fail', ['exports', 'module', 'frampton-data/task/crea
   var _create = _interopRequire(_framptonDataTaskCreate);
 
   function fail(err) {
-    return (0, _create)(function (reject, _) {
-      return reject(err);
+    return (0, _create)(function (sinks) {
+      return sinks.reject(err);
     });
   }
 });
@@ -510,8 +588,8 @@ define('frampton-data/task/succeed', ['exports', 'module', 'frampton-data/task/c
   var _create = _interopRequire(_framptonDataTaskCreate);
 
   function succeed(val) {
-    return (0, _create)(function (_, resolve) {
-      return resolve(val);
+    return (0, _create)(function (sinks) {
+      return sinks.resolve(val);
     });
   }
 });
@@ -530,32 +608,34 @@ define('frampton-data/task/when', ['exports', 'module', 'frampton-data/task/crea
       tasks[_key] = arguments[_key];
     }
 
-    return (0, _create)(function (_, resolve) {
+    return (0, _create)(function (sinks) {
 
       var valueArray = new Array(tasks.length);
-      var errorArray = [];
       var len = tasks.length;
       var idx = 0;
       var count = 0;
 
-      function logError(err) {
-        errorArray.push(err);
-      }
+      function logError(err) {}
+      function logProgress(val) {}
 
       tasks.forEach(function (task) {
         var index = idx++;
-        task.run(logError, function (val) {
-          count = count + 1;
-          valueArray[index] = val;
-          if (count === len) {
-            resolve(valueArray);
-          }
+        task.run({
+          reject: logError,
+          resolve: function resolve(val) {
+            count = count + 1;
+            valueArray[index] = val;
+            if (count === len) {
+              sinks.resolve(valueArray);
+            }
+          },
+          progress: logProgress
         });
       });
     });
   }
 });
-define('frampton-data/union/create', ['exports', 'frampton-utils/assert', 'frampton-utils/log', 'frampton-utils/curry_n', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_nothing', 'frampton-utils/is_undefined'], function (exports, _framptonUtilsAssert, _framptonUtilsLog, _framptonUtilsCurry_n, _framptonUtilsIs_boolean, _framptonUtilsIs_array, _framptonUtilsIs_number, _framptonUtilsIs_string, _framptonUtilsIs_function, _framptonUtilsIs_nothing, _framptonUtilsIs_undefined) {
+define('frampton-data/union/create', ['exports', 'frampton-utils/assert', 'frampton-utils/log', 'frampton-utils/curry_n', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_nothing', 'frampton-utils/is_undefined', 'frampton-record/keys'], function (exports, _framptonUtilsAssert, _framptonUtilsLog, _framptonUtilsCurry_n, _framptonUtilsIs_boolean, _framptonUtilsIs_array, _framptonUtilsIs_number, _framptonUtilsIs_string, _framptonUtilsIs_function, _framptonUtilsIs_nothing, _framptonUtilsIs_undefined, _framptonRecordKeys) {
   'use strict';
 
   exports.__esModule = true;
@@ -581,6 +661,8 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/assert', 'framp
   var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
 
   var _isUndefined = _interopRequire(_framptonUtilsIs_undefined);
+
+  var _getKeys = _interopRequire(_framptonRecordKeys);
 
   var wildcard = '_';
 
@@ -688,7 +770,7 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/assert', 'framp
 
   exports['default'] = function (config) {
     var obj = {};
-    var keys = Object.keys(config);
+    var keys = (0, _getKeys)(config);
     obj.prototype = {};
     obj.ctor = 'Union';
     obj.keys = keys;
@@ -2993,7 +3075,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @param {function}                 update  Function to call when this signal updates
-   * @param {[Frampton.Signal.Signal]} parents List of signals this signal depends on
+   * @param {Frampton.Signal.Signal[]} parents List of signals this signal depends on
    * @param {*}                        initial Initial value for this signal
    * @returns {Frampton.Signal.Signal}
    */
@@ -3003,7 +3085,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @name mergeMany
    * @memberof Frampton.Signal
    * @method
-   * @param {Frampton.Signal[]} parents
+   * @param {Frampton.Signal.Signal[]} parents
    */
   exports.mergeMany = mergeMany;
 
@@ -3164,7 +3246,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
       if (self._value !== parent._value) {
         self(parent._value);
       }
-    }, [parent]);
+    }, [parent], parent._value);
   }
 
   /**
@@ -3205,6 +3287,17 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     }
 
     return child;
+  }
+
+  /**
+   * @name changes
+   * @method
+   * @memberof Frampton.Signal.Signal#
+   * @param {Function} fn The function to call
+   * @returns {Frampton.Signal.Signal}
+   */
+  function changes(fn) {
+    return this.dropRepeats().log().value(fn);
   }
 
   /**
@@ -3445,6 +3538,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     signal.log = logValue;
     signal.next = next;
     signal.value = value;
+    signal.changes = changes;
     signal.toString = toString;
 
     for (var i = 0; i < signal._parents.length; i++) {
@@ -5200,7 +5294,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
    */
   'use strict';
 
-  Frampton.VERSION = '0.1.0';
+  Frampton.VERSION = '0.1.1';
 
   Frampton.TEST = 'test';
 
@@ -5216,7 +5310,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
   }
 
   Frampton.mock = function (key) {
-    return Frampton.ENV.MOCK[key] || null;
+    return Frampton.ENV.MOCK && Frampton.ENV.MOCK[key] ? Frampton.ENV.MOCK[key] : null;
   };
 
   Frampton.isDev = function () {

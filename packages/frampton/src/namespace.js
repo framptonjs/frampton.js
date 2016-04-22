@@ -6,7 +6,7 @@
  * @name Frampton
  * @namespace
  */
-Frampton.VERSION = '0.1.0';
+Frampton.VERSION = '0.1.1';
 
 Frampton.TEST = 'test';
 
@@ -22,7 +22,7 @@ if (typeof Frampton.ENV === 'undefined') {
 }
 
 Frampton.mock = function(key) {
-  return (Frampton.ENV.MOCK[key] || null);
+  return ((Frampton.ENV.MOCK && Frampton.ENV.MOCK[key]) ? Frampton.ENV.MOCK[key] : null);
 };
 
 Frampton.isDev = function() {

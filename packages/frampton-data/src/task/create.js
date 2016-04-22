@@ -1,8 +1,8 @@
 import immediate from 'frampton-utils/immediate';
+import noop from 'frampton-utils/noop';
 
 /**
  * Lazy, possibly async, error-throwing tasks
- * Stream of tasks, executed and return a new signal
  *
  * @name Task
  * @memberof Frampton.Task
@@ -13,80 +13,179 @@ function Task(task) {
   this.fn = task;
 }
 
-// of(return) :: a -> Success a
+Task.of = function(val) {
+  return new Task((sinks) => {
+    sinks.resolve(val);
+  });
+};
+
+/**
+ * of(return) :: a -> Success a
+ *
+ * @name of
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {*} val Value to resolve task with
+ * @returns {Frampton.Data.Task}
+ */
 Task.prototype.of = function(val) {
-  return new Task((_, resolve) => {
-    return resolve(val);
+  return new Task((sinks) => {
+    sinks.resolve(val);
   });
 };
 
 // Wraps the computation of the task to ensure all tasks are async.
-Task.prototype.run = function(reject, resolve) {
+Task.prototype.run = function(sinks) {
   immediate(() => {
     try {
-      this.fn(reject, resolve);
+      this.fn(sinks);
     } catch(e) {
-      reject(e);
+      sinks.reject(e);
     }
   });
 };
 
-// join :: Task x (Task x a) -> Task x a
+/**
+ * join :: Task x (Task x a) -> Task x a
+ *
+ * @name join
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @returns {Frampton.Data.Task}
+ */
 Task.prototype.join = function() {
-  var fn = this.fn;
-  return new Task(function(reject, resolve) {
-    return fn(function(err) {
-      return reject(err);
-    }, function(val) {
-      return val.run(reject, resolve);
+  const source = this;
+  return new Task((sinks) => {
+    source.run({
+      reject : sinks.reject,
+      resolve : (val) => {
+        val.run(sinks);
+      },
+      progress : noop
     });
   });
 };
 
-// concat(>>) :: Task x a -> Task x b -> Task x b
+/**
+ * concat(>>) :: Task x a -> Task x b -> Task x b
+ *
+ * @name concat
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {Frampton.Data.Task} task Task to run after this task
+ * @returns {Frampton.Data.Task}
+ */
 Task.prototype.concat = function(task) {
-  var fn = this.fn;
-  return new Task(function(reject, resolve) {
-    return fn(function(err) {
-      return reject(err);
-    }, function(val) {
-      return task.run(reject, resolve);
+  const source = this;
+  return new Task((sinks) => {
+    source.run({
+      reject : sinks.reject,
+      resolve : (val) => {
+        task.run(sinks);
+      },
+      progress : noop
     });
   });
 };
 
-// chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
+/**
+ * chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
+ *
+ * @name chain
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {Function} mapping Task-returning function to run after this task
+ * @returns {Frampton.Data.Task}
+ */
 Task.prototype.chain = function(mapping) {
   return this.map(mapping).join();
 };
 
-// ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
+/**
+ * ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
+ *
+ * @name ap
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {Frampton.Data.Task} task
+ * @returns {Frampton.Data.Task}
+ */
 Task.prototype.ap = function(task) {
-  return this.chain(function(fn) {
+  return this.chain((fn) => {
     return task.map(fn);
   });
 };
 
-// recover :: Task x a -> (a -> Task x b) -> Task x b
+/**
+ * recover :: Task x a -> (x -> b) -> Task x b
+ *
+ * @name recover
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {Function} mapping
+ * @returns {Frampton.Data.Task}
+ */
 Task.prototype.recover = function(mapping) {
-  var fn = this.fn;
-  return new Task(function(reject, resolve) {
-    return fn(function(err) {
-      return mapping(err).run(reject, resolve);
-    }, function(val) {
-      return resolve(val);
+  const source = this;
+  return new Task((sinks) => {
+    source.run({
+      reject : (err) => {
+        sinks.resolve(mapping(err));
+      },
+      resolve : sinks.resolve,
+      progress : sinks.progress
     });
   });
 };
 
-// map :: Task x a -> (a -> b) -> Task x b
+/**
+ * progress :: Task x a -> (a -> b) -> Task x a
+ *
+ * @name progress
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {Function} mapping
+ * @returns {Frampton.Data.Task}
+ */
+Task.prototype.progress = function(mapping) {
+  const source = this;
+  return new Task((sinks) => {
+    source.run({
+      reject : sinks.reject,
+      resolve : sinks.resolve,
+      progress : (val) => {
+        sinks.progress(mapping(val));
+      }
+    });
+  });
+};
+
+/**
+ * map :: Task x a -> (a -> b) -> Task x b
+ *
+ * @name recover
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {Function} mapping
+ * @returns {Frampton.Data.Task}
+ */
 Task.prototype.map = function(mapping) {
-  var fn = this.fn;
-  return new Task(function(reject, resolve) {
-    return fn(function(err) {
-      return reject(err);
-    }, function(val) {
-      return resolve(mapping(val));
+  const source = this;
+  return new Task((sinks) => {
+    source.run({
+      reject : sinks.reject,
+      resolve : (val) => {
+        sinks.resolve(mapping(val));
+      },
+      progress : sinks.progress
     });
   });
 };

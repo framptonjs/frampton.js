@@ -8,29 +8,32 @@ QUnit.test('Should create a task that runs a list of tasks in sequence', functio
   const done = assert.async();
   var counter = 0;
   const task = sequence(
-    create(function(_, resolve) {
+    create((sinks) => {
       equal(counter, 0);
       counter += 1;
-      resolve(1);
+      sinks.resolve(1);
     }),
-    create(function(_, resolve) {
+    create((sinks) => {
       equal(counter, 1);
       counter += 1;
-      resolve(2);
+      sinks.resolve(2);
     }),
-    create(function(_, resolve) {
+    create((sinks) => {
       equal(counter, 2);
       counter += 1;
-      resolve(3);
+      sinks.resolve(3);
     })
   );
 
-  task.run((err) => {
-    ok(false, 'sequence failed');
-    done();
-  }, (val) => {
-    equal(counter, 3, 'count wrong');
-    equal(val, 3, 'value wrong');
-    done();
+  task.run({
+    reject : (err) => {
+      ok(false, 'sequence failed');
+      done();
+    },
+    resolve : (val) => {
+      equal(counter, 3, 'count wrong');
+      equal(val, 3, 'value wrong');
+      done();
+    }
   });
 });

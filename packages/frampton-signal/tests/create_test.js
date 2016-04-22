@@ -30,6 +30,29 @@ QUnit.test('value method should alert given function of signal value', function(
   sig(1);
 });
 
+QUnit.test('changes method should alert given function of signal value change', function() {
+
+  var count = 0;
+  const sig = createSignal(3);
+
+  sig.changes((val) => {
+    if (count === 0) {
+      equal(val, 3);
+    } else if (count === 3) {
+      equal(val, 1);
+    } else {
+      ok(false);
+    }
+  });
+
+  count += 1;
+  sig(3);
+  count += 1;
+  sig(3);
+  count += 1;
+  sig(1);
+});
+
 QUnit.test('map method should correctly map values on a signal', function() {
   const sig = createSignal();
   const sig1 = sig.map((val) => val + 5);

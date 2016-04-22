@@ -4,8 +4,6 @@ import execute from 'frampton-data/task/execute';
 import create from 'frampton-signal/create';
 import { mergeMany } from 'frampton-signal/create';
 
-// default actions log_error, log_message, log_warning
-
 export default function start(config) {
 
   function update(acc, next) {
@@ -20,5 +18,5 @@ export default function start(config) {
   const tasks = modelAndTasks.map(second);
 
   // Run tasks and publish any resulting actions back into messages
-  execute(messages, tasks);
+  execute(tasks, messages, messages);
 }
