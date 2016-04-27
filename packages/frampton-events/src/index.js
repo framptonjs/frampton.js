@@ -10,6 +10,7 @@ import hasSelector from 'frampton-events/has_selector';
 import containsSelector from 'frampton-events/contains_selector';
 import selectorContains from 'frampton-events/selector_contains';
 import closestToEvent from 'frampton-events/closest_to_event';
+import preventDefault from 'frampton-events/prevent_default';
 
 /**
  * @name Events
@@ -28,3 +29,4 @@ Frampton.Events.selectorContains    = selectorContains;
 Frampton.Events.getPosition         = getPosition;
 Frampton.Events.getPositionRelative = getPositionRelative;
 Frampton.Events.closestToEvent      = closestToEvent;
+Frampton.Events.preventDefault      = preventDefault;

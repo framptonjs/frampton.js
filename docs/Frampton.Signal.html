@@ -74,7 +74,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3044">line 3044</a>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3067">line 3067</a>
     </li></ul></dd>
     
 
@@ -259,7 +259,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3073">line 3073</a>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3098">line 3098</a>
     </li></ul></dd>
     
 
@@ -404,7 +404,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3085">line 3085</a>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3110">line 3110</a>
     </li></ul></dd>
     
 
@@ -431,6 +431,352 @@
 
 
         
+            
+
+    
+
+    <h4 class="name" id=".swap"><span class="type-signature">(static) </span>swap<span class="signature">(sig1, sig2)</span><span class="type-signature"> &rarr; {<a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    swap :: Signal a -> Signal b -> Signal Boolean
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sig1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sig2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3612">line 3612</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".toggle"><span class="type-signature">(static) </span>toggle<span class="signature">(initial, updater)</span><span class="type-signature"> &rarr; {<a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    toggle :: Boolean -> Signal a -> Signal Boolean
+
+Creates a signal that emits alternating Boolean values on occurences of input signal.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>initial</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Value to initialize toggle to</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updater</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Signal to update toggle to</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frampton.js.html">frampton.js</a>, <a href="frampton.js.html#line3639">line 3639</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Frampton.Signal.Signal.html">Frampton.Signal.Signal</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     
@@ -452,7 +798,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Fri Apr 22 2016 09:39:02 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Wed Apr 27 2016 12:59:19 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

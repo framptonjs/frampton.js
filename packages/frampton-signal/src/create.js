@@ -375,6 +375,7 @@ function debounce(delay) {
     if (!timer) {
       timer = setTimeout(() => {
         self(parent._value);
+        timer = null;
       }, (delay || 10));
     }
   }, [parent]);

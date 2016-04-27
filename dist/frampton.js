@@ -781,7 +781,7 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/assert', 'framp
     return Object.freeze(obj);
   };
 });
-define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/on_event', 'frampton-events/on_selector', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/has_selector', 'frampton-events/contains_selector', 'frampton-events/selector_contains', 'frampton-events/closest_to_event'], function (exports, _framptonNamespace, _framptonEventsOn_event, _framptonEventsOn_selector, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsHas_selector, _framptonEventsContains_selector, _framptonEventsSelector_contains, _framptonEventsClosest_to_event) {
+define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/on_event', 'frampton-events/on_selector', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/has_selector', 'frampton-events/contains_selector', 'frampton-events/selector_contains', 'frampton-events/closest_to_event', 'frampton-events/prevent_default'], function (exports, _framptonNamespace, _framptonEventsOn_event, _framptonEventsOn_selector, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsHas_selector, _framptonEventsContains_selector, _framptonEventsSelector_contains, _framptonEventsClosest_to_event, _framptonEventsPrevent_default) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -810,6 +810,8 @@ define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/on_
 
   var _closestToEvent = _interopRequire(_framptonEventsClosest_to_event);
 
+  var _preventDefault = _interopRequire(_framptonEventsPrevent_default);
+
   /**
    * @name Events
    * @namespace
@@ -827,6 +829,7 @@ define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/on_
   _Frampton.Events.getPosition = _getPosition;
   _Frampton.Events.getPositionRelative = _getPositionRelative;
   _Frampton.Events.closestToEvent = _closestToEvent;
+  _Frampton.Events.preventDefault = _preventDefault;
 });
 define('frampton-events/closest_to_event', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/closest', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleClosest, _framptonEventsEvent_target) {
   'use strict';
@@ -1469,6 +1472,23 @@ define('frampton-events/once', ['exports', 'module', 'frampton-events/listen'], 
   function once(eventName, target) {
     return (0, _framptonEventsListen.listen)(eventName, target).take(1);
   }
+});
+define('frampton-events/prevent_default', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/is_object'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsIs_object) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isFunction = _interopRequire(_framptonUtilsIs_function);
+
+  var _isObject = _interopRequire(_framptonUtilsIs_object);
+
+  module.exports = function (evt) {
+    if ((0, _isObject)(evt) && (0, _isFunction)(evt.preventDefault) && (0, _isFunction)(evt.stopPropagation)) {
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+    return evt;
+  };
 });
 define('frampton-events/selector_contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-events/closest_to_event'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonEventsClosest_to_event) {
   'use strict';
@@ -3027,7 +3047,7 @@ define('frampton-record/update', ['exports', 'module', 'frampton-record/for_each
     return Object.freeze(newObj);
   }
 });
-define('frampton-signal', ['exports', 'frampton/namespace', 'frampton-signal/create', 'frampton-signal/stepper', 'frampton-signal/combine'], function (exports, _framptonNamespace, _framptonSignalCreate, _framptonSignalStepper, _framptonSignalCombine) {
+define('frampton-signal', ['exports', 'frampton/namespace', 'frampton-signal/create', 'frampton-signal/stepper', 'frampton-signal/combine', 'frampton-signal/swap', 'frampton-signal/toggle'], function (exports, _framptonNamespace, _framptonSignalCreate, _framptonSignalStepper, _framptonSignalCombine, _framptonSignalSwap, _framptonSignalToggle) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -3040,6 +3060,10 @@ define('frampton-signal', ['exports', 'frampton/namespace', 'frampton-signal/cre
 
   var _combine = _interopRequire(_framptonSignalCombine);
 
+  var _swap = _interopRequire(_framptonSignalSwap);
+
+  var _toggle = _interopRequire(_framptonSignalToggle);
+
   /**
    * @name Signal
    * @namespace
@@ -3050,6 +3074,8 @@ define('frampton-signal', ['exports', 'frampton/namespace', 'frampton-signal/cre
   _Frampton.Signal.stepper = _stepper;
   _Frampton.Signal.combine = _combine;
   _Frampton.Signal.mergeMany = _framptonSignalCreate.mergeMany;
+  _Frampton.Signal.swap = _swap;
+  _Frampton.Signal.toggle = _toggle;
 });
 define('frampton-signal/combine', ['exports', 'module', 'frampton-signal/create'], function (exports, module, _framptonSignalCreate) {
   'use strict';
@@ -3483,6 +3509,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
       if (!timer) {
         timer = setTimeout(function () {
           self(parent._value);
+          timer = null;
         }, delay || 10);
       }
     }, [parent]);
@@ -3583,8 +3610,53 @@ define('frampton-signal/swap', ['exports', 'module', 'frampton-utils/curry', 'fr
 
   var _stepper = _interopRequire(_framptonSignalStepper);
 
+  /**
+   * swap :: Signal a -> Signal b -> Signal Boolean
+   *
+   * @name swap
+   * @method
+   * @memberof Frampton.Signal
+   * @param {Frampton.Signal.Signal} sig1
+   * @param {Frampton.Signal.Signal} sig2
+   * @returns {Frampton.Signal.Signal}
+   */
   module.exports = (0, _curry)(function toggle(sig1, sig2) {
     return (0, _stepper)(false, sig1.map(true).merge(sig2.map(false)));
+  });
+});
+define('frampton-signal/toggle', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_boolean', 'frampton-signal/create'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry, _framptonUtilsIs_boolean, _framptonSignalCreate) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _assert = _interopRequire(_framptonUtilsAssert);
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _isBoolean = _interopRequire(_framptonUtilsIs_boolean);
+
+  var _createSignal = _interopRequire(_framptonSignalCreate);
+
+  /**
+   * toggle :: Boolean -> Signal a -> Signal Boolean
+   *
+   * Creates a signal that emits alternating Boolean values on occurences of input signal.
+   *
+   * @name toggle
+   * @method
+   * @memberof Frampton.Signal
+   * @param {Boolean} initial Value to initialize toggle to
+   * @param {Frampton.Signal.Signal} updater Signal to update toggle to
+   * @returns {Frampton.Signal.Signal}
+   */
+  module.exports = (0, _curry)(function (initial, updater) {
+    (0, _assert)('Signal.toggle must be initialized with a Boolean', (0, _isBoolean)(initial));
+    var sig = (0, _createSignal)(initial);
+    var current = initial;
+    return sig.merge(updater.map(function () {
+      current = !current;
+      return current;
+    }));
   });
 });
 define('frampton-string', ['exports', 'frampton/namespace', 'frampton-string/replace', 'frampton-string/trim', 'frampton-string/join', 'frampton-string/split', 'frampton-string/lines', 'frampton-string/words', 'frampton-string/starts_with', 'frampton-string/ends_with', 'frampton-string/contains', 'frampton-string/capitalize', 'frampton-string/dash_to_camel', 'frampton-string/length', 'frampton-string/normalize_newline'], function (exports, _framptonNamespace, _framptonStringReplace, _framptonStringTrim, _framptonStringJoin, _framptonStringSplit, _framptonStringLines, _framptonStringWords, _framptonStringStarts_with, _framptonStringEnds_with, _framptonStringContains, _framptonStringCapitalize, _framptonStringDash_to_camel, _framptonStringLength, _framptonStringNormalize_newline) {
@@ -5294,7 +5366,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
    */
   'use strict';
 
-  Frampton.VERSION = '0.1.1';
+  Frampton.VERSION = '0.1.2';
 
   Frampton.TEST = 'test';
 
