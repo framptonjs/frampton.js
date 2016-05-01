@@ -12,20 +12,20 @@ import warn from 'frampton-utils/warn';
  * @memberof Frampton.Task
  * @static
  * @param {Frampton.Signals.Signal} tasks
- * @param {Frampton.Signal.Signal} values
- * @param {Frampton.Signal.Signal} progresses
+ * @param {Frampton.Signal.Signal} value
+ * @param {Frampton.Signal.Signal} progress
  */
-export default function execute(tasks, values, progresses) {
+export default function execute(tasks, value, progress) {
   tasks.value((task) => {
     task.run({
       reject : (err) => {
         warn('Error running task: ', err);
       },
       resolve : (val) => {
-        values(val);
+        value(val);
       },
       progress : (val) => {
-        progresses(val);
+        progress(val);
       }
     });
   });

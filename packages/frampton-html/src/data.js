@@ -1,6 +1,7 @@
 import curry from 'frampton-utils/curry';
+import attribute from 'frampton-html/attribute';
 
 // data :: String -> Dom -> String
 export default curry((name, dom) => {
-  return dom.getAttribute('data-' + name);
+  return attribute(('data-' + name), dom);
 });

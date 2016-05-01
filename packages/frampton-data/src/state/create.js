@@ -1,4 +1,5 @@
 import guid from 'frampton-utils/guid';
+import isNothing from 'frampton-utils/is_nothing';
 import merge from 'frampton-record/merge';
 import keys from 'frampton-record/keys';
 
@@ -8,7 +9,11 @@ export default function create_state(data, id, props) {
   const _props = (props || keys(data));
 
   const model = function(update) {
-    return create_state(merge(data, update), _id, _props);
+    if (isNothing(update)) {
+      return Object.freeze(data);
+    } else {
+      return create_state(merge(data, update), _id, _props);
+    }
   };
 
   // private

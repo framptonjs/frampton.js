@@ -6,6 +6,7 @@ import isArray from 'frampton-utils/is_array';
 import isNumber from 'frampton-utils/is_number';
 import isString from 'frampton-utils/is_string';
 import isFunction from 'frampton-utils/is_function';
+import isNode from 'frampton-utils/is_node';
 import isNothing from 'frampton-utils/is_nothing';
 import isUndefined from 'frampton-utils/is_undefined';
 import getKeys from 'frampton-record/keys';
@@ -35,6 +36,12 @@ const validator = function(parent, type) {
 
     case Array:
       return isArray;
+
+    case Element:
+      return isNode;
+
+    case Node:
+      return isNode;
 
     case undefined:
       return objectValidator(parent);

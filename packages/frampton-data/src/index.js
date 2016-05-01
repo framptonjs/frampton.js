@@ -19,7 +19,6 @@ import createState from 'frampton-data/state/create';
  * @memberof Frampton
  */
 Frampton.Data = {};
-Frampton.Data.VERSION = '0.1.0';
 
 /**
  * @name Task

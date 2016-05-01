@@ -26,7 +26,9 @@
     "cancelAnimationFrame",
     "XMLHttpRequest",
     "FormData",
-    "FileReader"
+    "FileReader",
+    "Node",
+    "Element"
   ],
 
   "esnext": true,

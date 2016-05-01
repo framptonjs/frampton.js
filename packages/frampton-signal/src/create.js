@@ -200,10 +200,14 @@ function changes(fn) {
  * @memberof Frampton.Signal.Signal#
  * @returns {Frampton.Signal.Signal}
  */
-function logValue() {
+function logValue(msg) {
   const parent = this;
   return createSignal((self) => {
-    log(parent._value);
+    if (msg) {
+      log(msg);
+    } else {
+      log(parent._value);
+    }
     self(parent._value);
   }, [parent]);
 }
