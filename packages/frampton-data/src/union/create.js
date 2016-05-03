@@ -1,4 +1,3 @@
-import assert from 'frampton-utils/assert';
 import log from 'frampton-utils/log';
 import curryN from 'frampton-utils/curry_n';
 import isBoolean from 'frampton-utils/is_boolean';
@@ -8,6 +7,7 @@ import isString from 'frampton-utils/is_string';
 import isFunction from 'frampton-utils/is_function';
 import isNode from 'frampton-utils/is_node';
 import isNothing from 'frampton-utils/is_nothing';
+import isObject from 'frampton-utils/is_object';
 import isUndefined from 'frampton-utils/is_undefined';
 import getKeys from 'frampton-record/keys';
 
@@ -72,7 +72,13 @@ const validateArgs = function(validators, args) {
 
 const caseOf = function(parent, cases, val) {
 
-  assert('Match received unrecognized type', (parent.prototype.isPrototypeOf(val)));
+  if (!parent.prototype.isPrototypeOf(val)) {
+    if (isObject(val) && val.ctor) {
+      throw new TypeError('Match received unrecognized type: ' + val.ctor);
+    } else {
+      throw new TypeError('Match received unrecognized type');
+    }
+  }
 
   validateOptions(parent, cases);
   var match = cases[val.ctor];

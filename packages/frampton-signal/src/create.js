@@ -123,96 +123,6 @@ function toString() {
 }
 
 /**
- * dropRepeats :: Signal a -> Signal a
- *
- * Uses strict equals to drop repeated values from the parent signal.
- *
- * @name dropRepeats
- * @method
- * @memberof Frampton.Signal.Signal#
- * @returns {Frampton.Signal.Signal}
- */
-function dropRepeats() {
-  const parent = this;
-  return createSignal((self) => {
-    if (self._value !== parent._value) {
-      self(parent._value);
-    }
-  }, [parent], parent._value);
-}
-
-/**
- * Calls the given function when this signal updates
- *
- * @name next
- * @method
- * @memberof Frampton.Signal.Signal#
- * @param {Function} fn The function to call
- * @returns {Frampton.Signal.Signal}
- */
-function next(fn) {
-  const parent = this;
-  return createSignal((self) => {
-    fn(parent._value);
-  }, [parent]);
-}
-
-/**
- * Calls the given function when this signal has a value. The function
- * is called immediately if this function already has a value, then is
- * called again each time this signal updates.
- *
- * @name value
- * @method
- * @memberof Frampton.Signal.Signal#
- * @param {Function} fn The function to call
- * @returns {Frampton.Signal.Signal}
- */
-function value(fn) {
-  const parent = this;
-  const child = createSignal((self) => {
-    fn(parent._value);
-  }, [parent], parent._value);
-
-  if (child._hasValue) {
-    fn(child._value);
-  }
-
-  return child;
-}
-
-/**
- * @name changes
- * @method
- * @memberof Frampton.Signal.Signal#
- * @param {Function} fn The function to call
- * @returns {Frampton.Signal.Signal}
- */
-function changes(fn) {
-  return this.dropRepeats().log().value(fn);
-}
-
-/**
- * Logs the values of a given signal to the console.
- *
- * @name logValue
- * @method
- * @memberof Frampton.Signal.Signal#
- * @returns {Frampton.Signal.Signal}
- */
-function logValue(msg) {
-  const parent = this;
-  return createSignal((self) => {
-    if (msg) {
-      log(msg);
-    } else {
-      log(parent._value);
-    }
-    self(parent._value);
-  }, [parent]);
-}
-
-/**
  * @name merge
  * @method
  * @memberof Frampton.Signal.Signal#
@@ -309,6 +219,24 @@ function filter(predicate) {
 }
 
 /**
+ * @name filterPrevious
+ * @method
+ * @private
+ * @memberof Frampton.Signal.Signal#
+ * @param {Function} predicate
+ * @returns {Frampton.Signal.Signal}
+ */
+function filterPrevious(predicate) {
+  const parent = this;
+  const initial = (parent._hasValue) ? parent._value : undefined;
+  return createSignal((self) => {
+    if (predicate(self._value, parent._value)) {
+      self(parent._value);
+    }
+  }, [parent], initial);
+}
+
+/**
  * @name and
  * @method
  * @private
@@ -382,7 +310,7 @@ function debounce(delay) {
         timer = null;
       }, (delay || 10));
     }
-  }, [parent]);
+  }, [parent], parent._value);
 }
 
 /**
@@ -401,7 +329,116 @@ function delay(time) {
         self(saved);
       }, time);
     }(parent._value));
+  }, [parent], parent._value);
+}
+
+/**
+ * dropRepeats :: Signal a -> Signal a
+ *
+ * Uses strict equals to drop repeated values from the parent signal.
+ *
+ * @name dropRepeats
+ * @method
+ * @memberof Frampton.Signal.Signal#
+ * @returns {Frampton.Signal.Signal}
+ */
+function dropRepeats() {
+  return this.filterPrevious((prev, next) => {
+    return (prev !== next);
+  });
+}
+
+/**
+ * Calls the given function when this signal updates
+ *
+ * @name next
+ * @method
+ * @memberof Frampton.Signal.Signal#
+ * @param {Function} fn The function to call
+ * @returns {Frampton.Signal.Signal}
+ */
+function next(fn) {
+  const parent = this;
+  return createSignal((self) => {
+    fn(parent._value);
   }, [parent]);
+}
+
+/**
+ * Calls the given function when this signal has a value. The function
+ * is called immediately if this function already has a value, then is
+ * called again each time this signal updates.
+ *
+ * @name value
+ * @method
+ * @memberof Frampton.Signal.Signal#
+ * @param {Function} fn The function to call
+ * @returns {Frampton.Signal.Signal}
+ */
+function value(fn) {
+  const parent = this;
+  const child = createSignal((self) => {
+    fn(parent._value);
+  }, [parent], parent._value);
+
+  if (child._hasValue) {
+    fn(child._value);
+  }
+
+  return child;
+}
+
+/**
+ * @name changes
+ * @method
+ * @memberof Frampton.Signal.Signal#
+ * @param {Function} fn The function to call
+ * @returns {Frampton.Signal.Signal}
+ */
+function changes(fn) {
+  return this.dropRepeats().value(fn);
+}
+
+/**
+ * @name close
+ * @method
+ * @memberof Frampton.Signal.Signal#
+ */
+function close() {
+
+  const sig = this;
+
+  sig._children.forEach((child) => {
+    child._parents = child._parents.filter((parent) => {
+      return parent._id !== sig._id;
+    });
+  });
+
+  sig._parents.forEach((parent) => {
+    parent._children = parent._children.filter((child) => {
+      return child._id !== sig._id;
+    });
+  });
+}
+
+/**
+ * Logs the values of a given signal to the console.
+ *
+ * @name logValue
+ * @method
+ * @memberof Frampton.Signal.Signal#
+ * @returns {Frampton.Signal.Signal}
+ */
+function logValue(msg) {
+  const parent = this;
+  return createSignal((self) => {
+    if (msg) {
+      log(msg);
+    } else {
+      log(parent._value);
+    }
+    self(parent._value);
+  }, [parent], parent._value);
 }
 
 /**
@@ -425,33 +462,35 @@ export function createSignal(update, parents, initial) {
   };
 
   // Private
-  signal._id         = guid();
-  signal._value      = initial;
-  signal._hasValue   = isDefined(initial);
-  signal._queued     = false;
-  signal._updater    = null;
-  signal._parents    = (parents || []);
-  signal._children   = [];
-  signal._update     = (update || noop);
+  signal._id = guid();
+  signal._value = initial;
+  signal._hasValue = isDefined(initial);
+  signal._queued = false;
+  signal._updater = null;
+  signal._parents = (parents || []);
+  signal._children = [];
+  signal._update = (update || noop);
 
   // Public
-  signal.debounce    = debounce;
-  signal.delay       = delay;
-  signal.ap          = ap;
-  signal.merge       = merge;
-  signal.map         = map;
-  signal.filter      = filter;
-  signal.and         = and;
-  signal.not         = not;
-  signal.fold        = fold;
-  signal.sample      = sample;
-  signal.take        = take;
+  signal.debounce = debounce;
+  signal.delay = delay;
+  signal.ap = ap;
+  signal.merge = merge;
+  signal.map = map;
+  signal.filter = filter;
+  signal.filterPrevious = filterPrevious;
+  signal.and = and;
+  signal.not = not;
+  signal.fold = fold;
+  signal.sample = sample;
+  signal.take = take;
   signal.dropRepeats = dropRepeats;
-  signal.log         = logValue;
-  signal.next        = next;
-  signal.value       = value;
-  signal.changes     = changes;
-  signal.toString    = toString;
+  signal.log = logValue;
+  signal.next = next;
+  signal.value = value;
+  signal.changes = changes;
+  signal.close = close;
+  signal.toString = toString;
 
   for (let i=0;i<signal._parents.length;i++) {
     signal._parents[i]._children.push(signal);

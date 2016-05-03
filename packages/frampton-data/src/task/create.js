@@ -1,5 +1,7 @@
 import immediate from 'frampton-utils/immediate';
+import isFunction from 'frampton-utils/is_function';
 import noop from 'frampton-utils/noop';
+import ofValue from 'frampton-utils/of_value';
 
 /**
  * Lazy, possibly async, error-throwing tasks
@@ -145,6 +147,20 @@ Task.prototype.recover = function(mapping) {
 };
 
 /**
+ * default :: Task x a -> b -> Task x b
+ *
+ * @name default
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {*} val A value to map errors to
+ * @returns {Frampton.Data.Task}
+ */
+Task.prototype.default = function(val) {
+  return this.recover(() => val);
+};
+
+/**
  * progress :: Task x a -> (a -> b) -> Task x a
  *
  * @name progress
@@ -156,12 +172,13 @@ Task.prototype.recover = function(mapping) {
  */
 Task.prototype.progress = function(mapping) {
   const source = this;
+  const mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
   return new Task((sinks) => {
     source.run({
       reject : sinks.reject,
       resolve : sinks.resolve,
       progress : (val) => {
-        sinks.progress(mapping(val));
+        sinks.progress(mappingFn(val));
       }
     });
   });
@@ -179,11 +196,12 @@ Task.prototype.progress = function(mapping) {
  */
 Task.prototype.map = function(mapping) {
   const source = this;
+  const mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
   return new Task((sinks) => {
     source.run({
       reject : sinks.reject,
       resolve : (val) => {
-        sinks.resolve(mapping(val));
+        sinks.resolve(mappingFn(val));
       },
       progress : sinks.progress
     });
