@@ -958,21 +958,14 @@ define('frampton-events/contains_selector', ['exports', 'module', 'frampton-util
     return (0, _compose)((0, _contains)(selector), _eventTarget)(evt);
   });
 });
-define('frampton-events/document_cache', ['exports', 'module', 'frampton-utils/is_nothing'], function (exports, module, _framptonUtilsIs_nothing) {
+define('frampton-events/document_cache', ['exports', 'module', 'frampton-events/simple_cache'], function (exports, module, _framptonEventsSimple_cache) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
-  var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
+  var _simpleCahce = _interopRequire(_framptonEventsSimple_cache);
 
-  var store = {};
-
-  module.exports = function (name, fn) {
-    if ((0, _isNothing)(store[name])) {
-      store[name] = fn();
-    }
-    return store[name];
-  };
+  module.exports = (0, _simpleCahce)();
 });
 define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function', 'frampton-utils/is_defined', 'frampton-utils/lazy', 'frampton-events/event_map'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_function, _framptonUtilsIs_defined, _framptonUtilsLazy, _framptonEventsEvent_map) {
   'use strict';
@@ -1042,8 +1035,9 @@ define("frampton-events/event_map", ["exports", "module"], function (exports, mo
   "use strict";
 
   module.exports = {
-    focus: {
-      bubbles: false,
+
+    abort: {
+      bubbles: true,
       stream: null
     },
 
@@ -1064,6 +1058,11 @@ define("frampton-events/event_map", ["exports", "module"], function (exports, mo
 
     error: {
       bubbles: true,
+      stream: null
+    },
+
+    focus: {
+      bubbles: false,
       stream: null
     },
 
@@ -1325,19 +1324,30 @@ define('frampton-events/get_document_stream', ['exports', 'module', 'frampton-ev
     });
   }
 });
-define('frampton-events/get_event_stream', ['exports', 'module', 'frampton-signal/create', 'frampton-events/event_dispatcher'], function (exports, module, _framptonSignalCreate, _framptonEventsEvent_dispatcher) {
+define('frampton-events/get_event_stream', ['exports', 'module', 'frampton-utils/is_empty', 'frampton-signal/create', 'frampton-events/event_dispatcher'], function (exports, module, _framptonUtilsIs_empty, _framptonSignalCreate, _framptonEventsEvent_dispatcher) {
   'use strict';
 
   module.exports = get_event_stream;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
+  var _isEmpty = _interopRequire(_framptonUtilsIs_empty);
+
   var _createSignal = _interopRequire(_framptonSignalCreate);
 
   function get_event_stream(name, target) {
-    var sig = (0, _createSignal)();
-    (0, _framptonEventsEvent_dispatcher.addListener)(name, target, sig);
-    return sig;
+    var parts = name.split(' ').filter(function (val) {
+      return !(0, _isEmpty)(val);
+    });
+    var len = parts.length;
+    var sigs = [];
+    var temp;
+    for (var i = 0; i < len; i++) {
+      temp = (0, _createSignal)();
+      (0, _framptonEventsEvent_dispatcher.addListener)(parts[i], target, temp);
+      sigs.push(temp);
+    }
+    return (0, _framptonSignalCreate.mergeMany)(sigs);
   }
 });
 define("frampton-events/get_position", ["exports", "module"], function (exports, module) {
@@ -1473,7 +1483,7 @@ define('frampton-events/on_event', ['exports', 'module', 'frampton-utils/is_func
     }
   }
 });
-define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-events/selector_contains', 'frampton-events/event_map', 'frampton-events/get_document_stream'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonEventsSelector_contains, _framptonEventsEvent_map, _framptonEventsGet_document_stream) {
+define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_empty', 'frampton-events/selector_contains', 'frampton-events/event_map', 'frampton-events/get_document_stream', 'frampton-events/selector_cache'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_empty, _framptonEventsSelector_contains, _framptonEventsEvent_map, _framptonEventsGet_document_stream, _framptonEventsSelector_cache) {
   'use strict';
 
   /**
@@ -1494,16 +1504,34 @@ define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_s
 
   var _isString = _interopRequire(_framptonUtilsIs_string);
 
+  var _isEmpty = _interopRequire(_framptonUtilsIs_empty);
+
   var _selectorContains = _interopRequire(_framptonEventsSelector_contains);
 
   var _EVENT_MAP = _interopRequire(_framptonEventsEvent_map);
 
   var _getDocumentStream = _interopRequire(_framptonEventsGet_document_stream);
 
+  var _selectorCache = _interopRequire(_framptonEventsSelector_cache);
+
+  function validateEventName(name) {
+    var parts = name.split(' ').filter(function (val) {
+      return !(0, _isEmpty)(val);
+    });
+    var len = parts.length;
+    for (var i = 0; i < len; i++) {
+      if (!(0, _isSomething)(_EVENT_MAP[parts[i]])) {
+        return false;
+      }
+    }
+    return true;
+  }
   function on_selector(eventName, selector) {
-    if ((0, _isSomething)(_EVENT_MAP[eventName]) && (0, _isString)(selector)) {
-      return (0, _getDocumentStream)(eventName).filter(function (evt) {
-        return (0, _selectorContains)(selector, evt);
+    if (validateEventName(eventName) && (0, _isString)(selector)) {
+      return (0, _selectorCache)(eventName + selector, function () {
+        return (0, _getDocumentStream)(eventName).filter(function (evt) {
+          return (0, _selectorContains)(selector, evt);
+        });
       });
     } else {
       throw new Error('Frampton.Events.onSelector given unexpected arguments name: ' + eventName + ', selector: ' + selector);
@@ -1536,6 +1564,15 @@ define('frampton-events/prevent_default', ['exports', 'module', 'frampton-utils/
     return evt;
   };
 });
+define('frampton-events/selector_cache', ['exports', 'module', 'frampton-events/simple_cache'], function (exports, module, _framptonEventsSimple_cache) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _simpleCahce = _interopRequire(_framptonEventsSimple_cache);
+
+  module.exports = (0, _simpleCahce)();
+});
 define('frampton-events/selector_contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-events/closest_to_event'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonEventsClosest_to_event) {
   'use strict';
 
@@ -1563,6 +1600,25 @@ define('frampton-events/selector_contains', ['exports', 'module', 'frampton-util
   module.exports = (0, _curry)(function selector_contains(selector, evt) {
     return (0, _isSomething)((0, _closestToEvent)(selector, evt));
   });
+});
+define('frampton-events/simple_cache', ['exports', 'module', 'frampton-utils/is_nothing'], function (exports, module, _framptonUtilsIs_nothing) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
+
+  module.exports = function () {
+
+    var store = {};
+
+    return function (name, fn) {
+      if ((0, _isNothing)(store[name])) {
+        store[name] = fn();
+      }
+      return store[name];
+    };
+  };
 });
 define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/attribute', 'frampton-html/contains', 'frampton-html/element_value', 'frampton-html/data', 'frampton-html/set_html'], function (exports, _framptonNamespace, _framptonHtmlAttribute, _framptonHtmlContains, _framptonHtmlElement_value, _framptonHtmlData, _framptonHtmlSet_html) {
   'use strict';
@@ -4231,7 +4287,7 @@ define('frampton-style/matches', ['exports', 'module', 'frampton-utils/curry', '
     if ((0, _isFunction)(element.matches)) {
       return element.matches(selector);
     } else {
-      var elementList = (element.document || element.ownerDocument).querySelectorAll(selector);
+      var elementList = document.querySelectorAll(selector);
       var i = 0;
 
       while (elementList[i] && elementList[i] !== element) {

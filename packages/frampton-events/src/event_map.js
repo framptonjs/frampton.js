@@ -1,6 +1,7 @@
 export default {
-  focus : {
-    bubbles: false,
+
+  abort : {
+    bubbles: true,
     stream: null
   },
 
@@ -21,6 +22,11 @@ export default {
 
   error : {
     bubbles: true,
+    stream: null
+  },
+
+  focus : {
+    bubbles: false,
     stream: null
   },
 

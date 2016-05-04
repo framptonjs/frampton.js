@@ -10,7 +10,7 @@ function addDomEvent(name, node, callback) {
 }
 
 function addCustomEvent(name, target, callback) {
-  var listen = isFunction(target.addEventListener) ? target.addEventListener :
+  const listen = isFunction(target.addEventListener) ? target.addEventListener :
                isFunction(target.on) ? target.on : null;
 
   assert('addListener received an unknown type as target', isFunction(listen));
@@ -23,7 +23,7 @@ function removeDomEvent(name, node, callback) {
 }
 
 function removeCustomEvent(name, target, callback) {
-  var remove = isFunction(target.removeEventListener) ? target.removeEventListener :
+  const remove = isFunction(target.removeEventListener) ? target.removeEventListener :
                isFunction(target.off) ? target.off : null;
 
   assert('removeListener received an unknown type as target', isFunction(remove));

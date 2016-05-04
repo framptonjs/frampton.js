@@ -20,3 +20,15 @@ QUnit.test('Should create a signal that responds to events on a given selector',
   this.selectorTestDiv.click();
   equal(sig(), 1, 'Did not update to new value');
 });
+
+QUnit.test('Should create a signal that responds to multiple events', function() {
+  var test = '';
+  const sig = onSelector('click mouseover', '.blue').map((evt) => {
+    return test += evt.type;
+  });
+  const evt = document.createEvent("HTMLEvents");
+  evt.initEvent('mouseover', true, true);
+  this.selectorTestDiv.dispatchEvent(evt);
+  this.selectorTestDiv.click();
+  equal(sig(), 'mouseoverclick');
+});

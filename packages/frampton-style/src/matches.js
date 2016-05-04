@@ -14,8 +14,8 @@ export default curry(function matches(selector, element) {
   if (isFunction(element.matches)) {
     return element.matches(selector);
   } else {
-    var elementList = (element.document || element.ownerDocument).querySelectorAll(selector);
-    var i = 0;
+    const elementList = document.querySelectorAll(selector);
+    let i = 0;
 
     while (elementList[i] && elementList[i] !== element) {
       i++;
