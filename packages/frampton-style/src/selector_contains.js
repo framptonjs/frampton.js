@@ -14,7 +14,7 @@ import contains from 'frampton-html/contains';
  */
 export default curry(function selector_contains(selector, element) {
 
-  var elementList = (element.document || element.ownerDocument).querySelectorAll(selector);
+  const elementList = document.querySelectorAll(selector);
   var i = 0;
 
   while (elementList[i] && !contains(elementList[i], element)) {

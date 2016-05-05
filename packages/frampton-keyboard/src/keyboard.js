@@ -7,19 +7,19 @@ import stepper from 'frampton-signal/stepper';
 import KEY_MAP from 'frampton-keyboard/key_map';
 import keyCode from 'frampton-keyboard/key_code';
 
-//+ keyUp :: EventStream DomEvent
+//+ keyUp :: Signal DomEvent
 const keyUp = onEvent('keyup');
 
-//+ keyDown :: EventStream DomEvent
+//+ keyDown :: Signal DomEvent
 const keyDown = onEvent('keydown');
 
-//+ keyPress :: EventStream DomEvent
+//+ keyPress :: Signal DomEvent
 const keyPress = onEvent('keypress');
 
-//+ keyUpCodes :: EventStream KeyCode
+//+ keyUpCodes :: Signal KeyCode
 const keyUpCodes = keyUp.map(keyCode);
 
-//+ keyDownCodes :: EventStream KeyCode
+//+ keyDownCodes :: Signal KeyCode
 const keyDownCodes = keyDown.map(keyCode);
 
 const addKey = function(keyCode) {
@@ -41,13 +41,13 @@ const update = function(acc, fn) {
   return fn(acc);
 };
 
-//+ rawEvents :: EventStream Function
+//+ rawEvents :: Signal Function
 const rawEvents = keyUpCodes.map(removeKey).merge(keyDownCodes.map(addKey));
 
-//+ keysDown :: EventStream []
+//+ keysDown :: Signal []
 const keysDown = rawEvents.fold(update, []);
 
-//+ keyIsDown :: KeyCode -> EventStream Boolean
+//+ keyIsDown :: KeyCode -> Signal Boolean
 const keyIsDown = function(keyCode) {
   return keysDown.map(function(arr) {
     return contains(arr, keyCode);
@@ -71,7 +71,7 @@ const isRight = direction(KEY_MAP.RIGHT);
 //+ isLeft :: [KeyCode] -> Boolean
 const isLeft = direction(KEY_MAP.LEFT);
 
-//+ arrows :: EventStream [horizontal, vertical]
+//+ arrows :: Signal [horizontal, vertical]
 const arrows = keysDown.map(function(arr) {
   return [
     (isRight(arr) - isLeft(arr)),

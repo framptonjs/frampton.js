@@ -39,7 +39,7 @@ function addListener(eventName, target, callback) {
     addCustomEvent(eventName, target, callback);
   }
 
-  return lazy(removeListener, eventName, target, callback);
+  return lazy(removeListener, [eventName, target, callback]);
 }
 
 function removeListener(eventName, target, callback) {

@@ -11,12 +11,12 @@ import isNumber from 'frampton-utils/is_number';
  */
 export default function memoize(fn, context) {
 
-  var store = {};
-  var len = fn.length;
+  const store = {};
+  const len = fn.length;
 
   return function(...args) {
 
-    var key = (
+    const key = (
       (len === 1 && (isString(args[0]) || isNumber(args[0]))) ?
       args[0] : JSON.stringify(args)
     );

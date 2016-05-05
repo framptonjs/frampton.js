@@ -81,12 +81,12 @@ export default {
   },
 
   mouseenter : {
-    bubbles: true,
+    bubbles: false,
     stream: null
   },
 
   mouseleave : {
-    bubbles: true,
+    bubbles: false,
     stream: null
   },
 

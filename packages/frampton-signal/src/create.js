@@ -278,7 +278,7 @@ function not(predicate) {
  * @private
  * @memberof Frampton.Signal.Signal#
  * @param {Any} mapping A function or value to map the signal with. If a function, the value
- *                      on the parent stream will be passed to the function and the signal will
+ *                      on the parent signal will be passed to the function and the signal will
  *                      be mapped to the return value of the function. If a value, the value of
  *                      the parent signal will be replaced with the value.
  * @returns {Frampton.Signal.Signal} A new signal with mapped values
@@ -297,7 +297,7 @@ function map(mapping) {
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Number} delay Milliseconds to debounce the stream
+ * @param {Number} delay Milliseconds to debounce the signal
  * @returns {Frampton.Signal.Signal}
  */
 function debounce(delay) {

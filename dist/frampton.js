@@ -1017,7 +1017,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
       addCustomEvent(eventName, target, callback);
     }
 
-    return (0, _lazy)(removeListener, eventName, target, callback);
+    return (0, _lazy)(removeListener, [eventName, target, callback]);
   }
 
   function removeListener(eventName, target, callback) {
@@ -1117,12 +1117,12 @@ define("frampton-events/event_map", ["exports", "module"], function (exports, mo
     },
 
     mouseenter: {
-      bubbles: true,
+      bubbles: false,
       stream: null
     },
 
     mouseleave: {
-      bubbles: true,
+      bubbles: false,
       stream: null
     },
 
@@ -1307,27 +1307,27 @@ define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/comp
    */
   module.exports = (0, _compose)(_elementValue, _eventTarget);
 });
-define('frampton-events/get_document_stream', ['exports', 'module', 'frampton-events/document_cache', 'frampton-events/get_event_stream'], function (exports, module, _framptonEventsDocument_cache, _framptonEventsGet_event_stream) {
+define('frampton-events/get_document_signal', ['exports', 'module', 'frampton-events/document_cache', 'frampton-events/get_event_signal'], function (exports, module, _framptonEventsDocument_cache, _framptonEventsGet_event_signal) {
   'use strict';
 
-  module.exports = get_document_stream;
+  module.exports = get_document_signal;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _documentCache = _interopRequire(_framptonEventsDocument_cache);
 
-  var _getEventStream = _interopRequire(_framptonEventsGet_event_stream);
+  var _getEventSignal = _interopRequire(_framptonEventsGet_event_signal);
 
-  function get_document_stream(name) {
+  function get_document_signal(name) {
     return (0, _documentCache)(name, function () {
-      return (0, _getEventStream)(name, document);
+      return (0, _getEventSignal)(name, document);
     });
   }
 });
-define('frampton-events/get_event_stream', ['exports', 'module', 'frampton-utils/is_empty', 'frampton-signal/create', 'frampton-events/event_dispatcher'], function (exports, module, _framptonUtilsIs_empty, _framptonSignalCreate, _framptonEventsEvent_dispatcher) {
+define('frampton-events/get_event_signal', ['exports', 'module', 'frampton-utils/is_empty', 'frampton-signal/create', 'frampton-events/event_dispatcher'], function (exports, module, _framptonUtilsIs_empty, _framptonSignalCreate, _framptonEventsEvent_dispatcher) {
   'use strict';
 
-  module.exports = get_event_stream;
+  module.exports = get_event_signal;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -1335,7 +1335,7 @@ define('frampton-events/get_event_stream', ['exports', 'module', 'frampton-utils
 
   var _createSignal = _interopRequire(_framptonSignalCreate);
 
-  function get_event_stream(name, target) {
+  function get_event_signal(name, target) {
     var parts = name.split(' ').filter(function (val) {
       return !(0, _isEmpty)(val);
     });
@@ -1442,18 +1442,18 @@ define('frampton-events/has_selector', ['exports', 'module', 'frampton-utils/cur
     return (0, _compose)((0, _matches)(selector), _eventTarget)(evt);
   });
 });
-define('frampton-events/on_event', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/is_nothing', 'frampton-events/contains', 'frampton-events/event_map', 'frampton-events/get_document_stream', 'frampton-events/get_event_stream'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsIs_nothing, _framptonEventsContains, _framptonEventsEvent_map, _framptonEventsGet_document_stream, _framptonEventsGet_event_stream) {
+define('frampton-events/on_event', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/is_nothing', 'frampton-events/contains', 'frampton-events/event_map', 'frampton-events/get_document_signal', 'frampton-events/get_event_signal'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsIs_nothing, _framptonEventsContains, _framptonEventsEvent_map, _framptonEventsGet_document_signal, _framptonEventsGet_event_signal) {
   'use strict';
 
   /**
-   * listen :: String -> Dom -> EventStream Event
+   * onEvent :: String -> Dom -> Signal Event
    *
-   * @name listen
+   * @name onEvent
    * @memberof Frampton.Events
    * @static
    * @param {String} eventName Name of event to listen for
    * @param {Object} target    Object on which to listen for event
-   * @returns {Frampton.Signals.EventStream} An EventStream of all occurances of the given event on the given object
+   * @returns {Frampton.Signal.Signal} A Signal of all occurances of the given event on the given object
    */
   module.exports = on_event;
 
@@ -1467,36 +1467,24 @@ define('frampton-events/on_event', ['exports', 'module', 'frampton-utils/is_func
 
   var _EVENT_MAP = _interopRequire(_framptonEventsEvent_map);
 
-  var _getDocumentStream = _interopRequire(_framptonEventsGet_document_stream);
+  var _getDocumentSignal = _interopRequire(_framptonEventsGet_document_signal);
 
-  var _getEventStream = _interopRequire(_framptonEventsGet_event_stream);
+  var _getEventSignal = _interopRequire(_framptonEventsGet_event_signal);
 
   function on_event(eventName, target) {
     if (_EVENT_MAP[eventName] && ((0, _isNothing)(target) || (0, _isFunction)(target.addEventListener))) {
       if ((0, _isNothing)(target)) {
-        return (0, _getDocumentStream)(eventName);
+        return (0, _getDocumentSignal)(eventName);
       } else {
-        return (0, _getDocumentStream)(eventName).filter((0, _contains)(target));
+        return (0, _getDocumentSignal)(eventName).filter((0, _contains)(target));
       }
     } else {
-      return (0, _getEventStream)(eventName, target);
+      return (0, _getEventSignal)(eventName, target);
     }
   }
 });
-define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_empty', 'frampton-events/selector_contains', 'frampton-events/event_map', 'frampton-events/get_document_stream', 'frampton-events/selector_cache'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_empty, _framptonEventsSelector_contains, _framptonEventsEvent_map, _framptonEventsGet_document_stream, _framptonEventsSelector_cache) {
+define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_empty', 'frampton-events/closest_to_event', 'frampton-events/selector_contains', 'frampton-events/event_map', 'frampton-events/get_document_signal', 'frampton-events/selector_cache'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_empty, _framptonEventsClosest_to_event, _framptonEventsSelector_contains, _framptonEventsEvent_map, _framptonEventsGet_document_signal, _framptonEventsSelector_cache) {
   'use strict';
-
-  /**
-   * onSelector :: String -> String -> EventStream Event
-   *
-   * @name listen
-   * @memberof Frampton.Events
-   * @static
-   * @param {String} eventName Name of event to listen for
-   * @param {String} selector  Selector to filter events by
-   * @returns {Frampton.Signals.EventStream} An EventStream of all occurances of the given event within given selector
-   */
-  module.exports = on_selector;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -1506,11 +1494,13 @@ define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_s
 
   var _isEmpty = _interopRequire(_framptonUtilsIs_empty);
 
+  var _closestToEvent = _interopRequire(_framptonEventsClosest_to_event);
+
   var _selectorContains = _interopRequire(_framptonEventsSelector_contains);
 
   var _EVENT_MAP = _interopRequire(_framptonEventsEvent_map);
 
-  var _getDocumentStream = _interopRequire(_framptonEventsGet_document_stream);
+  var _getDocumentSignal = _interopRequire(_framptonEventsGet_document_signal);
 
   var _selectorCache = _interopRequire(_framptonEventsSelector_cache);
 
@@ -1526,17 +1516,65 @@ define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_s
     }
     return true;
   }
-  function on_selector(eventName, selector) {
+
+  function mouseEnterSelector(selector) {
+    var previousElement = null;
+    return (0, _getDocumentSignal)('mouseover').filter(function (evt) {
+      var current = (0, _closestToEvent)(selector, evt);
+      if ((0, _isSomething)(current) && current !== previousElement) {
+        previousElement = current;
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  function mouseLeaveSelector(selector) {
+    var previousElement = null;
+    return (0, _getDocumentSignal)('mouseleave').filter(function (evt) {
+      var current = (0, _closestToEvent)(selector, evt);
+      if ((0, _isSomething)(current) && current !== previousElement) {
+        previousElement = current;
+        return true;
+      } else if ((0, _isSomething)(current)) {
+        previousElement = current;
+        return false;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  /**
+   * onSelector :: String -> String -> Signal Event
+   *
+   * @name onSelector
+   * @memberof Frampton.Events
+   * @static
+   * @param {String} eventName Name of event to listen for
+   * @param {String} selector  Selector to filter events by
+   * @returns {Frampton.Signal.Signal} A Signal of all occurances of the given event within given selector
+   */
+  function onSelector(eventName, selector) {
     if (validateEventName(eventName) && (0, _isString)(selector)) {
-      return (0, _selectorCache)(eventName + selector, function () {
-        return (0, _getDocumentStream)(eventName).filter(function (evt) {
-          return (0, _selectorContains)(selector, evt);
-        });
+      return (0, _selectorCache)(eventName + ' | ' + selector, function () {
+        if (eventName === 'mouseenter') {
+          return mouseEnterSelector(selector);
+        } else if (eventName === 'mouseleave') {
+          return mouseLeaveSelector(selector);
+        } else {
+          return (0, _getDocumentSignal)(eventName).filter(function (evt) {
+            return (0, _selectorContains)(selector, evt);
+          });
+        }
       });
     } else {
       throw new Error('Frampton.Events.onSelector given unexpected arguments name: ' + eventName + ', selector: ' + selector);
     }
   }
+
+  module.exports = onSelector;
 });
 define('frampton-events/once', ['exports', 'module', 'frampton-events/listen'], function (exports, module, _framptonEventsListen) {
   'use strict';
@@ -1946,19 +1984,19 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
 
   var _keyCode = _interopRequire(_framptonKeyboardKey_code);
 
-  //+ keyUp :: EventStream DomEvent
+  //+ keyUp :: Signal DomEvent
   var keyUp = (0, _onEvent)('keyup');
 
-  //+ keyDown :: EventStream DomEvent
+  //+ keyDown :: Signal DomEvent
   var keyDown = (0, _onEvent)('keydown');
 
-  //+ keyPress :: EventStream DomEvent
+  //+ keyPress :: Signal DomEvent
   var keyPress = (0, _onEvent)('keypress');
 
-  //+ keyUpCodes :: EventStream KeyCode
+  //+ keyUpCodes :: Signal KeyCode
   var keyUpCodes = keyUp.map(_keyCode);
 
-  //+ keyDownCodes :: EventStream KeyCode
+  //+ keyDownCodes :: Signal KeyCode
   var keyDownCodes = keyDown.map(_keyCode);
 
   var addKey = function addKey(keyCode) {
@@ -1980,13 +2018,13 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
     return fn(acc);
   };
 
-  //+ rawEvents :: EventStream Function
+  //+ rawEvents :: Signal Function
   var rawEvents = keyUpCodes.map(removeKey).merge(keyDownCodes.map(addKey));
 
-  //+ keysDown :: EventStream []
+  //+ keysDown :: Signal []
   var keysDown = rawEvents.fold(update, []);
 
-  //+ keyIsDown :: KeyCode -> EventStream Boolean
+  //+ keyIsDown :: KeyCode -> Signal Boolean
   var keyIsDown = function keyIsDown(keyCode) {
     return keysDown.map(function (arr) {
       return (0, _contains)(arr, keyCode);
@@ -2010,7 +2048,7 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
   //+ isLeft :: [KeyCode] -> Boolean
   var isLeft = direction(_KEY_MAP.LEFT);
 
-  //+ arrows :: EventStream [horizontal, vertical]
+  //+ arrows :: Signal [horizontal, vertical]
   var arrows = keysDown.map(function (arr) {
     return [isRight(arr) - isLeft(arr), isUp(arr) - isDown(arr)];
   });
@@ -3534,7 +3572,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @private
    * @memberof Frampton.Signal.Signal#
    * @param {Any} mapping A function or value to map the signal with. If a function, the value
-   *                      on the parent stream will be passed to the function and the signal will
+   *                      on the parent signal will be passed to the function and the signal will
    *                      be mapped to the return value of the function. If a value, the value of
    *                      the parent signal will be replaced with the value.
    * @returns {Frampton.Signal.Signal} A new signal with mapped values
@@ -3553,7 +3591,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Number} delay Milliseconds to debounce the stream
+   * @param {Number} delay Milliseconds to debounce the signal
    * @returns {Frampton.Signal.Signal}
    */
   function debounce(delay) {
@@ -4380,7 +4418,7 @@ define('frampton-style/selector_contains', ['exports', 'module', 'frampton-utils
    */
   module.exports = (0, _curry)(function selector_contains(selector, element) {
 
-    var elementList = (element.document || element.ownerDocument).querySelectorAll(selector);
+    var elementList = document.querySelectorAll(selector);
     var i = 0;
 
     while (elementList[i] && !(0, _contains)(elementList[i], element)) {
@@ -5388,7 +5426,13 @@ define('frampton-utils/is_undefined', ['exports', 'module'], function (exports, 
     return typeof obj === 'undefined';
   }
 });
-define("frampton-utils/lazy", ["exports", "module"], function (exports, module) {
+define('frampton-utils/lazy', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
   /**
    * Takes a function and warps it to be called at a later time.
    * @name lazy
@@ -5397,21 +5441,13 @@ define("frampton-utils/lazy", ["exports", "module"], function (exports, module) 
    * @method
    * @static
    * @param {Function} fn The function to wrap.
-   * @param {...Any} args Arguments to pass to the function when called.
+   * @param {Array} args Array of arguments to pass to the function when called.
    */
-  "use strict";
-
-  module.exports = lazy;
-
-  function lazy(fn) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
+  module.exports = (0, _curry)(function lazy(fn, args) {
     return function () {
-      fn.apply(null, args);
+      return fn.apply(null, args);
     };
-  }
+  });
 });
 define('frampton-utils/log', ['exports', 'module', 'frampton/namespace', 'frampton-utils/is_something'], function (exports, module, _framptonNamespace, _framptonUtilsIs_something) {
   'use strict';

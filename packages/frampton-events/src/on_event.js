@@ -2,18 +2,18 @@ import isFunction from 'frampton-utils/is_function';
 import isNothing from 'frampton-utils/is_nothing';
 import contains from 'frampton-events/contains';
 import EVENT_MAP from 'frampton-events/event_map';
-import getDocumentStream from 'frampton-events/get_document_stream';
-import getEventStream from 'frampton-events/get_event_stream';
+import getDocumentSignal from 'frampton-events/get_document_signal';
+import getEventSignal from 'frampton-events/get_event_signal';
 
 /**
- * listen :: String -> Dom -> EventStream Event
+ * onEvent :: String -> Dom -> Signal Event
  *
- * @name listen
+ * @name onEvent
  * @memberof Frampton.Events
  * @static
  * @param {String} eventName Name of event to listen for
  * @param {Object} target    Object on which to listen for event
- * @returns {Frampton.Signals.EventStream} An EventStream of all occurances of the given event on the given object
+ * @returns {Frampton.Signal.Signal} A Signal of all occurances of the given event on the given object
  */
 export default function on_event(eventName, target) {
   if (
@@ -21,11 +21,11 @@ export default function on_event(eventName, target) {
     (isNothing(target) || isFunction(target.addEventListener))
   ) {
     if (isNothing(target)) {
-      return getDocumentStream(eventName);
+      return getDocumentSignal(eventName);
     } else {
-      return getDocumentStream(eventName).filter(contains(target));
+      return getDocumentSignal(eventName).filter(contains(target));
     }
   } else {
-    return getEventStream(eventName, target);
+    return getEventSignal(eventName, target);
   }
 }
