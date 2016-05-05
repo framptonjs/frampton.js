@@ -1,45 +1,43 @@
-import { validator } from 'frampton-data/union/create';
+import Union from 'frampton-data/union/create';
 
 QUnit.module('Frampton.Data.Union.create');
 
-QUnit.test('validator should return correctly validate arrays', function() {
-  const arrayValidator = validator(null, Array);
-
-  // Should correctly pass validation
-  ok(arrayValidator([1,2,3]));
-
-  // Should correctly fail validation
-  notOk(arrayValidator(true));
+QUnit.test('Should create an object with specified keys', function() {
+  const Person = Union({
+    Employee : [],
+    Manager : []
+  });
+  ok(typeof Person.Employee === 'function');
+  ok(typeof Person.Manager === 'function');
 });
 
-QUnit.test('validator should return correctly validate strings', function() {
-  const stringValidator = validator(null, String);
+QUnit.test('Should have a match method to test instances', function() {
+  const Person = Union({
+    Employee : [],
+    Manager : []
+  });
 
-  // Should correctly pass validation
-  ok(stringValidator('hello'));
+  const test = Person.Employee();
+  const match = Person.match({
+    Employee : () => {
+      ok(true);
+    },
+    Manager : () => {
+      ok(false);
+    }
+  });
 
-  // Should correctly fail validation
-  notOk(stringValidator(9));
+  match(test);
 });
 
-QUnit.test('validator should return correctly validate dom nodes', function() {
-  const nodeValidator = validator(null, Node);
+QUnit.test('Should have a match method that validates types', function() {
+  const Person = Union({
+    Employee : [String],
+    Manager : [String]
+  });
 
-  // Should correctly pass validation
-  ok(nodeValidator(document.createElement('div')));
-
-  // Should correctly fail validation
-  notOk(nodeValidator('hello'));
-});
-
-QUnit.test('validator should return a validator to handle objects', function() {
-  const dateValidator = validator(null, Date);
-  const objectValidator = validator(null, Object);
-  const date = new Date();
-
-  // Should correctly pass validation
-  ok(dateValidator(date));
-
-  // Should correctly fail validation
-  notOk(objectValidator(date));
+  ok(Person.Employee('Fred'));
+  throws(function() {
+    Person.Employee(29);
+  });
 });
