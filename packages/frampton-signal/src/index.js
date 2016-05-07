@@ -11,10 +11,10 @@ import toggle from 'frampton-signal/toggle';
  * @namespace
  * @memberof Frampton
  */
-Frampton.Signal           = {};
-Frampton.Signal.create    = create;
-Frampton.Signal.stepper   = stepper;
-Frampton.Signal.combine   = combine;
-Frampton.Signal.mergeMany = mergeMany;
-Frampton.Signal.swap      = swap;
-Frampton.Signal.toggle    = toggle;
+Frampton.Signal         = {};
+Frampton.Signal.create  = create;
+Frampton.Signal.stepper = stepper;
+Frampton.Signal.combine = combine;
+Frampton.Signal.merge   = mergeMany;
+Frampton.Signal.swap    = swap;
+Frampton.Signal.toggle  = toggle;

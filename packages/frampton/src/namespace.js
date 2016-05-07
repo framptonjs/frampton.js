@@ -15,10 +15,15 @@ Frampton.DEV = 'dev';
 Frampton.PROD = 'prod';
 
 if (typeof Frampton.ENV === 'undefined') {
-  Frampton.ENV = {
-    MODE : Frampton.PROD,
-    MOCK : {}
-  };
+  Frampton.ENV = {};
+}
+
+if (typeof Frampton.ENV.MODE === 'undefined') {
+  Frampton.ENV.MODE = Frampton.PROD;
+}
+
+if (typeof Frampton.ENV.MOCK === 'undefined') {
+  Frampton.ENV.MOCK = {};
 }
 
 Frampton.mock = function(key) {

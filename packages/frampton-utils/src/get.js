@@ -1,8 +1,8 @@
 import curry from 'frampton-utils/curry';
-import isArray from 'frampton-utils/is_array';
-import isNumber from 'frampton-utils/is_number';
-import isObject from 'frampton-utils/is_object';
+import isNothing from 'frampton-utils/is_nothing';
 import isString from 'frampton-utils/is_string';
+import isObject from 'frampton-utils/is_object';
+import isPrimitive from 'frampton-utils/is_primitive';
 
 /**
  * get :: String -> Object -> Any
@@ -16,7 +16,9 @@ import isString from 'frampton-utils/is_string';
  */
 export default curry(function get(prop, obj) {
 
-  if (isString(prop) && isObject(obj)) {
+  if (isPrimitive(obj) || isNothing(obj)) {
+    return null;
+  } else if (isString(prop)) {
     const parts = (prop || '').split('.').filter((val) => {
       return val.trim() !== '';
     });
@@ -28,9 +30,7 @@ export default curry(function get(prop, obj) {
     } else {
       return (obj[parts[0]] || null);
     }
-  } else if (isArray(obj) && isNumber(prop)) {
-    return (obj[prop] || null);
   } else {
-    return null;
+    return (obj[prop] || null);
   }
 });

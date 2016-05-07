@@ -1,24 +1,23 @@
-import curry from 'frampton-utils/curry';
 import length from 'frampton-list/length';
 
 /**
- * @name filter
+ * @name removeIndex
  * @method
  * @memberof Frampton.List
- * @param {Function} predicate
+ * @param {Number} index
  * @param {Array} xs
  * @returns {Array} A new array
  */
-export default curry(function filter(predicate, xs) {
+export default function remove_index(index, xs) {
 
   const len = length(xs);
   const newList = [];
 
   for (let i = 0; i < len; i++) {
-    if (predicate(xs[i])) {
+    if (i !== index) {
       newList.push(xs[i]);
     }
   }
 
   return Object.freeze(newList);
-});
+}
