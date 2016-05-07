@@ -124,9 +124,8 @@ QUnit.test('Task.progress method should propertly map progress values', function
 
     function updateProgress() {
 
-      sinks.progress(count);
-
       if (count < 2) {
+        sinks.progress(count);
         setTimeout(updateProgress, 10);
       } else {
         sinks.resolve(10);
@@ -141,21 +140,26 @@ QUnit.test('Task.progress method should propertly map progress values', function
   const mapping = (val) => val + 2;
 
   task.progress(mapping).run({
-    reject : noop,
-    resolve : (val) => {
-      equal(val, 10, 'incorrect final result');
+    reject : (val) => {
+      ok(false, 'reject called');
       done();
     },
-    progress : (val) => {
+    resolve : (val) => {
       if (count === 0) {
         equal(val, 2, 'incorrect first result');
       } else if (count === 1) {
         equal(val, 3, 'incorrect second result');
       } else if (count === 2) {
-        equal(val, 4, 'incorrect third result');
+        equal(val, 10, 'incorrect final result');
+        done();
       } else {
-        ok(false);
+        ok(false, 'match fall through');
+        done();
       }
+    },
+    progress : (val) => {
+      ok(false, 'progress mapping failed');
+      done();
     }
   });
 });

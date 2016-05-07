@@ -161,7 +161,9 @@ Task.prototype.default = function(val) {
 };
 
 /**
- * progress :: Task x a -> (a -> b) -> Task x a
+ * progress :: Task x a -> (a -> b) -> Task x b
+ *
+ * Maps progress branch to resolution branch
  *
  * @name progress
  * @method
@@ -178,7 +180,7 @@ Task.prototype.progress = function(mapping) {
       reject : sinks.reject,
       resolve : sinks.resolve,
       progress : (val) => {
-        sinks.progress(mappingFn(val));
+        sinks.resolve(mappingFn(val));
       }
     });
   });

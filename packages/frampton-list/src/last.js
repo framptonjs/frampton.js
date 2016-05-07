@@ -8,7 +8,6 @@ import isArray from 'frampton-utils/is_array';
  */
 export default function last(xs) {
   assert("Frampton.last recieved a non-array", isArray(xs));
-
   switch (xs.length) {
 
     case 0:

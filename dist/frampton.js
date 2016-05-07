@@ -475,7 +475,9 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   };
 
   /**
-   * progress :: Task x a -> (a -> b) -> Task x a
+   * progress :: Task x a -> (a -> b) -> Task x b
+   *
+   * Maps progress branch to resolution branch
    *
    * @name progress
    * @method
@@ -492,7 +494,7 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
         reject: sinks.reject,
         resolve: sinks.resolve,
         progress: function progress(val) {
-          sinks.progress(mappingFn(val));
+          sinks.resolve(mappingFn(val));
         }
       });
     });
@@ -1022,7 +1024,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   function addCustomEvent(name, target, callback) {
     var listen = (0, _isFunction)(target.addEventListener) ? target.addEventListener : (0, _isFunction)(target.on) ? target.on : null;
 
-    _assert.ok((0, _isFunction)(listen), 'addListener received an unknown type as target');
+    (0, _assert)('addListener received an unknown type as target', (0, _isFunction)(listen));
 
     listen.call(target, name, callback);
   }
@@ -1034,7 +1036,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   function removeCustomEvent(name, target, callback) {
     var remove = (0, _isFunction)(target.removeEventListener) ? target.removeEventListener : (0, _isFunction)(target.off) ? target.off : null;
 
-    _assert.ok((0, _isFunction)(remove), 'removeListener received an unknown type as target');
+    (0, _assert)('removeListener received an unknown type as target', (0, _isFunction)(remove));
 
     remove.call(target, name, callback);
   }
@@ -2255,7 +2257,7 @@ define('frampton-list/at', ['exports', 'module', 'frampton-utils/curry', 'frampt
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function at(index, xs) {
-    _assert.ok((0, _isArray)(xs), 'Frampton.at recieved a non-array');
+    (0, _assert)('Frampton.at recieved a non-array', (0, _isArray)(xs));
     return (0, _isDefined)(xs[index]) ? xs[index] : null;
   });
 });
@@ -2357,7 +2359,7 @@ define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'fra
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_drop(n, xs) {
-    _assert.ok((0, _isArray)(xs), 'Frampton.drop recieved a non-array');
+    (0, _assert)('Frampton.drop recieved a non-array', (0, _isArray)(xs));
     return (0, _filter)(function (next) {
       if (n === 0) {
         return true;
@@ -2446,7 +2448,7 @@ define('frampton-list/foldl', ['exports', 'module', 'frampton-utils/assert', 'fr
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_foldl(fn, acc, xs) {
-    _assert.ok((0, _isArray)(xs), 'Frampton.foldl recieved a non-array');
+    (0, _assert)('Frampton.foldl recieved a non-array', (0, _isArray)(xs));
     return xs.reduce(fn, acc);
   });
 });
@@ -2467,7 +2469,7 @@ define('frampton-list/foldr', ['exports', 'module', 'frampton-utils/assert', 'fr
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_foldr(fn, acc, xs) {
-    _assert.ok((0, _isArray)(xs), 'Frampton.foldr recieved a non-array');
+    (0, _assert)('Frampton.foldr recieved a non-array', (0, _isArray)(xs));
     return xs.reduceRight(fn, acc);
   });
 });
@@ -2488,7 +2490,7 @@ define('frampton-list/init', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function init(xs) {
-    _assert.ok((0, _isArray)(xs), 'Frampton.init recieved a non-array');
+    (0, _assert)('Frampton.init recieved a non-array', (0, _isArray)(xs));
     switch (xs.length) {
 
       case 0:
@@ -2516,7 +2518,7 @@ define('frampton-list/last', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function last(xs) {
-    _assert.ok((0, _isArray)(xs), 'Frampton.last recieved a non-array');
+    (0, _assert)('Frampton.last recieved a non-array', (0, _isArray)(xs));
     switch (xs.length) {
 
       case 0:
@@ -2800,7 +2802,7 @@ define('frampton-list/tail', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function tail(xs) {
-    _assert.ok((0, _isArray)(xs), 'Frampton.tail recieved a non-array');
+    (0, _assert)('Frampton.tail recieved a non-array', (0, _isArray)(xs));
     switch (xs.length) {
       case 0:
         return Object.freeze([]);
@@ -3933,7 +3935,7 @@ define('frampton-signal/toggle', ['exports', 'module', 'frampton-utils/assert', 
    * @returns {Frampton.Signal.Signal}
    */
   module.exports = (0, _curry)(function (initial, updater) {
-    _assert.ok((0, _isBoolean)(initial), 'Signal.toggle must be initialized with a Boolean');
+    (0, _assert)('Signal.toggle must be initialized with a Boolean', (0, _isBoolean)(initial));
     var sig = (0, _createSignal)(initial);
     var current = initial;
     return sig.merge(updater.map(function () {
@@ -4766,53 +4768,23 @@ define("frampton-utils/apply", ["exports", "module"], function (exports, module)
   }
 });
 define('frampton-utils/assert', ['exports', 'module'], function (exports, module) {
+  /**
+   * Occassionally we need to blow things up if something isn't right.
+   * @name assert
+   * @method
+   * @memberof Frampton.Utils
+   * @param {String} msg  - Message to throw with error.
+   * @param {*}    cond - A condition that evaluates to a Boolean. If false, an error is thrown.
+   */
   'use strict';
 
-  function assert(cond, msg) {
+  module.exports = assert;
+
+  function assert(msg, cond) {
     if (!cond) {
-      throw new Error(msg || 'An error occured');
-    } else {
-      return true;
+      throw new Error(msg || 'An error occured'); // Boom!
     }
   }
-
-  function _deepEqual(val1, val2) {
-    var keys1 = Object.keys(val1);
-    var keys2 = Object.keys(val2);
-
-    if (keys1.length !== keys2.length) {
-      return false;
-    } else {
-      for (var i = 0; i < keys1.length; i++) {
-        if (keys1[i] !== keys2[i]) {
-          return false;
-        } else if (val1[keys1[i]] !== val2[keys2[i]]) {
-          return false;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  module.exports = {
-
-    deepEqual: function deepEqual(val1, val2, msg) {
-      return assert(_deepEqual(val1, val2), msg);
-    },
-
-    equal: function equal(val1, val2, msg) {
-      return assert(val1 === val2, msg);
-    },
-
-    ok: function ok(cond, msg) {
-      return assert(cond, msg);
-    },
-
-    notOk: function notOk(cond, msg) {
-      return assert(!cond, msg);
-    }
-  };
 });
 define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 'frampton-list/foldr', 'frampton-list/first'], function (exports, module, _framptonUtilsAssert, _framptonListFoldr, _framptonListFirst) {
   'use strict';
@@ -4843,7 +4815,7 @@ define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 
       fns[_key] = arguments[_key];
     }
 
-    _assert.ok(fns.length > 0, 'Compose did not receive any arguments');
+    (0, _assert)('Compose did not receive any arguments. You can\'t compose nothing. Stoopid.', fns.length > 0);
     return function composition() {
       for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
@@ -4909,7 +4881,7 @@ define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 
       args[_key - 2] = arguments[_key];
     }
 
-    _assert.ok((0, _isFunction)(fn), 'Argument passed to curry is not a function');
+    (0, _assert)('Argument passed to curry is not a function', (0, _isFunction)(fn));
 
     function curried() {
       for (var _len2 = arguments.length, args2 = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
