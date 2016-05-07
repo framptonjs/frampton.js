@@ -2,7 +2,7 @@
 node_modules
 npm-debug.log
 dist/frampton-tests.js
-docs/fonts/
+docs/
 ./frampton.js
 notes.txt
 tmp

@@ -667,16 +667,138 @@ define('frampton-data/task/when', ['exports', 'module', 'frampton-data/task/crea
     });
   }
 });
-define('frampton-data/union/create', ['exports', 'frampton-utils/log', 'frampton-utils/curry_n', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-utils/is_nothing', 'frampton-utils/is_object', 'frampton-utils/is_undefined', 'frampton-record/keys'], function (exports, _framptonUtilsLog, _framptonUtilsCurry_n, _framptonUtilsIs_boolean, _framptonUtilsIs_array, _framptonUtilsIs_number, _framptonUtilsIs_string, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonUtilsIs_nothing, _framptonUtilsIs_object, _framptonUtilsIs_undefined, _framptonRecordKeys) {
+define('frampton-data/union/create', ['exports', 'module', 'frampton-utils/curry_n', 'frampton-utils/is_nothing', 'frampton-utils/is_object', 'frampton-utils/is_array', 'frampton-record/keys', 'frampton-data/union/validator', 'frampton-data/union/validate_args', 'frampton-data/union/validate_options', 'frampton-data/union/wildcard'], function (exports, module, _framptonUtilsCurry_n, _framptonUtilsIs_nothing, _framptonUtilsIs_object, _framptonUtilsIs_array, _framptonRecordKeys, _framptonDataUnionValidator, _framptonDataUnionValidate_args, _framptonDataUnionValidate_options, _framptonDataUnionWildcard) {
   'use strict';
-
-  exports.__esModule = true;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
-  var _log = _interopRequire(_framptonUtilsLog);
-
   var _curryN = _interopRequire(_framptonUtilsCurry_n);
+
+  var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
+
+  var _isObject = _interopRequire(_framptonUtilsIs_object);
+
+  var _isArray = _interopRequire(_framptonUtilsIs_array);
+
+  var _getKeys = _interopRequire(_framptonRecordKeys);
+
+  var _validator = _interopRequire(_framptonDataUnionValidator);
+
+  var _validateArgs = _interopRequire(_framptonDataUnionValidate_args);
+
+  var _validateOptions = _interopRequire(_framptonDataUnionValidate_options);
+
+  var _wildcard = _interopRequire(_framptonDataUnionWildcard);
+
+  var caseOf = function caseOf(parent, cases, val) {
+
+    if (!parent.prototype.isPrototypeOf(val)) {
+      if ((0, _isObject)(val) && val.ctor) {
+        throw new TypeError('Match received unrecognized type: ' + val.ctor);
+      } else {
+        throw new TypeError('Match received unrecognized type');
+      }
+    }
+
+    (0, _validateOptions)(parent, cases);
+    var match = cases[val.ctor];
+
+    if ((0, _isNothing)(match)) {
+      match = cases[_wildcard];
+    }
+
+    if ((0, _isNothing)(match)) {
+      throw new Error('No match for value with name: ' + val.ctor);
+    }
+
+    // Destructure arguments for passing to callback
+    return match.apply(null, val.values);
+  };
+
+  var createType = function createType(parent, name, fields) {
+
+    var len = fields.length;
+    var validators = fields.map(function (field) {
+      return (0, _validator)(parent, field);
+    });
+
+    if (!(0, _isArray)(fields)) {
+      throw new TypeError('Union must receive an array of fields for each type');
+    }
+
+    var constructor = function constructor() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var obj = Object.create(parent.prototype);
+      if (!(0, _validateArgs)(validators, args)) {
+        throw new TypeError('Union type ' + name + ' recieved an unknown argument');
+      }
+      obj.ctor = name;
+      obj.values = args;
+      return Object.freeze(obj);
+    };
+
+    return len > 0 ? (0, _curryN)(len, constructor) : constructor;
+  };
+
+  // Creates constructors for each type described in config
+
+  module.exports = function (config) {
+    var obj = {};
+    var keys = (0, _getKeys)(config);
+    obj.prototype = {};
+    obj.ctor = 'Union';
+    obj.keys = keys;
+    obj.match = (0, _curryN)(3, caseOf, obj);
+    for (var key in config) {
+      obj[key] = createType(obj, key, config[key]);
+    }
+    return Object.freeze(obj);
+  };
+});
+define('frampton-data/union/validate_args', ['exports', 'module', 'frampton-utils/is_undefined'], function (exports, module, _framptonUtilsIs_undefined) {
+  'use strict';
+
+  module.exports = validate_args;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _isUndefined = _interopRequire(_framptonUtilsIs_undefined);
+
+  function validate_args(validators, args) {
+    for (var i = 0; i < validators.length; i++) {
+      if ((0, _isUndefined)(args[i]) || !validators[i](args[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+});
+define('frampton-data/union/validate_options', ['exports', 'module', 'frampton-utils/warn', 'frampton-data/union/wildcard'], function (exports, module, _framptonUtilsWarn, _framptonDataUnionWildcard) {
+  'use strict';
+
+  module.exports = validate_options;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _warn = _interopRequire(_framptonUtilsWarn);
+
+  var _wildcard = _interopRequire(_framptonDataUnionWildcard);
+
+  function validate_options(obj, cases) {
+    for (var i = 0; i < obj.keys.length; i++) {
+      if (!cases.hasOwnProperty(_wildcard) && !cases.hasOwnProperty(obj.keys[i])) {
+        (0, _warn)('Non-exhaustive pattern match for case: ', obj.keys[i]);
+      }
+    }
+  }
+});
+define('frampton-data/union/validator', ['exports', 'module', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_node'], function (exports, module, _framptonUtilsIs_boolean, _framptonUtilsIs_array, _framptonUtilsIs_number, _framptonUtilsIs_string, _framptonUtilsIs_function, _framptonUtilsIs_node) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _isBoolean = _interopRequire(_framptonUtilsIs_boolean);
 
@@ -690,23 +812,13 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/log', 'frampton
 
   var _isNode = _interopRequire(_framptonUtilsIs_node);
 
-  var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
-
-  var _isObject = _interopRequire(_framptonUtilsIs_object);
-
-  var _isUndefined = _interopRequire(_framptonUtilsIs_undefined);
-
-  var _getKeys = _interopRequire(_framptonRecordKeys);
-
-  var wildcard = '_';
-
   var objectValidator = function objectValidator(type) {
     return function (obj) {
       return obj.constructor === type;
     };
   };
 
-  var validator = function validator(parent, type) {
+  module.exports = function (parent, type) {
 
     switch (type) {
       case String:
@@ -739,93 +851,11 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/log', 'frampton
 
     return false;
   };
+});
+define('frampton-data/union/wildcard', ['exports', 'module'], function (exports, module) {
+  'use strict';
 
-  var validateOptions = function validateOptions(obj, cases) {
-    for (var i = 0; i < obj.keys.length; i++) {
-      if (!cases.hasOwnProperty(wildcard) && !cases.hasOwnProperty(obj.keys[i])) {
-        (0, _log)('Warning: non-exhaustive pattern match for case: ', obj.keys[i]);
-      }
-    }
-  };
-
-  var validateArgs = function validateArgs(validators, args) {
-    for (var i = 0; i < validators.length; i++) {
-      if ((0, _isUndefined)(args[i]) || !validators[i](args[i])) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  var caseOf = function caseOf(parent, cases, val) {
-
-    if (!parent.prototype.isPrototypeOf(val)) {
-      if ((0, _isObject)(val) && val.ctor) {
-        throw new TypeError('Match received unrecognized type: ' + val.ctor);
-      } else {
-        throw new TypeError('Match received unrecognized type');
-      }
-    }
-
-    validateOptions(parent, cases);
-    var match = cases[val.ctor];
-
-    if ((0, _isNothing)(match)) {
-      match = cases[wildcard];
-    }
-
-    if ((0, _isNothing)(match)) {
-      throw new Error('No match for value with name: ' + val.ctor);
-    }
-
-    // Destructure arguments for passing to callback
-    return match.apply(null, val.values);
-  };
-
-  var createType = function createType(parent, name, fields) {
-
-    var len = fields.length;
-    var validators = fields.map(function (field) {
-      return validator(parent, field);
-    });
-
-    if (!(0, _isArray)(fields)) {
-      throw new TypeError('Union must receive an array of fields for each type');
-    }
-
-    var constructor = function constructor() {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      var obj = Object.create(parent.prototype);
-      if (!validateArgs(validators, args)) {
-        throw new TypeError('Union type ' + name + ' recieved an unknown argument');
-      }
-      obj.ctor = name;
-      obj.values = args;
-      return Object.freeze(obj);
-    };
-
-    return len > 0 ? (0, _curryN)(len, constructor) : constructor;
-  };
-
-  exports.validator = validator;
-
-  // Creates constructors for each type described in config
-
-  exports['default'] = function (config) {
-    var obj = {};
-    var keys = (0, _getKeys)(config);
-    obj.prototype = {};
-    obj.ctor = 'Union';
-    obj.keys = keys;
-    obj.match = (0, _curryN)(3, caseOf, obj);
-    for (var key in config) {
-      obj[key] = createType(obj, key, config[key]);
-    }
-    return Object.freeze(obj);
-  };
+  module.exports = '_';
 });
 define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/on_event', 'frampton-events/on_selector', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/has_selector', 'frampton-events/contains_selector', 'frampton-events/selector_contains', 'frampton-events/closest_to_event', 'frampton-events/prevent_default'], function (exports, _framptonNamespace, _framptonEventsOn_event, _framptonEventsOn_selector, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsHas_selector, _framptonEventsContains_selector, _framptonEventsSelector_contains, _framptonEventsClosest_to_event, _framptonEventsPrevent_default) {
   'use strict';
@@ -992,7 +1022,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   function addCustomEvent(name, target, callback) {
     var listen = (0, _isFunction)(target.addEventListener) ? target.addEventListener : (0, _isFunction)(target.on) ? target.on : null;
 
-    (0, _assert)('addListener received an unknown type as target', (0, _isFunction)(listen));
+    _assert.ok((0, _isFunction)(listen), 'addListener received an unknown type as target');
 
     listen.call(target, name, callback);
   }
@@ -1004,7 +1034,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   function removeCustomEvent(name, target, callback) {
     var remove = (0, _isFunction)(target.removeEventListener) ? target.removeEventListener : (0, _isFunction)(target.off) ? target.off : null;
 
-    (0, _assert)('removeListener received an unknown type as target', (0, _isFunction)(remove));
+    _assert.ok((0, _isFunction)(remove), 'removeListener received an unknown type as target');
 
     remove.call(target, name, callback);
   }
@@ -2225,7 +2255,7 @@ define('frampton-list/at', ['exports', 'module', 'frampton-utils/curry', 'frampt
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function at(index, xs) {
-    (0, _assert)('Frampton.at recieved a non-array', (0, _isArray)(xs));
+    _assert.ok((0, _isArray)(xs), 'Frampton.at recieved a non-array');
     return (0, _isDefined)(xs[index]) ? xs[index] : null;
   });
 });
@@ -2327,7 +2357,7 @@ define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'fra
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_drop(n, xs) {
-    (0, _assert)('Frampton.drop recieved a non-array', (0, _isArray)(xs));
+    _assert.ok((0, _isArray)(xs), 'Frampton.drop recieved a non-array');
     return (0, _filter)(function (next) {
       if (n === 0) {
         return true;
@@ -2416,7 +2446,7 @@ define('frampton-list/foldl', ['exports', 'module', 'frampton-utils/assert', 'fr
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_foldl(fn, acc, xs) {
-    (0, _assert)('Frampton.foldl recieved a non-array', (0, _isArray)(xs));
+    _assert.ok((0, _isArray)(xs), 'Frampton.foldl recieved a non-array');
     return xs.reduce(fn, acc);
   });
 });
@@ -2437,7 +2467,7 @@ define('frampton-list/foldr', ['exports', 'module', 'frampton-utils/assert', 'fr
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_foldr(fn, acc, xs) {
-    (0, _assert)('Frampton.foldr recieved a non-array', (0, _isArray)(xs));
+    _assert.ok((0, _isArray)(xs), 'Frampton.foldr recieved a non-array');
     return xs.reduceRight(fn, acc);
   });
 });
@@ -2458,7 +2488,7 @@ define('frampton-list/init', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function init(xs) {
-    (0, _assert)('Frampton.init recieved a non-array', (0, _isArray)(xs));
+    _assert.ok((0, _isArray)(xs), 'Frampton.init recieved a non-array');
     switch (xs.length) {
 
       case 0:
@@ -2486,8 +2516,7 @@ define('frampton-list/last', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function last(xs) {
-    (0, _assert)('Frampton.last recieved a non-array', (0, _isArray)(xs));
-
+    _assert.ok((0, _isArray)(xs), 'Frampton.last recieved a non-array');
     switch (xs.length) {
 
       case 0:
@@ -2771,7 +2800,7 @@ define('frampton-list/tail', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function tail(xs) {
-    (0, _assert)('Frampton.tail recieved a non-array', (0, _isArray)(xs));
+    _assert.ok((0, _isArray)(xs), 'Frampton.tail recieved a non-array');
     switch (xs.length) {
       case 0:
         return Object.freeze([]);
@@ -3904,7 +3933,7 @@ define('frampton-signal/toggle', ['exports', 'module', 'frampton-utils/assert', 
    * @returns {Frampton.Signal.Signal}
    */
   module.exports = (0, _curry)(function (initial, updater) {
-    (0, _assert)('Signal.toggle must be initialized with a Boolean', (0, _isBoolean)(initial));
+    _assert.ok((0, _isBoolean)(initial), 'Signal.toggle must be initialized with a Boolean');
     var sig = (0, _createSignal)(initial);
     var current = initial;
     return sig.merge(updater.map(function () {
@@ -4737,23 +4766,53 @@ define("frampton-utils/apply", ["exports", "module"], function (exports, module)
   }
 });
 define('frampton-utils/assert', ['exports', 'module'], function (exports, module) {
-  /**
-   * Occassionally we need to blow things up if something isn't right.
-   * @name assert
-   * @method
-   * @memberof Frampton.Utils
-   * @param {String} msg  - Message to throw with error.
-   * @param {*}    cond - A condition that evaluates to a Boolean. If false, an error is thrown.
-   */
   'use strict';
 
-  module.exports = assert;
-
-  function assert(msg, cond) {
+  function assert(cond, msg) {
     if (!cond) {
-      throw new Error(msg || 'An error occured'); // Boom!
+      throw new Error(msg || 'An error occured');
+    } else {
+      return true;
     }
   }
+
+  function _deepEqual(val1, val2) {
+    var keys1 = Object.keys(val1);
+    var keys2 = Object.keys(val2);
+
+    if (keys1.length !== keys2.length) {
+      return false;
+    } else {
+      for (var i = 0; i < keys1.length; i++) {
+        if (keys1[i] !== keys2[i]) {
+          return false;
+        } else if (val1[keys1[i]] !== val2[keys2[i]]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  module.exports = {
+
+    deepEqual: function deepEqual(val1, val2, msg) {
+      return assert(_deepEqual(val1, val2), msg);
+    },
+
+    equal: function equal(val1, val2, msg) {
+      return assert(val1 === val2, msg);
+    },
+
+    ok: function ok(cond, msg) {
+      return assert(cond, msg);
+    },
+
+    notOk: function notOk(cond, msg) {
+      return assert(!cond, msg);
+    }
+  };
 });
 define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 'frampton-list/foldr', 'frampton-list/first'], function (exports, module, _framptonUtilsAssert, _framptonListFoldr, _framptonListFirst) {
   'use strict';
@@ -4784,7 +4843,7 @@ define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 
       fns[_key] = arguments[_key];
     }
 
-    (0, _assert)('Compose did not receive any arguments. You can\'t compose nothing. Stoopid.', fns.length > 0);
+    _assert.ok(fns.length > 0, 'Compose did not receive any arguments');
     return function composition() {
       for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
@@ -4850,7 +4909,7 @@ define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 
       args[_key - 2] = arguments[_key];
     }
 
-    (0, _assert)('Argument passed to curry is not a function', (0, _isFunction)(fn));
+    _assert.ok((0, _isFunction)(fn), 'Argument passed to curry is not a function');
 
     function curried() {
       for (var _len2 = arguments.length, args2 = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
