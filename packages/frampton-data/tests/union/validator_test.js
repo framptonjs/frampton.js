@@ -1,4 +1,5 @@
 import validator from 'frampton-data/union/validator';
+import create from 'frampton-data/union/create';
 
 QUnit.module('Frampton.Data.Union.validator');
 
@@ -42,4 +43,12 @@ QUnit.test('Should return a validator to handle objects', function() {
 
   // Should correctly fail validation
   notOk(objectValidator(date));
+});
+
+QUnit.test('Should return a validator to handle other Unions', function() {
+  const Action = create({ ActiveID : [Number] });
+  const unionValidator = validator(null, Action);
+
+  // Should correctly pass validation
+  ok(unionValidator(Action.ActiveID(3)));
 });

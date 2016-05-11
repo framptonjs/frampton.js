@@ -9,5 +9,9 @@ import isArray from 'frampton-utils/is_array';
  */
 export default curry(function curried_foldr(fn, acc, xs) {
   assert("Frampton.foldr recieved a non-array", isArray(xs));
-  return xs.reduceRight(fn, acc);
+  var len = xs.length;
+  while (len--) {
+    acc = fn(acc, xs[len]);
+  }
+  return acc;
 });

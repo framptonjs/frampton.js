@@ -4,12 +4,7 @@ import isNumber from 'frampton-utils/is_number';
 import isString from 'frampton-utils/is_string';
 import isFunction from 'frampton-utils/is_function';
 import isNode from 'frampton-utils/is_node';
-
-const objectValidator = function(type) {
-  return function(obj) {
-    return obj.constructor === type;
-  };
-};
+import objectValidator from 'frampton-data/union/object_validator';
 
 export default function(parent, type) {
 

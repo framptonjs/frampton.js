@@ -1,4 +1,6 @@
 import curry from 'frampton-utils/curry';
+import isSomething from 'frampton-utils/is_something';
+import removeStyle from 'frampton-style/remove_style';
 import setStyle from 'frampton-style/set_style';
 
 /**
@@ -10,6 +12,11 @@ import setStyle from 'frampton-style/set_style';
  */
 export default curry(function apply_styles(element, props) {
   for (let key in props) {
-    setStyle(element, key, props[key]);
+    const value = props[key];
+    if (isSomething(value)) {
+      setStyle(element, key, value);
+    } else {
+      removeStyle(element, key, value);
+    }
   }
 });

@@ -1,7 +1,8 @@
+import log from 'frampton-utils/log';
 import warn from 'frampton-utils/warn';
 
 /**
- * execute :: Signal Task x a -> Signal a -> Signal a -> ()
+ * execute :: Signal Task x a -> Signal a -> ()
  *
  * When we get a task on the tasks signal, run it and push the value
  * onto the values signal. Tasks that are rejected in execute are
@@ -13,9 +14,8 @@ import warn from 'frampton-utils/warn';
  * @static
  * @param {Frampton.Signals.Signal} tasks
  * @param {Frampton.Signal.Signal} value
- * @param {Frampton.Signal.Signal} progress
  */
-export default function execute(tasks, value, progress) {
+export default function execute(tasks, value) {
   tasks.value((task) => {
     task.run({
       reject : (err) => {
@@ -25,7 +25,7 @@ export default function execute(tasks, value, progress) {
         value(val);
       },
       progress : (val) => {
-        progress(val);
+        log('Task progress: ', val);
       }
     });
   });

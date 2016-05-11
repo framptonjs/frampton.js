@@ -461,6 +461,9 @@ export function createSignal(update, parents, initial) {
     );
   };
 
+  // Constructor
+  signal.ctor = 'Signal';
+
   // Private
   signal._id = guid();
   signal._value = initial;

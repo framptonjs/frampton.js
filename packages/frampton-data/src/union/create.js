@@ -1,29 +1,19 @@
 import curryN from 'frampton-utils/curry_n';
 import isNothing from 'frampton-utils/is_nothing';
-import isObject from 'frampton-utils/is_object';
+import isSomething from 'frampton-utils/is_something';
 import isArray from 'frampton-utils/is_array';
 import getKeys from 'frampton-record/keys';
 import validator from 'frampton-data/union/validator';
 import validateArgs from 'frampton-data/union/validate_args';
 import validateOptions from 'frampton-data/union/validate_options';
 import wildcard from 'frampton-data/union/wildcard';
+import validateCase from 'frampton-data/union/validate_case';
 
 const caseOf = function(parent, cases, val) {
 
-  if (!parent.prototype.isPrototypeOf(val)) {
-    if (isObject(val) && val.ctor) {
-      throw new TypeError('Match received unrecognized type: ' + val.ctor);
-    } else {
-      throw new TypeError('Match received unrecognized type');
-    }
-  }
-
+  validateCase(parent, val);
   validateOptions(parent, cases);
-  var match = cases[val.ctor];
-
-  if (isNothing(match)) {
-    match = cases[wildcard];
-  }
+  const match = (isSomething(cases[val.ctor]) ? cases[val.ctor] : cases[wildcard]);
 
   if (isNothing(match)) {
     throw new Error('No match for value with name: ' + val.ctor);
@@ -45,13 +35,14 @@ const createType = function(parent, name, fields) {
   }
 
   const constructor = (...args) => {
-    const obj = Object.create(parent.prototype);
+    const child = {};
+    child.constructor = parent;
     if (!validateArgs(validators, args)) {
       throw new TypeError('Union type ' + name + ' recieved an unknown argument');
     }
-    obj.ctor = name;
-    obj.values = args;
-    return Object.freeze(obj);
+    child.ctor = name;
+    child.values = args;
+    return Object.freeze(child);
   };
 
   return (len > 0) ? curryN(len, constructor) : constructor;

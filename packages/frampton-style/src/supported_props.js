@@ -1,3 +1,4 @@
+import warn from 'frampton-utils/warn';
 import supported from 'frampton-style/supported';
 
 /**
@@ -8,9 +9,15 @@ import supported from 'frampton-style/supported';
  * @returns {Object}
  */
 export default function supported_props(props) {
-  var obj = {};
+  const obj = {};
+  var temp;
   for (let key in props) {
-    obj[supported(key)] = props[key];
+    temp = supported(key);
+    if (temp) {
+      obj[supported(key)] = props[key];
+    } else {
+      warn('style prop ' + key  + ' is not supported by this browser');
+    }
   }
   return obj;
 }

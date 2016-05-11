@@ -1,3 +1,5 @@
+import length from 'frampton-list/length';
+
 /**
  * @name copy
  * @method
@@ -5,7 +7,7 @@
  */
 export default function copy(xs, begin, end) {
 
-  var argLen = xs.length,
+  var argLen = length(xs),
       idx    = 0,
       arrLen, arr, i;
 

@@ -9,6 +9,6 @@ QUnit.test('Should return a new array with the given index removed', function() 
 
 QUnit.test('Should not modify original array', function() {
   const xs = ['one', 'two', 'three'];
-  deepEqual(removeIndex(1, xs), ['one', 'three']);
+  removeIndex(1, xs);
   deepEqual(xs, ['one', 'two', 'three']);
 });

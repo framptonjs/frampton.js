@@ -1,7 +1,6 @@
 import curry from 'frampton-utils/curry';
 import isNothing from 'frampton-utils/is_nothing';
 import isString from 'frampton-utils/is_string';
-import isObject from 'frampton-utils/is_object';
 import isPrimitive from 'frampton-utils/is_primitive';
 
 /**
@@ -26,7 +25,7 @@ export default curry(function get(prop, obj) {
     if (parts.length > 1) {
       const [head, ...tail] = parts;
       const sub = obj[head];
-      return (isObject(sub)) ? get(tail.join('.'), sub) : null;
+      return (!isPrimitive(sub)) ? get(tail.join('.'), sub) : null;
     } else {
       return (obj[parts[0]] || null);
     }
