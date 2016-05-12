@@ -95,6 +95,54 @@ QUnit.test('Task.map method should propertly map value of task to another value'
   });
 });
 
+QUnit.test('Task.filter method should turn a resolve into a reject if prediate fails', function(assert) {
+
+  const done = assert.async();
+  const task = createTask((sinks) => {
+    sinks.resolve(5);
+  });
+
+  const predicate = (val) => {
+    return (val > 6);
+  };
+
+  task.filter(predicate).run({
+    reject : (val) => {
+      equal(val, 5);
+      done();
+    },
+    resolve : (val) => {
+      ok(false, 'incorrectly resolved');
+      done();
+    },
+    progress : noop
+  });
+});
+
+QUnit.test('Task.filter method should do nothing if prediate succeeds', function(assert) {
+
+  const done = assert.async();
+  const task = createTask((sinks) => {
+    sinks.resolve(5);
+  });
+
+  const predicate = (val) => {
+    return (val < 6);
+  };
+
+  task.filter(predicate).run({
+    reject : (val) => {
+      ok(false, 'incorrectly rejected');
+      done();
+    },
+    resolve : (val) => {
+      equal(val, 5);
+      done();
+    },
+    progress : noop
+  });
+});
+
 QUnit.test('Task.recover method should propertly map reject value to resolved value', function(assert) {
 
   const done = assert.async();

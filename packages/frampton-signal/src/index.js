@@ -6,6 +6,7 @@ import combine from 'frampton-signal/combine';
 import swap from 'frampton-signal/swap';
 import toggle from 'frampton-signal/toggle';
 import isSignal from 'frampton-signal/is_signal';
+import forward from 'frampton-signal/forward';
 
 /**
  * @name Signal
@@ -20,3 +21,4 @@ Frampton.Signal.merge    = mergeMany;
 Frampton.Signal.swap     = swap;
 Frampton.Signal.toggle   = toggle;
 Frampton.Signal.isSignal = isSignal;
+Frampton.Signal.forward  = forward;

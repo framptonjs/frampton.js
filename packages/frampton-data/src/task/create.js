@@ -2,6 +2,7 @@ import immediate from 'frampton-utils/immediate';
 import isFunction from 'frampton-utils/is_function';
 import noop from 'frampton-utils/noop';
 import ofValue from 'frampton-utils/of_value';
+import isEqual from 'frampton-utils/is_equal';
 
 /**
  * Lazy, possibly async, error-throwing tasks
@@ -189,7 +190,7 @@ Task.prototype.progress = function(mapping) {
 /**
  * map :: Task x a -> (a -> b) -> Task x b
  *
- * @name recover
+ * @name map
  * @method
  * @private
  * @memberof Frampton.Data.Task#
@@ -204,6 +205,34 @@ Task.prototype.map = function(mapping) {
       reject : sinks.reject,
       resolve : (val) => {
         sinks.resolve(mappingFn(val));
+      },
+      progress : sinks.progress
+    });
+  });
+};
+
+/**
+ * filter :: Task x a -> (a -> b) -> Task x b
+ *
+ * @name filter
+ * @method
+ * @private
+ * @memberof Frampton.Data.Task#
+ * @param {Function} predicate
+ * @returns {Frampton.Data.Task}
+ */
+Task.prototype.filter = function(predicate) {
+  const source = this;
+  const filterFn = isFunction(predicate) ? predicate : isEqual(predicate);
+  return new Task((sinks) => {
+    source.run({
+      reject : sinks.reject,
+      resolve : (val) => {
+        if (filterFn(val)) {
+          sinks.resolve(val);
+        } else {
+          sinks.reject(val);
+        }
       },
       progress : sinks.progress
     });

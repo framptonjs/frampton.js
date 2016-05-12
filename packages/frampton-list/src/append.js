@@ -10,7 +10,7 @@ import length from 'frampton-list/length';
  * @param {*} obj
  * @returns {Array}
  */
-export default curry(function(xs, obj) {
+export default curry((xs, obj) => {
   if (isSomething(obj)) {
     const len = length(xs);
     const newArray = new Array((len + 1));

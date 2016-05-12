@@ -185,6 +185,11 @@ export default {
     stream: null
   },
 
+  scroll : {
+    bubbles: true,
+    stream: null
+  },
+
   wheel : {
     bubbles: true,
     stream: null

@@ -1,4 +1,5 @@
 import Frampton from 'frampton/namespace';
+import always from 'frampton-utils/always';
 import apply from 'frampton-utils/apply';
 import assert from 'frampton-utils/assert';
 import compose from 'frampton-utils/compose';
@@ -44,6 +45,7 @@ import warn from 'frampton-utils/warn';
  * @memberof Frampton
  */
 Frampton.Utils = {};
+Frampton.Utils.always = always;
 Frampton.Utils.apply = apply;
 Frampton.Utils.assert = assert;
 Frampton.Utils.compose = compose;
