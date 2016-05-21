@@ -1,5 +1,6 @@
 /**
  * immediate :: Function -> ()
+ *
  * @name immediate
  * @method
  * @memberof Frampton.Utils

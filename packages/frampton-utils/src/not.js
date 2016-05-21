@@ -1,5 +1,6 @@
 /**
  * not :: Function -> a -> Boolean
+ *
  * @name not
  * @method
  * @memberof Frampton.Utils

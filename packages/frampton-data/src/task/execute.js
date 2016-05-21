@@ -4,16 +4,16 @@ import warn from 'frampton-utils/warn';
 /**
  * execute :: Signal Task x a -> Signal a -> ()
  *
- * When we get a task on the tasks signal, run it and push the value
- * onto the values signal. Tasks that are rejected in execute are
- * ignored. It is suggested to use task that handle their errors with
- * the recover method.
+ * Takes a Signal of Tasks to execute and a function to call with the resolve values
+ * of those Tasks. Progress and reject values are ignored (logged to the console in dev mode).
+ * It is suggested to use Tasks that have their reject and progress values mapped to reslove
+ * values using the recover and progress methods on the Task prototype.
  *
  * @name execute
  * @memberof Frampton.Task
  * @static
- * @param {Frampton.Signals.Signal} tasks
- * @param {Frampton.Signal.Signal} value
+ * @param {Frampton.Signals.Signal} tasks - Signal of Tasks to execute
+ * @param {Function} value - A function to pass the resolve values to
  */
 export default function execute(tasks, value) {
   tasks.value((task) => {

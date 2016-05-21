@@ -179,11 +179,19 @@ function take(limit) {
   return createSignal((self) => {
     if (limit-- > 0) {
       self(parent._value);
+    } else {
+      self.close();
     }
   }, [parent]);
 }
 
 /**
+ * Like reduce on Arrays, this method is used to reduce all values of a Signal down to a
+ * single value using the given function.
+ *
+ * The function recieves arguments in the order of (accumulator, next value). The function
+ * should return a new value that will then be the new accumulator for the next interation.
+ *
  * @name fold
  * @method
  * @private
@@ -200,11 +208,15 @@ function fold(fn, initial) {
 }
 
 /**
+ * Remove values from the Signal based on the given predicate function. If a function is not
+ * given then filter will use strict equals with the value given to test new values on the
+ * Signal.
+ *
  * @name filter
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Any} predicate
+ * @param {*} predicate - Usually a function to test values of the Signal
  * @returns {Frampton.Signal.Signal}
  */
 function filter(predicate) {
@@ -223,7 +235,8 @@ function filter(predicate) {
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Function} predicate
+ * @param {Function} predicate - A binary function to test the previous value against the current
+ *                               value to decide if you want to keep the new value.
  * @returns {Frampton.Signal.Signal}
  */
 function filterPrevious(predicate) {
@@ -241,7 +254,8 @@ function filterPrevious(predicate) {
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Frampton.Signal.Signal} predicate
+ * @param {Frampton.Signal.Signal} predicate - A Signal that must be truthy for values on this Signal
+ *                                             to continue.
  * @returns {Frampton.Signal.Signal}
  */
 function and(predicate) {
@@ -259,7 +273,8 @@ function and(predicate) {
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Frampton.Signal.Signal} predicate
+ * @param {Frampton.Signal.Signal} predicate - A Signal that must be falsy for values on this Signal
+ *                                             to continue.
  * @returns {Frampton.Signal.Signal}
  */
 function not(predicate) {
@@ -277,10 +292,10 @@ function not(predicate) {
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Any} mapping A function or value to map the signal with. If a function, the value
- *                      on the parent signal will be passed to the function and the signal will
- *                      be mapped to the return value of the function. If a value, the value of
- *                      the parent signal will be replaced with the value.
+ * @param {*} mapping - A function or value to map the signal with. If a function, the value
+ *                        on the parent signal will be passed to the function and the signal will
+ *                        be mapped to the return value of the function. If a value, the value of
+ *                        the parent signal will be replaced with the value.
  * @returns {Frampton.Signal.Signal} A new signal with mapped values
  */
 function map(mapping) {
@@ -297,7 +312,7 @@ function map(mapping) {
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Number} delay Milliseconds to debounce the signal
+ * @param {Number} delay - Milliseconds to debounce the signal
  * @returns {Frampton.Signal.Signal}
  */
 function debounce(delay) {
@@ -318,7 +333,7 @@ function debounce(delay) {
  * @method
  * @private
  * @memberof Frampton.Signal.Signal#
- * @param {Number} time
+ * @param {Number} time - Milliseconds to delay values of this Signal.
  * @returns {Frampton.Signal.Signal}
  */
 function delay(time) {
@@ -349,12 +364,15 @@ function dropRepeats() {
 }
 
 /**
- * Calls the given function when this signal updates
+ * Calls the given function when this signal updates. This function will call for the first
+ * time the next time the Signal updates. If there is a current value on the Signal it is
+ * ignored. If you are interested in the current value of the Signal use either the value or
+ * changes method.
  *
  * @name next
  * @method
  * @memberof Frampton.Signal.Signal#
- * @param {Function} fn The function to call
+ * @param {Function} fn - The function to call
  * @returns {Frampton.Signal.Signal}
  */
 function next(fn) {
@@ -365,14 +383,13 @@ function next(fn) {
 }
 
 /**
- * Calls the given function when this signal has a value. The function
- * is called immediately if this function already has a value, then is
- * called again each time this signal updates.
+ * Calls the given function when this Signal has a value. The function is called immediately
+ * if this Signal already has a value, then is called again each time this Signal updates.
  *
  * @name value
  * @method
  * @memberof Frampton.Signal.Signal#
- * @param {Function} fn The function to call
+ * @param {Function} fn - The function to call
  * @returns {Frampton.Signal.Signal}
  */
 function value(fn) {
@@ -389,10 +406,12 @@ function value(fn) {
 }
 
 /**
+ * Works just like the value method, just repeated values are dropped.
+ *
  * @name changes
  * @method
  * @memberof Frampton.Signal.Signal#
- * @param {Function} fn The function to call
+ * @param {Function} fn - The function to call
  * @returns {Frampton.Signal.Signal}
  */
 function changes(fn) {
@@ -400,6 +419,8 @@ function changes(fn) {
 }
 
 /**
+ * Removes the Signal from the Signal graph.
+ *
  * @name close
  * @method
  * @memberof Frampton.Signal.Signal#
@@ -419,6 +440,9 @@ function close() {
       return child._id !== sig._id;
     });
   });
+
+  sig._children.length = 0;
+  sig._parents.length = 0;
 }
 
 /**
@@ -446,9 +470,9 @@ function logValue(msg) {
  * @memberof Frampton.Signal
  * @method
  * @private
- * @param {function}                 update  Function to call when this signal updates
- * @param {Frampton.Signal.Signal[]} parents List of signals this signal depends on
- * @param {*}                        initial Initial value for this signal
+ * @param {function}                 update  - Function to call when this signal updates
+ * @param {Frampton.Signal.Signal[]} parents - List of signals this signal depends on
+ * @param {*}                        initial - Initial value for this signal
  * @returns {Frampton.Signal.Signal}
  */
 export function createSignal(update, parents, initial) {
@@ -506,7 +530,7 @@ export function createSignal(update, parents, initial) {
  * @name mergeMany
  * @memberof Frampton.Signal
  * @method
- * @param {Frampton.Signal.Signal[]} parents
+ * @param {Frampton.Signal.Signal[]} parents - Signals to merge
  */
 export function mergeMany(parents) {
   const initial = ((parents.length > 0) ? parents[0]._value : undefined);
@@ -516,10 +540,14 @@ export function mergeMany(parents) {
 }
 
 /**
- * @name Signal
+ * Used to create new instances of Frampton.Signal. This should be used instead of calling
+ * the Signal constructor directly.
+ *
+ * @name create
  * @memberof Frampton.Signal
- * @class
- * @param {*} initial Initial value for this signal
+ * @method
+ * @param {*} [initial] - Initial value for this signal
+ * @returns {Frampton.Signal}
  */
 export default function create(initial) {
   return createSignal(null, null, initial);

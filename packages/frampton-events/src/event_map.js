@@ -2,196 +2,196 @@ export default {
 
   abort : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   blur : {
     bubbles: false,
-    stream: null
+    signal: null
   },
 
   change : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   click : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   error : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   focus : {
     bubbles: false,
-    stream: null
+    signal: null
   },
 
   focusin : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   focusout : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   input : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   keyup : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   keydown : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   keypress : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   load : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   mousedown : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   mouseup : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   mousemove : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   mouseenter : {
     bubbles: false,
-    stream: null
+    signal: null
   },
 
   mouseleave : {
     bubbles: false,
-    stream: null
+    signal: null
   },
 
   mouseover : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   mouseout : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   touchstart : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   touchend : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   touchcancel : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   touchleave : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   touchmove : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   submit : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   animationstart : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   animationend : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   animationiteration : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   transitionend : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   drag : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   drop : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   dragstart : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   dragend : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   dragenter : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   dragleave : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   dragover : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   scroll : {
     bubbles: true,
-    stream: null
+    signal: null
   },
 
   wheel : {
     bubbles: true,
-    stream: null
+    signal: null
   }
 };

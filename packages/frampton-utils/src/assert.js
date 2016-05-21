@@ -1,5 +1,6 @@
 /**
  * Occassionally we need to blow things up if something isn't right.
+ *
  * @name assert
  * @method
  * @memberof Frampton.Utils

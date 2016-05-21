@@ -2,11 +2,10 @@ import curry from 'frampton-utils/curry';
 
 /**
  * Takes a function and warps it to be called at a later time.
+ *
  * @name lazy
- * @memberof Frampton
  * @method
- * @method
- * @static
+ * @memberof Frampton.Utils
  * @param {Function} fn The function to wrap.
  * @param {Array} args Array of arguments to pass to the function when called.
  */

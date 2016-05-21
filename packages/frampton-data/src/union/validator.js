@@ -6,7 +6,7 @@ import isFunction from 'frampton-utils/is_function';
 import isNode from 'frampton-utils/is_node';
 import objectValidator from 'frampton-data/union/object_validator';
 
-export default function(parent, type) {
+export default function get_validator(parent, type) {
 
   switch(type) {
     case String:

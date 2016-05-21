@@ -12,7 +12,7 @@ import min from 'frampton-math/min';
  * @namespace
  * @memberof Frampton
  */
-Frampton.Math = {};
+Frampton.Math          = {};
 Frampton.Math.add      = add;
 Frampton.Math.subtract = subtract;
 Frampton.Math.multiply = multiply;

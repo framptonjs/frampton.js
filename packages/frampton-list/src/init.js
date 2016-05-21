@@ -7,7 +7,7 @@ import isArray from 'frampton-utils/is_array';
  * @memberof Frampton.List
  */
 export default function init(xs) {
-  assert("Frampton.init recieved a non-array", isArray(xs));
+  assert("Frampton.List.init recieved a non-array", isArray(xs));
   switch (xs.length) {
 
     case 0:

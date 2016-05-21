@@ -1,9 +1,16 @@
 import reduce from 'frampton-record/reduce';
 
 // as_list :: Object -> Array [String, *]
-export default function(map) {
+/**
+ * @name as_list
+ * @method
+ * @memberof Frampton.Record
+ * @param {Object} obj Object to transform
+ * @returns {Array}
+ */
+export default function as_list(obj) {
   return Object.freeze(reduce((acc, nextValue, nextKey) => {
     acc.push([nextKey, nextValue]);
     return acc;
-  }, [], map));
+  }, [], obj));
 }

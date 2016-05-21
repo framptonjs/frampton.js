@@ -14,8 +14,8 @@ import isArray from 'frampton-utils/is_array';
 export default function deep_equal(obj1, obj2) {
 
   var depth = 0;
-  var original1 = obj1;
-  var original2 = obj2;
+  const original1 = obj1;
+  const original2 = obj2;
 
   function _equal(obj1, obj2) {
 

@@ -23,7 +23,8 @@ Frampton.Data = {};
 /**
  * @name Task
  * @memberof Frampton.Data
- * @namespace
+ * @class A data type for wrapping impure computations
+ * @constructor Should not be called by the user.
  */
 Frampton.Data.Task          = {};
 Frampton.Data.Task.create   = createTask;
@@ -37,7 +38,7 @@ Frampton.Data.Task.execute  = execute;
 /**
  * @name Union
  * @memberof Frampton.Data
- * @namespace
+ * @class
  */
 Frampton.Data.Union = {};
 Frampton.Data.Union.create = createUnion;
@@ -45,7 +46,7 @@ Frampton.Data.Union.create = createUnion;
 /**
  * @name State
  * @memberof Frampton.Data
- * @namespace
+ * @class
  */
 Frampton.Data.State = {};
 Frampton.Data.State.create = createState;

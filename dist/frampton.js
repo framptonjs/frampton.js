@@ -177,7 +177,8 @@ define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/cr
   /**
    * @name Task
    * @memberof Frampton.Data
-   * @namespace
+   * @class A data type for wrapping impure computations
+   * @constructor Should not be called by the user.
    */
   _Frampton.Data.Task = {};
   _Frampton.Data.Task.create = _createTask;
@@ -191,7 +192,7 @@ define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/cr
   /**
    * @name Union
    * @memberof Frampton.Data
-   * @namespace
+   * @class
    */
   _Frampton.Data.Union = {};
   _Frampton.Data.Union.create = _createUnion;
@@ -199,7 +200,7 @@ define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/cr
   /**
    * @name State
    * @memberof Frampton.Data
-   * @namespace
+   * @class
    */
   _Frampton.Data.State = {};
   _Frampton.Data.State.create = _createState;
@@ -261,6 +262,16 @@ define('frampton-data/state/create', ['exports', 'module', 'frampton/namespace',
 define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immediate', 'frampton-utils/is_function', 'frampton-utils/noop', 'frampton-utils/of_value', 'frampton-utils/is_equal'], function (exports, module, _framptonUtilsImmediate, _framptonUtilsIs_function, _framptonUtilsNoop, _framptonUtilsOf_value, _framptonUtilsIs_equal) {
   'use strict';
 
+  /**
+   * Method for creating new Tasks. This method should be used instead of calling the Task
+   * constructor directly.
+   *
+   * @name create
+   * @method
+   * @memberof Frampton.Data.Task
+   * @param {Function} computation - The function the Task should execute
+   * @returns {Frampton.Data.Task}
+   */
   module.exports = create_task;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -275,18 +286,21 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
 
   var _isEqual = _interopRequire(_framptonUtilsIs_equal);
 
-  /**
-   * Lazy, possibly async, error-throwing tasks
-   *
-   * @name Task
-   * @memberof Frampton.Task
-   * @class
-   * @param {function} task The computation we need to run
-   */
   function Task(task) {
     this.fn = task;
   }
 
+  /**
+   * of(return) :: a -> Success a
+   *
+   * Returns a Task that always resolves with the given value.
+   *
+   * @name of
+   * @method
+   * @memberof Frampton.Data.Task
+   * @param {*} val - Value to resolve task with
+   * @returns {Frampton.Data.Task}
+   */
   Task.of = function (val) {
     return new Task(function (sinks) {
       sinks.resolve(val);
@@ -296,11 +310,12 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   /**
    * of(return) :: a -> Success a
    *
+   * Returns a Task that always resolves with the given value.
+   *
    * @name of
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
-   * @param {*} val Value to resolve task with
+   * @param {*} val - Value to resolve task with
    * @returns {Frampton.Data.Task}
    */
   Task.prototype.of = function (val) {
@@ -309,7 +324,28 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
     });
   };
 
-  // Wraps the computation of the task to ensure all tasks are async.
+  /**
+   * Takes a hash of functions to call based on the resolution of the Task and runs the computation
+   * contained within this Task.
+   *
+   * The sinks object should be of the form:
+   * {
+   *   reject : (err) => {},
+   *   resolve : (val) => {},
+   *   progress : (prog) => {}
+   * }
+   *
+   * Each function is used by the contained computation to update us on the state of the running
+   * computation.
+   *
+   * @name run
+   * @method
+   * @memberof Frampton.Data.Task#
+   * @param {Object} sinks
+   * @param {Function} sinks.reject - The function to call on failure.
+   * @param {Function} sinks.resolve - The function to call on success.
+   * @param {Function} sinks.progress - The function to call on progress.
+   */
   Task.prototype.run = function (sinks) {
     var _this = this;
 
@@ -325,9 +361,10 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   /**
    * join :: Task x (Task x a) -> Task x a
    *
+   * Takes a nested Task and removes one level of nesting.
+   *
    * @name join
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
    * @returns {Frampton.Data.Task}
    */
@@ -347,11 +384,12 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   /**
    * concat(>>) :: Task x a -> Task x b -> Task x b
    *
+   * Runs one task after another, discarding the return value of the first.
+   *
    * @name concat
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
-   * @param {Frampton.Data.Task} task Task to run after this task
+   * @param {Frampton.Data.Task} task - Task to run after this task
    * @returns {Frampton.Data.Task}
    */
   Task.prototype.concat = function (task) {
@@ -370,11 +408,12 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   /**
    * chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
    *
+   * Maps the return value of one Task to another Task, chaining two Tasks together.
+   *
    * @name chain
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
-   * @param {Function} mapping Task-returning function to run after this task
+   * @param {Function} mapping - Function to map the return value of this Task to another Task.
    * @returns {Frampton.Data.Task}
    */
   Task.prototype.chain = function (mapping) {
@@ -386,7 +425,6 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    *
    * @name ap
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
    * @param {Frampton.Data.Task} task
    * @returns {Frampton.Data.Task}
@@ -400,9 +438,10 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   /**
    * recover :: Task x a -> (x -> b) -> Task x b
    *
+   * Used to map a reject to a resolve.
+   *
    * @name recover
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
    * @param {Function} mapping
    * @returns {Frampton.Data.Task}
@@ -423,11 +462,12 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   /**
    * default :: Task x a -> b -> Task x b
    *
+   * Returns the given value as a resolve in case of a reject.
+   *
    * @name default
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
-   * @param {*} val A value to map errors to
+   * @param {*} val - A value to map errors to
    * @returns {Frampton.Data.Task}
    */
   Task.prototype['default'] = function (val) {
@@ -443,7 +483,6 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    *
    * @name progress
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
    * @param {Function} mapping
    * @returns {Frampton.Data.Task}
@@ -467,7 +506,6 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    *
    * @name map
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
    * @param {Function} mapping
    * @returns {Frampton.Data.Task}
@@ -487,13 +525,25 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   };
 
   /**
+   * success :: Task x a -> (a -> b) -> Task x b
+   *
+   * A symantic alias for Task.prototype.map
+   *
+   * @name success
+   * @method
+   * @memberof Frampton.Data.Task#
+   * @param {Function} mapping - The function to map the resolve value.
+   * @returns {Frampton.Data.Task}
+   */
+  Task.prototype.success = Task.prototype.map;
+
+  /**
    * filter :: Task x a -> (a -> b) -> Task x b
    *
    * @name filter
    * @method
-   * @private
    * @memberof Frampton.Data.Task#
-   * @param {Function} predicate
+   * @param {Function} predicate - The function to filter the resolve value.
    * @returns {Frampton.Data.Task}
    */
   Task.prototype.filter = function (predicate) {
@@ -514,6 +564,19 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
     });
   };
 
+  /**
+   * validate :: Task x a -> (a -> b) -> Task x b
+   *
+   * A symantic alias for filter. Used to validate the return value of a Task. It the given
+   * predicate returns false a resolve is turned into a reject.
+   *
+   * @name validate
+   * @method
+   * @memberof Frampton.Data.Task#
+   * @param {Function} predicate - The function to validate the resolve value.
+   * @returns {Frampton.Data.Task}
+   */
+  Task.prototype.validate = Task.prototype.filter;
   function create_task(computation) {
     return new Task(computation);
   }
@@ -524,16 +587,16 @@ define('frampton-data/task/execute', ['exports', 'module', 'frampton-utils/log',
   /**
    * execute :: Signal Task x a -> Signal a -> ()
    *
-   * When we get a task on the tasks signal, run it and push the value
-   * onto the values signal. Tasks that are rejected in execute are
-   * ignored. It is suggested to use task that handle their errors with
-   * the recover method.
+   * Takes a Signal of Tasks to execute and a function to call with the resolve values
+   * of those Tasks. Progress and reject values are ignored (logged to the console in dev mode).
+   * It is suggested to use Tasks that have their reject and progress values mapped to reslove
+   * values using the recover and progress methods on the Task prototype.
    *
    * @name execute
    * @memberof Frampton.Task
    * @static
-   * @param {Frampton.Signals.Signal} tasks
-   * @param {Frampton.Signal.Signal} value
+   * @param {Frampton.Signals.Signal} tasks - Signal of Tasks to execute
+   * @param {Function} value - A function to pass the resolve values to
    */
   module.exports = execute;
 
@@ -562,7 +625,17 @@ define('frampton-data/task/execute', ['exports', 'module', 'frampton-utils/log',
 define('frampton-data/task/fail', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
   'use strict';
 
-  //+ fail :: x -> Task x a
+  /**
+   * fail :: x -> Task x a
+   *
+   * Creates a Task that always fails with the given value.
+   *
+   * @name fail
+   * @method
+   * @memberof Frampton.Data.Task
+   * @param {*} err - Value used as the return value of the reject branch.
+   * @returns {Frampton.Data.Task}
+   */
   module.exports = fail;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -578,16 +651,41 @@ define('frampton-data/task/fail', ['exports', 'module', 'frampton-data/task/crea
 define('frampton-data/task/never', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
   'use strict';
 
+  /**
+   * never :: Task x a
+   *
+   * Creates a Task that never resolves.
+   *
+   * @name never
+   * @method
+   * @memberof Frampton.Data.Task
+   * @returns {Frampton.Data.Task}
+   */
+  module.exports = never;
+
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _create = _interopRequire(_framptonDataTaskCreate);
 
-  module.exports = function () {
+  function never() {
     return (0, _create)(function () {});
-  };
+  }
 });
 define("frampton-data/task/sequence", ["exports", "module"], function (exports, module) {
-  //+ sequence :: [Task x a] -> Task x a
+  /**
+   * sequence :: [Task x a] -> Task x a
+   *
+   * Creates a Task that runs the given Tasks in the order they are passed in. The new
+   * Task will resolve when all of its parent Tasks have resolved. The resolve value of
+   * the new Task is the resolve value of the last of its parents Tasks. The resolve
+   * values for all other Tasks are discarded.
+   *
+   * @name sequence
+   * @method
+   * @memberof Frampton.Data.Task
+   * @param {Frampton.Data.Task[]} tassk - The Tasks to wait for
+   * @returns {Frampton.Data.Task}
+   */
   "use strict";
 
   module.exports = sequence;
@@ -605,7 +703,17 @@ define("frampton-data/task/sequence", ["exports", "module"], function (exports, 
 define('frampton-data/task/succeed', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
   'use strict';
 
-  //+ succeed :: a -> Task x a
+  /**
+   * succeed :: a -> Task x a
+   *
+   * Creates a Task that always succeeds with the given value.
+   *
+   * @name succeed
+   * @method
+   * @memberof Frampton.Data.Task
+   * @param {*} val - Value used as the return value of the resolve branch.
+   * @returns {Frampton.Data.Task}
+   */
   module.exports = succeed;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -621,7 +729,20 @@ define('frampton-data/task/succeed', ['exports', 'module', 'frampton-data/task/c
 define('frampton-data/task/when', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
   'use strict';
 
-  //+ when :: [Task x a] -> Task x [a]
+  /**
+   * when :: [Task x a] -> Task x [a]
+   *
+   * Creates a Task that waits for each of the given Tasks to resolve before it resolves.
+   * When it does resolve, it resolves with an Array containing the resolved values of each
+   * of its parent Tasks. The Array contains the resolve values in the same order as the
+   * order that the parent Tasks were passed in.
+   *
+   * @name when
+   * @method
+   * @memberof Frampton.Data.Task
+   * @param {Frampton.Data.Task[]} tasks - The Tasks to wait for
+   * @returns {Frampton.Data.Task}
+   */
   module.exports = when;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -815,6 +936,8 @@ define('frampton-data/union/validate_options', ['exports', 'module', 'frampton-u
 define('frampton-data/union/validator', ['exports', 'module', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-data/union/object_validator'], function (exports, module, _framptonUtilsIs_boolean, _framptonUtilsIs_array, _framptonUtilsIs_number, _framptonUtilsIs_string, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonDataUnionObject_validator) {
   'use strict';
 
+  module.exports = get_validator;
+
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _isBoolean = _interopRequire(_framptonUtilsIs_boolean);
@@ -831,7 +954,7 @@ define('frampton-data/union/validator', ['exports', 'module', 'frampton-utils/is
 
   var _objectValidator = _interopRequire(_framptonDataUnionObject_validator);
 
-  module.exports = function (parent, type) {
+  function get_validator(parent, type) {
 
     switch (type) {
       case String:
@@ -863,7 +986,7 @@ define('frampton-data/union/validator', ['exports', 'module', 'frampton-utils/is
     }
 
     return false;
-  };
+  }
 });
 define('frampton-data/union/wildcard', ['exports', 'module'], function (exports, module) {
   'use strict';
@@ -1081,197 +1204,197 @@ define("frampton-events/event_map", ["exports", "module"], function (exports, mo
 
     abort: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     blur: {
       bubbles: false,
-      stream: null
+      signal: null
     },
 
     change: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     click: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     error: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     focus: {
       bubbles: false,
-      stream: null
+      signal: null
     },
 
     focusin: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     focusout: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     input: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     keyup: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     keydown: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     keypress: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     load: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     mousedown: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     mouseup: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     mousemove: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     mouseenter: {
       bubbles: false,
-      stream: null
+      signal: null
     },
 
     mouseleave: {
       bubbles: false,
-      stream: null
+      signal: null
     },
 
     mouseover: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     mouseout: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     touchstart: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     touchend: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     touchcancel: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     touchleave: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     touchmove: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     submit: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     animationstart: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     animationend: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     animationiteration: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     transitionend: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     drag: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     drop: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     dragstart: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     dragend: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     dragenter: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     dragleave: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     dragover: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     scroll: {
       bubbles: true,
-      stream: null
+      signal: null
     },
 
     wheel: {
       bubbles: true,
-      stream: null
+      signal: null
     }
   };
 });
@@ -1299,6 +1422,7 @@ define('frampton-events/event_supported', ['exports', 'module', 'frampton-utils/
    *
    * @name eventSupported
    * @static
+   * @private
    * @memberof Frampton.Events
    * @param {String} eventName The name of the event to test
    * @returns {Boolean} Is the event supported
@@ -1358,6 +1482,14 @@ define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/comp
 define('frampton-events/get_document_signal', ['exports', 'module', 'frampton-events/document_cache', 'frampton-events/get_event_signal'], function (exports, module, _framptonEventsDocument_cache, _framptonEventsGet_event_signal) {
   'use strict';
 
+  /**
+   * @name getDocumentSignal
+   * @memberof Frampton.Events
+   * @static
+   * @private
+   * @param {String} name Event name to look up
+   * @returns {Frampton.Signal.Signal}
+   */
   module.exports = get_document_signal;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -1454,13 +1586,13 @@ define('frampton-events/get_position_relative', ['exports', 'module', 'frampton-
     var position = (0, _getPosition)(evt);
 
     var rect = node.getBoundingClientRect();
-    var relx = rect.left + document.body.scrollLeft + document.documentElement.scrollLeft;
-    var rely = rect.top + document.body.scrollTop + document.documentElement.scrollTop;
+    var rel_x = rect.left + document.body.scrollLeft + document.documentElement.scrollLeft;
+    var rel_y = rect.top + document.body.scrollTop + document.documentElement.scrollTop;
 
-    var posx = position[0] - Math.round(relx) - node.clientLeft;
-    var posy = position[1] - Math.round(rely) - node.clientTop;
+    var pos_x = position[0] - Math.round(rel_x) - node.clientLeft;
+    var pos_y = position[1] - Math.round(rel_y) - node.clientTop;
 
-    return [posx, posy];
+    return [pos_x, pos_y];
   });
 });
 define('frampton-events/has_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/matches', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleMatches, _framptonEventsEvent_target) {
@@ -2118,7 +2250,7 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
     return defaultKeyboard;
   }
 });
-define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', 'frampton-list/append', 'frampton-list/contains', 'frampton-list/copy', 'frampton-list/diff', 'frampton-list/drop', 'frampton-list/each', 'frampton-list/filter', 'frampton-list/find', 'frampton-list/foldl', 'frampton-list/foldr', 'frampton-list/first', 'frampton-list/second', 'frampton-list/third', 'frampton-list/init', 'frampton-list/last', 'frampton-list/length', 'frampton-list/maximum', 'frampton-list/minimum', 'frampton-list/prepend', 'frampton-list/product', 'frampton-list/remove', 'frampton-list/remove_index', 'frampton-list/replace', 'frampton-list/replace_index', 'frampton-list/reverse', 'frampton-list/split', 'frampton-list/sum', 'frampton-list/tail', 'frampton-list/zip'], function (exports, _framptonNamespace, _framptonListAdd, _framptonListAppend, _framptonListContains, _framptonListCopy, _framptonListDiff, _framptonListDrop, _framptonListEach, _framptonListFilter, _framptonListFind, _framptonListFoldl, _framptonListFoldr, _framptonListFirst, _framptonListSecond, _framptonListThird, _framptonListInit, _framptonListLast, _framptonListLength, _framptonListMaximum, _framptonListMinimum, _framptonListPrepend, _framptonListProduct, _framptonListRemove, _framptonListRemove_index, _framptonListReplace, _framptonListReplace_index, _framptonListReverse, _framptonListSplit, _framptonListSum, _framptonListTail, _framptonListZip) {
+define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', 'frampton-list/append', 'frampton-list/contains', 'frampton-list/copy', 'frampton-list/diff', 'frampton-list/drop', 'frampton-list/each', 'frampton-list/filter', 'frampton-list/find', 'frampton-list/first', 'frampton-list/foldl', 'frampton-list/foldr', 'frampton-list/init', 'frampton-list/last', 'frampton-list/length', 'frampton-list/max', 'frampton-list/min', 'frampton-list/prepend', 'frampton-list/product', 'frampton-list/remove', 'frampton-list/remove_index', 'frampton-list/replace', 'frampton-list/replace_index', 'frampton-list/reverse', 'frampton-list/second', 'frampton-list/split', 'frampton-list/sum', 'frampton-list/tail', 'frampton-list/take', 'frampton-list/third', 'frampton-list/zip'], function (exports, _framptonNamespace, _framptonListAdd, _framptonListAppend, _framptonListContains, _framptonListCopy, _framptonListDiff, _framptonListDrop, _framptonListEach, _framptonListFilter, _framptonListFind, _framptonListFirst, _framptonListFoldl, _framptonListFoldr, _framptonListInit, _framptonListLast, _framptonListLength, _framptonListMax, _framptonListMin, _framptonListPrepend, _framptonListProduct, _framptonListRemove, _framptonListRemove_index, _framptonListReplace, _framptonListReplace_index, _framptonListReverse, _framptonListSecond, _framptonListSplit, _framptonListSum, _framptonListTail, _framptonListTake, _framptonListThird, _framptonListZip) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -2143,15 +2275,11 @@ define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', '
 
   var _find = _interopRequire(_framptonListFind);
 
+  var _first = _interopRequire(_framptonListFirst);
+
   var _foldl = _interopRequire(_framptonListFoldl);
 
   var _foldr = _interopRequire(_framptonListFoldr);
-
-  var _first = _interopRequire(_framptonListFirst);
-
-  var _second = _interopRequire(_framptonListSecond);
-
-  var _third = _interopRequire(_framptonListThird);
 
   var _init = _interopRequire(_framptonListInit);
 
@@ -2159,9 +2287,9 @@ define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', '
 
   var _length = _interopRequire(_framptonListLength);
 
-  var _maximum = _interopRequire(_framptonListMaximum);
+  var _max = _interopRequire(_framptonListMax);
 
-  var _minimum = _interopRequire(_framptonListMinimum);
+  var _min = _interopRequire(_framptonListMin);
 
   var _prepend = _interopRequire(_framptonListPrepend);
 
@@ -2177,11 +2305,17 @@ define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', '
 
   var _reverse = _interopRequire(_framptonListReverse);
 
+  var _second = _interopRequire(_framptonListSecond);
+
   var _split = _interopRequire(_framptonListSplit);
 
   var _sum = _interopRequire(_framptonListSum);
 
   var _tail = _interopRequire(_framptonListTail);
+
+  var _take = _interopRequire(_framptonListTake);
+
+  var _third = _interopRequire(_framptonListThird);
 
   var _zip = _interopRequire(_framptonListZip);
 
@@ -2208,8 +2342,8 @@ define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', '
   _Frampton.List.init = _init;
   _Frampton.List.last = _last;
   _Frampton.List.length = _length;
-  _Frampton.List.maximum = _maximum;
-  _Frampton.List.minimum = _minimum;
+  _Frampton.List.max = _max;
+  _Frampton.List.min = _min;
   _Frampton.List.prepend = _prepend;
   _Frampton.List.product = _product;
   _Frampton.List.remove = _remove;
@@ -2220,6 +2354,7 @@ define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', '
   _Frampton.List.split = _split;
   _Frampton.List.sum = _sum;
   _Frampton.List.tail = _tail;
+  _Frampton.List.take = _take;
   _Frampton.List.zip = _zip;
 });
 define('frampton-list/add', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append', 'frampton-list/copy'], function (exports, module, _framptonUtilsCurry, _framptonListContains, _framptonListAppend, _framptonListCopy) {
@@ -2299,7 +2434,7 @@ define('frampton-list/at', ['exports', 'module', 'frampton-utils/curry', 'frampt
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function at(index, xs) {
-    (0, _assert)('Frampton.at recieved a non-array', (0, _isArray)(xs));
+    (0, _assert)('Frampton.List.at recieved a non-array', (0, _isArray)(xs));
     return (0, _isDefined)(xs[index]) ? xs[index] : null;
   });
 });
@@ -2358,7 +2493,7 @@ define('frampton-list/copy', ['exports', 'module', 'frampton-list/length'], func
     return Object.freeze(arr || []);
   }
 });
-define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains'], function (exports, module, _framptonUtilsCurry, _framptonListContains) {
+define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/each'], function (exports, module, _framptonUtilsCurry, _framptonListContains, _framptonListEach) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -2366,6 +2501,8 @@ define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'fram
   var _curry = _interopRequire(_framptonUtilsCurry);
 
   var _contains = _interopRequire(_framptonListContains);
+
+  var _each = _interopRequire(_framptonListEach);
 
   /**
    * @name diff
@@ -2377,11 +2514,11 @@ define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'fram
 
     var diff = [];
 
-    xs.forEach(function (item) {
+    (0, _each)(function (item) {
       if (!(0, _contains)(ys, item)) {
         diff.push(item);
       }
-    });
+    }, xs);
 
     return Object.freeze(diff);
   });
@@ -2405,7 +2542,7 @@ define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'fra
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_drop(n, xs) {
-    (0, _assert)('Frampton.drop recieved a non-array', (0, _isArray)(xs));
+    (0, _assert)('Frampton.List.drop recieved a non-array', (0, _isArray)(xs));
     return (0, _filter)(function (next) {
       if (n === 0) {
         return true;
@@ -2427,9 +2564,14 @@ define('frampton-list/each', ['exports', 'module', 'frampton-utils/curry'], func
    * @name each
    * @method
    * @memberof Frampton.List
+   * @param {Functino} fn Function to run on each element
+   * @param {Array} xs Array to
    */
   module.exports = (0, _curry)(function curried_each(fn, xs) {
-    xs.forEach(fn);
+    var len = xs.length;
+    for (var i = 0; i < len; i++) {
+      fn(xs[i], i);
+    }
   });
 });
 define('frampton-list/filter', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/length'], function (exports, module, _framptonUtilsCurry, _framptonListLength) {
@@ -2505,7 +2647,7 @@ define('frampton-list/foldl', ['exports', 'module', 'frampton-utils/assert', 'fr
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_foldl(fn, acc, xs) {
-    (0, _assert)('Frampton.foldl recieved a non-array', (0, _isArray)(xs));
+    (0, _assert)('Frampton.List.foldl recieved a non-array', (0, _isArray)(xs));
     var len = xs.length;
     for (var i = 0; i < len; i++) {
       acc = fn(acc, xs[i]);
@@ -2530,7 +2672,7 @@ define('frampton-list/foldr', ['exports', 'module', 'frampton-utils/assert', 'fr
    * @memberof Frampton.List
    */
   module.exports = (0, _curry)(function curried_foldr(fn, acc, xs) {
-    (0, _assert)('Frampton.foldr recieved a non-array', (0, _isArray)(xs));
+    (0, _assert)('Frampton.List.foldr recieved a non-array', (0, _isArray)(xs));
     var len = xs.length;
     while (len--) {
       acc = fn(acc, xs[len]);
@@ -2555,7 +2697,7 @@ define('frampton-list/init', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function init(xs) {
-    (0, _assert)('Frampton.init recieved a non-array', (0, _isArray)(xs));
+    (0, _assert)('Frampton.List.init recieved a non-array', (0, _isArray)(xs));
     switch (xs.length) {
 
       case 0:
@@ -2583,7 +2725,7 @@ define('frampton-list/last', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function last(xs) {
-    (0, _assert)('Frampton.last recieved a non-array', (0, _isArray)(xs));
+    (0, _assert)('Frampton.List.last recieved a non-array', (0, _isArray)(xs));
     switch (xs.length) {
 
       case 0:
@@ -2614,7 +2756,7 @@ define('frampton-list/length', ['exports', 'module', 'frampton-utils/is_somethin
     return (0, _isSomething)(xs) && (0, _isDefined)(xs.length) ? xs.length : 0;
   }
 });
-define('frampton-list/maximum', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
+define('frampton-list/max', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
   'use strict';
 
   /**
@@ -2640,16 +2782,16 @@ define('frampton-list/maximum', ['exports', 'module', 'frampton-list/foldl', 'fr
     }, null, xs);
   }
 });
-define('frampton-list/minimum', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
+define('frampton-list/min', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
   'use strict';
 
   /**
-   * @name minimum
+   * @name min
    * @method
    * @memberof Frampton.List
    * @param {Array} xs
    */
-  module.exports = minimum;
+  module.exports = min;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -2657,7 +2799,7 @@ define('frampton-list/minimum', ['exports', 'module', 'frampton-list/foldl', 'fr
 
   var _isNothing = _interopRequire(_framptonUtilsIs_nothing);
 
-  function minimum(xs) {
+  function min(xs) {
     return (0, _foldl)(function (acc, next) {
       if ((0, _isNothing)(acc) || next < acc) {
         acc = next;
@@ -2909,7 +3051,7 @@ define('frampton-list/tail', ['exports', 'module', 'frampton-utils/assert', 'fra
   var _isArray = _interopRequire(_framptonUtilsIs_array);
 
   function tail(xs) {
-    (0, _assert)('Frampton.tail recieved a non-array', (0, _isArray)(xs));
+    (0, _assert)('Frampton.List.tail recieved a non-array', (0, _isArray)(xs));
     switch (xs.length) {
       case 0:
         return Object.freeze([]);
@@ -2917,6 +3059,29 @@ define('frampton-list/tail', ['exports', 'module', 'frampton-utils/assert', 'fra
         return Object.freeze(xs.slice(1));
     }
   }
+});
+define('frampton-list/take', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-math/min'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry, _framptonUtilsIs_array, _framptonMathMin) {
+  'use strict';
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _assert = _interopRequire(_framptonUtilsAssert);
+
+  var _curry = _interopRequire(_framptonUtilsCurry);
+
+  var _isArray = _interopRequire(_framptonUtilsIs_array);
+
+  var _min = _interopRequire(_framptonMathMin);
+
+  module.exports = (0, _curry)(function take(num, xs) {
+    (0, _assert)('Frampton.List.take recieved a non-array', (0, _isArray)(xs));
+    var newList = [];
+    var len = (0, _min)(xs.length, num);
+    for (var i = 0; i < len; i++) {
+      newList.push(xs[i]);
+    }
+    return newList;
+  });
 });
 define('frampton-list/third', ['exports', 'module', 'frampton-list/at'], function (exports, module, _framptonListAt) {
   'use strict';
@@ -3181,18 +3346,26 @@ define('frampton-record', ['exports', 'frampton/namespace', 'frampton-record/fil
 define('frampton-record/as_list', ['exports', 'module', 'frampton-record/reduce'], function (exports, module, _framptonRecordReduce) {
   'use strict';
 
+  // as_list :: Object -> Array [String, *]
+  /**
+   * @name as_list
+   * @method
+   * @memberof Frampton.Record
+   * @param {Object} obj Object to transform
+   * @returns {Array}
+   */
+  module.exports = as_list;
+
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
   var _reduce = _interopRequire(_framptonRecordReduce);
 
-  // as_list :: Object -> Array [String, *]
-
-  module.exports = function (map) {
+  function as_list(obj) {
     return Object.freeze((0, _reduce)(function (acc, nextValue, nextKey) {
       acc.push([nextKey, nextValue]);
       return acc;
-    }, [], map));
-  };
+    }, [], obj));
+  }
 });
 define('frampton-record/copy', ['exports', 'module', 'frampton-record/for_each'], function (exports, module, _framptonRecordFor_each) {
   'use strict';
@@ -3232,12 +3405,20 @@ define('frampton-record/filter', ['exports', 'module', 'frampton-utils/curry', '
 
   var _forEach = _interopRequire(_framptonRecordFor_each);
 
-  module.exports = (0, _curry)(function curried_filter(fn, obj) {
+  /**
+   * @name filter
+   * @method
+   * @memberof Frampton.Record
+   * @param {Function} predicate A function to filter the object. The functino recieves the
+   * value and key as arguments to make its decision
+   * @returns {Object}
+   */
+  module.exports = (0, _curry)(function curried_filter(predicate, obj) {
 
     var newObj = {};
 
     (0, _forEach)(function (value, key) {
-      if (fn(value, key)) {
+      if (predicate(value, key)) {
         newObj[key] = value;
       }
     }, obj);
@@ -3252,6 +3433,13 @@ define('frampton-record/for_each', ['exports', 'module', 'frampton-utils/curry']
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
+  /**
+   * @name forEach
+   * @method
+   * @memberof Frampton.Record
+   * @param {Function} fn Function to call for each key/value pair
+   * @param {Object} obj Object to iterate over
+   */
   module.exports = (0, _curry)(function curried_for_each(fn, obj) {
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
@@ -3262,6 +3450,15 @@ define('frampton-record/for_each', ['exports', 'module', 'frampton-utils/curry']
 });
 define('frampton-record/keys', ['exports', 'module', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsIs_function) {
   'use strict';
+
+  /**
+   * @name keys
+   * @method
+   * @memberof Frampton.Record
+   * @param {Object} obj Object whose keys to get
+   * @returns {String[]}
+   */
+  module.exports = keys;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -3278,8 +3475,7 @@ define('frampton-record/keys', ['exports', 'module', 'frampton-utils/is_function
     }
     return result;
   }
-
-  module.exports = function (obj) {
+  function keys(obj) {
     if ((0, _isFunction)(Object.keys)) {
       return Object.keys(obj).filter(function (key) {
         return hasOwnProp.call(obj, key);
@@ -3287,7 +3483,7 @@ define('frampton-record/keys', ['exports', 'module', 'frampton-utils/is_function
     } else {
       return getKeys(obj);
     }
-  };
+  }
 });
 define('frampton-record/map', ['exports', 'module', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, module, _framptonUtilsCurry, _framptonRecordFor_each) {
   'use strict';
@@ -3298,6 +3494,14 @@ define('frampton-record/map', ['exports', 'module', 'frampton-utils/curry', 'fra
 
   var _forEach = _interopRequire(_framptonRecordFor_each);
 
+  /**
+   * @name map
+   * @method
+   * @memberof Frampton.Record
+   * @param {Function} fn Function used to map the object
+   * @param {Object} obj Object to map
+   * @returns {Object} A new object with its values mapped using the given function
+   */
   module.exports = (0, _curry)(function curried_map(fn, obj) {
 
     var newObj = {};
@@ -3318,7 +3522,17 @@ define('frampton-record/merge', ['exports', 'module', 'frampton-utils/curry', 'f
 
   var _extend = _interopRequire(_framptonUtilsExtend);
 
-  module.exports = (0, _curry)(function (obj1, obj2) {
+  /**
+   * Merges two objects into one. Priority is given to the keys on the second object.
+   *
+   * @name merge
+   * @method
+   * @memberof Frampton.Record
+   * @param {Object} obj1 First object to merge
+   * @param {Object} obj2 Second object to merge
+   * @returns {Object}
+   */
+  module.exports = (0, _curry)(function curried_merge(obj1, obj2) {
     return Object.freeze((0, _extend)({}, obj1, obj2));
   });
 });
@@ -3353,6 +3567,17 @@ define('frampton-record/reduce', ['exports', 'module', 'frampton-utils/curry', '
 
   var _forEach = _interopRequire(_framptonRecordFor_each);
 
+  /**
+   * reduce :: Function -> Any -> Object -> Object
+   *
+   * @name reduce
+   * @method
+   * @memberof Frampton.Record
+   * @param {Function} fn Function used to reduce the object
+   * @param {*} acc Initial value of reduce operation
+   * @param {Object} obj Object to iterate over for the reduce
+   * @returns {*}
+   */
   module.exports = (0, _curry)(function curried_reduce(fn, acc, obj) {
 
     (0, _forEach)(function (value, key) {
@@ -3419,7 +3644,7 @@ define('frampton-signal', ['exports', 'frampton/namespace', 'frampton-signal/cre
 
   /**
    * @name Signal
-   * @namespace
+   * @class
    * @memberof Frampton
    */
   _Frampton.Signal = {};
@@ -3435,6 +3660,18 @@ define('frampton-signal', ['exports', 'frampton/namespace', 'frampton-signal/cre
 define('frampton-signal/combine', ['exports', 'module', 'frampton-signal/create'], function (exports, module, _framptonSignalCreate) {
   'use strict';
 
+  /**
+   * Method to combine multiple Signals into one with a given mapping function. Values
+   * of the Signals are passed to the mapping function in the same order they appear
+   * in the array.
+   *
+   * @name combine
+   * @method
+   * @memberof Frampton.Signal
+   * @param {Function} mapping - Function used to combine given Signals
+   * @param {Frampton.Signal[]} parents - Array of Signals to combine
+   * @returns {Frampton.Signal} A new Signal
+   */
   module.exports = combine;
 
   function combine(mapping, parents) {
@@ -3455,9 +3692,9 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @memberof Frampton.Signal
    * @method
    * @private
-   * @param {function}                 update  Function to call when this signal updates
-   * @param {Frampton.Signal.Signal[]} parents List of signals this signal depends on
-   * @param {*}                        initial Initial value for this signal
+   * @param {function}                 update  - Function to call when this signal updates
+   * @param {Frampton.Signal.Signal[]} parents - List of signals this signal depends on
+   * @param {*}                        initial - Initial value for this signal
    * @returns {Frampton.Signal.Signal}
    */
   exports.createSignal = createSignal;
@@ -3466,15 +3703,19 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @name mergeMany
    * @memberof Frampton.Signal
    * @method
-   * @param {Frampton.Signal.Signal[]} parents
+   * @param {Frampton.Signal.Signal[]} parents - Signals to merge
    */
   exports.mergeMany = mergeMany;
 
   /**
-   * @name Signal
+   * Used to create new instances of Frampton.Signal. This should be used instead of calling
+   * the Signal constructor directly.
+   *
+   * @name create
    * @memberof Frampton.Signal
-   * @class
-   * @param {*} initial Initial value for this signal
+   * @method
+   * @param {*} [initial] - Initial value for this signal
+   * @returns {Frampton.Signal}
    */
   exports['default'] = create;
 
@@ -3668,11 +3909,19 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     return createSignal(function (self) {
       if (limit-- > 0) {
         self(parent._value);
+      } else {
+        self.close();
       }
     }, [parent]);
   }
 
   /**
+   * Like reduce on Arrays, this method is used to reduce all values of a Signal down to a
+   * single value using the given function.
+   *
+   * The function recieves arguments in the order of (accumulator, next value). The function
+   * should return a new value that will then be the new accumulator for the next interation.
+   *
    * @name fold
    * @method
    * @private
@@ -3689,11 +3938,15 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
   }
 
   /**
+   * Remove values from the Signal based on the given predicate function. If a function is not
+   * given then filter will use strict equals with the value given to test new values on the
+   * Signal.
+   *
    * @name filter
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Any} predicate
+   * @param {*} predicate - Usually a function to test values of the Signal
    * @returns {Frampton.Signal.Signal}
    */
   function filter(predicate) {
@@ -3712,7 +3965,8 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Function} predicate
+   * @param {Function} predicate - A binary function to test the previous value against the current
+   *                               value to decide if you want to keep the new value.
    * @returns {Frampton.Signal.Signal}
    */
   function filterPrevious(predicate) {
@@ -3730,7 +3984,8 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Frampton.Signal.Signal} predicate
+   * @param {Frampton.Signal.Signal} predicate - A Signal that must be truthy for values on this Signal
+   *                                             to continue.
    * @returns {Frampton.Signal.Signal}
    */
   function and(predicate) {
@@ -3748,7 +4003,8 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Frampton.Signal.Signal} predicate
+   * @param {Frampton.Signal.Signal} predicate - A Signal that must be falsy for values on this Signal
+   *                                             to continue.
    * @returns {Frampton.Signal.Signal}
    */
   function not(predicate) {
@@ -3766,10 +4022,10 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Any} mapping A function or value to map the signal with. If a function, the value
-   *                      on the parent signal will be passed to the function and the signal will
-   *                      be mapped to the return value of the function. If a value, the value of
-   *                      the parent signal will be replaced with the value.
+   * @param {*} mapping - A function or value to map the signal with. If a function, the value
+   *                        on the parent signal will be passed to the function and the signal will
+   *                        be mapped to the return value of the function. If a value, the value of
+   *                        the parent signal will be replaced with the value.
    * @returns {Frampton.Signal.Signal} A new signal with mapped values
    */
   function map(mapping) {
@@ -3786,7 +4042,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Number} delay Milliseconds to debounce the signal
+   * @param {Number} delay - Milliseconds to debounce the signal
    * @returns {Frampton.Signal.Signal}
    */
   function debounce(delay) {
@@ -3807,7 +4063,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @private
    * @memberof Frampton.Signal.Signal#
-   * @param {Number} time
+   * @param {Number} time - Milliseconds to delay values of this Signal.
    * @returns {Frampton.Signal.Signal}
    */
   function delay(time) {
@@ -3838,12 +4094,15 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
   }
 
   /**
-   * Calls the given function when this signal updates
+   * Calls the given function when this signal updates. This function will call for the first
+   * time the next time the Signal updates. If there is a current value on the Signal it is
+   * ignored. If you are interested in the current value of the Signal use either the value or
+   * changes method.
    *
    * @name next
    * @method
    * @memberof Frampton.Signal.Signal#
-   * @param {Function} fn The function to call
+   * @param {Function} fn - The function to call
    * @returns {Frampton.Signal.Signal}
    */
   function next(fn) {
@@ -3854,14 +4113,13 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
   }
 
   /**
-   * Calls the given function when this signal has a value. The function
-   * is called immediately if this function already has a value, then is
-   * called again each time this signal updates.
+   * Calls the given function when this Signal has a value. The function is called immediately
+   * if this Signal already has a value, then is called again each time this Signal updates.
    *
    * @name value
    * @method
    * @memberof Frampton.Signal.Signal#
-   * @param {Function} fn The function to call
+   * @param {Function} fn - The function to call
    * @returns {Frampton.Signal.Signal}
    */
   function value(fn) {
@@ -3878,10 +4136,12 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
   }
 
   /**
+   * Works just like the value method, just repeated values are dropped.
+   *
    * @name changes
    * @method
    * @memberof Frampton.Signal.Signal#
-   * @param {Function} fn The function to call
+   * @param {Function} fn - The function to call
    * @returns {Frampton.Signal.Signal}
    */
   function changes(fn) {
@@ -3889,6 +4149,8 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
   }
 
   /**
+   * Removes the Signal from the Signal graph.
+   *
    * @name close
    * @method
    * @memberof Frampton.Signal.Signal#
@@ -3908,6 +4170,9 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
         return child._id !== sig._id;
       });
     });
+
+    sig._children.length = 0;
+    sig._parents.length = 0;
   }
 
   /**
@@ -4781,7 +5046,7 @@ define('frampton-style/supported_props', ['exports', 'module', 'frampton-utils/w
     return obj;
   }
 });
-define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/always', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/curry_n', 'frampton-utils/equal', 'frampton-utils/error', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/has_length', 'frampton-utils/has_prop', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/is_array', 'frampton-utils/is_boolean', 'frampton-utils/is_defined', 'frampton-utils/is_empty', 'frampton-utils/is_equal', 'frampton-utils/is_false', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-utils/is_nothing', 'frampton-utils/is_null', 'frampton-utils/is_number', 'frampton-utils/is_object', 'frampton-utils/is_primitive', 'frampton-utils/is_promise', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_true', 'frampton-utils/is_undefined', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/not', 'frampton-utils/of_value', 'frampton-utils/warn'], function (exports, _framptonNamespace, _framptonUtilsAlways, _framptonUtilsApply, _framptonUtilsAssert, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsCurry_n, _framptonUtilsEqual, _framptonUtilsError, _framptonUtilsExtend, _framptonUtilsGet, _framptonUtilsHas_length, _framptonUtilsHas_prop, _framptonUtilsIdentity, _framptonUtilsImmediate, _framptonUtilsIs_array, _framptonUtilsIs_boolean, _framptonUtilsIs_defined, _framptonUtilsIs_empty, _framptonUtilsIs_equal, _framptonUtilsIs_false, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonUtilsIs_nothing, _framptonUtilsIs_null, _framptonUtilsIs_number, _framptonUtilsIs_object, _framptonUtilsIs_primitive, _framptonUtilsIs_promise, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_true, _framptonUtilsIs_undefined, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsMemoize, _framptonUtilsNoop, _framptonUtilsNot, _framptonUtilsOf_value, _framptonUtilsWarn) {
+define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/always', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/curry_n', 'frampton-utils/equal', 'frampton-utils/error', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/has_length', 'frampton-utils/has_prop', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/is_array', 'frampton-utils/is_boolean', 'frampton-utils/is_defined', 'frampton-utils/is_empty', 'frampton-utils/is_equal', 'frampton-utils/is_false', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-utils/is_nothing', 'frampton-utils/is_null', 'frampton-utils/is_number', 'frampton-utils/is_numeric', 'frampton-utils/is_object', 'frampton-utils/is_primitive', 'frampton-utils/is_promise', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_true', 'frampton-utils/is_undefined', 'frampton-utils/is_value', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/not', 'frampton-utils/of_value', 'frampton-utils/once', 'frampton-utils/warn'], function (exports, _framptonNamespace, _framptonUtilsAlways, _framptonUtilsApply, _framptonUtilsAssert, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsCurry_n, _framptonUtilsEqual, _framptonUtilsError, _framptonUtilsExtend, _framptonUtilsGet, _framptonUtilsHas_length, _framptonUtilsHas_prop, _framptonUtilsIdentity, _framptonUtilsImmediate, _framptonUtilsIs_array, _framptonUtilsIs_boolean, _framptonUtilsIs_defined, _framptonUtilsIs_empty, _framptonUtilsIs_equal, _framptonUtilsIs_false, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonUtilsIs_nothing, _framptonUtilsIs_null, _framptonUtilsIs_number, _framptonUtilsIs_numeric, _framptonUtilsIs_object, _framptonUtilsIs_primitive, _framptonUtilsIs_promise, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_true, _framptonUtilsIs_undefined, _framptonUtilsIs_value, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsMemoize, _framptonUtilsNoop, _framptonUtilsNot, _framptonUtilsOf_value, _framptonUtilsOnce, _framptonUtilsWarn) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -4838,6 +5103,8 @@ define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/alway
 
   var _isNumber = _interopRequire(_framptonUtilsIs_number);
 
+  var _isNumeric = _interopRequire(_framptonUtilsIs_numeric);
+
   var _isObject = _interopRequire(_framptonUtilsIs_object);
 
   var _isPrimitive = _interopRequire(_framptonUtilsIs_primitive);
@@ -4852,6 +5119,8 @@ define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/alway
 
   var _isUndefined = _interopRequire(_framptonUtilsIs_undefined);
 
+  var _isValue = _interopRequire(_framptonUtilsIs_value);
+
   var _log = _interopRequire(_framptonUtilsLog);
 
   var _lazy = _interopRequire(_framptonUtilsLazy);
@@ -4863,6 +5132,8 @@ define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/alway
   var _not = _interopRequire(_framptonUtilsNot);
 
   var _ofValue = _interopRequire(_framptonUtilsOf_value);
+
+  var _once = _interopRequire(_framptonUtilsOnce);
 
   var _warn = _interopRequire(_framptonUtilsWarn);
 
@@ -4897,6 +5168,7 @@ define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/alway
   _Frampton.Utils.isNothing = _isNothing;
   _Frampton.Utils.isNull = _isNull;
   _Frampton.Utils.isNumber = _isNumber;
+  _Frampton.Utils.isNumeric = _isNumeric;
   _Frampton.Utils.isObject = _isObject;
   _Frampton.Utils.isPrimitive = _isPrimitive;
   _Frampton.Utils.isPromise = _isPromise;
@@ -4904,12 +5176,14 @@ define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/alway
   _Frampton.Utils.isString = _isString;
   _Frampton.Utils.isTrue = _isTrue;
   _Frampton.Utils.isUndefined = _isUndefined;
+  _Frampton.Utils.isValue = _isValue;
   _Frampton.Utils.log = _log;
   _Frampton.Utils.lazy = _lazy;
   _Frampton.Utils.memoize = _memoize;
   _Frampton.Utils.noop = _noop;
   _Frampton.Utils.not = _not;
   _Frampton.Utils.ofValue = _ofValue;
+  _Frampton.Utils.once = _once;
   _Frampton.Utils.warn = _warn;
 });
 define('frampton-utils/always', ['exports', 'module', 'frampton-utils/curry_n'], function (exports, module, _framptonUtilsCurry_n) {
@@ -4919,19 +5193,34 @@ define('frampton-utils/always', ['exports', 'module', 'frampton-utils/curry_n'],
 
   var _curryN = _interopRequire(_framptonUtilsCurry_n);
 
+  /**
+   * Create a function that always returns the same value every time
+   * it is called
+   *
+   * @name always
+   * @method
+   * @memberof Frampton.Utils
+   * @param {Function} fn The function to wrap.
+   * @param {*} args The arguments to pass to the function.
+   */
   module.exports = (0, _curryN)(2, function always(fn) {
     for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
 
+    var value;
     return function () {
-      return fn.apply(null, args);
+      if (value === undefined) {
+        value = fn.apply(null, args);
+      }
+      return value;
     };
   });
 });
 define("frampton-utils/apply", ["exports", "module"], function (exports, module) {
   /**
    * Takes a function and warps it to be called at a later time.
+   *
    * @name apply
    * @method
    * @memberof Frampton.Utils
@@ -4949,6 +5238,7 @@ define("frampton-utils/apply", ["exports", "module"], function (exports, module)
 define('frampton-utils/assert', ['exports', 'module'], function (exports, module) {
   /**
    * Occassionally we need to blow things up if something isn't right.
+   *
    * @name assert
    * @method
    * @memberof Frampton.Utils
@@ -5301,11 +5591,30 @@ define('frampton-utils/has_prop', ['exports', 'module', 'frampton-utils/curry', 
 
   var _isSomething = _interopRequire(_framptonUtilsIs_something);
 
-  module.exports = (0, _curry)(function (prop, obj) {
+  /**
+   * hasProp :: String -> Object -> Boolean
+   *
+   * @name hasProp
+   * @method
+   * @memberof Frampton.Utils
+   * @param {String} prop
+   * @param {Object} obj
+   * @returns {Boolean}
+   */
+  module.exports = (0, _curry)(function has_prop(prop, obj) {
     return (0, _isSomething)((0, _get)(prop, obj));
   });
 });
 define("frampton-utils/identity", ["exports", "module"], function (exports, module) {
+  /**
+   * identity :: a -> a
+   *
+   * @name identity
+   * @method
+   * @memberof Frampton.Utils
+   * @param {*} x
+   * @returns {*}
+   */
   "use strict";
 
   module.exports = identity;
@@ -5317,6 +5626,7 @@ define("frampton-utils/identity", ["exports", "module"], function (exports, modu
 define("frampton-utils/immediate", ["exports", "module"], function (exports, module) {
   /**
    * immediate :: Function -> ()
+   *
    * @name immediate
    * @method
    * @memberof Frampton.Utils
@@ -5461,6 +5771,15 @@ define('frampton-utils/is_equal', ['exports', 'module', 'frampton-utils/curry'],
   });
 });
 define("frampton-utils/is_false", ["exports", "module"], function (exports, module) {
+  /**
+   * isFalse :: a -> Boolean
+   *
+   * @name isFalse
+   * @method
+   * @memberof Frampton.Utils
+   * @param {*} obj
+   * @returns {Boolean}
+   */
   "use strict";
 
   module.exports = is_false;
@@ -5571,6 +5890,15 @@ define('frampton-utils/is_number', ['exports', 'module'], function (exports, mod
 
   function is_number(obj) {
     return typeof obj === 'number';
+  }
+});
+define("frampton-utils/is_numeric", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = is_numeric;
+
+  function is_numeric(val) {
+    return !isNaN(val);
   }
 });
 define('frampton-utils/is_object', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_array) {
@@ -5688,6 +6016,15 @@ define('frampton-utils/is_string', ['exports', 'module'], function (exports, mod
   }
 });
 define("frampton-utils/is_true", ["exports", "module"], function (exports, module) {
+  /**
+   * isTrue :: a -> Boolean
+   *
+   * @name isTrue
+   * @method
+   * @memberof Frampton.Utils
+   * @param {*} obj
+   * @returns {Boolean}
+   */
   "use strict";
 
   module.exports = is_true;
@@ -5714,6 +6051,17 @@ define('frampton-utils/is_undefined', ['exports', 'module'], function (exports, 
     return typeof obj === 'undefined';
   }
 });
+define("frampton-utils/is_value", ["exports", "module"], function (exports, module) {
+  "use strict";
+
+  module.exports = is_value;
+
+  function is_value(test) {
+    return function (val) {
+      return val === test;
+    };
+  }
+});
 define('frampton-utils/lazy', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
   'use strict';
 
@@ -5723,11 +6071,10 @@ define('frampton-utils/lazy', ['exports', 'module', 'frampton-utils/curry'], fun
 
   /**
    * Takes a function and warps it to be called at a later time.
+   *
    * @name lazy
-   * @memberof Frampton
    * @method
-   * @method
-   * @static
+   * @memberof Frampton.Utils
    * @param {Function} fn The function to wrap.
    * @param {Array} args Array of arguments to pass to the function when called.
    */
@@ -5815,6 +6162,7 @@ define("frampton-utils/noop", ["exports", "module"], function (exports, module) 
 define("frampton-utils/not", ["exports", "module"], function (exports, module) {
   /**
    * not :: Function -> a -> Boolean
+   *
    * @name not
    * @method
    * @memberof Frampton.Utils
@@ -5840,6 +6188,8 @@ define('frampton-utils/not_implemented', ['exports', 'module'], function (export
 });
 define("frampton-utils/of_value", ["exports", "module"], function (exports, module) {
   /**
+   * Creates a function that always returns the specified value.
+   *
    * @name ofValue
    * @method
    * @memberof Frampton.Utils
@@ -5853,6 +6203,40 @@ define("frampton-utils/of_value", ["exports", "module"], function (exports, modu
   function of_value(value) {
     return function () {
       return value;
+    };
+  }
+});
+define('frampton-utils/once', ['exports', 'module', 'frampton-utils/warn'], function (exports, module, _framptonUtilsWarn) {
+  'use strict';
+
+  /**
+   * Create a function that can only be called once.
+   *
+   * @name once
+   * @method
+   * @memberof Frampton.Utils
+   * @param {Function} fn
+   * @returns {Function}
+   */
+  module.exports = once;
+
+  function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+  var _warn = _interopRequire(_framptonUtilsWarn);
+
+  function once(fn) {
+    var called = false;
+    return function () {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      if (called === false) {
+        called = true;
+        return fn.apply(null, args);
+      } else {
+        (0, _warn)('Once function called multiple times');
+      }
     };
   }
 });
@@ -5904,11 +6288,20 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signal/stepper'
   'use strict';
 
   /**
+   * @typedef Window
+   * @type Object
+   * @property {Frampton.Signal} dimensions - A Signal of the window dimensions
+   * @property {Frampton.Signal} width      - A Signal of with window width
+   * @property {Frampton.Signal} height     - A Signal of the window height
+   * @property {Frampton.Signal} resize     - A Signal of window resize events
+   */
+
+  /**
    * @name Window
    * @method
    * @memberof Frampton
-   * @param {Object} [element] DomNode to act as applicaton window
-   * @returns {Object}
+   * @param {Object} [element] - DomNode to act as applicaton window
+   * @returns {Window}
    */
   module.exports = Window;
 

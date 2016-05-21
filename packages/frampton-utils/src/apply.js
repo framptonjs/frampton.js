@@ -1,5 +1,6 @@
 /**
  * Takes a function and warps it to be called at a later time.
+ *
  * @name apply
  * @method
  * @memberof Frampton.Utils

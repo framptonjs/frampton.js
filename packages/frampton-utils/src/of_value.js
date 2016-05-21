@@ -1,4 +1,6 @@
 /**
+ * Creates a function that always returns the specified value.
+ *
  * @name ofValue
  * @method
  * @memberof Frampton.Utils

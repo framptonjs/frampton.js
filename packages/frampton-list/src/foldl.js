@@ -8,7 +8,7 @@ import isArray from 'frampton-utils/is_array';
  * @memberof Frampton.List
  */
 export default curry(function curried_foldl(fn, acc, xs) {
-  assert("Frampton.foldl recieved a non-array", isArray(xs));
+  assert("Frampton.List.foldl recieved a non-array", isArray(xs));
   const len = xs.length;
   for (let i = 0; i < len; i++) {
     acc = fn(acc, xs[i]);

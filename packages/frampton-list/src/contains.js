@@ -8,6 +8,6 @@ import curry from 'frampton-utils/curry';
  * @param {*}   obj
  * @retruns {Boolean}
  */
-export default curry(function(xs, obj) {
+export default curry((xs, obj) => {
   return (xs.indexOf(obj) > -1);
 });

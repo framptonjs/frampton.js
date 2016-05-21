@@ -9,7 +9,7 @@ import filter from 'frampton-list/filter';
  * @memberof Frampton.List
  */
 export default curry(function curried_drop(n, xs) {
-  assert("Frampton.drop recieved a non-array", isArray(xs));
+  assert("Frampton.List.drop recieved a non-array", isArray(xs));
   return filter((next) => {
     if (n === 0) {
       return true;

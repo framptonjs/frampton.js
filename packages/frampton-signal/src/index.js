@@ -10,7 +10,7 @@ import forward from 'frampton-signal/forward';
 
 /**
  * @name Signal
- * @namespace
+ * @class
  * @memberof Frampton
  */
 Frampton.Signal          = {};

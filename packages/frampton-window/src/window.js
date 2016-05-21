@@ -24,11 +24,20 @@ function update() {
 }
 
 /**
+ * @typedef Window
+ * @type Object
+ * @property {Frampton.Signal} dimensions - A Signal of the window dimensions
+ * @property {Frampton.Signal} width      - A Signal of with window width
+ * @property {Frampton.Signal} height     - A Signal of the window height
+ * @property {Frampton.Signal} resize     - A Signal of window resize events
+ */
+
+/**
  * @name Window
  * @method
  * @memberof Frampton
- * @param {Object} [element] DomNode to act as applicaton window
- * @returns {Object}
+ * @param {Object} [element] - DomNode to act as applicaton window
+ * @returns {Window}
  */
 export default function Window(element) {
   element = element;

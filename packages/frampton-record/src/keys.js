@@ -12,7 +12,14 @@ function getKeys(obj) {
   return result;
 }
 
-export default function(obj) {
+/**
+ * @name keys
+ * @method
+ * @memberof Frampton.Record
+ * @param {Object} obj Object whose keys to get
+ * @returns {String[]}
+ */
+export default function keys(obj) {
   if (isFunction(Object.keys)) {
     return Object.keys(obj).filter((key) => {
       return hasOwnProp.call(obj, key);

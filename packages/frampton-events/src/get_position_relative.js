@@ -16,11 +16,11 @@ export default curry(function get_position_relative(node, evt) {
   const position = getPosition(evt);
 
   const rect = node.getBoundingClientRect();
-  const relx = rect.left + document.body.scrollLeft + document.documentElement.scrollLeft;
-  const rely = rect.top + document.body.scrollTop + document.documentElement.scrollTop;
+  const rel_x = rect.left + document.body.scrollLeft + document.documentElement.scrollLeft;
+  const rel_y = rect.top + document.body.scrollTop + document.documentElement.scrollTop;
 
-  const posx = position[0] - Math.round(relx) - node.clientLeft;
-  const posy = position[1] - Math.round(rely) - node.clientTop;
+  const pos_x = position[0] - Math.round(rel_x) - node.clientLeft;
+  const pos_y = position[1] - Math.round(rel_y) - node.clientTop;
 
-  return [posx, posy];
+  return [pos_x, pos_y];
 });
