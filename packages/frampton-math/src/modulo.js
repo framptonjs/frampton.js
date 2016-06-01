@@ -1,4 +1,13 @@
 import curry from 'frampton-utils/curry';
 
-// modulo :: Number -> Number -> Number
-export default curry((a, b) => a % b);
+/**
+ * @name modulo
+ * @method
+ * @memberof Frampton.Math
+ * @param {Number} left
+ * @param {Number} right
+ * @returns {Number}
+ */
+export default curry( function modulo(left, right) {
+  return left % right;
+});

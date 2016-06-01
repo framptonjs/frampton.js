@@ -1,4 +1,13 @@
 import curry from 'frampton-utils/curry';
 
-// add :: Number -> Number -> Number
-export default curry((a, b) => a + b);
+/**
+ * @name add
+ * @method
+ * @memberof Frampton.Math
+ * @param {Number} left
+ * @param {Number} right
+ * @returns {Number}
+ */
+export default curry(function add(left, right) {
+  return (left + right);
+});

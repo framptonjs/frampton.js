@@ -35,6 +35,7 @@ function update() {
 /**
  * @name Window
  * @method
+ * @namespace
  * @memberof Frampton
  * @param {Object} [element] - DomNode to act as applicaton window
  * @returns {Window}

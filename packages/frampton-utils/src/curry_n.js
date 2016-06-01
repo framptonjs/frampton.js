@@ -10,8 +10,8 @@ import isFunction from 'frampton-utils/is_function';
  * @name curryN
  * @memberof Frampton.Utils
  * @method
- * @param {Number}   arity Number of arguments for function
- * @param {Function} curry Function to curry.
+ * @param {Number} arity - Number of arguments for function
+ * @param {Function} curry - Function to curry.
  * @returns {Function} A curried version of the function passed in.
  */
 export default function curry_n(arity, fn, ...args) {
@@ -21,7 +21,7 @@ export default function curry_n(arity, fn, ...args) {
   function curried(...args2) {
 
     // an array of arguments for this instance of the curried function
-    var locals = args.concat(args2);
+    const locals = args.concat(args2);
 
     if (locals.length >= arity) {
       return fn.apply(null, locals);

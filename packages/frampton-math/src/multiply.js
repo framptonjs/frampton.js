@@ -1,4 +1,13 @@
 import curry from 'frampton-utils/curry';
 
-// multiply :: Number -> Number -> Number
-export default curry((a, b) => a * b);
+/**
+ * @name multiply
+ * @method
+ * @memberof Frampton.Math
+ * @param {Number} a
+ * @param {Number} b
+ * @returns {Number}
+ */
+export default curry(function multiply(a, b) {
+  return a * b;
+});

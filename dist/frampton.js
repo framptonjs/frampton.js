@@ -142,7 +142,7 @@ SOFTWARE.
   }
 
 }());
-define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/state/create'], function (exports, _framptonNamespace, _framptonDataTaskCreate, _framptonDataTaskFail, _framptonDataTaskNever, _framptonDataTaskSequence, _framptonDataTaskSucceed, _framptonDataTaskWhen, _framptonDataTaskExecute, _framptonDataUnionCreate, _framptonDataStateCreate) {
+define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create'], function (exports, _framptonNamespace, _framptonDataTaskCreate, _framptonDataTaskFail, _framptonDataTaskNever, _framptonDataTaskSequence, _framptonDataTaskSucceed, _framptonDataTaskWhen, _framptonDataTaskExecute, _framptonDataUnionCreate, _framptonDataRecordCreate) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -165,7 +165,7 @@ define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/cr
 
   var _createUnion = _interopRequire(_framptonDataUnionCreate);
 
-  var _createState = _interopRequire(_framptonDataStateCreate);
+  var _createRecord = _interopRequire(_framptonDataRecordCreate);
 
   /**
    * @name Data
@@ -198,17 +198,17 @@ define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/cr
   _Frampton.Data.Union.create = _createUnion;
 
   /**
-   * @name State
+   * @name Record
    * @memberof Frampton.Data
    * @class
    */
-  _Frampton.Data.State = {};
-  _Frampton.Data.State.create = _createState;
+  _Frampton.Data.Record = {};
+  _Frampton.Data.Record.create = _createRecord;
 });
-define('frampton-data/state/create', ['exports', 'module', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-record/merge', 'frampton-record/keys'], function (exports, module, _framptonNamespace, _framptonUtilsGuid, _framptonUtilsWarn, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonRecordMerge, _framptonRecordKeys) {
+define('frampton-data/record/create', ['exports', 'module', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-utils/is_nothing', 'frampton-utils/is_something', 'frampton-record/merge', 'frampton-record/keys'], function (exports, module, _framptonNamespace, _framptonUtilsGuid, _framptonUtilsWarn, _framptonUtilsIs_nothing, _framptonUtilsIs_something, _framptonRecordMerge, _framptonRecordKeys) {
   'use strict';
 
-  module.exports = create_state;
+  module.exports = create_record;
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
@@ -226,7 +226,7 @@ define('frampton-data/state/create', ['exports', 'module', 'frampton/namespace',
 
   var _keys = _interopRequire(_framptonRecordKeys);
 
-  function create_state(data, id, props) {
+  function create_record(data, id, props) {
 
     var _id = id || (0, _guid)();
     var _props = props || (0, _keys)(data);
@@ -235,7 +235,7 @@ define('frampton-data/state/create', ['exports', 'module', 'frampton/namespace',
       if ((0, _isNothing)(update) && _Frampton.isDev()) {
         return Object.freeze(data);
       } else if ((0, _isSomething)(update)) {
-        return create_state((0, _merge)(data, update), _id, _props);
+        return create_record((0, _merge)(data, update), _id, _props);
       }
     };
 
@@ -248,10 +248,11 @@ define('frampton-data/state/create', ['exports', 'module', 'frampton/namespace',
       model[_props[i]] = data[_props[i]];
     }
 
+    // In dev mode verify object properties
     if (_Frampton.isDev()) {
       for (var key in data) {
         if (_props.indexOf(key) === -1) {
-          (0, _warn)('Frampton.Data.State received unknown key: ' + key);
+          (0, _warn)('Frampton.Data.Record received unknown key: ' + key);
         }
       }
     }
@@ -3170,9 +3171,16 @@ define('frampton-math/add', ['exports', 'module', 'frampton-utils/curry'], funct
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  // add :: Number -> Number -> Number
-  module.exports = (0, _curry)(function (a, b) {
-    return a + b;
+  /**
+   * @name add
+   * @method
+   * @memberof Frampton.Math
+   * @param {Number} left
+   * @param {Number} right
+   * @returns {Number}
+   */
+  module.exports = (0, _curry)(function add(left, right) {
+    return left + right;
   });
 });
 define('frampton-math/divide', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -3182,9 +3190,16 @@ define('frampton-math/divide', ['exports', 'module', 'frampton-utils/curry'], fu
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  // divide :: Number -> Number -> Number
-  module.exports = (0, _curry)(function (a, b) {
-    return a / b;
+  /**
+   * @name divide
+   * @method
+   * @memberof Frampton.Math
+   * @param {Number} left
+   * @param {Number} right
+   * @returns {Number}
+   */
+  module.exports = (0, _curry)(function divide(left, right) {
+    return left / right;
   });
 });
 define('frampton-math/max', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -3194,8 +3209,16 @@ define('frampton-math/max', ['exports', 'module', 'frampton-utils/curry'], funct
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  module.exports = (0, _curry)(function (l, r) {
-    return l > r ? l : r;
+  /**
+   * @name max
+   * @method
+   * @memberof Frampton.Math
+   * @param {Number} left - First number to test
+   * @param {Number} right - Second number to test
+   * @returns {Number} The larger of the two numbers
+   */
+  module.exports = (0, _curry)(function max(left, right) {
+    return left > right ? left : right;
   });
 });
 define('frampton-math/min', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -3205,8 +3228,16 @@ define('frampton-math/min', ['exports', 'module', 'frampton-utils/curry'], funct
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  module.exports = (0, _curry)(function (l, r) {
-    return l < r ? l : r;
+  /**
+   * @name min
+   * @method
+   * @memberof Frampton.Math
+   * @param {Number} left - First number to test
+   * @param {Number} right - Second number to test
+   * @returns {Number} The smaller of the two numbers
+   */
+  module.exports = (0, _curry)(function min(left, right) {
+    return left < right ? left : right;
   });
 });
 define('frampton-math/modulo', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -3216,9 +3247,16 @@ define('frampton-math/modulo', ['exports', 'module', 'frampton-utils/curry'], fu
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  // modulo :: Number -> Number -> Number
-  module.exports = (0, _curry)(function (a, b) {
-    return a % b;
+  /**
+   * @name modulo
+   * @method
+   * @memberof Frampton.Math
+   * @param {Number} left
+   * @param {Number} right
+   * @returns {Number}
+   */
+  module.exports = (0, _curry)(function modulo(left, right) {
+    return left % right;
   });
 });
 define('frampton-math/multiply', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -3228,8 +3266,15 @@ define('frampton-math/multiply', ['exports', 'module', 'frampton-utils/curry'], 
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  // multiply :: Number -> Number -> Number
-  module.exports = (0, _curry)(function (a, b) {
+  /**
+   * @name multiply
+   * @method
+   * @memberof Frampton.Math
+   * @param {Number} a
+   * @param {Number} b
+   * @returns {Number}
+   */
+  module.exports = (0, _curry)(function multiply(a, b) {
     return a * b;
   });
 });
@@ -3240,9 +3285,16 @@ define('frampton-math/subtract', ['exports', 'module', 'frampton-utils/curry'], 
 
   var _curry = _interopRequire(_framptonUtilsCurry);
 
-  // subtract :: Number -> Number -> Number
-  module.exports = (0, _curry)(function (a, b) {
-    return a - b;
+  /**
+   * @name subtract
+   * @method
+   * @memberof Frampton.Math
+   * @param {Number} left
+   * @param {Number} right
+   * @returns {Number}
+   */
+  module.exports = (0, _curry)(function (left, right) {
+    return left - right;
   });
 });
 define('frampton-mouse', ['exports', 'frampton/namespace', 'frampton-mouse/mouse'], function (exports, _framptonNamespace, _framptonMouseMouse) {
@@ -4342,7 +4394,7 @@ define('frampton-signal/toggle', ['exports', 'module', 'frampton-utils/assert', 
    * @returns {Frampton.Signal.Signal}
    */
   module.exports = (0, _curry)(function (initial, updater) {
-    (0, _assert)('Signal.toggle must be initialized with a Boolean', (0, _isBoolean)(initial));
+    (0, _assert)('Frampton.Signal.toggle must be initialized with a Boolean', (0, _isBoolean)(initial));
     var sig = (0, _createSignal)(initial);
     var current = initial;
     return sig.merge(updater.map(function () {
@@ -5333,8 +5385,8 @@ define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 
    * @name curryN
    * @memberof Frampton.Utils
    * @method
-   * @param {Number}   arity Number of arguments for function
-   * @param {Function} curry Function to curry.
+   * @param {Number} arity - Number of arguments for function
+   * @param {Function} curry - Function to curry.
    * @returns {Function} A curried version of the function passed in.
    */
   module.exports = curry_n;
@@ -5549,14 +5601,15 @@ define('frampton-utils/get', ['exports', 'module', 'frampton-utils/curry', 'fram
     }
   });
 });
-define("frampton-utils/guid", ["exports", "module"], function (exports, module) {
-  "use strict";
+define('frampton-utils/guid', ['exports', 'module'], function (exports, module) {
+  'use strict';
 
   module.exports = guid;
   var id = 0;
 
   function guid() {
-    return id++;
+    id += 1;
+    return 'fr-id-' + id;
   }
 });
 define('frampton-utils/has_length', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
@@ -6299,6 +6352,7 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signal/stepper'
   /**
    * @name Window
    * @method
+   * @namespace
    * @memberof Frampton
    * @param {Object} [element] - DomNode to act as applicaton window
    * @returns {Window}

@@ -6,7 +6,7 @@ import isSomething from 'frampton-utils/is_something';
 import merge from 'frampton-record/merge';
 import keys from 'frampton-record/keys';
 
-export default function create_state(data, id, props) {
+export default function create_record(data, id, props) {
 
   const _id = (id || guid());
   const _props = (props || keys(data));
@@ -15,7 +15,7 @@ export default function create_state(data, id, props) {
     if (isNothing(update) && Frampton.isDev()) {
       return Object.freeze(data);
     } else if (isSomething(update)) {
-      return create_state(merge(data, update), _id, _props);
+      return create_record(merge(data, update), _id, _props);
     }
   };
 
@@ -28,10 +28,11 @@ export default function create_state(data, id, props) {
     model[_props[i]] = data[_props[i]];
   }
 
+  // In dev mode verify object properties
   if (Frampton.isDev()) {
     for (let key in data) {
       if (_props.indexOf(key) === -1) {
-        warn('Frampton.Data.State received unknown key: ' + key);
+        warn('Frampton.Data.Record received unknown key: ' + key);
       }
     }
   }

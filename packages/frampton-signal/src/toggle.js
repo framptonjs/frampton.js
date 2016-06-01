@@ -16,7 +16,7 @@ import createSignal from 'frampton-signal/create';
  * @returns {Frampton.Signal.Signal}
  */
 export default curry((initial, updater) => {
-  assert('Signal.toggle must be initialized with a Boolean', isBoolean(initial));
+  assert('Frampton.Signal.toggle must be initialized with a Boolean', isBoolean(initial));
   const sig = createSignal(initial);
   var current = initial;
   return sig.merge(updater.map(() => {

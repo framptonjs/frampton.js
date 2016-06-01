@@ -10,7 +10,7 @@ import execute from 'frampton-data/task/execute';
 
 import createUnion from 'frampton-data/union/create';
 
-import createState from 'frampton-data/state/create';
+import createRecord from 'frampton-data/record/create';
 
 
 /**
@@ -44,9 +44,9 @@ Frampton.Data.Union = {};
 Frampton.Data.Union.create = createUnion;
 
 /**
- * @name State
+ * @name Record
  * @memberof Frampton.Data
  * @class
  */
-Frampton.Data.State = {};
-Frampton.Data.State.create = createState;
+Frampton.Data.Record = {};
+Frampton.Data.Record.create = createRecord;

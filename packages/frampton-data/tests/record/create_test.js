@@ -1,6 +1,6 @@
-import model from 'frampton-data/state/create';
+import model from 'frampton-data/record/create';
 
-QUnit.module('Frampton.Data.State.create');
+QUnit.module('Frampton.Data.Record.create');
 
 QUnit.test('Should return a function', function() {
 

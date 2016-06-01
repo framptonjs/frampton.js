@@ -1,5 +1,6 @@
 var id = 0;
 
 export default function guid() {
-  return id++;
+  id += 1;
+  return 'fr-id-' + id;
 }
