@@ -13,8 +13,8 @@ QUnit.test('Should return null for invalid key', function() {
 });
 
 QUnit.test('Should return correct nested value', function() {
-  const temp = { data : { id : 1 } };
-  equal(get('data.id', temp), 1);
+  const temp = { data : { obj : { id : 1 } } };
+  equal(get('data.obj.id', temp), 1);
 });
 
 QUnit.test('Should return null for missing nested value', function() {

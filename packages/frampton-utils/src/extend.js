@@ -12,9 +12,10 @@ import foldl from 'frampton-list/foldl';
  */
 export default function extend(base, ...args) {
   return foldl((acc, next) => {
-    var key;
-    for (key in next) {
-      acc[key] = next[key];
+    for (let key in next) {
+      if (next.hasOwnProperty(key)) {
+        acc[key] = next[key];
+      }
     }
     return acc;
   }, base, args);

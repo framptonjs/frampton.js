@@ -14,7 +14,7 @@ import first from 'frampton-list/first';
  * @returns {function} A new function that runs each of the given functions in succession
  */
 export default function compose(...fns) {
-  assert("Compose did not receive any arguments. You can't compose nothing. Stoopid.", (fns.length > 0));
+  assert("Compose did not receive any arguments. You can't compose nothing.", (fns.length > 0));
   return function composition(...args) {
     return first(foldr(function(args, fn) {
       return [fn.apply(this, args)];

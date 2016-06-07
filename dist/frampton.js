@@ -5098,7 +5098,7 @@ define('frampton-style/supported_props', ['exports', 'module', 'frampton-utils/w
     return obj;
   }
 });
-define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/always', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/curry_n', 'frampton-utils/equal', 'frampton-utils/error', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/has_length', 'frampton-utils/has_prop', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/is_array', 'frampton-utils/is_boolean', 'frampton-utils/is_defined', 'frampton-utils/is_empty', 'frampton-utils/is_equal', 'frampton-utils/is_false', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-utils/is_nothing', 'frampton-utils/is_null', 'frampton-utils/is_number', 'frampton-utils/is_numeric', 'frampton-utils/is_object', 'frampton-utils/is_primitive', 'frampton-utils/is_promise', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_true', 'frampton-utils/is_undefined', 'frampton-utils/is_value', 'frampton-utils/log', 'frampton-utils/lazy', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/not', 'frampton-utils/of_value', 'frampton-utils/once', 'frampton-utils/warn'], function (exports, _framptonNamespace, _framptonUtilsAlways, _framptonUtilsApply, _framptonUtilsAssert, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsCurry_n, _framptonUtilsEqual, _framptonUtilsError, _framptonUtilsExtend, _framptonUtilsGet, _framptonUtilsHas_length, _framptonUtilsHas_prop, _framptonUtilsIdentity, _framptonUtilsImmediate, _framptonUtilsIs_array, _framptonUtilsIs_boolean, _framptonUtilsIs_defined, _framptonUtilsIs_empty, _framptonUtilsIs_equal, _framptonUtilsIs_false, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonUtilsIs_nothing, _framptonUtilsIs_null, _framptonUtilsIs_number, _framptonUtilsIs_numeric, _framptonUtilsIs_object, _framptonUtilsIs_primitive, _framptonUtilsIs_promise, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_true, _framptonUtilsIs_undefined, _framptonUtilsIs_value, _framptonUtilsLog, _framptonUtilsLazy, _framptonUtilsMemoize, _framptonUtilsNoop, _framptonUtilsNot, _framptonUtilsOf_value, _framptonUtilsOnce, _framptonUtilsWarn) {
+define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/always', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/curry_n', 'frampton-utils/equal', 'frampton-utils/error', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/has_length', 'frampton-utils/has_prop', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/is_array', 'frampton-utils/is_boolean', 'frampton-utils/is_defined', 'frampton-utils/is_empty', 'frampton-utils/is_equal', 'frampton-utils/is_false', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-utils/is_nothing', 'frampton-utils/is_null', 'frampton-utils/is_number', 'frampton-utils/is_numeric', 'frampton-utils/is_object', 'frampton-utils/is_primitive', 'frampton-utils/is_promise', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_true', 'frampton-utils/is_undefined', 'frampton-utils/is_value', 'frampton-utils/lazy', 'frampton-utils/log', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/not', 'frampton-utils/of_value', 'frampton-utils/once', 'frampton-utils/warn'], function (exports, _framptonNamespace, _framptonUtilsAlways, _framptonUtilsApply, _framptonUtilsAssert, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsCurry_n, _framptonUtilsEqual, _framptonUtilsError, _framptonUtilsExtend, _framptonUtilsGet, _framptonUtilsHas_length, _framptonUtilsHas_prop, _framptonUtilsIdentity, _framptonUtilsImmediate, _framptonUtilsIs_array, _framptonUtilsIs_boolean, _framptonUtilsIs_defined, _framptonUtilsIs_empty, _framptonUtilsIs_equal, _framptonUtilsIs_false, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonUtilsIs_nothing, _framptonUtilsIs_null, _framptonUtilsIs_number, _framptonUtilsIs_numeric, _framptonUtilsIs_object, _framptonUtilsIs_primitive, _framptonUtilsIs_promise, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_true, _framptonUtilsIs_undefined, _framptonUtilsIs_value, _framptonUtilsLazy, _framptonUtilsLog, _framptonUtilsMemoize, _framptonUtilsNoop, _framptonUtilsNot, _framptonUtilsOf_value, _framptonUtilsOnce, _framptonUtilsWarn) {
   'use strict';
 
   function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
@@ -5173,9 +5173,9 @@ define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/alway
 
   var _isValue = _interopRequire(_framptonUtilsIs_value);
 
-  var _log = _interopRequire(_framptonUtilsLog);
-
   var _lazy = _interopRequire(_framptonUtilsLazy);
+
+  var _log = _interopRequire(_framptonUtilsLog);
 
   var _memoize = _interopRequire(_framptonUtilsMemoize);
 
@@ -5229,8 +5229,8 @@ define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/alway
   _Frampton.Utils.isTrue = _isTrue;
   _Frampton.Utils.isUndefined = _isUndefined;
   _Frampton.Utils.isValue = _isValue;
-  _Frampton.Utils.log = _log;
   _Frampton.Utils.lazy = _lazy;
+  _Frampton.Utils.log = _log;
   _Frampton.Utils.memoize = _memoize;
   _Frampton.Utils.noop = _noop;
   _Frampton.Utils.not = _not;
@@ -5336,7 +5336,7 @@ define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 
       fns[_key] = arguments[_key];
     }
 
-    (0, _assert)('Compose did not receive any arguments. You can\'t compose nothing. Stoopid.', fns.length > 0);
+    (0, _assert)('Compose did not receive any arguments. You can\'t compose nothing.', fns.length > 0);
     return function composition() {
       for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
@@ -5386,7 +5386,7 @@ define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 
    * @memberof Frampton.Utils
    * @method
    * @param {Number} arity - Number of arguments for function
-   * @param {Function} curry - Function to curry.
+   * @param {Function} fn - Function to curry.
    * @returns {Function} A curried version of the function passed in.
    */
   module.exports = curry_n;
@@ -5412,8 +5412,11 @@ define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 
       // an array of arguments for this instance of the curried function
       var locals = args.concat(args2);
 
+      // If we have all the arguments, apply the function and return result
       if (locals.length >= arity) {
         return fn.apply(null, locals);
+
+        // If we don't have all the arguments, return a new function that awaits remaining arguments
       } else {
         return curry_n.apply(null, [arity, fn].concat(locals));
       }
@@ -5532,9 +5535,10 @@ define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], fu
     }
 
     return (0, _foldl)(function (acc, next) {
-      var key;
-      for (key in next) {
-        acc[key] = next[key];
+      for (var key in next) {
+        if (next.hasOwnProperty(key)) {
+          acc[key] = next[key];
+        }
       }
       return acc;
     }, base, args);
@@ -5692,34 +5696,6 @@ define("frampton-utils/immediate", ["exports", "module"], function (exports, mod
 
   function immediate(fn, context) {
     setTimeout(fn.bind(context || null), 0);
-  }
-});
-define("frampton-utils/inherits", ["exports", "module"], function (exports, module) {
-  /**
-   * Similar to class extension in other languages. The child recieves all the
-   * static and prototype methods/properties of the parent object.
-   */
-  "use strict";
-
-  module.exports = inherits;
-
-  function inherits(child, parent) {
-
-    for (var key in parent) {
-      if (parent.hasOwnProperty(key)) {
-        child[key] = parent[key];
-      }
-    }
-
-    function Class() {
-      this.constructor = child;
-    }
-
-    Class.prototype = parent.prototype;
-    child.prototype = new Class();
-    child.__super__ = parent.prototype;
-
-    return child;
   }
 });
 define("frampton-utils/is_array", ["exports", "module"], function (exports, module) {
