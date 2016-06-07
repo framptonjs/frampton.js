@@ -6394,7 +6394,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
    */
   'use strict';
 
-  Frampton.VERSION = '0.1.5';
+  Frampton.VERSION = '0.1.6';
 
   Frampton.TEST = 'test';
 

@@ -1,6 +1,6 @@
 {
   "name": "frampton",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A functional reactive library",
   "scripts": {
     "test": "frampton test",
