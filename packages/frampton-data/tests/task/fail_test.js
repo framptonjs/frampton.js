@@ -9,11 +9,11 @@ QUnit.test('Should create a task that always fails', function(assert) {
 
   task.run({
     reject : (err) => {
-      equal(err, 'test error');
+      assert.equal(err, 'test error');
       done();
     },
     resolve : (val) => {
-      ok(false, 'should always fail');
+      assert.ok(false, 'should always fail');
       done();
     }
   });

@@ -13,7 +13,7 @@ QUnit.module('Frampton.Events.hasSelector', {
   }
 });
 
-QUnit.test('should return true if event target has given selector', function() {
+QUnit.test('should return true if event target has given selector', function(assert) {
   this.div1.classList.add('blue');
-  ok(hasSelector('.blue', { target: this.div1 }));
+  assert.ok(hasSelector('.blue', { target: this.div1 }));
 });

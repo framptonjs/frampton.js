@@ -15,7 +15,7 @@ QUnit.test('Task.join method should flatten nested Tasks', function(assert) {
   task.join().run({
     reject : noop,
     resolve : (val) => {
-      equal(val, 5, 'correctly flattened Task');
+      assert.equal(val, 5, 'correctly flattened Task');
       done();
     },
     progress : noop
@@ -36,7 +36,7 @@ QUnit.test('Task.join method should flatten many nested Tasks', function(assert)
   task.join().join().run({
     reject : noop,
     resolve : (val) => {
-      equal(val, 5, 'correctly flattened Task');
+      assert.equal(val, 5, 'correctly flattened Task');
       done();
     },
     progress : noop
@@ -51,14 +51,14 @@ QUnit.test('Task.chain method should propertly map and flatten', function(assert
   });
 
   const mapping1 = (val) => {
-    equal(val, 5, 'incorrect first result');
+    assert.equal(val, 5, 'incorrect first result');
     return createTask((sinks) => {
       sinks.resolve(val + 1);
     });
   };
 
   const mapping2 = (val) => {
-    equal(val, 6, 'incorrect second result');
+    assert.equal(val, 6, 'incorrect second result');
     return createTask((sinks) => {
       sinks.resolve(val + 2);
     });
@@ -67,7 +67,7 @@ QUnit.test('Task.chain method should propertly map and flatten', function(assert
   task.chain(mapping1).chain(mapping2).run({
     reject : noop,
     resolve : (val) => {
-      equal(val, 8, 'incorrect final result');
+      assert.equal(val, 8, 'incorrect final result');
       done();
     },
     progress : noop
@@ -88,7 +88,7 @@ QUnit.test('Task.map method should propertly map value of task to another value'
   task.map(mapping).run({
     reject : noop,
     resolve : (val) => {
-      equal(val, 'butcher');
+      assert.equal(val, 'butcher');
       done();
     },
     progress : noop
@@ -108,11 +108,11 @@ QUnit.test('Task.filter method should turn a resolve into a reject if prediate f
 
   task.filter(predicate).run({
     reject : (val) => {
-      equal(val, 5);
+      assert.equal(val, 5);
       done();
     },
     resolve : (val) => {
-      ok(false, 'incorrectly resolved');
+      assert.ok(false, 'incorrectly resolved');
       done();
     },
     progress : noop
@@ -132,11 +132,11 @@ QUnit.test('Task.filter method should do nothing if prediate succeeds', function
 
   task.filter(predicate).run({
     reject : (val) => {
-      ok(false, 'incorrectly rejected');
+      assert.ok(false, 'incorrectly rejected');
       done();
     },
     resolve : (val) => {
-      equal(val, 5);
+      assert.equal(val, 5);
       done();
     },
     progress : noop
@@ -157,7 +157,7 @@ QUnit.test('Task.recover method should propertly map reject value to resolved va
   task.recover(mapping).run({
     reject : noop,
     resolve : (val) => {
-      equal(val, 'butcher');
+      assert.equal(val, 'butcher');
       done();
     },
     progress : noop
@@ -189,24 +189,24 @@ QUnit.test('Task.progress method should propertly map progress values', function
 
   task.progress(mapping).run({
     reject : (val) => {
-      ok(false, 'reject called');
+      assert.ok(false, 'reject called');
       done();
     },
     resolve : (val) => {
       if (count === 0) {
-        equal(val, 2, 'incorrect first result');
+        assert.equal(val, 2, 'incorrect first result');
       } else if (count === 1) {
-        equal(val, 3, 'incorrect second result');
+        assert.equal(val, 3, 'incorrect second result');
       } else if (count === 2) {
-        equal(val, 10, 'incorrect final result');
+        assert.equal(val, 10, 'incorrect final result');
         done();
       } else {
-        ok(false, 'match fall through');
+        assert.ok(false, 'match fall through');
         done();
       }
     },
     progress : (val) => {
-      ok(false, 'progress mapping failed');
+      assert.ok(false, 'progress mapping failed');
       done();
     }
   });

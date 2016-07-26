@@ -1,63 +1,53 @@
 import curryN from 'frampton-utils/curry_n';
-import isNothing from 'frampton-utils/is_nothing';
-import isSomething from 'frampton-utils/is_something';
-import isArray from 'frampton-utils/is_array';
+import warn from 'frampton-utils/warn';
 import getKeys from 'frampton-record/keys';
-import validator from 'frampton-data/union/validator';
-import validateArgs from 'frampton-data/union/validate_args';
-import validateOptions from 'frampton-data/union/validate_options';
-import wildcard from 'frampton-data/union/wildcard';
-import validateCase from 'frampton-data/union/validate_case';
+import createType from 'frampton-data/union/utils/create_type';
+import caseOf from 'frampton-data/union/utils/case_of';
 
-const caseOf = function(parent, cases, val) {
+const blacklist = ['ctor', 'children', 'caseOf'];
 
-  validateCase(parent, val);
-  validateOptions(parent, cases);
-  const match = (isSomething(cases[val.ctor]) ? cases[val.ctor] : cases[wildcard]);
+/**
 
-  if (isNothing(match)) {
-    throw new Error('No match for value with name: ' + val.ctor);
-  }
-
-  // Destructure arguments for passing to callback
-  return match.apply(null, val.values);
-};
-
-const createType = function(parent, name, fields) {
-
-  const len = fields.length;
-  const validators = fields.map((field) => {
-    return validator(parent, field);
+  const Action = Union({
+    Foo : [String, Number],
+    Bar : { name : String }
   });
 
-  if (!isArray(fields)) {
-    throw new TypeError('Union must receive an array of fields for each type');
-  }
+  const foo = Action.Foo('test', 89);
 
-  const constructor = (...args) => {
-    const child = {};
-    child.constructor = parent;
-    if (!validateArgs(validators, args)) {
-      throw new TypeError('Union type ' + name + ' recieved an unknown argument');
+  const bar = Action.Bar({ name : 'test' });
+
+  Action.match({
+    Foo : (str, num) => str + num,
+    Bar : (name) => `my name is ${name}`
+  });
+
+ */
+
+/**
+ * Creates constructors for each type described in config
+ *
+ * @name create
+ * @memberof Frampton.Data.Union
+ * @param {Object} values
+ * @returns {Frampton.Data.Union}
+ */
+export default function create_union(values) {
+  const parent = {};
+  const children = getKeys(values);
+
+  parent.prototype = {};
+  parent.ctor = 'Frampton.Data.Union';
+  parent.children = children;
+  parent.match = curryN(3, caseOf, parent);
+
+  for (let name in values) {
+    if (blacklist.indexOf(name) === -1) {
+      parent[name] = createType(parent, name, values[name]);
+    } else {
+      warn(`Frampton.Data.Union received a protected key: ${name}`);
     }
-    child.ctor = name;
-    child.values = args;
-    return Object.freeze(child);
-  };
-
-  return (len > 0) ? curryN(len, constructor) : constructor;
-};
-
-// Creates constructors for each type described in config
-export default function(config) {
-  const obj = {};
-  const keys = getKeys(config);
-  obj.prototype = {};
-  obj.ctor = 'Union';
-  obj.keys = keys;
-  obj.match = curryN(3, caseOf, obj);
-  for (let key in config) {
-    obj[key] = createType(obj, key, config[key]);
   }
-  return Object.freeze(obj);
+
+  return Object.freeze(parent);
 }

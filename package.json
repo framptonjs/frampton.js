@@ -1,10 +1,11 @@
 {
   "name": "frampton",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A functional reactive library",
   "scripts": {
     "test": "frampton test",
     "build": "frampton build",
+    "deploy": "git push -u origin master; npm publish ./",
     "docs": "rm -rfv docs/* && jsdoc packages/**/src/*.js -d docs --readme README.md  --private"
   },
   "repository": {
@@ -18,10 +19,8 @@
   },
   "homepage": "https://github.com/framptonjs/frampton.js",
   "devDependencies": {
-    "broccoli": "^0.16.2",
-    "broccoli-cli": "^1.0.0",
-    "frampton-build": "*",
-    "jsdoc": "^3.4.0",
-    "qunitjs": "^1.16.0"
+    "frampton-build": "0.0.5",
+    "frampton-cli": "0.0.4",
+    "jsdoc": "3.4.0"
   }
 }

@@ -4,7 +4,7 @@ QUnit.module('Frampton.Events.simpleCache');
 
 QUnit.test('Should return a function', function(assert) {
   const cache = simpleCache();
-  ok(typeof cache === 'function');
+  assert.ok(typeof cache === 'function');
 });
 
 QUnit.test('Should run function if no cached value', function(assert) {
@@ -14,8 +14,8 @@ QUnit.test('Should run function if no cached value', function(assert) {
     count += 1;
     return 3;
   });
-  equal(val, 3);
-  equal(count, 1);
+  assert.equal(val, 3);
+  assert.equal(count, 1);
 });
 
 QUnit.test('Should not run function if key in cache', function(assert) {
@@ -29,7 +29,7 @@ QUnit.test('Should not run function if key in cache', function(assert) {
     count += 1;
     return 4;
   });
-  equal(val1, 3);
-  equal(val2, 3);
-  equal(count, 1);
+  assert.equal(val1, 3);
+  assert.equal(val2, 3);
+  assert.equal(count, 1);
 });

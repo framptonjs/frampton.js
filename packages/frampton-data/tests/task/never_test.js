@@ -9,21 +9,21 @@ QUnit.test('Should create a task that never resolves', function(assert) {
 
   task.run({
     reject : (err) => {
-      ok(false);
+      assert.ok(false);
       done();
     },
     resolve : (val) => {
-      ok(false);
+      assert.ok(false);
       done();
     },
     progress : (val) => {
-      ok(false);
+      assert.ok(false);
       done();
     }
   });
 
   setTimeout(() => {
-    ok(true);
+    assert.ok(true);
     done();
   }, 1000);
 });

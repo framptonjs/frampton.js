@@ -4,16 +4,6 @@
     "define",
     "console",
     "require",
-    "equal",
-    "notEqual",
-    "notStrictEqual",
-    "asyncTest",
-    "throws",
-    "deepEqual",
-    "ok",
-    "notOk",
-    "strictEqual",
-    "expect",
 
     // A subset of "browser:true":
     "window",

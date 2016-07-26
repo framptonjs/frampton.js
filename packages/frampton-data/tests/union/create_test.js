@@ -2,16 +2,24 @@ import Union from 'frampton-data/union/create';
 
 QUnit.module('Frampton.Data.Union.create');
 
-QUnit.test('Should create an object with specified keys', function() {
+QUnit.test('Should create an object with specified keys', function(assert) {
   const Person = Union({
     Employee : [],
     Manager : []
   });
-  ok(typeof Person.Employee === 'function');
-  ok(typeof Person.Manager === 'function');
+  assert.ok(typeof Person.Employee === 'function');
+  assert.ok(typeof Person.Manager === 'function');
 });
 
-QUnit.test('Should have a match method to test instances', function() {
+QUnit.test('Should create an object with a match method', function(assert) {
+  const Person = Union({
+    Employee : [],
+    Manager : []
+  });
+  assert.ok(typeof Person.match === 'function');
+});
+
+QUnit.test('Match method should correctly match instances', function(assert) {
   const Person = Union({
     Employee : [],
     Manager : []
@@ -20,24 +28,22 @@ QUnit.test('Should have a match method to test instances', function() {
   const test = Person.Employee();
   const match = Person.match({
     Employee : () => {
-      ok(true);
+      assert.ok(true);
     },
     Manager : () => {
-      ok(false);
+      assert.ok(false);
     }
   });
 
   match(test);
 });
 
-QUnit.test('Should have a match method that validates types', function() {
+QUnit.test('Should have a match method that validates types', function(assert) {
   const Person = Union({
     Employee : [String],
     Manager : [String]
   });
 
-  ok(Person.Employee('Fred'));
-  throws(function() {
-    Person.Employee(29);
-  });
+  assert.ok(typeof Person.Employee('Fred') === 'object', 'Did not return object');
+  assert.throws(() => { Person.Employee(29); }, 'Did not throw');
 });

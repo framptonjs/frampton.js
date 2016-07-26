@@ -14,7 +14,7 @@ export default function once(fn) {
   return function(...args) {
     if (called === false) {
       called = true;
-      return fn.apply(null, args);
+      return fn(...args);
     } else {
       warn('Once function called multiple times');
     }

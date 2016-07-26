@@ -2,10 +2,10 @@ import curry from 'frampton-utils/curry';
 
 QUnit.module('Frampton.Utils.curry');
 
-QUnit.test('should create a function that waits for all arguments', function() {
+QUnit.test('should create a function that waits for all arguments', function(assert) {
   var count = 0;
   var a = function(x, y, c, d) {
-    equal(count, 4, 'waits for all arguments');
+    assert.equal(count, 4, 'waits for all arguments');
     return (x + y + c + d);
   };
   var b = curry(a);
@@ -16,5 +16,5 @@ QUnit.test('should create a function that waits for all arguments', function() {
   count++;
   var e = d(4);
   count++;
-  equal(e(3), 12, 'returns correct value');
+  assert.equal(e(3), 12, 'returns correct value');
 });

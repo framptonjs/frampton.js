@@ -16,12 +16,12 @@ QUnit.module('Frampton.Style.contains', {
   }
 });
 
-QUnit.test('should return true if element contains element with selector', function() {
+QUnit.test('should return true if element contains element with selector', function(assert) {
   this.div2.classList.add('blue');
-  ok(contains('.blue', this.div1));
+  assert.ok(contains('.blue', this.div1));
 });
 
-QUnit.test('should return false if element does not contain element with selector', function() {
+QUnit.test('should return false if element does not contain element with selector', function(assert) {
   this.div2.classList.add('blue');
-  notOk(contains('#blue', this.div1));
+  assert.notOk(contains('#blue', this.div1));
 });

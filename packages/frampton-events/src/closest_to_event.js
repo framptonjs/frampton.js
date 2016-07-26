@@ -6,6 +6,8 @@ import eventTarget from 'frampton-events/event_target';
 /**
  * closestToEvent :: String -> DomEvent -> DomNode
  *
+ * Gets the closest parent to the event target matching the given selector
+ *
  * @name closestToEvent
  * @memberof Frampton.Events
  * @static

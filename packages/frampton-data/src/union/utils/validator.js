@@ -4,7 +4,7 @@ import isNumber from 'frampton-utils/is_number';
 import isString from 'frampton-utils/is_string';
 import isFunction from 'frampton-utils/is_function';
 import isNode from 'frampton-utils/is_node';
-import objectValidator from 'frampton-data/union/object_validator';
+import objectValidator from 'frampton-data/union/utils/object_validator';
 
 export default function get_validator(parent, type) {
 

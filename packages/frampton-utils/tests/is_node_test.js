@@ -2,43 +2,43 @@ import isNode from 'frampton-utils/is_node';
 
 QUnit.module('Frampton.Utils.isNode');
 
-QUnit.test('Should return true for dom nodes', function() {
+QUnit.test('Should return true for dom nodes', function(assert) {
   const div = document.createElement('div');
   const ul = document.createElement('ul');
   const span = document.createElement('span');
-  ok(isNode(div));
-  ok(isNode(ul));
-  ok(isNode(span));
+  assert.ok(isNode(div));
+  assert.ok(isNode(ul));
+  assert.ok(isNode(span));
 });
 
-QUnit.test('Should return false for null', function() {
+QUnit.test('Should return false for null', function(assert) {
   const temp = null;
-  notOk(isNode(temp));
+  assert.notOk(isNode(temp));
 });
 
-QUnit.test('Should return false for undefined', function() {
+QUnit.test('Should return false for undefined', function(assert) {
   var temp;
-  notOk(isNode(temp));
+  assert.notOk(isNode(temp));
 });
 
-QUnit.test('Should return false for strings', function() {
+QUnit.test('Should return false for strings', function(assert) {
   const temp = 'test';
-  notOk(isNode(temp));
+  assert.notOk(isNode(temp));
 });
 
-QUnit.test('Should return false for numbers', function() {
+QUnit.test('Should return false for numbers', function(assert) {
   const temp = 10;
-  notOk(isNode(temp));
+  assert.notOk(isNode(temp));
 });
 
-QUnit.test('Should return false for booleans', function() {
+QUnit.test('Should return false for booleans', function(assert) {
   const temp = false;
   const temp2 = true;
-  notOk(isNode(temp));
-  notOk(isNode(temp2));
+  assert.notOk(isNode(temp));
+  assert.notOk(isNode(temp2));
 });
 
-QUnit.test('Should return false for objects', function() {
+QUnit.test('Should return false for objects', function(assert) {
   const temp = {};
-  notOk(isNode(temp));
+  assert.notOk(isNode(temp));
 });

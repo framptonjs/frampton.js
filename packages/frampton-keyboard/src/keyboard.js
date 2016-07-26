@@ -4,8 +4,8 @@ import append from 'frampton-list/append';
 import remove from 'frampton-list/remove';
 import onEvent from 'frampton-events/on_event';
 import stepper from 'frampton-signal/stepper';
-import KEY_MAP from 'frampton-keyboard/key_map';
-import keyCode from 'frampton-keyboard/key_code';
+import KEY_MAP from 'frampton-keyboard/utils/key_map';
+import keyCode from 'frampton-keyboard/utils/key_code';
 
 //+ keyUp :: Signal DomEvent
 const keyUp = onEvent('keyup');

@@ -2,9 +2,10 @@ import diff from 'frampton-list/diff';
 
 QUnit.module('Frampton.List.diff');
 
-QUnit.test('should return array of all values from first array not in second', function() {
-  var xs = [1,2,3];
-  var ys = [2,3,4];
-  deepEqual(diff(xs, ys), [1], 'has correct values');
-  deepEqual(diff(ys, xs), [4], 'has correct values');
+QUnit.test('Should return array of all values from first array not in second', function(assert) {
+  const xs = [8,6,9,1,0,3];
+  const ys = [8,5,1,9,2];
+  const actual = diff(xs, ys);
+  const expected = [6,0,3];
+  assert.deepEqual(actual, expected, 'has correct values');
 });

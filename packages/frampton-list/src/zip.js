@@ -9,15 +9,14 @@ import curry from 'frampton-utils/curry';
  * @param {Array} xs
  * @param {Array} ys
  */
-export default curry(function(xs, ys) {
+export default curry(function zip_array(xs, ys) {
 
   const xLen = xs.length;
   const yLen = ys.length;
-  const len  = (xLen > yLen) ? yLen : xLen;
-  const zs   = new Array(len);
-  var i    = 0;
+  const len = ((xLen > yLen) ? yLen : xLen);
+  const zs = new Array(len);
 
-  for (;i<len;i++) {
+  for (let i = 0;i<len;i++) {
     zs[i] = [xs[i], ys[i]];
   }
 

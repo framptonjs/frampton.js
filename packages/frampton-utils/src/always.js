@@ -13,7 +13,9 @@ import curryN from 'frampton-utils/curry_n';
 export default curryN(2, function always(fn, ...args) {
   var value;
   return function() {
-    if (value === undefined) { value = fn.apply(null, args); }
+    if (value === undefined) {
+      value = fn(...args);
+    }
     return value;
   };
 });

@@ -15,12 +15,12 @@ import Mouse from 'frampton-mouse/mouse';
 
 QUnit.module('Frampton.Mouse');
 
-QUnit.test('Mouse.position should have starting value of [0,0]', function() {
+QUnit.test('Mouse.position should have starting value of [0,0]', function(assert) {
   const mouse = Mouse();
-  deepEqual(mouse.position(), [0,0]);
+  assert.deepEqual(mouse.position.get(), [0,0]);
 });
 
-QUnit.test('Mouse.isDown should have starting value of false', function() {
+QUnit.test('Mouse.isDown should have starting value of false', function(assert) {
   const mouse = Mouse();
-  equal(mouse.isDown(), false);
+  assert.equal(mouse.isDown.get(), false);
 });

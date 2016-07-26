@@ -3,9 +3,9 @@ import toggle from 'frampton-signal/toggle';
 
 QUnit.module('Frampton.Signal.toggle');
 
-QUnit.test('Should create a boolean signal with initial value of false', function() {
+QUnit.test('Should create a boolean signal with initial value of false', function(assert) {
   const sig = toggle(false, createSignal());
-  equal(sig(), false);
+  assert.equal(sig.get(), false);
 });
 
 QUnit.test('Should create a boolean signal that alternates values', function(assert) {
@@ -16,21 +16,21 @@ QUnit.test('Should create a boolean signal that alternates values', function(ass
 
   sig2.value((val) => {
     if (count === 0) {
-      equal(val, false);
+      assert.equal(val, false);
     } else if (count === 1) {
-      equal(val, true);
+      assert.equal(val, true);
     } else if (count === 2) {
-      equal(val, false);
+      assert.equal(val, false);
     } else if (count === 3) {
-      equal(val, true);
+      assert.equal(val, true);
       done();
     }
   });
 
   count += 1;
-  sig1(null);
+  sig1.push(null);
   count += 1;
-  sig1(null);
+  sig1.push(null);
   count += 1;
-  sig1(null);
+  sig1.push(null);
 });

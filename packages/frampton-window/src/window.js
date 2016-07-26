@@ -3,11 +3,11 @@ import onEvent from 'frampton-events/on_event';
 import get from 'frampton-utils/get';
 import isSomething from 'frampton-utils/is_something';
 
-var element = null;
-var resize = onEvent('resize', window);
-var dimensions = stepper([getWidth(), getHeight()], resize.map(update));
-var width = stepper(getWidth(), dimensions.map(get(0)));
-var height = stepper(getHeight(), dimensions.map(get(1)));
+const element = null;
+const resize = onEvent('resize', window);
+const dimensions = stepper([getWidth(), getHeight()], resize.map(update));
+const width = stepper(getWidth(), dimensions.map(get(0)));
+const height = stepper(getHeight(), dimensions.map(get(1)));
 
 function getWidth() {
   return (isSomething(element)) ? element.clientWidth : window.innerWidth;
@@ -18,8 +18,8 @@ function getHeight() {
 }
 
 function update() {
-  var w = getWidth();
-  var h = getHeight();
+  const w = getWidth();
+  const h = getHeight();
   return [w, h];
 }
 
@@ -44,8 +44,8 @@ export default function Window(element) {
   element = element;
   return {
     dimensions : dimensions,
-    width      : width,
-    height     : height,
-    resize     : resize
+    width : width,
+    height : height,
+    resize : resize
   };
 }

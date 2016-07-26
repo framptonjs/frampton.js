@@ -147,7 +147,7 @@ function ap(arg) {
   const parent = this;
   const initial = (parent._hasValue && arg._hasValue) ? parent._value(arg._value) : undefined;
   return createSignal((self) => {
-    self(parent._value(arg._value));
+    self.push(parent._value(arg._value));
   }, [parent], initial);
 }
 
@@ -162,7 +162,7 @@ function ap(arg) {
 function sample(tag) {
   const parent = this;
   return createSignal((self) => {
-    self(tag._value);
+    self.push(tag._value);
   }, [parent], tag._value);
 }
 
@@ -178,7 +178,7 @@ function take(limit) {
   const parent = this;
   return createSignal((self) => {
     if (limit-- > 0) {
-      self(parent._value);
+      self.push(parent._value);
     } else {
       self.close();
     }
@@ -203,7 +203,7 @@ function take(limit) {
 function fold(fn, initial) {
   const parent = this;
   return createSignal((self) => {
-    self(fn(self._value, parent._value));
+    self.push(fn(self._value, parent._value));
   }, [parent], initial);
 }
 
@@ -225,7 +225,7 @@ function filter(predicate) {
   const initial = (parent._hasValue && filterFn(parent._value)) ? parent._value : undefined;
   return createSignal((self) => {
     if (filterFn(parent._value)) {
-      self(parent._value);
+      self.push(parent._value);
     }
   }, [parent], initial);
 }
@@ -244,7 +244,7 @@ function filterPrevious(predicate) {
   const initial = (parent._hasValue) ? parent._value : undefined;
   return createSignal((self) => {
     if (predicate(self._value, parent._value)) {
-      self(parent._value);
+      self.push(parent._value);
     }
   }, [parent], initial);
 }
@@ -263,7 +263,7 @@ function and(predicate) {
   const initial = (parent._hasValue && predicate._value) ? parent._value : undefined;
   return createSignal((self) => {
     if (predicate._value) {
-      self(parent._value);
+      self.push(parent._value);
     }
   }, [parent], initial);
 }
@@ -282,7 +282,7 @@ function not(predicate) {
   const initial = (parent._hasValue && !predicate._value) ? parent._value : undefined;
   return createSignal((self) => {
     if (!predicate._value) {
-      self(parent.value);
+      self.push(parent.value);
     }
   }, [parent], initial);
 }
@@ -303,7 +303,7 @@ function map(mapping) {
   const mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
   const initial = (parent._hasValue) ? mappingFn(parent._value) : undefined;
   return createSignal((self) => {
-    self(mappingFn(parent._value));
+    self.push(mappingFn(parent._value));
   }, [parent], initial);
 }
 
@@ -321,7 +321,7 @@ function debounce(delay) {
   return createSignal((self) => {
     if (!timer) {
       timer = setTimeout(() => {
-        self(parent._value);
+        self.push(parent._value);
         timer = null;
       }, (delay || 10));
     }
@@ -341,7 +341,7 @@ function delay(time) {
   return createSignal((self) => {
     (function(saved) {
       setTimeout(() => {
-        self(saved);
+        self.push(saved);
       }, time);
     }(parent._value));
   }, [parent], parent._value);
@@ -461,7 +461,7 @@ function logValue(msg) {
     } else {
       log(parent._value);
     }
-    self(parent._value);
+    self.push(parent._value);
   }, [parent], parent._value);
 }
 
@@ -477,16 +477,18 @@ function logValue(msg) {
  */
 export function createSignal(update, parents, initial) {
 
-  const signal = (val) => {
-    return (
-      (isDefined(val)) ?
-      (updateValue(signal, val), signal) :
-      (signal._value)
-    );
+  const signal = {};
+
+  signal.push = (val) => {
+    updateValue(signal, val);
+  };
+
+  signal.get = () => {
+    return signal._value;
   };
 
   // Constructor
-  signal.ctor = 'Signal';
+  signal.ctor = 'Frampton.Signal';
 
   // Private
   signal._id = guid();
@@ -535,7 +537,7 @@ export function createSignal(update, parents, initial) {
 export function mergeMany(parents) {
   const initial = ((parents.length > 0) ? parents[0]._value : undefined);
   return createSignal((self) => {
-    self(self._updater._value);
+    self.push(self._updater._value);
   }, parents, initial);
 }
 

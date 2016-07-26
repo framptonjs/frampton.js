@@ -5,6 +5,6 @@ export default function is_signal(obj) {
   return (
     isFunction(obj) &&
     isString(obj.ctor) &&
-    obj.ctor === 'Signal'
+    obj.ctor === 'Frampton.Signal'
   );
 }

@@ -6,10 +6,9 @@ import isNumber from 'frampton-utils/is_number';
  * @method
  * @memberof Frampton.Utils
  * @param {Function} fn
- * @param {Object}   [context]
  * @returns {Function}
  */
-export default function memoize(fn, context) {
+export default function memoize(fn) {
 
   const store = {};
   const len = fn.length;
@@ -24,7 +23,7 @@ export default function memoize(fn, context) {
     if (key in store) {
       return store[key];
     } else {
-      return (store[key] = fn.apply((context || null), args));
+      return (store[key] = fn(...args));
     }
   };
 }

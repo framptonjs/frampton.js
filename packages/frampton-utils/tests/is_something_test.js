@@ -2,34 +2,34 @@ import isSomething from 'frampton-utils/is_something';
 
 QUnit.module('Frampton.Utils.isSomething');
 
-QUnit.test('Should return false for null', function() {
+QUnit.test('Should return false for null', function(assert) {
   const temp = null;
-  notOk(isSomething(temp));
+  assert.notOk(isSomething(temp));
 });
 
-QUnit.test('Should return false for undefined', function() {
+QUnit.test('Should return false for undefined', function(assert) {
   var temp;
-  notOk(isSomething(temp));
+  assert.notOk(isSomething(temp));
 });
 
-QUnit.test('Should return true for strings', function() {
+QUnit.test('Should return true for strings', function(assert) {
   const temp = 'test';
-  ok(isSomething(temp));
+  assert.ok(isSomething(temp));
 });
 
-QUnit.test('Should return true for numbers', function() {
+QUnit.test('Should return true for numbers', function(assert) {
   const temp = 10;
-  ok(isSomething(temp));
+  assert.ok(isSomething(temp));
 });
 
-QUnit.test('Should return true for booleans', function() {
+QUnit.test('Should return true for booleans', function(assert) {
   const temp = false;
   const temp2 = true;
-  ok(isSomething(temp));
-  ok(isSomething(temp2));
+  assert.ok(isSomething(temp));
+  assert.ok(isSomething(temp2));
 });
 
-QUnit.test('Should return true for objects', function() {
+QUnit.test('Should return true for objects', function(assert) {
   const temp = {};
-  ok(isSomething(temp));
+  assert.ok(isSomething(temp));
 });

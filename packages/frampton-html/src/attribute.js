@@ -1,6 +1,13 @@
 import curry from 'frampton-utils/curry';
 
-// attribute :: String -> Dom -> String
-export default curry((name, dom) => {
-  return dom.getAttribute(name);
+/**
+ * attribute :: String -> Element -> String
+ *
+ * @name attribute
+ * @param {String} name
+ * @param {Element} element
+ * @returns {*}
+ */
+export default curry((name, element) => {
+  return element.getAttribute(name);
 });

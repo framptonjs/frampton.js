@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * Takes a function and warps it to be called at a later time.
@@ -9,6 +9,6 @@ import curry from 'frampton-utils/curry';
  * @param {Function} fn The function to wrap.
  * @param {Array} args Array of arguments to pass to the function when called.
  */
-export default curry(function lazy(fn, args) {
+export default curryN(2, function lazy(fn, args) {
   return () => fn.apply(null, args);
 });

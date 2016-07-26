@@ -28,9 +28,7 @@ export default function deep_equal(obj1, obj2) {
       (isObject(obj2) || isArray(obj2))
     ) {
 
-      var key = null;
-
-      for (key in obj1) {
+      for (let key in obj1) {
         if (!obj2 || !_equal(obj1[key], obj2[key])) {
           return false;
         }

@@ -2,7 +2,7 @@ import preventDefault from 'frampton-events/prevent_default';
 
 QUnit.module('Frampton.Events.preventDefault');
 
-QUnit.test('Should call preventDefault and stopPropagation methods of event object', function() {
+QUnit.test('Should call preventDefault and stopPropagation methods of event object', function(assert) {
   var preventCalled = false;
   var stopCalled = false;
   const event = {
@@ -16,6 +16,6 @@ QUnit.test('Should call preventDefault and stopPropagation methods of event obje
 
   preventDefault(event);
 
-  equal(preventCalled, true);
-  equal(stopCalled, true);
+  assert.equal(preventCalled, true);
+  assert.equal(stopCalled, true);
 });

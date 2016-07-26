@@ -3,7 +3,7 @@ import swap from 'frampton-signal/swap';
 
 QUnit.module('Frampton.Signal.swap');
 
-QUnit.test('Should create a boolean signal with initial value of false', function() {
+QUnit.test('Should create a boolean signal with initial value of false', function(assert) {
   const sig = swap(createSignal(), createSignal());
-  equal(sig(), false);
+  assert.equal(sig.get(), false);
 });

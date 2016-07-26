@@ -13,17 +13,17 @@ QUnit.module('Frampton.Style.matches', {
   }
 });
 
-QUnit.test('should detect if an element has a class', function() {
+QUnit.test('should detect if an element has a class', function(assert) {
   this.div.classList.add('blue');
-  ok(matches('.blue', this.div));
+  assert.ok(matches('.blue', this.div));
 });
 
-QUnit.test('should detect if an element has an id', function() {
+QUnit.test('should detect if an element has an id', function(assert) {
   this.div.id = 'blue';
-  ok(matches('#blue', this.div));
+  assert.ok(matches('#blue', this.div));
 });
 
-QUnit.test('should detect if an element has an attribute', function() {
+QUnit.test('should detect if an element has an attribute', function(assert) {
   this.div.setAttribute('aria-live', 'polite');
-  ok(matches('[aria-live]', this.div));
+  assert.ok(matches('[aria-live]', this.div));
 });

@@ -2,20 +2,26 @@ import merge from 'frampton-record/merge';
 
 QUnit.module('Frampton.Record.merge');
 
-QUnit.test('should create a new object with values from two objects', function() {
-  var obj = { one: 1, two: 2 };
-  var obj2 = { three: 3, four: 4 };
-  deepEqual(merge(obj, obj2), { one: 1, two: 2, three: 3, four: 4 });
+QUnit.test('Should create a new object with values from two objects', function(assert) {
+  const obj = { one: 1, two: 2 };
+  const obj2 = { three: 3, four: 4 };
+  const actual = merge(obj, obj2);
+  const expected = { one: 1, two: 2, three: 3, four: 4 };
+  assert.deepEqual(actual, expected);
 });
 
-QUnit.test('should give second object precidence', function() {
-  var obj = { one: 1, two: 2, three: 3 };
-  var obj2 = { three: 33, four: 4 };
-  deepEqual(merge(obj, obj2), { one: 1, two: 2, three: 33, four: 4 });
+QUnit.test('Should give second object precidence', function(assert) {
+  const obj = { one: 1, two: 2, three: 3 };
+  const obj2 = { three: 33, four: 4 };
+  const actual = merge(obj, obj2);
+  const expected = { one: 1, two: 2, three: 33, four: 4 };
+  assert.deepEqual(actual, expected);
 });
 
-QUnit.test('should ignore nulls', function() {
-  var obj = { one: 1, two: 2, three: 3 };
-  var obj2 = null;
-  deepEqual(merge(obj, obj2), { one: 1, two: 2, three: 3 });
+QUnit.test('Should ignore nulls', function(assert) {
+  const obj = { one: 1, two: 2, three: 3 };
+  const obj2 = null;
+  const actual = merge(obj, obj2);
+  const expected = { one: 1, two: 2, three: 3 };
+  assert.deepEqual(actual, expected);
 });

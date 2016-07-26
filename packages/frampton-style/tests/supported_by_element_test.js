@@ -15,14 +15,14 @@ QUnit.module('Frampton.Style.supportedByElement', {
   }
 });
 
-QUnit.test('should return unprefixed property if browser supports it', function() {
-  equal(supported(this.element, 'border-radius'), 'border-radius');
+QUnit.test('should return unprefixed property if browser supports it', function(assert) {
+  assert.equal(supported(this.element, 'border-radius'), 'border-radius');
 });
 
-QUnit.test('should return prefixed properties for moz only properties', function() {
-  equal(supported(this.element, 'animation-duration'), '-moz-animation-duration');
+QUnit.test('should return prefixed properties for moz only properties', function(assert) {
+  assert.equal(supported(this.element, 'animation-duration'), '-moz-animation-duration');
 });
 
-QUnit.test('should return prefixed properties for webkit only properties', function() {
-  equal(supported(this.element, 'box-shadow'), '-webkit-box-shadow');
+QUnit.test('should return prefixed properties for webkit only properties', function(assert) {
+  assert.equal(supported(this.element, 'box-shadow'), '-webkit-box-shadow');
 });

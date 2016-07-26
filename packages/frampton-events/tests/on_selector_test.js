@@ -14,14 +14,14 @@ QUnit.module('Frampton.Events.onSelector', {
   }
 });
 
-QUnit.test('Should create a signal that responds to events on a given selector', function() {
+QUnit.test('Should create a signal that responds to events on a given selector', function(assert) {
   const sig = onSelector('click', '.blue').map(1);
-  equal(sig(), undefined, 'Initial value is not undefined');
+  assert.equal(sig.get(), undefined, 'Initial value is not undefined');
   this.selectorTestDiv.click();
-  equal(sig(), 1, 'Did not update to new value');
+  assert.equal(sig.get(), 1, 'Did not update to new value');
 });
 
-QUnit.test('Should create a signal that responds to multiple events', function() {
+QUnit.test('Should create a signal that responds to multiple events', function(assert) {
   var test = '';
   const sig = onSelector('click mouseover', '.blue').map((evt) => {
     return test += evt.type;
@@ -30,5 +30,5 @@ QUnit.test('Should create a signal that responds to multiple events', function()
   evt.initEvent('mouseover', true, true);
   this.selectorTestDiv.dispatchEvent(evt);
   this.selectorTestDiv.click();
-  equal(sig(), 'mouseoverclick');
+  assert.equal(sig.get(), 'mouseoverclick');
 });

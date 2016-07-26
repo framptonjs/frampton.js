@@ -2,15 +2,15 @@ import update from 'frampton-record/update';
 
 QUnit.module('Frampton.Record.update');
 
-QUnit.test('should return a copy of object with update key', function() {
+QUnit.test('Should correctly update specified keys', function(assert) {
+  const obj = { one: 1, two: 2, three: 3 };
+  const actual = update(obj, { one : 3 });
+  const expected = { one : 3, two : 2, three : 3 };
+  assert.deepEqual(actual, expected);
+});
 
-  var obj = { one: 1, two: 2, three: 3 };
-  var newObj = update(obj, { one : 3 });
-
-  ok(obj !== newObj);
-  deepEqual({
-    one : 3,
-    two : 2,
-    three : 3
-  }, newObj);
+QUnit.test('Should return a new instance', function(assert) {
+  const obj = { one: 1, two: 2, three: 3 };
+  const newObj = update(obj, { one : 3 });
+  assert.ok(obj !== newObj);
 });

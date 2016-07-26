@@ -7,11 +7,10 @@ export default function get_event_signal(name, target) {
   const parts = name.split(' ').filter((val) => !isEmpty(val));
   const len = parts.length;
   const sigs = [];
-  var temp;
   for (let i = 0; i < len; i++) {
-    temp = createSignal();
-    addListener(parts[i], target, temp);
-    sigs.push(temp);
+    const sig = createSignal();
+    addListener(parts[i], target, sig.push);
+    sigs.push(sig);
   }
   return mergeMany(sigs);
 }

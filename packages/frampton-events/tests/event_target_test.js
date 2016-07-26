@@ -16,7 +16,8 @@ QUnit.module('Frampton.Events.eventTarget', {
   }
 });
 
-QUnit.test('should return closest element matching selector', function() {
-  this.div1.classList.add('blue');
-  equal(eventTarget({ target: this.div1 }), this.div1, 'correctly gets element');
+QUnit.test('should return closest element matching selector', function(assert) {
+  const actual = eventTarget({ target: this.div1 });
+  const expected = this.div1;
+  assert.equal(actual, expected, 'correctly gets element');
 });

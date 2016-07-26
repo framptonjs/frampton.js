@@ -1,26 +1,26 @@
-import assert from 'frampton-utils/assert';
+import myAssert from 'frampton-utils/assert';
 
 QUnit.module('Frampton.Utils.assert');
 
-QUnit.test('should throw for falsy value', function() {
-  throws(function() { assert('falsy value', 0); }, 'throws for falsy');
+QUnit.test('Should throw for falsy value', function(assert) {
+  assert.throws(function() { myAssert('falsy value', 0); }, 'throws for falsy');
 });
 
-QUnit.test('should not throw for truthy value', function() {
-  ok((typeof assert('truthy value', 'true') === 'undefined'), 'passes on truthy');
+QUnit.test('Should not throw for truthy value', function(assert) {
+  assert.ok((typeof myAssert('truthy value', 'true') === 'undefined'), 'passes on truthy');
 });
 
-QUnit.test('should throw for false', function() {
-  throws(function() { assert('false', false); }, 'throws for false');
+QUnit.test('Should throw for false', function(assert) {
+  assert.throws(function() { myAssert('false', false); }, 'throws for false');
 });
 
-QUnit.test('should not throw for true', function() {
-  ok((typeof assert('true', true) === 'undefined'), 'passes on true');
+QUnit.test('Should not throw for true', function(assert) {
+  assert.ok((typeof myAssert('true', true) === 'undefined'), 'passes on true');
 });
 
-QUnit.test('thrown message should be correct', function() {
-  throws(
-    function() { assert('custom message', false); },
+QUnit.test('Thrown message should be correct', function(assert) {
+  assert.throws(
+    function() { myAssert('custom message', false); },
     function(err) { return err.message === 'custom message'; },
     'returns correct error message'
   );

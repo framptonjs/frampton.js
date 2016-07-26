@@ -1,5 +1,5 @@
 import assert from 'frampton-utils/assert';
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 import isArray from 'frampton-utils/is_array';
 
 /**
@@ -7,7 +7,7 @@ import isArray from 'frampton-utils/is_array';
  * @method
  * @memberof Frampton.List
  */
-export default curry(function curried_foldr(fn, acc, xs) {
+export default curryN(3, function curried_foldr(fn, acc, xs) {
   assert("Frampton.List.foldr recieved a non-array", isArray(xs));
   var len = xs.length;
   while (len--) {

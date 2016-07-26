@@ -16,17 +16,17 @@ QUnit.module('Frampton.Events.containsSelector', {
   }
 });
 
-QUnit.test('should return true if event target has given selector', function() {
+QUnit.test('should return true if event target has given selector', function(assert) {
   this.div1.classList.add('blue');
-  ok(containsSelector('.blue', { target: this.div1 }));
+  assert.ok(containsSelector('.blue', { target: this.div1 }));
 });
 
-QUnit.test('should return true if event target contains given selector', function() {
+QUnit.test('should return true if event target contains given selector', function(assert) {
   this.div2.classList.add('blue');
-  ok(containsSelector('.blue', { target: this.div1 }));
+  assert.ok(containsSelector('.blue', { target: this.div1 }));
 });
 
-QUnit.test('should return false if event target does not contain given selector', function() {
+QUnit.test('should return false if event target does not contain given selector', function(assert) {
   this.div2.classList.add('blue');
-  notOk(containsSelector('#blue', { target: this.div1 }));
+  assert.notOk(containsSelector('#blue', { target: this.div1 }));
 });

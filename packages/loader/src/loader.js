@@ -36,8 +36,8 @@ SOFTWARE.
 
   if (typeof Frampton.__loader === 'undefined') {
 
-    var registry = {},
-        seen     = {};
+    var registry = {};
+    var seen = {};
 
     define = function(name, deps, callback) {
 
@@ -61,7 +61,7 @@ SOFTWARE.
     function internalRequire(name, referrerName) {
 
       var exports = seen[name];
-          module  = {};
+      var module = {};
 
       if (exports !== undefined) {
         return exports;
@@ -78,12 +78,12 @@ SOFTWARE.
         }
       }
 
-      var mod      = registry[name],
-          deps     = mod.deps,
-          callback = mod.callback,
-          reified  = [],
-          len      = deps.length,
-          i        = 0;
+      var mod = registry[name];
+      var deps = mod.deps;
+      var callback = mod.callback;
+      var reified = [];
+      var len = deps.length;
+      var i = 0;
 
       for (; i<len; i++) {
         if (deps[i] === 'exports') {
@@ -108,10 +108,10 @@ SOFTWARE.
         return child;
       }
 
-      var parts      = child.split('/'),
-          parentBase = name.split('/').slice(0, -1),
-          len        = parts.length,
-          i          = 0;
+      var parts = child.split('/');
+      var parentBase = name.split('/').slice(0, -1);
+      var len = parts.length;
+      var i = 0;
 
       for (; i < len; i++) {
 
