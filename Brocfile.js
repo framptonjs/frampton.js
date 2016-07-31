@@ -1,8 +1,24 @@
-var FramptonBuild = require('frampton-build');
-var packages   = require('./packages');
+const FramptonBuild = require('frampton-build');
 
-var build = new FramptonBuild({
-  name     : 'frampton',
+const packages = {
+  'frampton' : { trees: null },
+  'frampton-utils' : { trees: null },
+  'frampton-math' : { trees: null },
+  'frampton-list' : { trees: null },
+  'frampton-record' : { trees: null },
+  'frampton-string' : { trees: null },
+  'frampton-data' : { trees: null },
+  'frampton-html' : { trees: null },
+  'frampton-style' : { trees: null },
+  'frampton-events' : { trees: null },
+  'frampton-signal' : { trees: null },
+  'frampton-mouse' : { trees: null },
+  'frampton-keyboard' : { trees: null },
+  'frampton-window' : { trees: null }
+};
+
+const build = new FramptonBuild({
+  name : 'frampton',
   packages : packages
 });
 

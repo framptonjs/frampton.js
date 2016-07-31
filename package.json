@@ -1,10 +1,11 @@
 {
   "name": "frampton",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A functional reactive library",
   "scripts": {
     "test": "frampton test",
     "build": "frampton build",
+    "clean-install": "rm -rfv node_modules; npm install;",
     "deploy": "git push -u origin master; npm publish ./",
     "docs": "rm -rfv docs/* && jsdoc packages/**/src/*.js -d docs --readme README.md  --private"
   },
@@ -20,7 +21,7 @@
   "homepage": "https://github.com/framptonjs/frampton.js",
   "devDependencies": {
     "frampton-build": "0.0.5",
-    "frampton-cli": "0.0.4",
+    "frampton-cli": "0.0.6",
     "jsdoc": "3.4.0"
   }
 }

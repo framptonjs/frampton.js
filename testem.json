@@ -1,7 +1,7 @@
 {
   "framework": "qunit",
 
-  "test_page": "tests/index.html?hidepassed",
+  "test_page": "./index.html?hidepassed",
 
   "timeout": 540,
 
