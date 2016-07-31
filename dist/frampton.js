@@ -143,37 +143,41 @@ SOFTWARE.
 
 }());
 
-define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create'], function (exports, _framptonNamespace, _framptonDataTaskCreate, _framptonDataTaskFail, _framptonDataTaskNever, _framptonDataTaskSequence, _framptonDataTaskSucceed, _framptonDataTaskWhen, _framptonDataTaskExecute, _framptonDataUnionCreate, _framptonDataRecordCreate) {
+define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create'], function (_namespace, _create, _fail, _never, _sequence, _succeed, _when, _execute, _create3, _create5) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _create2 = _interopRequireDefault(_create);
 
-  var _createTask = _interopRequireDefault(_framptonDataTaskCreate);
+  var _fail2 = _interopRequireDefault(_fail);
 
-  var _fail = _interopRequireDefault(_framptonDataTaskFail);
+  var _never2 = _interopRequireDefault(_never);
 
-  var _never = _interopRequireDefault(_framptonDataTaskNever);
+  var _sequence2 = _interopRequireDefault(_sequence);
 
-  var _sequence = _interopRequireDefault(_framptonDataTaskSequence);
+  var _succeed2 = _interopRequireDefault(_succeed);
 
-  var _succeed = _interopRequireDefault(_framptonDataTaskSucceed);
+  var _when2 = _interopRequireDefault(_when);
 
-  var _when = _interopRequireDefault(_framptonDataTaskWhen);
+  var _execute2 = _interopRequireDefault(_execute);
 
-  var _execute = _interopRequireDefault(_framptonDataTaskExecute);
+  var _create4 = _interopRequireDefault(_create3);
 
-  var _createUnion = _interopRequireDefault(_framptonDataUnionCreate);
+  var _create6 = _interopRequireDefault(_create5);
 
-  var _createRecord = _interopRequireDefault(_framptonDataRecordCreate);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Data
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Data = {};
+  _namespace2.default.Data = {};
 
   /**
    * @name Task
@@ -181,54 +185,61 @@ define('frampton-data', ['exports', 'frampton/namespace', 'frampton-data/task/cr
    * @class A data type for wrapping impure computations
    * @constructor Should not be called by the user.
    */
-  _Frampton['default'].Data.Task = {};
-  _Frampton['default'].Data.Task.create = _createTask['default'];
-  _Frampton['default'].Data.Task.fail = _fail['default'];
-  _Frampton['default'].Data.Task.succeed = _succeed['default'];
-  _Frampton['default'].Data.Task.never = _never['default'];
-  _Frampton['default'].Data.Task.sequence = _sequence['default'];
-  _Frampton['default'].Data.Task.when = _when['default'];
-  _Frampton['default'].Data.Task.execute = _execute['default'];
+  _namespace2.default.Data.Task = {};
+  _namespace2.default.Data.Task.create = _create2.default;
+  _namespace2.default.Data.Task.fail = _fail2.default;
+  _namespace2.default.Data.Task.succeed = _succeed2.default;
+  _namespace2.default.Data.Task.never = _never2.default;
+  _namespace2.default.Data.Task.sequence = _sequence2.default;
+  _namespace2.default.Data.Task.when = _when2.default;
+  _namespace2.default.Data.Task.execute = _execute2.default;
 
   /**
    * @name Union
    * @memberof Frampton.Data
    * @class
    */
-  _Frampton['default'].Data.Union = {};
-  _Frampton['default'].Data.Union.create = _createUnion['default'];
+  _namespace2.default.Data.Union = {};
+  _namespace2.default.Data.Union.create = _create4.default;
 
   /**
    * @name Record
    * @memberof Frampton.Data
    * @class
    */
-  _Frampton['default'].Data.Record = {};
-  _Frampton['default'].Data.Record.create = _createRecord['default'];
+  _namespace2.default.Data.Record = {};
+  _namespace2.default.Data.Record.create = _create6.default;
 });
-define('frampton-data/record/create', ['exports', 'module', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-utils/is_object', 'frampton-record/merge', 'frampton-record/keys'], function (exports, module, _framptonNamespace, _framptonUtilsGuid, _framptonUtilsWarn, _framptonUtilsIs_object, _framptonRecordMerge, _framptonRecordKeys) {
+define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-utils/is_object', 'frampton-record/merge', 'frampton-record/keys'], function (exports, _namespace, _guid, _warn, _is_object, _merge, _keys) {
   'use strict';
 
-  module.exports = create_record;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = create_record;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _guid2 = _interopRequireDefault(_guid);
 
-  var _guid = _interopRequireDefault(_framptonUtilsGuid);
+  var _warn2 = _interopRequireDefault(_warn);
 
-  var _warn = _interopRequireDefault(_framptonUtilsWarn);
+  var _is_object2 = _interopRequireDefault(_is_object);
 
-  var _isObject = _interopRequireDefault(_framptonUtilsIs_object);
+  var _merge2 = _interopRequireDefault(_merge);
 
-  var _merge = _interopRequireDefault(_framptonRecordMerge);
+  var _keys2 = _interopRequireDefault(_keys);
 
-  var _keys = _interopRequireDefault(_framptonRecordKeys);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var blacklist = ['_id', '_props', 'ctor', 'keys', 'get', 'set', 'update', 'data'];
 
   function validateData(props, data) {
-    if (!_Frampton['default'].isProd()) {
+    if (!_namespace2.default.isProd()) {
       for (var prop in data) {
         if (props.indexOf(prop) === -1) {
           throw new TypeError('Frampton.Data.Record received unknown key: ' + prop);
@@ -239,8 +250,8 @@ define('frampton-data/record/create', ['exports', 'module', 'frampton/namespace'
 
   function create_record(data, id, props) {
 
-    var _id = id || _guid['default']();
-    var _props = props || _keys['default'](data);
+    var _id = id || (0, _guid2.default)();
+    var _props = props || (0, _keys2.default)(data);
 
     var model = {};
     model.ctor = 'Frampton.Data.Record';
@@ -261,10 +272,10 @@ define('frampton-data/record/create', ['exports', 'module', 'frampton/namespace'
      * @returns {Object}
      */
     model.update = function (update) {
-      if (_isObject['default'](update)) {
-        return create_record(_merge['default'](data, update), _id, _props);
+      if ((0, _is_object2.default)(update)) {
+        return create_record((0, _merge2.default)(data, update), _id, _props);
       } else {
-        _warn['default']('Frampton.Data.Record.update did not receive an object');
+        (0, _warn2.default)('Frampton.Data.Record.update did not receive an object');
       }
     };
 
@@ -279,7 +290,7 @@ define('frampton-data/record/create', ['exports', 'module', 'frampton/namespace'
       if (blacklist.indexOf(key) === -1) {
         model[key] = value;
       } else {
-        _warn['default']('Frampton.Data.Record received a protected key: ' + key);
+        (0, _warn2.default)('Frampton.Data.Record received a protected key: ' + key);
       }
     }
 
@@ -289,24 +300,31 @@ define('frampton-data/record/create', ['exports', 'module', 'frampton/namespace'
     return Object.freeze(model);
   }
 });
-define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immediate', 'frampton-utils/is_function', 'frampton-utils/noop', 'frampton-utils/of_value', 'frampton-utils/is_equal', 'frampton-data/task/valid_sinks'], function (exports, module, _framptonUtilsImmediate, _framptonUtilsIs_function, _framptonUtilsNoop, _framptonUtilsOf_value, _framptonUtilsIs_equal, _framptonDataTaskValid_sinks) {
+define('frampton-data/task/create', ['exports', 'frampton-utils/immediate', 'frampton-utils/is_function', 'frampton-utils/noop', 'frampton-utils/of_value', 'frampton-utils/is_equal', 'frampton-data/task/valid_sinks'], function (exports, _immediate, _is_function, _noop, _of_value, _is_equal, _valid_sinks) {
   'use strict';
 
-  module.exports = create_task;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = create_task;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _immediate2 = _interopRequireDefault(_immediate);
 
-  var _immediate = _interopRequireDefault(_framptonUtilsImmediate);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _noop2 = _interopRequireDefault(_noop);
 
-  var _noop = _interopRequireDefault(_framptonUtilsNoop);
+  var _of_value2 = _interopRequireDefault(_of_value);
 
-  var _ofValue = _interopRequireDefault(_framptonUtilsOf_value);
+  var _is_equal2 = _interopRequireDefault(_is_equal);
 
-  var _isEqual = _interopRequireDefault(_framptonUtilsIs_equal);
+  var _valid_sinks2 = _interopRequireDefault(_valid_sinks);
 
-  var _validSinks = _interopRequireDefault(_framptonDataTaskValid_sinks);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function Task(task) {
     this.fn = task;
@@ -337,9 +355,9 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
   Task.prototype.run = function (sinks) {
     var _this = this;
 
-    _immediate['default'](function () {
+    (0, _immediate2.default)(function () {
       try {
-        _this.fn(_validSinks['default'](sinks));
+        _this.fn((0, _valid_sinks2.default)(sinks));
       } catch (e) {
         sinks.reject(e);
       }
@@ -398,7 +416,7 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
         resolve: function resolve(val) {
           val.run(sinks);
         },
-        progress: _noop['default']
+        progress: _noop2.default
       });
     });
   };
@@ -422,7 +440,7 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
         resolve: function resolve(val) {
           task.run(sinks);
         },
-        progress: _noop['default']
+        progress: _noop2.default
       });
     });
   };
@@ -492,7 +510,7 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    * @param {*} val - A value to map errors to
    * @returns {Frampton.Data.Task}
    */
-  Task.prototype['default'] = function (val) {
+  Task.prototype.default = function (val) {
     return this.recover(function () {
       return val;
     });
@@ -511,7 +529,7 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    */
   Task.prototype.progress = function (mapping) {
     var source = this;
-    var mappingFn = _isFunction['default'](mapping) ? mapping : _ofValue['default'](mapping);
+    var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
     return new Task(function (sinks) {
       source.run({
         reject: sinks.reject,
@@ -534,7 +552,7 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    */
   Task.prototype.map = function (mapping) {
     var source = this;
-    var mappingFn = _isFunction['default'](mapping) ? mapping : _ofValue['default'](mapping);
+    var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
     return new Task(function (sinks) {
       source.run({
         reject: sinks.reject,
@@ -570,7 +588,7 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    */
   Task.prototype.filter = function (predicate) {
     var source = this;
-    var filterFn = _isFunction['default'](predicate) ? predicate : _isEqual['default'](predicate);
+    var filterFn = (0, _is_function2.default)(predicate) ? predicate : (0, _is_equal2.default)(predicate);
     return new Task(function (sinks) {
       source.run({
         reject: sinks.reject,
@@ -610,21 +628,27 @@ define('frampton-data/task/create', ['exports', 'module', 'frampton-utils/immedi
    * @param {Function} computation - The function the Task should execute
    * @returns {Frampton.Data.Task}
    */
-
   function create_task(computation) {
     return new Task(computation);
   }
 });
-define('frampton-data/task/execute', ['exports', 'module', 'frampton-utils/log', 'frampton-utils/warn'], function (exports, module, _framptonUtilsLog, _framptonUtilsWarn) {
+define('frampton-data/task/execute', ['exports', 'frampton-utils/log', 'frampton-utils/warn'], function (exports, _log, _warn) {
   'use strict';
 
-  module.exports = execute;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = execute;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _log2 = _interopRequireDefault(_log);
 
-  var _log = _interopRequireDefault(_framptonUtilsLog);
+  var _warn2 = _interopRequireDefault(_warn);
 
-  var _warn = _interopRequireDefault(_framptonUtilsWarn);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * execute :: Signal Task x a -> Signal a -> ()
@@ -640,31 +664,37 @@ define('frampton-data/task/execute', ['exports', 'module', 'frampton-utils/log',
    * @param {Frampton.Signals.Signal} tasks - Signal of Tasks to execute
    * @param {Function} value - A function to pass the resolve values to
    */
-
   function execute(tasks, value) {
     tasks.value(function (task) {
       task.run({
         reject: function reject(err) {
-          _warn['default']('Error running task: ', err);
+          (0, _warn2.default)('Error running task: ', err);
         },
         resolve: function resolve(val) {
           value(val);
         },
         progress: function progress(val) {
-          _log['default']('Task progress: ', val);
+          (0, _log2.default)('Task progress: ', val);
         }
       });
     });
   }
 });
-define('frampton-data/task/fail', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
+define('frampton-data/task/fail', ['exports', 'frampton-data/task/create'], function (exports, _create) {
   'use strict';
 
-  module.exports = fail;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = fail;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _create2 = _interopRequireDefault(_create);
 
-  var _create = _interopRequireDefault(_framptonDataTaskCreate);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * fail :: x -> Task x a
@@ -677,21 +707,27 @@ define('frampton-data/task/fail', ['exports', 'module', 'frampton-data/task/crea
    * @param {*} err - Value used as the return value of the reject branch.
    * @returns {Frampton.Data.Task}
    */
-
   function fail(err) {
-    return _create['default'](function (sinks) {
+    return (0, _create2.default)(function (sinks) {
       return sinks.reject(err);
     });
   }
 });
-define('frampton-data/task/never', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
+define('frampton-data/task/never', ['exports', 'frampton-data/task/create'], function (exports, _create) {
   'use strict';
 
-  module.exports = never;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = never;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _create2 = _interopRequireDefault(_create);
 
-  var _create = _interopRequireDefault(_framptonDataTaskCreate);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * never :: Task x a
@@ -703,12 +739,17 @@ define('frampton-data/task/never', ['exports', 'module', 'frampton-data/task/cre
    * @memberof Frampton.Data.Task
    * @returns {Frampton.Data.Task}
    */
-
   function never() {
-    return _create['default'](function () {});
+    return (0, _create2.default)(function () {});
   }
 });
-define("frampton-data/task/sequence", ["exports", "module"], function (exports, module) {
+define("frampton-data/task/sequence", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = sequence;
   /**
    * sequence :: [Task x a] -> Task x a
    *
@@ -723,10 +764,6 @@ define("frampton-data/task/sequence", ["exports", "module"], function (exports, 
    * @param {Frampton.Data.Task[]} tassk - The Tasks to wait for
    * @returns {Frampton.Data.Task}
    */
-  "use strict";
-
-  module.exports = sequence;
-
   function sequence() {
     for (var _len = arguments.length, tasks = Array(_len), _key = 0; _key < _len; _key++) {
       tasks[_key] = arguments[_key];
@@ -737,14 +774,21 @@ define("frampton-data/task/sequence", ["exports", "module"], function (exports, 
     });
   }
 });
-define('frampton-data/task/succeed', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
+define('frampton-data/task/succeed', ['exports', 'frampton-data/task/create'], function (exports, _create) {
   'use strict';
 
-  module.exports = succeed;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = succeed;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _create2 = _interopRequireDefault(_create);
 
-  var _create = _interopRequireDefault(_framptonDataTaskCreate);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * succeed :: a -> Task x a
@@ -757,44 +801,56 @@ define('frampton-data/task/succeed', ['exports', 'module', 'frampton-data/task/c
    * @param {*} val - Value used as the return value of the resolve branch.
    * @returns {Frampton.Data.Task}
    */
-
   function succeed(val) {
-    return _create['default'](function (sinks) {
+    return (0, _create2.default)(function (sinks) {
       return sinks.resolve(val);
     });
   }
 });
-define('frampton-data/task/valid_sinks', ['exports', 'module', 'frampton-utils/noop'], function (exports, module, _framptonUtilsNoop) {
+define('frampton-data/task/valid_sinks', ['exports', 'frampton-utils/noop'], function (exports, _noop) {
   'use strict';
 
-  module.exports = valid_sinks;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = valid_sinks;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _noop2 = _interopRequireDefault(_noop);
 
-  var _noop = _interopRequireDefault(_framptonUtilsNoop);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name validSinks
    * @param {Object} sinks - Sinks to validate
    * @returns {Object} The validated sinks
    */
-
   function valid_sinks(sinks) {
     return {
-      reject: sinks.reject || _noop['default'],
-      resolve: sinks.resolve || _noop['default'],
-      progress: sinks.progress || _noop['default']
+      reject: sinks.reject || _noop2.default,
+      resolve: sinks.resolve || _noop2.default,
+      progress: sinks.progress || _noop2.default
     };
   }
 });
-define('frampton-data/task/when', ['exports', 'module', 'frampton-data/task/create'], function (exports, module, _framptonDataTaskCreate) {
+define('frampton-data/task/when', ['exports', 'frampton-data/task/create'], function (exports, _create) {
   'use strict';
 
-  module.exports = when;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = when;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _create2 = _interopRequireDefault(_create);
 
-  var _create = _interopRequireDefault(_framptonDataTaskCreate);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * when :: [Task x a] -> Task x [a]
@@ -810,13 +866,12 @@ define('frampton-data/task/when', ['exports', 'module', 'frampton-data/task/crea
    * @param {Frampton.Data.Task[]} tasks - The Tasks to wait for
    * @returns {Frampton.Data.Task}
    */
-
   function when() {
     for (var _len = arguments.length, tasks = Array(_len), _key = 0; _key < _len; _key++) {
       tasks[_key] = arguments[_key];
     }
 
-    return _create['default'](function (sinks) {
+    return (0, _create2.default)(function (sinks) {
 
       var valueArray = new Array(tasks.length);
       var len = tasks.length;
@@ -843,22 +898,29 @@ define('frampton-data/task/when', ['exports', 'module', 'frampton-data/task/crea
     });
   }
 });
-define('frampton-data/union/create', ['exports', 'module', 'frampton-utils/curry_n', 'frampton-utils/warn', 'frampton-record/keys', 'frampton-data/union/utils/create_type', 'frampton-data/union/utils/case_of'], function (exports, module, _framptonUtilsCurry_n, _framptonUtilsWarn, _framptonRecordKeys, _framptonDataUnionUtilsCreate_type, _framptonDataUnionUtilsCase_of) {
+define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'frampton-utils/warn', 'frampton-record/keys', 'frampton-data/union/utils/create_type', 'frampton-data/union/utils/case_of'], function (exports, _curry_n, _warn, _keys, _create_type, _case_of) {
   'use strict';
 
-  module.exports = create_union;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = create_union;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _warn2 = _interopRequireDefault(_warn);
 
-  var _warn = _interopRequireDefault(_framptonUtilsWarn);
+  var _keys2 = _interopRequireDefault(_keys);
 
-  var _getKeys = _interopRequireDefault(_framptonRecordKeys);
+  var _create_type2 = _interopRequireDefault(_create_type);
 
-  var _createType = _interopRequireDefault(_framptonDataUnionUtilsCreate_type);
+  var _case_of2 = _interopRequireDefault(_case_of);
 
-  var _caseOf = _interopRequireDefault(_framptonDataUnionUtilsCase_of);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var blacklist = ['ctor', 'children', 'caseOf'];
 
@@ -888,52 +950,70 @@ define('frampton-data/union/create', ['exports', 'module', 'frampton-utils/curry
    * @param {Object} values
    * @returns {Frampton.Data.Union}
    */
-
   function create_union(values) {
     var parent = {};
-    var children = _getKeys['default'](values);
+    var children = (0, _keys2.default)(values);
 
     parent.prototype = {};
     parent.ctor = 'Frampton.Data.Union';
     parent.children = children;
-    parent.match = _curryN['default'](3, _caseOf['default'], parent);
+    parent.match = (0, _curry_n2.default)(3, _case_of2.default, parent);
 
-    for (var _name in values) {
-      if (blacklist.indexOf(_name) === -1) {
-        parent[_name] = _createType['default'](parent, _name, values[_name]);
+    for (var name in values) {
+      if (blacklist.indexOf(name) === -1) {
+        parent[name] = (0, _create_type2.default)(parent, name, values[name]);
       } else {
-        _warn['default']('Frampton.Data.Union received a protected key: ' + _name);
+        (0, _warn2.default)('Frampton.Data.Union received a protected key: ' + name);
       }
     }
 
     return Object.freeze(parent);
   }
 });
-define('frampton-data/union/utils/case_of', ['exports', 'module', 'frampton/namespace', 'frampton-utils/is_something', 'frampton-utils/is_nothing', 'frampton-data/union/utils/validate_parent', 'frampton-data/union/utils/validate_options', 'frampton-data/union/utils/wildcard'], function (exports, module, _framptonNamespace, _framptonUtilsIs_something, _framptonUtilsIs_nothing, _framptonDataUnionUtilsValidate_parent, _framptonDataUnionUtilsValidate_options, _framptonDataUnionUtilsWildcard) {
+define('frampton-data/union/utils/case_of', ['exports', 'frampton/namespace', 'frampton-utils/is_something', 'frampton-utils/is_nothing', 'frampton-data/union/utils/validate_parent', 'frampton-data/union/utils/validate_options', 'frampton-data/union/utils/wildcard'], function (exports, _namespace, _is_something, _is_nothing, _validate_parent, _validate_options, _wildcard) {
   'use strict';
 
-  module.exports = case_of;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = case_of;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  var _validate_parent2 = _interopRequireDefault(_validate_parent);
 
-  var _validateParent = _interopRequireDefault(_framptonDataUnionUtilsValidate_parent);
+  var _validate_options2 = _interopRequireDefault(_validate_options);
 
-  var _validateOptions = _interopRequireDefault(_framptonDataUnionUtilsValidate_options);
+  var _wildcard2 = _interopRequireDefault(_wildcard);
 
-  var _wildcard = _interopRequireDefault(_framptonDataUnionUtilsWildcard);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  }
 
   function getMatch(child, cases) {
     var match = cases[child.ctor];
-    if (_isSomething['default'](match)) {
+    if ((0, _is_something2.default)(match)) {
       return match;
     } else {
-      return cases[_wildcard['default']];
+      return cases[_wildcard2.default];
     }
   }
 
@@ -945,49 +1025,55 @@ define('frampton-data/union/utils/case_of', ['exports', 'module', 'frampton/name
    * @param {Frampton.Data.Union} child
    * @returns {*}
    */
-
   function case_of(parent, cases, child) {
 
     // In dev mode we validate types
     // In prod we pray because we're screwed anyway
-    if (!_Frampton['default'].isProd()) {
-      _validateParent['default'](parent, child);
-      _validateOptions['default'](parent, cases);
+    if (!_namespace2.default.isProd()) {
+      (0, _validate_parent2.default)(parent, child);
+      (0, _validate_options2.default)(parent, cases);
     }
 
     var match = getMatch(child, cases);
 
-    if (_isNothing['default'](match)) {
+    if ((0, _is_nothing2.default)(match)) {
       throw new Error('No match for value with name: ' + child.ctor);
     }
 
     // Destructure arguments for passing to callback
-    return match.apply(undefined, child._values);
+    return match.apply(undefined, _toConsumableArray(child._values));
   }
 });
-define('frampton-data/union/utils/create_type', ['exports', 'module', 'frampton/namespace', 'frampton-utils/is_array', 'frampton-utils/is_something', 'frampton-utils/curry_n', 'frampton-data/union/utils/validator', 'frampton-data/union/utils/validate_args'], function (exports, module, _framptonNamespace, _framptonUtilsIs_array, _framptonUtilsIs_something, _framptonUtilsCurry_n, _framptonDataUnionUtilsValidator, _framptonDataUnionUtilsValidate_args) {
+define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace', 'frampton-utils/is_array', 'frampton-utils/is_something', 'frampton-utils/curry_n', 'frampton-data/union/utils/validator', 'frampton-data/union/utils/validate_args'], function (exports, _namespace, _is_array, _is_something, _curry_n, _validator, _validate_args) {
   'use strict';
 
-  module.exports = create_type;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = create_type;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _validator2 = _interopRequireDefault(_validator);
 
-  var _validator = _interopRequireDefault(_framptonDataUnionUtilsValidator);
+  var _validate_args2 = _interopRequireDefault(_validate_args);
 
-  var _validateArgs = _interopRequireDefault(_framptonDataUnionUtilsValidate_args);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function getValidators(parent, fields) {
-    if (!_Frampton['default'].isProd()) {
+    if (!_namespace2.default.isProd()) {
       return fields.map(function (field) {
-        return _validator['default'](parent, field);
+        return (0, _validator2.default)(parent, field);
       });
     } else {
       return null;
@@ -1002,10 +1088,9 @@ define('frampton-data/union/utils/create_type', ['exports', 'module', 'frampton/
    * @param {Object} fields
    * @returns {Function}
    */
-
   function create_type(parent, name, fields) {
 
-    if (!_isArray['default'](fields)) {
+    if (!(0, _is_array2.default)(fields)) {
       throw new Error('Union must receive an array of fields for each type');
     }
 
@@ -1017,7 +1102,7 @@ define('frampton-data/union/utils/create_type', ['exports', 'module', 'frampton/
         args[_key] = arguments[_key];
       }
 
-      if (_isSomething['default'](validators) && !_validateArgs['default'](validators, args)) {
+      if ((0, _is_something2.default)(validators) && !(0, _validate_args2.default)(validators, args)) {
         throw new TypeError('Frampton.Data.Union.' + name + ' recieved an unknown argument');
       }
 
@@ -1034,51 +1119,73 @@ define('frampton-data/union/utils/create_type', ['exports', 'module', 'frampton/
       return Object.freeze(child);
     };
 
-    return len === 0 ? constructor : _curryN['default'](len, constructor);
+    return len === 0 ? constructor : (0, _curry_n2.default)(len, constructor);
   }
 });
-define('frampton-data/union/utils/object_validator', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-data/union/utils/object_validator', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  module.exports = _curry['default'](function object_validator(parent, child) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function object_validator(parent, child) {
     return child.constructor === parent;
   });
 });
-define('frampton-data/union/utils/validate_args', ['exports', 'module', 'frampton-utils/is_undefined'], function (exports, module, _framptonUtilsIs_undefined) {
+define('frampton-data/union/utils/validate_args', ['exports', 'frampton-utils/is_undefined'], function (exports, _is_undefined) {
   'use strict';
 
-  module.exports = validate_args;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = validate_args;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_undefined2 = _interopRequireDefault(_is_undefined);
 
-  var _isUndefined = _interopRequireDefault(_framptonUtilsIs_undefined);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function validate_args(validators, args) {
     for (var i = 0; i < validators.length; i++) {
-      if (_isUndefined['default'](args[i]) || !validators[i](args[i])) {
+      if ((0, _is_undefined2.default)(args[i]) || !validators[i](args[i])) {
         return false;
       }
     }
     return true;
   }
 });
-define('frampton-data/union/utils/validate_options', ['exports', 'module', 'frampton-utils/warn', 'frampton-data/union/utils/wildcard'], function (exports, module, _framptonUtilsWarn, _framptonDataUnionUtilsWildcard) {
+define('frampton-data/union/utils/validate_options', ['exports', 'frampton-utils/warn', 'frampton-data/union/utils/wildcard'], function (exports, _warn, _wildcard) {
   'use strict';
 
-  module.exports = validate_options;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = validate_options;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _warn2 = _interopRequireDefault(_warn);
 
-  var _warn = _interopRequireDefault(_framptonUtilsWarn);
+  var _wildcard2 = _interopRequireDefault(_wildcard);
 
-  var _wildcard = _interopRequireDefault(_framptonDataUnionUtilsWildcard);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function hasMatch(cases, child) {
-    return cases.hasOwnProperty(_wildcard['default']) || cases.hasOwnProperty(child);
+    return cases.hasOwnProperty(_wildcard2.default) || cases.hasOwnProperty(child);
   }
 
   function validate_options(parent, cases) {
@@ -1087,28 +1194,33 @@ define('frampton-data/union/utils/validate_options', ['exports', 'module', 'fram
     for (var i = 0; i < len; i++) {
       var child = children[i];
       if (!hasMatch(cases, child)) {
-        _warn['default']('Non-exhaustive pattern match for case: ' + child);
+        (0, _warn2.default)('Non-exhaustive pattern match for case: ' + child);
       }
     }
   }
 });
-define('frampton-data/union/utils/validate_parent', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_object', 'frampton-data/union/utils/object_validator'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_object, _framptonDataUnionUtilsObject_validator) {
+define('frampton-data/union/utils/validate_parent', ['exports', 'frampton-utils/curry', 'frampton-utils/is_object', 'frampton-data/union/utils/object_validator'], function (exports, _curry, _is_object, _object_validator) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isObject = _interopRequireDefault(_framptonUtilsIs_object);
+  var _is_object2 = _interopRequireDefault(_is_object);
 
-  var _objectValidator = _interopRequireDefault(_framptonDataUnionUtilsObject_validator);
+  var _object_validator2 = _interopRequireDefault(_object_validator);
 
-  /**
-   * Is the given parent the actual parent of the given child?
-   */
-  module.exports = _curry['default'](function validate_parent(parent, child) {
-    if (!_objectValidator['default'](parent, child)) {
-      if (_isObject['default'](child) && child.ctor) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function validate_parent(parent, child) {
+    if (!(0, _object_validator2.default)(parent, child)) {
+      if ((0, _is_object2.default)(child) && child.ctor) {
         throw new TypeError('Frampton.Data.Union.caseOf received unrecognized type: ' + child.ctor);
       } else {
         throw new TypeError('Frampton.Data.Union.caseOf received unrecognized type');
@@ -1116,266 +1228,284 @@ define('frampton-data/union/utils/validate_parent', ['exports', 'module', 'framp
     }
   });
 });
-define('frampton-data/union/utils/validator', ['exports', 'module', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-data/union/utils/object_validator'], function (exports, module, _framptonUtilsIs_boolean, _framptonUtilsIs_array, _framptonUtilsIs_number, _framptonUtilsIs_string, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonDataUnionUtilsObject_validator) {
+define('frampton-data/union/utils/validator', ['exports', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-data/union/utils/object_validator'], function (exports, _is_boolean, _is_array, _is_number, _is_string, _is_function, _is_node, _object_validator) {
   'use strict';
 
-  module.exports = get_validator;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = get_validator;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_boolean2 = _interopRequireDefault(_is_boolean);
 
-  var _isBoolean = _interopRequireDefault(_framptonUtilsIs_boolean);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_number2 = _interopRequireDefault(_is_number);
 
-  var _isNumber = _interopRequireDefault(_framptonUtilsIs_number);
+  var _is_string2 = _interopRequireDefault(_is_string);
 
-  var _isString = _interopRequireDefault(_framptonUtilsIs_string);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_node2 = _interopRequireDefault(_is_node);
 
-  var _isNode = _interopRequireDefault(_framptonUtilsIs_node);
+  var _object_validator2 = _interopRequireDefault(_object_validator);
 
-  var _objectValidator = _interopRequireDefault(_framptonDataUnionUtilsObject_validator);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function get_validator(parent, type) {
 
     switch (type) {
       case String:
-        return _isString['default'];
+        return _is_string2.default;
 
       case Number:
-        return _isNumber['default'];
+        return _is_number2.default;
 
       case Function:
-        return _isFunction['default'];
+        return _is_function2.default;
 
       case Boolean:
-        return _isBoolean['default'];
+        return _is_boolean2.default;
 
       case Array:
-        return _isArray['default'];
+        return _is_array2.default;
 
       case Element:
-        return _isNode['default'];
+        return _is_node2.default;
 
       case Node:
-        return _isNode['default'];
+        return _is_node2.default;
 
       case undefined:
-        return _objectValidator['default'](parent);
+        return (0, _object_validator2.default)(parent);
 
       default:
-        return _objectValidator['default'](type);
+        return (0, _object_validator2.default)(type);
     }
 
     return false;
   }
 });
-define('frampton-data/union/utils/wildcard', ['exports', 'module'], function (exports, module) {
+define('frampton-data/union/utils/wildcard', ['exports'], function (exports) {
   'use strict';
 
-  module.exports = '_';
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = '_';
 });
-define('frampton-events', ['exports', 'frampton/namespace', 'frampton-events/on_event', 'frampton-events/on_selector', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/has_selector', 'frampton-events/contains_selector', 'frampton-events/selector_contains', 'frampton-events/closest_to_event', 'frampton-events/prevent_default'], function (exports, _framptonNamespace, _framptonEventsOn_event, _framptonEventsOn_selector, _framptonEventsContains, _framptonEventsEvent_target, _framptonEventsEvent_value, _framptonEventsGet_position, _framptonEventsGet_position_relative, _framptonEventsHas_selector, _framptonEventsContains_selector, _framptonEventsSelector_contains, _framptonEventsClosest_to_event, _framptonEventsPrevent_default) {
+define('frampton-events', ['frampton/namespace', 'frampton-events/on_event', 'frampton-events/on_selector', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/has_selector', 'frampton-events/contains_selector', 'frampton-events/selector_contains', 'frampton-events/closest_to_event', 'frampton-events/prevent_default'], function (_namespace, _on_event, _on_selector, _contains, _event_target, _event_value, _get_position, _get_position_relative, _has_selector, _contains_selector, _selector_contains, _closest_to_event, _prevent_default) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _on_event2 = _interopRequireDefault(_on_event);
 
-  var _onEvent = _interopRequireDefault(_framptonEventsOn_event);
+  var _on_selector2 = _interopRequireDefault(_on_selector);
 
-  var _onSelector = _interopRequireDefault(_framptonEventsOn_selector);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _contains = _interopRequireDefault(_framptonEventsContains);
+  var _event_target2 = _interopRequireDefault(_event_target);
 
-  var _eventTarget = _interopRequireDefault(_framptonEventsEvent_target);
+  var _event_value2 = _interopRequireDefault(_event_value);
 
-  var _eventValue = _interopRequireDefault(_framptonEventsEvent_value);
+  var _get_position2 = _interopRequireDefault(_get_position);
 
-  var _getPosition = _interopRequireDefault(_framptonEventsGet_position);
+  var _get_position_relative2 = _interopRequireDefault(_get_position_relative);
 
-  var _getPositionRelative = _interopRequireDefault(_framptonEventsGet_position_relative);
+  var _has_selector2 = _interopRequireDefault(_has_selector);
 
-  var _hasSelector = _interopRequireDefault(_framptonEventsHas_selector);
+  var _contains_selector2 = _interopRequireDefault(_contains_selector);
 
-  var _containsSelector = _interopRequireDefault(_framptonEventsContains_selector);
+  var _selector_contains2 = _interopRequireDefault(_selector_contains);
 
-  var _selectorContains = _interopRequireDefault(_framptonEventsSelector_contains);
+  var _closest_to_event2 = _interopRequireDefault(_closest_to_event);
 
-  var _closestToEvent = _interopRequireDefault(_framptonEventsClosest_to_event);
+  var _prevent_default2 = _interopRequireDefault(_prevent_default);
 
-  var _preventDefault = _interopRequireDefault(_framptonEventsPrevent_default);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Events
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Events = {};
-  _Frampton['default'].Events.onEvent = _onEvent['default'];
-  _Frampton['default'].Events.onSelector = _onSelector['default'];
-  _Frampton['default'].Events.contains = _contains['default'];
-  _Frampton['default'].Events.eventTarget = _eventTarget['default'];
-  _Frampton['default'].Events.eventValue = _eventValue['default'];
-  _Frampton['default'].Events.hasSelector = _hasSelector['default'];
-  _Frampton['default'].Events.containsSelector = _containsSelector['default'];
-  _Frampton['default'].Events.selectorContains = _selectorContains['default'];
-  _Frampton['default'].Events.getPosition = _getPosition['default'];
-  _Frampton['default'].Events.getPositionRelative = _getPositionRelative['default'];
-  _Frampton['default'].Events.closestToEvent = _closestToEvent['default'];
-  _Frampton['default'].Events.preventDefault = _preventDefault['default'];
+  _namespace2.default.Events = {};
+  _namespace2.default.Events.onEvent = _on_event2.default;
+  _namespace2.default.Events.onSelector = _on_selector2.default;
+  _namespace2.default.Events.contains = _contains2.default;
+  _namespace2.default.Events.eventTarget = _event_target2.default;
+  _namespace2.default.Events.eventValue = _event_value2.default;
+  _namespace2.default.Events.hasSelector = _has_selector2.default;
+  _namespace2.default.Events.containsSelector = _contains_selector2.default;
+  _namespace2.default.Events.selectorContains = _selector_contains2.default;
+  _namespace2.default.Events.getPosition = _get_position2.default;
+  _namespace2.default.Events.getPositionRelative = _get_position_relative2.default;
+  _namespace2.default.Events.closestToEvent = _closest_to_event2.default;
+  _namespace2.default.Events.preventDefault = _prevent_default2.default;
 });
-define('frampton-events/closest_to_event', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/closest', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleClosest, _framptonEventsEvent_target) {
+define('frampton-events/closest_to_event', ['exports', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/closest', 'frampton-events/event_target'], function (exports, _curry, _compose, _closest, _event_target) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _compose = _interopRequireDefault(_framptonUtilsCompose);
+  var _compose2 = _interopRequireDefault(_compose);
 
-  var _closest = _interopRequireDefault(_framptonStyleClosest);
+  var _closest2 = _interopRequireDefault(_closest);
 
-  var _eventTarget = _interopRequireDefault(_framptonEventsEvent_target);
+  var _event_target2 = _interopRequireDefault(_event_target);
 
-  /**
-   * closestToEvent :: String -> DomEvent -> DomNode
-   *
-   * Gets the closest parent to the event target matching the given selector
-   *
-   * @name closestToEvent
-   * @memberof Frampton.Events
-   * @static
-   * @param {String} selector
-   * @param {Object} evt
-   * @returns {Object} A DomNode matching the given selector
-   */
-  module.exports = _curry['default'](function closest_to_event(selector, evt) {
-    return _compose['default'](_closest['default'](selector), _eventTarget['default'])(evt);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function closest_to_event(selector, evt) {
+    return (0, _compose2.default)((0, _closest2.default)(selector), _event_target2.default)(evt);
   });
 });
-define('frampton-events/contains_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/contains', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleContains, _framptonEventsEvent_target) {
+define('frampton-events/contains', ['exports', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-html/contains', 'frampton-events/event_target'], function (exports, _curry, _compose, _contains, _event_target) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _compose = _interopRequireDefault(_framptonUtilsCompose);
+  var _compose2 = _interopRequireDefault(_compose);
 
-  var _contains = _interopRequireDefault(_framptonStyleContains);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _eventTarget = _interopRequireDefault(_framptonEventsEvent_target);
+  var _event_target2 = _interopRequireDefault(_event_target);
 
-  /**
-   * containsSelector :: String -> DomEvent -> Boolean
-   *
-   * Does the target of the given event object contain an object with the
-   * given selector?
-   *
-   * @name containsSelector
-   * @static
-   * @memberof Frampton.Events
-   * @param {String} selector - A selector to test
-   * @param {Object} evt - An event object whose target will be tested against
-   * @returns {Boolean} Does the event target, or one of its children, have the given selector
-   */
-  module.exports = _curry['default'](function contains_selector(selector, evt) {
-    return _compose['default'](_contains['default'](selector), _eventTarget['default'])(evt);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_contains(element, evt) {
+    return (0, _compose2.default)((0, _contains2.default)(element), _event_target2.default)(evt);
   });
 });
-define('frampton-events/contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-html/contains', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonHtmlContains, _framptonEventsEvent_target) {
+define('frampton-events/contains_selector', ['exports', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/contains', 'frampton-events/event_target'], function (exports, _curry, _compose, _contains, _event_target) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _compose = _interopRequireDefault(_framptonUtilsCompose);
+  var _compose2 = _interopRequireDefault(_compose);
 
-  var _contains = _interopRequireDefault(_framptonHtmlContains);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _eventTarget = _interopRequireDefault(_framptonEventsEvent_target);
+  var _event_target2 = _interopRequireDefault(_event_target);
 
-  /**
-   * contains :: DomNode -> DomEvent -> Boolean
-   *
-   * @name contains
-   * @memberof Frampton.Events
-   * @static
-   * @param {Object} element
-   * @param {Object} evt
-   * @returns {Boolean}
-   */
-  module.exports = _curry['default'](function curried_contains(element, evt) {
-    return _compose['default'](_contains['default'](element), _eventTarget['default'])(evt);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function contains_selector(selector, evt) {
+    return (0, _compose2.default)((0, _contains2.default)(selector), _event_target2.default)(evt);
   });
 });
-define('frampton-events/document_cache', ['exports', 'module', 'frampton-events/simple_cache'], function (exports, module, _framptonEventsSimple_cache) {
+define('frampton-events/document_cache', ['exports', 'frampton-events/simple_cache'], function (exports, _simple_cache) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _simpleCahce = _interopRequireDefault(_framptonEventsSimple_cache);
+  var _simple_cache2 = _interopRequireDefault(_simple_cache);
 
-  module.exports = _simpleCahce['default']();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _simple_cache2.default)();
 });
-define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function', 'frampton-utils/is_defined', 'frampton-utils/lazy', 'frampton-events/event_map'], function (exports, _framptonUtilsAssert, _framptonUtilsIs_function, _framptonUtilsIs_defined, _framptonUtilsLazy, _framptonEventsEvent_map) {
+define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function', 'frampton-utils/is_defined', 'frampton-utils/lazy', 'frampton-events/event_map'], function (exports, _assert, _is_function, _is_defined, _lazy, _event_map) {
   'use strict';
 
-  exports.__esModule = true;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.removeListener = exports.addListener = undefined;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_defined2 = _interopRequireDefault(_is_defined);
 
-  var _isDefined = _interopRequireDefault(_framptonUtilsIs_defined);
+  var _lazy2 = _interopRequireDefault(_lazy);
 
-  var _lazy = _interopRequireDefault(_framptonUtilsLazy);
+  var _event_map2 = _interopRequireDefault(_event_map);
 
-  var _EVENT_MAP = _interopRequireDefault(_framptonEventsEvent_map);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   // get dom event -> filter -> return stream
   function addDomEvent(name, node, callback) {
-    node.addEventListener(name, callback, !_EVENT_MAP['default'][name].bubbles);
+    node.addEventListener(name, callback, !_event_map2.default[name].bubbles);
   }
 
   function addCustomEvent(name, target, callback) {
-    var listen = _isFunction['default'](target.addEventListener) ? target.addEventListener : _isFunction['default'](target.on) ? target.on : null;
+    var listen = (0, _is_function2.default)(target.addEventListener) ? target.addEventListener : (0, _is_function2.default)(target.on) ? target.on : null;
 
-    _assert['default']('addListener received an unknown type as target', _isFunction['default'](listen));
+    (0, _assert2.default)('addListener received an unknown type as target', (0, _is_function2.default)(listen));
 
     listen.call(target, name, callback);
   }
 
   function removeDomEvent(name, node, callback) {
-    node.removeEventListener(name, callback, !_EVENT_MAP['default'][name].bubbles);
+    node.removeEventListener(name, callback, !_event_map2.default[name].bubbles);
   }
 
   function removeCustomEvent(name, target, callback) {
-    var remove = _isFunction['default'](target.removeEventListener) ? target.removeEventListener : _isFunction['default'](target.off) ? target.off : null;
+    var remove = (0, _is_function2.default)(target.removeEventListener) ? target.removeEventListener : (0, _is_function2.default)(target.off) ? target.off : null;
 
-    _assert['default']('removeListener received an unknown type as target', _isFunction['default'](remove));
+    (0, _assert2.default)('removeListener received an unknown type as target', (0, _is_function2.default)(remove));
 
     remove.call(target, name, callback);
   }
 
   function addListener(eventName, target, callback) {
 
-    if (_isDefined['default'](_EVENT_MAP['default'][eventName]) && _isFunction['default'](target.addEventListener)) {
+    if ((0, _is_defined2.default)(_event_map2.default[eventName]) && (0, _is_function2.default)(target.addEventListener)) {
       addDomEvent(eventName, target, callback);
     } else {
       addCustomEvent(eventName, target, callback);
     }
 
-    return _lazy['default'](removeListener, [eventName, target, callback]);
+    return (0, _lazy2.default)(removeListener, [eventName, target, callback]);
   }
 
   function removeListener(eventName, target, callback) {
-    if (_isDefined['default'](_EVENT_MAP['default'][eventName]) && _isFunction['default'](target.removeEventListener)) {
+    if ((0, _is_defined2.default)(_event_map2.default[eventName]) && (0, _is_function2.default)(target.removeEventListener)) {
       removeDomEvent(eventName, target, callback);
     } else {
       removeCustomEvent(eventName, target, callback);
@@ -1385,10 +1515,13 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   exports.addListener = addListener;
   exports.removeListener = removeListener;
 });
-define("frampton-events/event_map", ["exports", "module"], function (exports, module) {
+define("frampton-events/event_map", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
 
     abort: {
       bubbles: true,
@@ -1586,14 +1719,22 @@ define("frampton-events/event_map", ["exports", "module"], function (exports, mo
     }
   };
 });
-define('frampton-events/event_supported', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/memoize'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsMemoize) {
+define('frampton-events/event_supported', ['exports', 'frampton-utils/is_function', 'frampton-utils/memoize'], function (exports, _is_function, _memoize) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _memoize = _interopRequireDefault(_framptonUtilsMemoize);
+  var _memoize2 = _interopRequireDefault(_memoize);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var TAGNAMES = {
     select: 'input',
@@ -1615,19 +1756,25 @@ define('frampton-events/event_supported', ['exports', 'module', 'frampton-utils/
    * @param {String} eventName The name of the event to test
    * @returns {Boolean} Is the event supported
    */
-  module.exports = _memoize['default'](function event_supported(eventName) {
+  exports.default = (0, _memoize2.default)(function event_supported(eventName) {
     var el = document.createElement(TAGNAMES[eventName] || 'div');
     eventName = 'on' + eventName;
-    var isSupported = (eventName in el);
+    var isSupported = eventName in el;
     if (!isSupported) {
       el.setAttribute(eventName, 'return;');
-      isSupported = _isFunction['default'](el[eventName]);
+      isSupported = (0, _is_function2.default)(el[eventName]);
     }
     el = null;
     return !!isSupported;
   });
 });
-define("frampton-events/event_target", ["exports", "module"], function (exports, module) {
+define("frampton-events/event_target", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = event_target;
   /**
    * eventTarget :: DomEvent -> Object
    *
@@ -1637,46 +1784,48 @@ define("frampton-events/event_target", ["exports", "module"], function (exports,
    * @param {Object} evt
    * @returns {Object} The target value of the event object, usually a DomNode
    */
-  "use strict";
-
-  module.exports = event_target;
-
   function event_target(evt) {
     return evt.target;
   }
 });
-define('frampton-events/event_value', ['exports', 'module', 'frampton-utils/compose', 'frampton-html/element_value', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCompose, _framptonHtmlElement_value, _framptonEventsEvent_target) {
+define('frampton-events/event_value', ['exports', 'frampton-utils/compose', 'frampton-html/element_value', 'frampton-events/event_target'], function (exports, _compose, _element_value, _event_target) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _compose = _interopRequireDefault(_framptonUtilsCompose);
+  var _compose2 = _interopRequireDefault(_compose);
 
-  var _elementValue = _interopRequireDefault(_framptonHtmlElement_value);
+  var _element_value2 = _interopRequireDefault(_element_value);
 
-  var _eventTarget = _interopRequireDefault(_framptonEventsEvent_target);
+  var _event_target2 = _interopRequireDefault(_event_target);
 
-  /**
-   * eventValue :: DomEvent -> String
-   *
-   * @name eventValue
-   * @memberof Frampton.Events
-   * @static
-   * @param {Object} evt
-   * @returns {String} The value property of the event target
-   */
-  module.exports = _compose['default'](_elementValue['default'], _eventTarget['default']);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _compose2.default)(_element_value2.default, _event_target2.default);
 });
-define('frampton-events/get_document_signal', ['exports', 'module', 'frampton-events/document_cache', 'frampton-events/get_event_signal'], function (exports, module, _framptonEventsDocument_cache, _framptonEventsGet_event_signal) {
+define('frampton-events/get_document_signal', ['exports', 'frampton-events/document_cache', 'frampton-events/get_event_signal'], function (exports, _document_cache, _get_event_signal) {
   'use strict';
 
-  module.exports = get_document_signal;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = get_document_signal;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _document_cache2 = _interopRequireDefault(_document_cache);
 
-  var _documentCache = _interopRequireDefault(_framptonEventsDocument_cache);
+  var _get_event_signal2 = _interopRequireDefault(_get_event_signal);
 
-  var _getEventSignal = _interopRequireDefault(_framptonEventsGet_event_signal);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name getDocumentSignal
@@ -1686,72 +1835,51 @@ define('frampton-events/get_document_signal', ['exports', 'module', 'frampton-ev
    * @param {String} name Event name to look up
    * @returns {Frampton.Signal.Signal}
    */
-
   function get_document_signal(name) {
-    return _documentCache['default'](name, function () {
-      return _getEventSignal['default'](name, document);
+    return (0, _document_cache2.default)(name, function () {
+      return (0, _get_event_signal2.default)(name, document);
     });
   }
 });
-define('frampton-events/get_event_signal', ['exports', 'module', 'frampton-utils/is_empty', 'frampton-signal/create', 'frampton-events/event_dispatcher'], function (exports, module, _framptonUtilsIs_empty, _framptonSignalCreate, _framptonEventsEvent_dispatcher) {
+define('frampton-events/get_event_signal', ['exports', 'frampton-utils/is_empty', 'frampton-signal/create', 'frampton-events/event_dispatcher'], function (exports, _is_empty, _create, _event_dispatcher) {
   'use strict';
 
-  module.exports = get_event_signal;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = get_event_signal;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_empty2 = _interopRequireDefault(_is_empty);
 
-  var _isEmpty = _interopRequireDefault(_framptonUtilsIs_empty);
+  var _create2 = _interopRequireDefault(_create);
 
-  var _createSignal = _interopRequireDefault(_framptonSignalCreate);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function get_event_signal(name, target) {
     var parts = name.split(' ').filter(function (val) {
-      return !_isEmpty['default'](val);
+      return !(0, _is_empty2.default)(val);
     });
     var len = parts.length;
     var sigs = [];
     for (var i = 0; i < len; i++) {
-      var sig = _createSignal['default']();
-      _framptonEventsEvent_dispatcher.addListener(parts[i], target, sig.push);
+      var sig = (0, _create2.default)();
+      (0, _event_dispatcher.addListener)(parts[i], target, sig.push);
       sigs.push(sig);
     }
-    return _framptonSignalCreate.mergeMany(sigs);
+    return (0, _create.mergeMany)(sigs);
   }
 });
-define('frampton-events/get_position_relative', ['exports', 'module', 'frampton-utils/curry', 'frampton-events/get_position'], function (exports, module, _framptonUtilsCurry, _framptonEventsGet_position) {
-  'use strict';
+define("frampton-events/get_position", ["exports"], function (exports) {
+  "use strict";
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
-
-  var _getPosition = _interopRequireDefault(_framptonEventsGet_position);
-
-  /**
-   * getPositionRelative :: DomNode -> DomEvent -> [Number, Number]
-   *
-   * @name getPositionRelative
-   * @memberof Frampton.Events
-   * @static
-   * @param {Object} node
-   * @param {Object} evt
-   * @returns {Array} A pair where the 0 index is the x coord and the 1 index is the y coord
-   */
-  module.exports = _curry['default'](function get_position_relative(node, evt) {
-
-    var position = _getPosition['default'](evt);
-
-    var rect = node.getBoundingClientRect();
-    var rel_x = rect.left + document.body.scrollLeft + document.documentElement.scrollLeft;
-    var rel_y = rect.top + document.body.scrollTop + document.documentElement.scrollTop;
-
-    var pos_x = position[0] - Math.round(rel_x) - node.clientLeft;
-    var pos_y = position[1] - Math.round(rel_y) - node.clientTop;
-
-    return [pos_x, pos_y];
+  Object.defineProperty(exports, "__esModule", {
+    value: true
   });
-});
-define("frampton-events/get_position", ["exports", "module"], function (exports, module) {
+  exports.default = get_position;
   /**
    * getPosition :: DomEvent -> [Number, Number]
    *
@@ -1761,10 +1889,6 @@ define("frampton-events/get_position", ["exports", "module"], function (exports,
    * @param {Object} evt
    * @returns {Array} A pair where the 0 index is the x coord and the 1 index is the y coord
    */
-  "use strict";
-
-  module.exports = get_position;
-
   function get_position(evt) {
 
     var posx = 0;
@@ -1783,51 +1907,87 @@ define("frampton-events/get_position", ["exports", "module"], function (exports,
     return [posx, posy];
   }
 });
-define('frampton-events/has_selector', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/matches', 'frampton-events/event_target'], function (exports, module, _framptonUtilsCurry, _framptonUtilsCompose, _framptonStyleMatches, _framptonEventsEvent_target) {
+define('frampton-events/get_position_relative', ['exports', 'frampton-utils/curry', 'frampton-events/get_position'], function (exports, _curry, _get_position) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _compose = _interopRequireDefault(_framptonUtilsCompose);
+  var _get_position2 = _interopRequireDefault(_get_position);
 
-  var _matches = _interopRequireDefault(_framptonStyleMatches);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-  var _eventTarget = _interopRequireDefault(_framptonEventsEvent_target);
+  exports.default = (0, _curry2.default)(function get_position_relative(node, evt) {
 
-  /**
-   * hasSelector :: String -> DomEvent -> Boolean
-   *
-   * @name hasSelector
-   * @memberof Frampton.Events
-   * @static
-   * @param {String} selector
-   * @param {Object} evt
-   * @returns {Boolean}
-   */
-  module.exports = _curry['default'](function has_selector(selector, evt) {
-    return _compose['default'](_matches['default'](selector), _eventTarget['default'])(evt);
+    var position = (0, _get_position2.default)(evt);
+
+    var rect = node.getBoundingClientRect();
+    var rel_x = rect.left + document.body.scrollLeft + document.documentElement.scrollLeft;
+    var rel_y = rect.top + document.body.scrollTop + document.documentElement.scrollTop;
+
+    var pos_x = position[0] - Math.round(rel_x) - node.clientLeft;
+    var pos_y = position[1] - Math.round(rel_y) - node.clientTop;
+
+    return [pos_x, pos_y];
   });
 });
-define('frampton-events/on_event', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/is_nothing', 'frampton-events/contains', 'frampton-events/event_map', 'frampton-events/get_document_signal', 'frampton-events/get_event_signal'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsIs_nothing, _framptonEventsContains, _framptonEventsEvent_map, _framptonEventsGet_document_signal, _framptonEventsGet_event_signal) {
+define('frampton-events/has_selector', ['exports', 'frampton-utils/curry', 'frampton-utils/compose', 'frampton-style/matches', 'frampton-events/event_target'], function (exports, _curry, _compose, _matches, _event_target) {
   'use strict';
 
-  module.exports = on_event;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _compose2 = _interopRequireDefault(_compose);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  var _matches2 = _interopRequireDefault(_matches);
 
-  var _contains = _interopRequireDefault(_framptonEventsContains);
+  var _event_target2 = _interopRequireDefault(_event_target);
 
-  var _EVENT_MAP = _interopRequireDefault(_framptonEventsEvent_map);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-  var _getDocumentSignal = _interopRequireDefault(_framptonEventsGet_document_signal);
+  exports.default = (0, _curry2.default)(function has_selector(selector, evt) {
+    return (0, _compose2.default)((0, _matches2.default)(selector), _event_target2.default)(evt);
+  });
+});
+define('frampton-events/on_event', ['exports', 'frampton-utils/is_function', 'frampton-utils/is_nothing', 'frampton-events/contains', 'frampton-events/event_map', 'frampton-events/get_document_signal', 'frampton-events/get_event_signal'], function (exports, _is_function, _is_nothing, _contains, _event_map, _get_document_signal, _get_event_signal) {
+  'use strict';
 
-  var _getEventSignal = _interopRequireDefault(_framptonEventsGet_event_signal);
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = on_event;
+
+  var _is_function2 = _interopRequireDefault(_is_function);
+
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
+
+  var _contains2 = _interopRequireDefault(_contains);
+
+  var _event_map2 = _interopRequireDefault(_event_map);
+
+  var _get_document_signal2 = _interopRequireDefault(_get_document_signal);
+
+  var _get_event_signal2 = _interopRequireDefault(_get_event_signal);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * onEvent :: String -> Dom -> Signal Event
@@ -1839,47 +1999,54 @@ define('frampton-events/on_event', ['exports', 'module', 'frampton-utils/is_func
    * @param {Object} target    Object on which to listen for event
    * @returns {Frampton.Signal.Signal} A Signal of all occurances of the given event on the given object
    */
-
   function on_event(eventName, target) {
-    if (_EVENT_MAP['default'][eventName] && (_isNothing['default'](target) || _isFunction['default'](target.addEventListener))) {
-      if (_isNothing['default'](target)) {
-        return _getDocumentSignal['default'](eventName);
+    if (_event_map2.default[eventName] && ((0, _is_nothing2.default)(target) || (0, _is_function2.default)(target.addEventListener))) {
+      if ((0, _is_nothing2.default)(target)) {
+        return (0, _get_document_signal2.default)(eventName);
       } else {
-        return _getDocumentSignal['default'](eventName).filter(_contains['default'](target));
+        return (0, _get_document_signal2.default)(eventName).filter((0, _contains2.default)(target));
       }
     } else {
-      return _getEventSignal['default'](eventName, target);
+      return (0, _get_event_signal2.default)(eventName, target);
     }
   }
 });
-define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_empty', 'frampton-events/closest_to_event', 'frampton-events/selector_contains', 'frampton-events/event_map', 'frampton-events/get_document_signal', 'frampton-events/selector_cache'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_empty, _framptonEventsClosest_to_event, _framptonEventsSelector_contains, _framptonEventsEvent_map, _framptonEventsGet_document_signal, _framptonEventsSelector_cache) {
+define('frampton-events/on_selector', ['exports', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_empty', 'frampton-events/closest_to_event', 'frampton-events/selector_contains', 'frampton-events/event_map', 'frampton-events/get_document_signal', 'frampton-events/selector_cache'], function (exports, _is_something, _is_string, _is_empty, _closest_to_event, _selector_contains, _event_map, _get_document_signal, _selector_cache) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isString = _interopRequireDefault(_framptonUtilsIs_string);
+  var _is_string2 = _interopRequireDefault(_is_string);
 
-  var _isEmpty = _interopRequireDefault(_framptonUtilsIs_empty);
+  var _is_empty2 = _interopRequireDefault(_is_empty);
 
-  var _closestToEvent = _interopRequireDefault(_framptonEventsClosest_to_event);
+  var _closest_to_event2 = _interopRequireDefault(_closest_to_event);
 
-  var _selectorContains = _interopRequireDefault(_framptonEventsSelector_contains);
+  var _selector_contains2 = _interopRequireDefault(_selector_contains);
 
-  var _EVENT_MAP = _interopRequireDefault(_framptonEventsEvent_map);
+  var _event_map2 = _interopRequireDefault(_event_map);
 
-  var _getDocumentSignal = _interopRequireDefault(_framptonEventsGet_document_signal);
+  var _get_document_signal2 = _interopRequireDefault(_get_document_signal);
 
-  var _selectorCache = _interopRequireDefault(_framptonEventsSelector_cache);
+  var _selector_cache2 = _interopRequireDefault(_selector_cache);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function validateEventName(name) {
     var parts = name.split(' ').filter(function (val) {
-      return !_isEmpty['default'](val);
+      return !(0, _is_empty2.default)(val);
     });
     var len = parts.length;
     for (var i = 0; i < len; i++) {
-      if (!_isSomething['default'](_EVENT_MAP['default'][parts[i]])) {
+      if (!(0, _is_something2.default)(_event_map2.default[parts[i]])) {
         return false;
       }
     }
@@ -1888,9 +2055,9 @@ define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_s
 
   function mouseEnterSelector(selector) {
     var previousElement = null;
-    return _getDocumentSignal['default']('mouseover').filter(function (evt) {
-      var current = _closestToEvent['default'](selector, evt);
-      if (_isSomething['default'](current) && current !== previousElement) {
+    return (0, _get_document_signal2.default)('mouseover').filter(function (evt) {
+      var current = (0, _closest_to_event2.default)(selector, evt);
+      if ((0, _is_something2.default)(current) && current !== previousElement) {
         previousElement = current;
         return true;
       } else {
@@ -1901,12 +2068,12 @@ define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_s
 
   function mouseLeaveSelector(selector) {
     var previousElement = null;
-    return _getDocumentSignal['default']('mouseleave').filter(function (evt) {
-      var current = _closestToEvent['default'](selector, evt);
-      if (_isSomething['default'](current) && current !== previousElement) {
+    return (0, _get_document_signal2.default)('mouseleave').filter(function (evt) {
+      var current = (0, _closest_to_event2.default)(selector, evt);
+      if ((0, _is_something2.default)(current) && current !== previousElement) {
         previousElement = current;
         return true;
-      } else if (_isSomething['default'](current)) {
+      } else if ((0, _is_something2.default)(current)) {
         previousElement = current;
         return false;
       } else {
@@ -1926,15 +2093,15 @@ define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_s
    * @returns {Frampton.Signal.Signal} A Signal of all occurances of the given event within given selector
    */
   function onSelector(eventName, selector) {
-    if (validateEventName(eventName) && _isString['default'](selector)) {
-      return _selectorCache['default'](eventName + ' | ' + selector, function () {
+    if (validateEventName(eventName) && (0, _is_string2.default)(selector)) {
+      return (0, _selector_cache2.default)(eventName + ' | ' + selector, function () {
         if (eventName === 'mouseenter') {
           return mouseEnterSelector(selector);
         } else if (eventName === 'mouseleave') {
           return mouseLeaveSelector(selector);
         } else {
-          return _getDocumentSignal['default'](eventName).filter(function (evt) {
-            return _selectorContains['default'](selector, evt);
+          return (0, _get_document_signal2.default)(eventName).filter(function (evt) {
+            return (0, _selector_contains2.default)(selector, evt);
           });
         }
       });
@@ -1943,152 +2110,184 @@ define('frampton-events/on_selector', ['exports', 'module', 'frampton-utils/is_s
     }
   }
 
-  module.exports = onSelector;
+  exports.default = onSelector;
 });
-define('frampton-events/once', ['exports', 'module', 'frampton-events/listen'], function (exports, module, _framptonEventsListen) {
+define('frampton-events/once', ['exports', 'frampton-events/listen'], function (exports, _listen) {
   'use strict';
 
-  module.exports = once;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = once;
   function once(eventName, target) {
-    return _framptonEventsListen.listen(eventName, target).take(1);
+    return (0, _listen.listen)(eventName, target).take(1);
   }
 });
-define('frampton-events/prevent_default', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/is_object'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsIs_object) {
+define('frampton-events/prevent_default', ['exports', 'frampton-utils/is_function', 'frampton-utils/is_object'], function (exports, _is_function, _is_object) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
-
-  var _isObject = _interopRequireDefault(_framptonUtilsIs_object);
-
-  module.exports = function (evt) {
-    if (_isObject['default'](evt) && _isFunction['default'](evt.preventDefault) && _isFunction['default'](evt.stopPropagation)) {
+  exports.default = function (evt) {
+    if ((0, _is_object2.default)(evt) && (0, _is_function2.default)(evt.preventDefault) && (0, _is_function2.default)(evt.stopPropagation)) {
       evt.preventDefault();
       evt.stopPropagation();
     }
     return evt;
   };
+
+  var _is_function2 = _interopRequireDefault(_is_function);
+
+  var _is_object2 = _interopRequireDefault(_is_object);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 });
-define('frampton-events/selector_cache', ['exports', 'module', 'frampton-events/simple_cache'], function (exports, module, _framptonEventsSimple_cache) {
+define('frampton-events/selector_cache', ['exports', 'frampton-events/simple_cache'], function (exports, _simple_cache) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _simpleCahce = _interopRequireDefault(_framptonEventsSimple_cache);
+  var _simple_cache2 = _interopRequireDefault(_simple_cache);
 
-  module.exports = _simpleCahce['default']();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _simple_cache2.default)();
 });
-define('frampton-events/selector_contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-events/closest_to_event'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonEventsClosest_to_event) {
+define('frampton-events/selector_contains', ['exports', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-events/closest_to_event'], function (exports, _curry, _is_something, _closest_to_event) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _closestToEvent = _interopRequireDefault(_framptonEventsClosest_to_event);
+  var _closest_to_event2 = _interopRequireDefault(_closest_to_event);
 
-  /**
-   * selectorContains :: String -> DomEvent -> Boolean
-   *
-   * Tests if the target of a given event is contained in a node that matches
-   * the given selector.
-   *
-   * @name selectorContains
-   * @memberof Frampton.Events
-   * @static
-   * @param {String} selector
-   * @param {Object} evt
-   * @returns {Boolean} Is the event contained in a node that matches the given selector
-   */
-  module.exports = _curry['default'](function selector_contains(selector, evt) {
-    return _isSomething['default'](_closestToEvent['default'](selector, evt));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function selector_contains(selector, evt) {
+    return (0, _is_something2.default)((0, _closest_to_event2.default)(selector, evt));
   });
 });
-define('frampton-events/simple_cache', ['exports', 'module', 'frampton-utils/is_nothing'], function (exports, module, _framptonUtilsIs_nothing) {
+define('frampton-events/simple_cache', ['exports', 'frampton-utils/is_nothing'], function (exports, _is_nothing) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
-
-  module.exports = function () {
+  exports.default = function () {
 
     var store = {};
 
     return function (name, fn) {
-      if (_isNothing['default'](store[name])) {
+      if ((0, _is_nothing2.default)(store[name])) {
         store[name] = fn();
       }
       return store[name];
     };
   };
+
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 });
-define('frampton-html', ['exports', 'frampton/namespace', 'frampton-html/attribute', 'frampton-html/contains', 'frampton-html/element_value', 'frampton-html/data', 'frampton-html/set_html'], function (exports, _framptonNamespace, _framptonHtmlAttribute, _framptonHtmlContains, _framptonHtmlElement_value, _framptonHtmlData, _framptonHtmlSet_html) {
+define('frampton-html', ['frampton/namespace', 'frampton-html/attribute', 'frampton-html/contains', 'frampton-html/element_value', 'frampton-html/data', 'frampton-html/set_html'], function (_namespace, _attribute, _contains, _element_value, _data, _set_html) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _attribute2 = _interopRequireDefault(_attribute);
 
-  var _attribute = _interopRequireDefault(_framptonHtmlAttribute);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _contains = _interopRequireDefault(_framptonHtmlContains);
+  var _element_value2 = _interopRequireDefault(_element_value);
 
-  var _elementValue = _interopRequireDefault(_framptonHtmlElement_value);
+  var _data2 = _interopRequireDefault(_data);
 
-  var _data = _interopRequireDefault(_framptonHtmlData);
+  var _set_html2 = _interopRequireDefault(_set_html);
 
-  var _set = _interopRequireDefault(_framptonHtmlSet_html);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Html
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Html = {};
-  _Frampton['default'].Html.attribute = _attribute['default'];
-  _Frampton['default'].Html.contains = _contains['default'];
-  _Frampton['default'].Html.elementValue = _elementValue['default'];
-  _Frampton['default'].Html.data = _data['default'];
-  _Frampton['default'].Html.set = _set['default'];
+  _namespace2.default.Html = {};
+  _namespace2.default.Html.attribute = _attribute2.default;
+  _namespace2.default.Html.contains = _contains2.default;
+  _namespace2.default.Html.elementValue = _element_value2.default;
+  _namespace2.default.Html.data = _data2.default;
+  _namespace2.default.Html.set = _set_html2.default;
 });
-define('frampton-html/attribute', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-html/attribute', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * attribute :: String -> Element -> String
-   *
-   * @name attribute
-   * @param {String} name
-   * @param {Element} element
-   * @returns {*}
-   */
-  module.exports = _curry['default'](function (name, element) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (name, element) {
     return element.getAttribute(name);
   });
 });
-define('frampton-html/contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_function) {
+define('frampton-html/contains', ['exports', 'frampton-utils/curry', 'frampton-utils/is_function'], function (exports, _curry, _is_function) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  // contains :: Dom -> Dom -> Boolean
-  module.exports = _curry['default'](function (parent, child) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (parent, child) {
     if (parent === child) {
       return true;
-    } else if (_isFunction['default'](parent.contains)) {
+    } else if ((0, _is_function2.default)(parent.contains)) {
       return parent.contains(child);
     } else {
       while (child = child.parentNode) {
@@ -2100,28 +2299,34 @@ define('frampton-html/contains', ['exports', 'module', 'frampton-utils/curry', '
     }
   });
 });
-define('frampton-html/data', ['exports', 'module', 'frampton-utils/curry', 'frampton-html/attribute'], function (exports, module, _framptonUtilsCurry, _framptonHtmlAttribute) {
+define('frampton-html/data', ['exports', 'frampton-utils/curry', 'frampton-html/attribute'], function (exports, _curry, _attribute) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _attribute = _interopRequireDefault(_framptonHtmlAttribute);
+  var _attribute2 = _interopRequireDefault(_attribute);
 
-  /**
-   * data :: String -> Element -> String
-   *
-   * @name attribute
-   * @param {String} name
-   * @param {Element} element
-   * @returns {*}
-   */
-  module.exports = _curry['default'](function (name, element) {
-    return _attribute['default']('data-' + name, element);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (name, element) {
+    return (0, _attribute2.default)('data-' + name, element);
   });
 });
-define("frampton-html/element_value", ["exports", "module"], function (exports, module) {
+define("frampton-html/element_value", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = element_value;
   /**
    * elementValue :: Object -> Any
    *
@@ -2131,118 +2336,133 @@ define("frampton-html/element_value", ["exports", "module"], function (exports, 
    * @param {Object} element
    * @returns {*}
    */
-  "use strict";
-
-  module.exports = element_value;
-
   function element_value(element) {
     return element.value || null;
   }
 });
-define('frampton-html/set_html', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-html/set_html', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  module.exports = _curry['default'](function (element, html) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (element, html) {
     element.innerHTML = html;
   });
 });
-define('frampton-keyboard', ['exports', 'frampton/namespace', 'frampton-keyboard/keyboard', 'frampton-keyboard/utils/key_code', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/is_enter', 'frampton-keyboard/utils/is_esc', 'frampton-keyboard/utils/is_up', 'frampton-keyboard/utils/is_down', 'frampton-keyboard/utils/is_left', 'frampton-keyboard/utils/is_right', 'frampton-keyboard/utils/is_space', 'frampton-keyboard/utils/is_ctrl', 'frampton-keyboard/utils/is_shift'], function (exports, _framptonNamespace, _framptonKeyboardKeyboard, _framptonKeyboardUtilsKey_code, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsIs_enter, _framptonKeyboardUtilsIs_esc, _framptonKeyboardUtilsIs_up, _framptonKeyboardUtilsIs_down, _framptonKeyboardUtilsIs_left, _framptonKeyboardUtilsIs_right, _framptonKeyboardUtilsIs_space, _framptonKeyboardUtilsIs_ctrl, _framptonKeyboardUtilsIs_shift) {
+define('frampton-keyboard', ['frampton/namespace', 'frampton-keyboard/keyboard', 'frampton-keyboard/utils/key_code', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/is_enter', 'frampton-keyboard/utils/is_esc', 'frampton-keyboard/utils/is_up', 'frampton-keyboard/utils/is_down', 'frampton-keyboard/utils/is_left', 'frampton-keyboard/utils/is_right', 'frampton-keyboard/utils/is_space', 'frampton-keyboard/utils/is_ctrl', 'frampton-keyboard/utils/is_shift'], function (_namespace, _keyboard, _key_code, _is_key, _is_enter, _is_esc, _is_up, _is_down, _is_left, _is_right, _is_space, _is_ctrl, _is_shift) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _keyboard2 = _interopRequireDefault(_keyboard);
 
-  var _Keyboard = _interopRequireDefault(_framptonKeyboardKeyboard);
+  var _key_code2 = _interopRequireDefault(_key_code);
 
-  var _keyCode = _interopRequireDefault(_framptonKeyboardUtilsKey_code);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_enter2 = _interopRequireDefault(_is_enter);
 
-  var _isEnter = _interopRequireDefault(_framptonKeyboardUtilsIs_enter);
+  var _is_esc2 = _interopRequireDefault(_is_esc);
 
-  var _isEsc = _interopRequireDefault(_framptonKeyboardUtilsIs_esc);
+  var _is_up2 = _interopRequireDefault(_is_up);
 
-  var _isUp = _interopRequireDefault(_framptonKeyboardUtilsIs_up);
+  var _is_down2 = _interopRequireDefault(_is_down);
 
-  var _isDown = _interopRequireDefault(_framptonKeyboardUtilsIs_down);
+  var _is_left2 = _interopRequireDefault(_is_left);
 
-  var _isLeft = _interopRequireDefault(_framptonKeyboardUtilsIs_left);
+  var _is_right2 = _interopRequireDefault(_is_right);
 
-  var _isRight = _interopRequireDefault(_framptonKeyboardUtilsIs_right);
+  var _is_space2 = _interopRequireDefault(_is_space);
 
-  var _isSpace = _interopRequireDefault(_framptonKeyboardUtilsIs_space);
+  var _is_ctrl2 = _interopRequireDefault(_is_ctrl);
 
-  var _isCtrl = _interopRequireDefault(_framptonKeyboardUtilsIs_ctrl);
+  var _is_shift2 = _interopRequireDefault(_is_shift);
 
-  var _isShift = _interopRequireDefault(_framptonKeyboardUtilsIs_shift);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Keyboard
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Keyboard = _Keyboard['default'];
+  _namespace2.default.Keyboard = _keyboard2.default;
 
-  _Frampton['default'].Keyboard.Utils = {};
-  _Frampton['default'].Keyboard.Utils.keyCode = _keyCode['default'];
-  _Frampton['default'].Keyboard.Utils.isKey = _isKey['default'];
-  _Frampton['default'].Keyboard.Utils.isEnter = _isEnter['default'];
-  _Frampton['default'].Keyboard.Utils.isEsc = _isEsc['default'];
-  _Frampton['default'].Keyboard.Utils.isUp = _isUp['default'];
-  _Frampton['default'].Keyboard.Utils.isDown = _isDown['default'];
-  _Frampton['default'].Keyboard.Utils.isLeft = _isLeft['default'];
-  _Frampton['default'].Keyboard.Utils.isRight = _isRight['default'];
-  _Frampton['default'].Keyboard.Utils.isShift = _isShift['default'];
-  _Frampton['default'].Keyboard.Utils.isSpace = _isSpace['default'];
-  _Frampton['default'].Keyboard.Utils.isCtrl = _isCtrl['default'];
+  _namespace2.default.Keyboard.Utils = {};
+  _namespace2.default.Keyboard.Utils.keyCode = _key_code2.default;
+  _namespace2.default.Keyboard.Utils.isKey = _is_key2.default;
+  _namespace2.default.Keyboard.Utils.isEnter = _is_enter2.default;
+  _namespace2.default.Keyboard.Utils.isEsc = _is_esc2.default;
+  _namespace2.default.Keyboard.Utils.isUp = _is_up2.default;
+  _namespace2.default.Keyboard.Utils.isDown = _is_down2.default;
+  _namespace2.default.Keyboard.Utils.isLeft = _is_left2.default;
+  _namespace2.default.Keyboard.Utils.isRight = _is_right2.default;
+  _namespace2.default.Keyboard.Utils.isShift = _is_shift2.default;
+  _namespace2.default.Keyboard.Utils.isSpace = _is_space2.default;
+  _namespace2.default.Keyboard.Utils.isCtrl = _is_ctrl2.default;
 });
-define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append', 'frampton-list/remove', 'frampton-events/on_event', 'frampton-signal/stepper', 'frampton-keyboard/utils/key_map', 'frampton-keyboard/utils/key_code'], function (exports, module, _framptonUtilsCurry, _framptonListContains, _framptonListAppend, _framptonListRemove, _framptonEventsOn_event, _framptonSignalStepper, _framptonKeyboardUtilsKey_map, _framptonKeyboardUtilsKey_code) {
+define('frampton-keyboard/keyboard', ['exports', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append', 'frampton-list/remove', 'frampton-events/on_event', 'frampton-signal/stepper', 'frampton-keyboard/utils/key_map', 'frampton-keyboard/utils/key_code'], function (exports, _curry, _contains, _append, _remove, _on_event, _stepper, _key_map, _key_code) {
   'use strict';
 
-  module.exports = Keyboard;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Keyboard;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _contains = _interopRequireDefault(_framptonListContains);
+  var _append2 = _interopRequireDefault(_append);
 
-  var _append = _interopRequireDefault(_framptonListAppend);
+  var _remove2 = _interopRequireDefault(_remove);
 
-  var _remove = _interopRequireDefault(_framptonListRemove);
+  var _on_event2 = _interopRequireDefault(_on_event);
 
-  var _onEvent = _interopRequireDefault(_framptonEventsOn_event);
+  var _stepper2 = _interopRequireDefault(_stepper);
 
-  var _stepper = _interopRequireDefault(_framptonSignalStepper);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_code2 = _interopRequireDefault(_key_code);
 
-  var _keyCode = _interopRequireDefault(_framptonKeyboardUtilsKey_code);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   //+ keyUp :: Signal DomEvent
-  var keyUp = _onEvent['default']('keyup');
+  var keyUp = (0, _on_event2.default)('keyup');
 
   //+ keyDown :: Signal DomEvent
-  var keyDown = _onEvent['default']('keydown');
+  var keyDown = (0, _on_event2.default)('keydown');
 
   //+ keyPress :: Signal DomEvent
-  var keyPress = _onEvent['default']('keypress');
+  var keyPress = (0, _on_event2.default)('keypress');
 
   //+ keyUpCodes :: Signal KeyCode
-  var keyUpCodes = keyUp.map(_keyCode['default']);
+  var keyUpCodes = keyUp.map(_key_code2.default);
 
   //+ keyDownCodes :: Signal KeyCode
-  var keyDownCodes = keyDown.map(_keyCode['default']);
+  var keyDownCodes = keyDown.map(_key_code2.default);
 
   var addKey = function addKey(keyCode) {
     return function (arr) {
-      if (!_contains['default'](arr, keyCode)) {
-        return _append['default'](arr, keyCode);
+      if (!(0, _contains2.default)(arr, keyCode)) {
+        return (0, _append2.default)(arr, keyCode);
       }
       return arr;
     };
@@ -2250,7 +2470,7 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
 
   var removeKey = function removeKey(keyCode) {
     return function (arr) {
-      return _remove['default'](keyCode, arr);
+      return (0, _remove2.default)(keyCode, arr);
     };
   };
 
@@ -2267,26 +2487,26 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
   //+ keyIsDown :: KeyCode -> Signal Boolean
   var keyIsDown = function keyIsDown(keyCode) {
     return keysDown.map(function (arr) {
-      return _contains['default'](arr, keyCode);
+      return (0, _contains2.default)(arr, keyCode);
     });
   };
 
   //+ direction :: KeyCode -> [KeyCode] -> Boolean
-  var direction = _curry['default'](function (keyCode, arr) {
-    return _contains['default'](arr, keyCode) ? 1 : 0;
+  var direction = (0, _curry2.default)(function (keyCode, arr) {
+    return (0, _contains2.default)(arr, keyCode) ? 1 : 0;
   });
 
   //+ isUp :: [KeyCode] -> Boolean
-  var isUp = direction(_KEY_MAP['default'].UP);
+  var isUp = direction(_key_map2.default.UP);
 
   //+ isDown :: [KeyCode] -> Boolean
-  var isDown = direction(_KEY_MAP['default'].DOWN);
+  var isDown = direction(_key_map2.default.DOWN);
 
   //+ isRight :: [KeyCode] -> Boolean
-  var isRight = direction(_KEY_MAP['default'].RIGHT);
+  var isRight = direction(_key_map2.default.RIGHT);
 
   //+ isLeft :: [KeyCode] -> Boolean
-  var isLeft = direction(_KEY_MAP['default'].LEFT);
+  var isLeft = direction(_key_map2.default.LEFT);
 
   //+ arrows :: Signal [horizontal, vertical]
   var arrows = keysDown.map(function (arr) {
@@ -2298,152 +2518,232 @@ define('frampton-keyboard/keyboard', ['exports', 'module', 'frampton-utils/curry
     ups: keyUp,
     presses: keyPress,
     codes: keyUpCodes,
-    arrows: _stepper['default']([0, 0], arrows),
-    shift: _stepper['default'](false, keyIsDown(_KEY_MAP['default'].SHIFT)),
-    ctrl: _stepper['default'](false, keyIsDown(_KEY_MAP['default'].CTRL)),
-    escape: _stepper['default'](false, keyIsDown(_KEY_MAP['default'].ESC)),
-    enter: _stepper['default'](false, keyIsDown(_KEY_MAP['default'].ENTER)),
-    space: _stepper['default'](false, keyIsDown(_KEY_MAP['default'].SPACE))
+    arrows: (0, _stepper2.default)([0, 0], arrows),
+    shift: (0, _stepper2.default)(false, keyIsDown(_key_map2.default.SHIFT)),
+    ctrl: (0, _stepper2.default)(false, keyIsDown(_key_map2.default.CTRL)),
+    escape: (0, _stepper2.default)(false, keyIsDown(_key_map2.default.ESC)),
+    enter: (0, _stepper2.default)(false, keyIsDown(_key_map2.default.ENTER)),
+    space: (0, _stepper2.default)(false, keyIsDown(_key_map2.default.SPACE))
   };
 
   function Keyboard() {
     return defaultKeyboard;
   }
 });
-define('frampton-keyboard/utils/is_ctrl', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_ctrl', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_ctrl :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].CTRL);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.CTRL);
 });
-define('frampton-keyboard/utils/is_down', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_down', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_down :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].DOWN);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.DOWN);
 });
-define('frampton-keyboard/utils/is_enter', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_enter', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_enter :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].ENTER);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.ENTER);
 });
-define('frampton-keyboard/utils/is_esc', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_esc', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_esc :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].ESC);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.ESC);
 });
-define('frampton-keyboard/utils/is_key', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-keyboard/utils/is_key', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  // isKey :: KeyCode -> KeyCode -> Boolean
-  module.exports = _curry['default'](function is_key(key, keyCode) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function is_key(key, keyCode) {
     return key === keyCode;
   });
 });
-define('frampton-keyboard/utils/is_left', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_left', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_left :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].LEFT);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.LEFT);
 });
-define('frampton-keyboard/utils/is_right', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_right', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_right :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].RIGHT);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.RIGHT);
 });
-define('frampton-keyboard/utils/is_shift', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_shift', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_shift :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].SHIFT);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.SHIFT);
 });
-define('frampton-keyboard/utils/is_space', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_space', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_space :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].SPACE);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.SPACE);
 });
-define('frampton-keyboard/utils/is_up', ['exports', 'module', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, module, _framptonKeyboardUtilsIs_key, _framptonKeyboardUtilsKey_map) {
+define('frampton-keyboard/utils/is_up', ['exports', 'frampton-keyboard/utils/is_key', 'frampton-keyboard/utils/key_map'], function (exports, _is_key, _key_map) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _isKey = _interopRequireDefault(_framptonKeyboardUtilsIs_key);
+  var _is_key2 = _interopRequireDefault(_is_key);
 
-  var _KEY_MAP = _interopRequireDefault(_framptonKeyboardUtilsKey_map);
+  var _key_map2 = _interopRequireDefault(_key_map);
 
-  // is_up :: KeyCode -> Boolean
-  module.exports = _isKey['default'](_KEY_MAP['default'].UP);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _is_key2.default)(_key_map2.default.UP);
 });
-define('frampton-keyboard/utils/key_code', ['exports', 'module', 'frampton-utils/get'], function (exports, module, _framptonUtilsGet) {
+define('frampton-keyboard/utils/key_code', ['exports', 'frampton-utils/get'], function (exports, _get) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _get = _interopRequireDefault(_framptonUtilsGet);
+  var _get2 = _interopRequireDefault(_get);
 
-  // key_code :: DomEvent -> KeyCode
-  module.exports = _get['default']('keyCode');
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _get2.default)('keyCode');
 });
-define("frampton-keyboard/utils/key_map", ["exports", "module"], function (exports, module) {
+define("frampton-keyboard/utils/key_map", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
     ENTER: 13,
     ESC: 27,
     SPACE: 32,
@@ -2455,160 +2755,164 @@ define("frampton-keyboard/utils/key_map", ["exports", "module"], function (expor
     RIGHT: 39
   };
 });
-define('frampton-list', ['exports', 'frampton/namespace', 'frampton-list/add', 'frampton-list/append', 'frampton-list/contains', 'frampton-list/copy', 'frampton-list/diff', 'frampton-list/drop', 'frampton-list/each', 'frampton-list/filter', 'frampton-list/find', 'frampton-list/first', 'frampton-list/foldl', 'frampton-list/foldr', 'frampton-list/init', 'frampton-list/last', 'frampton-list/length', 'frampton-list/max', 'frampton-list/min', 'frampton-list/prepend', 'frampton-list/product', 'frampton-list/remove', 'frampton-list/remove_index', 'frampton-list/replace', 'frampton-list/replace_index', 'frampton-list/reverse', 'frampton-list/second', 'frampton-list/split', 'frampton-list/sum', 'frampton-list/tail', 'frampton-list/take', 'frampton-list/third', 'frampton-list/zip'], function (exports, _framptonNamespace, _framptonListAdd, _framptonListAppend, _framptonListContains, _framptonListCopy, _framptonListDiff, _framptonListDrop, _framptonListEach, _framptonListFilter, _framptonListFind, _framptonListFirst, _framptonListFoldl, _framptonListFoldr, _framptonListInit, _framptonListLast, _framptonListLength, _framptonListMax, _framptonListMin, _framptonListPrepend, _framptonListProduct, _framptonListRemove, _framptonListRemove_index, _framptonListReplace, _framptonListReplace_index, _framptonListReverse, _framptonListSecond, _framptonListSplit, _framptonListSum, _framptonListTail, _framptonListTake, _framptonListThird, _framptonListZip) {
+define('frampton-list', ['frampton/namespace', 'frampton-list/add', 'frampton-list/append', 'frampton-list/contains', 'frampton-list/copy', 'frampton-list/diff', 'frampton-list/drop', 'frampton-list/each', 'frampton-list/filter', 'frampton-list/find', 'frampton-list/first', 'frampton-list/foldl', 'frampton-list/foldr', 'frampton-list/init', 'frampton-list/last', 'frampton-list/length', 'frampton-list/max', 'frampton-list/min', 'frampton-list/prepend', 'frampton-list/product', 'frampton-list/remove', 'frampton-list/remove_index', 'frampton-list/replace', 'frampton-list/replace_index', 'frampton-list/reverse', 'frampton-list/second', 'frampton-list/split', 'frampton-list/sum', 'frampton-list/tail', 'frampton-list/take', 'frampton-list/third', 'frampton-list/zip'], function (_namespace, _add, _append, _contains, _copy, _diff, _drop, _each, _filter, _find, _first, _foldl, _foldr, _init, _last, _length, _max, _min, _prepend, _product, _remove, _remove_index, _replace, _replace_index, _reverse, _second, _split, _sum, _tail, _take, _third, _zip) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _add2 = _interopRequireDefault(_add);
 
-  var _add = _interopRequireDefault(_framptonListAdd);
+  var _append2 = _interopRequireDefault(_append);
 
-  var _append = _interopRequireDefault(_framptonListAppend);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _contains = _interopRequireDefault(_framptonListContains);
+  var _copy2 = _interopRequireDefault(_copy);
 
-  var _copy = _interopRequireDefault(_framptonListCopy);
+  var _diff2 = _interopRequireDefault(_diff);
 
-  var _diff = _interopRequireDefault(_framptonListDiff);
+  var _drop2 = _interopRequireDefault(_drop);
 
-  var _drop = _interopRequireDefault(_framptonListDrop);
+  var _each2 = _interopRequireDefault(_each);
 
-  var _each = _interopRequireDefault(_framptonListEach);
+  var _filter2 = _interopRequireDefault(_filter);
 
-  var _filter = _interopRequireDefault(_framptonListFilter);
+  var _find2 = _interopRequireDefault(_find);
 
-  var _find = _interopRequireDefault(_framptonListFind);
+  var _first2 = _interopRequireDefault(_first);
 
-  var _first = _interopRequireDefault(_framptonListFirst);
+  var _foldl2 = _interopRequireDefault(_foldl);
 
-  var _foldl = _interopRequireDefault(_framptonListFoldl);
+  var _foldr2 = _interopRequireDefault(_foldr);
 
-  var _foldr = _interopRequireDefault(_framptonListFoldr);
+  var _init2 = _interopRequireDefault(_init);
 
-  var _init = _interopRequireDefault(_framptonListInit);
+  var _last2 = _interopRequireDefault(_last);
 
-  var _last = _interopRequireDefault(_framptonListLast);
+  var _length2 = _interopRequireDefault(_length);
 
-  var _length = _interopRequireDefault(_framptonListLength);
+  var _max2 = _interopRequireDefault(_max);
 
-  var _max = _interopRequireDefault(_framptonListMax);
+  var _min2 = _interopRequireDefault(_min);
 
-  var _min = _interopRequireDefault(_framptonListMin);
+  var _prepend2 = _interopRequireDefault(_prepend);
 
-  var _prepend = _interopRequireDefault(_framptonListPrepend);
+  var _product2 = _interopRequireDefault(_product);
 
-  var _product = _interopRequireDefault(_framptonListProduct);
+  var _remove2 = _interopRequireDefault(_remove);
 
-  var _remove = _interopRequireDefault(_framptonListRemove);
+  var _remove_index2 = _interopRequireDefault(_remove_index);
 
-  var _removeAt = _interopRequireDefault(_framptonListRemove_index);
+  var _replace2 = _interopRequireDefault(_replace);
 
-  var _replace = _interopRequireDefault(_framptonListReplace);
+  var _replace_index2 = _interopRequireDefault(_replace_index);
 
-  var _replaceAt = _interopRequireDefault(_framptonListReplace_index);
+  var _reverse2 = _interopRequireDefault(_reverse);
 
-  var _reverse = _interopRequireDefault(_framptonListReverse);
+  var _second2 = _interopRequireDefault(_second);
 
-  var _second = _interopRequireDefault(_framptonListSecond);
+  var _split2 = _interopRequireDefault(_split);
 
-  var _split = _interopRequireDefault(_framptonListSplit);
+  var _sum2 = _interopRequireDefault(_sum);
 
-  var _sum = _interopRequireDefault(_framptonListSum);
+  var _tail2 = _interopRequireDefault(_tail);
 
-  var _tail = _interopRequireDefault(_framptonListTail);
+  var _take2 = _interopRequireDefault(_take);
 
-  var _take = _interopRequireDefault(_framptonListTake);
+  var _third2 = _interopRequireDefault(_third);
 
-  var _third = _interopRequireDefault(_framptonListThird);
+  var _zip2 = _interopRequireDefault(_zip);
 
-  var _zip = _interopRequireDefault(_framptonListZip);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name List
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].List = {};
-  _Frampton['default'].List.add = _add['default'];
-  _Frampton['default'].List.append = _append['default'];
-  _Frampton['default'].List.contains = _contains['default'];
-  _Frampton['default'].List.copy = _copy['default'];
-  _Frampton['default'].List.diff = _diff['default'];
-  _Frampton['default'].List.drop = _drop['default'];
-  _Frampton['default'].List.each = _each['default'];
-  _Frampton['default'].List.filter = _filter['default'];
-  _Frampton['default'].List.find = _find['default'];
-  _Frampton['default'].List.foldl = _foldl['default'];
-  _Frampton['default'].List.foldr = _foldr['default'];
-  _Frampton['default'].List.first = _first['default'];
-  _Frampton['default'].List.second = _second['default'];
-  _Frampton['default'].List.third = _third['default'];
-  _Frampton['default'].List.init = _init['default'];
-  _Frampton['default'].List.last = _last['default'];
-  _Frampton['default'].List.length = _length['default'];
-  _Frampton['default'].List.max = _max['default'];
-  _Frampton['default'].List.min = _min['default'];
-  _Frampton['default'].List.prepend = _prepend['default'];
-  _Frampton['default'].List.product = _product['default'];
-  _Frampton['default'].List.remove = _remove['default'];
-  _Frampton['default'].List.removeAt = _removeAt['default'];
-  _Frampton['default'].List.replace = _replace['default'];
-  _Frampton['default'].List.replaceAt = _replaceAt['default'];
-  _Frampton['default'].List.reverse = _reverse['default'];
-  _Frampton['default'].List.split = _split['default'];
-  _Frampton['default'].List.sum = _sum['default'];
-  _Frampton['default'].List.tail = _tail['default'];
-  _Frampton['default'].List.take = _take['default'];
-  _Frampton['default'].List.zip = _zip['default'];
+  _namespace2.default.List = {};
+  _namespace2.default.List.add = _add2.default;
+  _namespace2.default.List.append = _append2.default;
+  _namespace2.default.List.contains = _contains2.default;
+  _namespace2.default.List.copy = _copy2.default;
+  _namespace2.default.List.diff = _diff2.default;
+  _namespace2.default.List.drop = _drop2.default;
+  _namespace2.default.List.each = _each2.default;
+  _namespace2.default.List.filter = _filter2.default;
+  _namespace2.default.List.find = _find2.default;
+  _namespace2.default.List.foldl = _foldl2.default;
+  _namespace2.default.List.foldr = _foldr2.default;
+  _namespace2.default.List.first = _first2.default;
+  _namespace2.default.List.second = _second2.default;
+  _namespace2.default.List.third = _third2.default;
+  _namespace2.default.List.init = _init2.default;
+  _namespace2.default.List.last = _last2.default;
+  _namespace2.default.List.length = _length2.default;
+  _namespace2.default.List.max = _max2.default;
+  _namespace2.default.List.min = _min2.default;
+  _namespace2.default.List.prepend = _prepend2.default;
+  _namespace2.default.List.product = _product2.default;
+  _namespace2.default.List.remove = _remove2.default;
+  _namespace2.default.List.removeAt = _remove_index2.default;
+  _namespace2.default.List.replace = _replace2.default;
+  _namespace2.default.List.replaceAt = _replace_index2.default;
+  _namespace2.default.List.reverse = _reverse2.default;
+  _namespace2.default.List.split = _split2.default;
+  _namespace2.default.List.sum = _sum2.default;
+  _namespace2.default.List.tail = _tail2.default;
+  _namespace2.default.List.take = _take2.default;
+  _namespace2.default.List.zip = _zip2.default;
 });
-define('frampton-list/add', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append', 'frampton-list/copy'], function (exports, module, _framptonUtilsCurry, _framptonListContains, _framptonListAppend, _framptonListCopy) {
+define('frampton-list/add', ['exports', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append', 'frampton-list/copy'], function (exports, _curry, _contains, _append, _copy) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _contains = _interopRequireDefault(_framptonListContains);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _append = _interopRequireDefault(_framptonListAppend);
+  var _append2 = _interopRequireDefault(_append);
 
-  var _copy = _interopRequireDefault(_framptonListCopy);
+  var _copy2 = _interopRequireDefault(_copy);
 
-  /**
-   * @name addToList
-   * @method
-   * @memberof Frampton.List
-   * @param {Array} xs  Array to add object to
-   * @param {*}   obj Object to add to array
-   * @returns {Array} A new array with the object added
-   */
-  module.exports = _curry['default'](function add_to_list(xs, obj) {
-    return !_contains['default'](xs, obj) ? _append['default'](xs, obj) : _copy['default'](xs);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function add_to_list(xs, obj) {
+    return !(0, _contains2.default)(xs, obj) ? (0, _append2.default)(xs, obj) : (0, _copy2.default)(xs);
   });
 });
-define('frampton-list/append', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-list/length'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonListLength) {
+define('frampton-list/append', ['exports', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-list/length'], function (exports, _curry, _is_something, _length) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _length = _interopRequireDefault(_framptonListLength);
+  var _length2 = _interopRequireDefault(_length);
 
-  /**
-   * @name append
-   * @method
-   * @memberof Frampton.List
-   * @param {Array} xs
-   * @param {*} obj
-   * @returns {Array}
-   */
-  module.exports = _curry['default'](function (xs, obj) {
-    if (_isSomething['default'](obj)) {
-      var len = _length['default'](xs);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (xs, obj) {
+    if ((0, _is_something2.default)(obj)) {
+      var len = (0, _length2.default)(xs);
       var newArray = new Array(len + 1);
       for (var i = 0; i < len; i++) {
         newArray[i] = xs[i];
@@ -2620,66 +2924,75 @@ define('frampton-list/append', ['exports', 'module', 'frampton-utils/curry', 'fr
     }
   });
 });
-define('frampton-list/at', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/assert', 'frampton-utils/is_defined', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsCurry, _framptonUtilsAssert, _framptonUtilsIs_defined, _framptonUtilsIs_array) {
+define('frampton-list/at', ['exports', 'frampton-utils/curry', 'frampton-utils/assert', 'frampton-utils/is_defined', 'frampton-utils/is_array'], function (exports, _curry, _assert, _is_defined, _is_array) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _isDefined = _interopRequireDefault(_framptonUtilsIs_defined);
+  var _is_defined2 = _interopRequireDefault(_is_defined);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  /**
-   * @name at
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _curry['default'](function at(index, xs) {
-    _assert['default']("Frampton.List.at recieved a non-array", _isArray['default'](xs));
-    return _isDefined['default'](xs[index]) ? xs[index] : null;
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function at(index, xs) {
+    (0, _assert2.default)("Frampton.List.at recieved a non-array", (0, _is_array2.default)(xs));
+    return (0, _is_defined2.default)(xs[index]) ? xs[index] : null;
   });
 });
-define('frampton-list/contains', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-list/contains', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name contains
-   * @method
-   * @memberof Frampton.List
-   * @param {Array} xs
-   * @param {*}   obj
-   * @retruns {Boolean}
-   */
-  module.exports = _curry['default'](function (xs, obj) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (xs, obj) {
     return xs.indexOf(obj) > -1;
   });
 });
-define('frampton-list/copy', ['exports', 'module', 'frampton-list/length'], function (exports, module, _framptonListLength) {
+define('frampton-list/copy', ['exports', 'frampton-list/length'], function (exports, _length) {
   'use strict';
 
-  module.exports = copy;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = copy;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _length2 = _interopRequireDefault(_length);
 
-  var _length = _interopRequireDefault(_framptonListLength);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name copy
    * @method
    * @memberof Frampton.List
    */
-
   function copy(xs, begin, end) {
 
-    var argLen = _length['default'](xs),
+    var argLen = (0, _length2.default)(xs),
         idx = 0,
         arrLen,
         arr,
@@ -2699,29 +3012,31 @@ define('frampton-list/copy', ['exports', 'module', 'frampton-list/length'], func
     return Object.freeze(arr || []);
   }
 });
-define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/each'], function (exports, module, _framptonUtilsCurry, _framptonListContains, _framptonListEach) {
+define('frampton-list/diff', ['exports', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/each'], function (exports, _curry, _contains, _each) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _contains = _interopRequireDefault(_framptonListContains);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _each = _interopRequireDefault(_framptonListEach);
+  var _each2 = _interopRequireDefault(_each);
 
-  /**
-   * @name diff
-   * @method
-   * @memberof Frampton.List
-   * @returns {Array}
-   */
-  module.exports = _curry['default'](function curried_diff(xs, ys) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_diff(xs, ys) {
 
     var diff = [];
 
-    _each['default'](function (item) {
-      if (!_contains['default'](ys, item)) {
+    (0, _each2.default)(function (item) {
+      if (!(0, _contains2.default)(ys, item)) {
         diff.push(item);
       }
     }, xs);
@@ -2729,27 +3044,30 @@ define('frampton-list/diff', ['exports', 'module', 'frampton-utils/curry', 'fram
     return Object.freeze(diff);
   });
 });
-define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-list/filter'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry, _framptonUtilsIs_array, _framptonListFilter) {
+define('frampton-list/drop', ['exports', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-list/filter'], function (exports, _assert, _curry, _is_array, _filter) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _filter = _interopRequireDefault(_framptonListFilter);
+  var _filter2 = _interopRequireDefault(_filter);
 
-  /**
-   * @name drop
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _curry['default'](function curried_drop(n, xs) {
-    _assert['default']("Frampton.List.drop recieved a non-array", _isArray['default'](xs));
-    return _filter['default'](function (next) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_drop(n, xs) {
+    (0, _assert2.default)("Frampton.List.drop recieved a non-array", (0, _is_array2.default)(xs));
+    return (0, _filter2.default)(function (next) {
       if (n === 0) {
         return true;
       } else {
@@ -2759,47 +3077,48 @@ define('frampton-list/drop', ['exports', 'module', 'frampton-utils/assert', 'fra
     }, xs);
   });
 });
-define('frampton-list/each', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-list/each', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name each
-   * @method
-   * @memberof Frampton.List
-   * @param {Functino} fn Function to run on each element
-   * @param {Array} xs Array to
-   */
-  module.exports = _curry['default'](function curried_each(fn, xs) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_each(fn, xs) {
     var len = xs.length;
     for (var i = 0; i < len; i++) {
       fn(xs[i], i);
     }
   });
 });
-define('frampton-list/filter', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/length'], function (exports, module, _framptonUtilsCurry, _framptonListLength) {
+define('frampton-list/filter', ['exports', 'frampton-utils/curry', 'frampton-list/length'], function (exports, _curry, _length) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _length = _interopRequireDefault(_framptonListLength);
+  var _length2 = _interopRequireDefault(_length);
 
-  /**
-   * @name filter
-   * @method
-   * @memberof Frampton.List
-   * @param {Function} predicate
-   * @param {Array} xs
-   * @returns {Array} A new array
-   */
-  module.exports = _curry['default'](function filter(predicate, xs) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-    var len = _length['default'](xs);
+  exports.default = (0, _curry2.default)(function filter(predicate, xs) {
+
+    var len = (0, _length2.default)(xs);
     var newList = [];
 
     for (var i = 0; i < len; i++) {
@@ -2811,49 +3130,63 @@ define('frampton-list/filter', ['exports', 'module', 'frampton-utils/curry', 'fr
     return Object.freeze(newList);
   });
 });
-define('frampton-list/find', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-list/find', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  module.exports = _curry['default'](function (obj, xs) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (obj, xs) {
     return xs.indexOf(obj);
   });
 });
-define('frampton-list/first', ['exports', 'module', 'frampton-list/at'], function (exports, module, _framptonListAt) {
+define('frampton-list/first', ['exports', 'frampton-list/at'], function (exports, _at) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _at = _interopRequireDefault(_framptonListAt);
+  var _at2 = _interopRequireDefault(_at);
 
-  /**
-   * @name first
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _at['default'](0);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _at2.default)(0);
 });
-define('frampton-list/foldl', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry_n', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry_n, _framptonUtilsIs_array) {
+define('frampton-list/foldl', ['exports', 'frampton-utils/assert', 'frampton-utils/curry_n', 'frampton-utils/is_array'], function (exports, _assert, _curry_n, _is_array) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  /**
-   * @name foldl
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _curryN['default'](3, function curried_foldl(fn, acc, xs) {
-    _assert['default']("Frampton.List.foldl recieved a non-array", _isArray['default'](xs));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry_n2.default)(3, function curried_foldl(fn, acc, xs) {
+    (0, _assert2.default)("Frampton.List.foldl recieved a non-array", (0, _is_array2.default)(xs));
     var len = xs.length;
     for (var i = 0; i < len; i++) {
       acc = fn(acc, xs[i]);
@@ -2861,24 +3194,27 @@ define('frampton-list/foldl', ['exports', 'module', 'frampton-utils/assert', 'fr
     return acc;
   });
 });
-define('frampton-list/foldr', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry_n', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry_n, _framptonUtilsIs_array) {
+define('frampton-list/foldr', ['exports', 'frampton-utils/assert', 'frampton-utils/curry_n', 'frampton-utils/is_array'], function (exports, _assert, _curry_n, _is_array) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  /**
-   * @name foldr
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _curryN['default'](3, function curried_foldr(fn, acc, xs) {
-    _assert['default']("Frampton.List.foldr recieved a non-array", _isArray['default'](xs));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry_n2.default)(3, function curried_foldr(fn, acc, xs) {
+    (0, _assert2.default)("Frampton.List.foldr recieved a non-array", (0, _is_array2.default)(xs));
     var len = xs.length;
     while (len--) {
       acc = fn(acc, xs[len]);
@@ -2886,25 +3222,31 @@ define('frampton-list/foldr', ['exports', 'module', 'frampton-utils/assert', 'fr
     return acc;
   });
 });
-define('frampton-list/init', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsIs_array) {
+define('frampton-list/init', ['exports', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, _assert, _is_array) {
   'use strict';
 
-  module.exports = init;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = init;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name init
    * @method
    * @memberof Frampton.List
    */
-
   function init(xs) {
-    _assert['default']("Frampton.List.init recieved a non-array", _isArray['default'](xs));
+    (0, _assert2.default)("Frampton.List.init recieved a non-array", (0, _is_array2.default)(xs));
     switch (xs.length) {
 
       case 0:
@@ -2915,25 +3257,31 @@ define('frampton-list/init', ['exports', 'module', 'frampton-utils/assert', 'fra
     }
   }
 });
-define('frampton-list/last', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsIs_array) {
+define('frampton-list/last', ['exports', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, _assert, _is_array) {
   'use strict';
 
-  module.exports = last;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = last;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name last
    * @method
    * @memberof Frampton.List
    */
-
   function last(xs) {
-    _assert['default']("Frampton.List.last recieved a non-array", _isArray['default'](xs));
+    (0, _assert2.default)("Frampton.List.last recieved a non-array", (0, _is_array2.default)(xs));
     switch (xs.length) {
 
       case 0:
@@ -2944,37 +3292,50 @@ define('frampton-list/last', ['exports', 'module', 'frampton-utils/assert', 'fra
     }
   }
 });
-define('frampton-list/length', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_defined'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_defined) {
+define('frampton-list/length', ['exports', 'frampton-utils/is_something', 'frampton-utils/is_defined'], function (exports, _is_something, _is_defined) {
   'use strict';
 
-  module.exports = length;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = length;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_defined2 = _interopRequireDefault(_is_defined);
 
-  var _isDefined = _interopRequireDefault(_framptonUtilsIs_defined);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name length
    * @method
    * @memberof Frampton.List
    */
-
   function length(xs) {
-    return _isSomething['default'](xs) && _isDefined['default'](xs.length) ? xs.length : 0;
+    return (0, _is_something2.default)(xs) && (0, _is_defined2.default)(xs.length) ? xs.length : 0;
   }
 });
-define('frampton-list/max', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
+define('frampton-list/max', ['exports', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, _foldl, _is_nothing) {
   'use strict';
 
-  module.exports = maximum;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = maximum;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _foldl2 = _interopRequireDefault(_foldl);
 
-  var _foldl = _interopRequireDefault(_framptonListFoldl);
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name maximum
@@ -2982,26 +3343,32 @@ define('frampton-list/max', ['exports', 'module', 'frampton-list/foldl', 'frampt
    * @memberof Frampton.List
    * @param {Array} xs
    */
-
   function maximum(xs) {
-    return _foldl['default'](function (acc, next) {
-      if (_isNothing['default'](acc) || next > acc) {
+    return (0, _foldl2.default)(function (acc, next) {
+      if ((0, _is_nothing2.default)(acc) || next > acc) {
         acc = next;
       }
       return acc;
     }, null, xs);
   }
 });
-define('frampton-list/min', ['exports', 'module', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, module, _framptonListFoldl, _framptonUtilsIs_nothing) {
+define('frampton-list/min', ['exports', 'frampton-list/foldl', 'frampton-utils/is_nothing'], function (exports, _foldl, _is_nothing) {
   'use strict';
 
-  module.exports = min;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = min;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _foldl2 = _interopRequireDefault(_foldl);
 
-  var _foldl = _interopRequireDefault(_framptonListFoldl);
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name min
@@ -3009,42 +3376,49 @@ define('frampton-list/min', ['exports', 'module', 'frampton-list/foldl', 'frampt
    * @memberof Frampton.List
    * @param {Array} xs
    */
-
   function min(xs) {
-    return _foldl['default'](function (acc, next) {
-      if (_isNothing['default'](acc) || next < acc) {
+    return (0, _foldl2.default)(function (acc, next) {
+      if ((0, _is_nothing2.default)(acc) || next < acc) {
         acc = next;
       }
       return acc;
     }, null, xs);
   }
 });
-define('frampton-list/prepend', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-list/prepend', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name prepend
-   * @method
-   * @memberof Frampton.List
-   * @param {Array} xs
-   * @param {*} obj
-   */
-  module.exports = _curry['default'](function (xs, obj) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (xs, obj) {
     return Object.freeze([].concat(obj).concat(xs));
   });
 });
-define('frampton-list/product', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
+define('frampton-list/product', ['exports', 'frampton-list/foldl'], function (exports, _foldl) {
   'use strict';
 
-  module.exports = product;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = product;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _foldl2 = _interopRequireDefault(_foldl);
 
-  var _foldl = _interopRequireDefault(_framptonListFoldl);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name product
@@ -3052,21 +3426,50 @@ define('frampton-list/product', ['exports', 'module', 'frampton-list/foldl'], fu
    * @memberof Frampton.List
    * @param {Array} xs
    */
-
   function product(xs) {
-    return _foldl['default'](function (acc, next) {
+    return (0, _foldl2.default)(function (acc, next) {
       return acc * next;
     }, 1, xs);
   }
 });
-define('frampton-list/remove_index', ['exports', 'module', 'frampton-list/length'], function (exports, module, _framptonListLength) {
+define('frampton-list/remove', ['exports', 'frampton-utils/curry', 'frampton-list/filter'], function (exports, _curry, _filter) {
   'use strict';
 
-  module.exports = remove_index;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _length = _interopRequireDefault(_framptonListLength);
+  var _filter2 = _interopRequireDefault(_filter);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_remove(obj, xs) {
+    return (0, _filter2.default)(function (next) {
+      return next !== obj;
+    }, xs);
+  });
+});
+define('frampton-list/remove_index', ['exports', 'frampton-list/length'], function (exports, _length) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = remove_index;
+
+  var _length2 = _interopRequireDefault(_length);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name removeIndex
@@ -3076,10 +3479,9 @@ define('frampton-list/remove_index', ['exports', 'module', 'frampton-list/length
    * @param {Array} xs
    * @returns {Array} A new array
    */
-
   function remove_index(index, xs) {
 
-    var len = _length['default'](xs);
+    var len = (0, _length2.default)(xs);
     var newList = [];
 
     for (var i = 0; i < len; i++) {
@@ -3091,41 +3493,53 @@ define('frampton-list/remove_index', ['exports', 'module', 'frampton-list/length
     return Object.freeze(newList);
   }
 });
-define('frampton-list/remove', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/filter'], function (exports, module, _framptonUtilsCurry, _framptonListFilter) {
+define('frampton-list/replace', ['exports', 'frampton-utils/curry', 'frampton-list/find', 'frampton-list/replace_index'], function (exports, _curry, _find, _replace_index) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _filter = _interopRequireDefault(_framptonListFilter);
+  var _find2 = _interopRequireDefault(_find);
 
-  /**
-   * remove :: List a -> Any a -> List a
-   *
-   * @name remove
-   * @method
-   * @memberof Frampton.List
-   * @param {Array} xs
-   * @param {Object} obj
-   */
-  module.exports = _curry['default'](function curried_remove(obj, xs) {
-    return _filter['default'](function (next) {
-      return next !== obj;
-    }, xs);
+  var _replace_index2 = _interopRequireDefault(_replace_index);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function replace(oldObj, newObj, xs) {
+    var index = (0, _find2.default)(oldObj, xs);
+    if (index > -1) {
+      return (0, _replace_index2.default)(index, newObj, xs);
+    } else {
+      return xs;
+    }
   });
 });
-define('frampton-list/replace_index', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/length'], function (exports, module, _framptonUtilsCurry, _framptonListLength) {
+define('frampton-list/replace_index', ['exports', 'frampton-utils/curry', 'frampton-list/length'], function (exports, _curry, _length) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _length = _interopRequireDefault(_framptonListLength);
+  var _length2 = _interopRequireDefault(_length);
 
-  module.exports = _curry['default'](function replace_index(index, obj, xs) {
-    var len = _length['default'](xs);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function replace_index(index, obj, xs) {
+    var len = (0, _length2.default)(xs);
     var newArray = new Array(len);
     for (var i = 0; i < len; i++) {
       if (i === index) {
@@ -3137,34 +3551,21 @@ define('frampton-list/replace_index', ['exports', 'module', 'frampton-utils/curr
     return Object.freeze(newArray);
   });
 });
-define('frampton-list/replace', ['exports', 'module', 'frampton-utils/curry', 'frampton-list/find', 'frampton-list/replace_index'], function (exports, module, _framptonUtilsCurry, _framptonListFind, _framptonListReplace_index) {
+define('frampton-list/reverse', ['exports', 'frampton-list/foldr'], function (exports, _foldr) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
-
-  var _find = _interopRequireDefault(_framptonListFind);
-
-  var _replaceIndex = _interopRequireDefault(_framptonListReplace_index);
-
-  module.exports = _curry['default'](function replace(oldObj, newObj, xs) {
-    var index = _find['default'](oldObj, xs);
-    if (index > -1) {
-      return _replaceIndex['default'](index, newObj, xs);
-    } else {
-      return xs;
-    }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
   });
-});
-define('frampton-list/reverse', ['exports', 'module', 'frampton-list/foldr'], function (exports, module, _framptonListFoldr) {
-  'use strict';
+  exports.default = reverse;
 
-  module.exports = reverse;
+  var _foldr2 = _interopRequireDefault(_foldr);
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-  var _foldr = _interopRequireDefault(_framptonListFoldr);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * reverse :: List a -> List a
@@ -3173,43 +3574,46 @@ define('frampton-list/reverse', ['exports', 'module', 'frampton-list/foldr'], fu
    * @method
    * @memberof Frampton.List
    */
-
   function reverse(xs) {
-    return Object.freeze(_foldr['default'](function (acc, next) {
+    return Object.freeze((0, _foldr2.default)(function (acc, next) {
       acc.push(next);
       return acc;
     }, [], xs));
   }
 });
-define('frampton-list/second', ['exports', 'module', 'frampton-list/at'], function (exports, module, _framptonListAt) {
+define('frampton-list/second', ['exports', 'frampton-list/at'], function (exports, _at) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _at = _interopRequireDefault(_framptonListAt);
+  var _at2 = _interopRequireDefault(_at);
 
-  /**
-   * @name second
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _at['default'](1);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _at2.default)(1);
 });
-define('frampton-list/split', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-list/split', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * split :: Number -> List a -> (List a, List a)
-   *
-   * @name split
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _curry['default'](function split(n, xs) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function split(n, xs) {
     var ys = [];
     var zs = [];
     var len = xs.length;
@@ -3225,14 +3629,21 @@ define('frampton-list/split', ['exports', 'module', 'frampton-utils/curry'], fun
     return Object.freeze([ys, zs]);
   });
 });
-define('frampton-list/sum', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
+define('frampton-list/sum', ['exports', 'frampton-list/foldl'], function (exports, _foldl) {
   'use strict';
 
-  module.exports = sum;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = sum;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _foldl2 = _interopRequireDefault(_foldl);
 
-  var _foldl = _interopRequireDefault(_framptonListFoldl);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * + sum :: Number a => List a -> a
@@ -3242,31 +3653,37 @@ define('frampton-list/sum', ['exports', 'module', 'frampton-list/foldl'], functi
    * @memberof Frampton.List
    * @param {Array} xs
    */
-
   function sum(xs) {
-    return _foldl['default'](function (acc, next) {
+    return (0, _foldl2.default)(function (acc, next) {
       return acc + next;
     }, 0, xs);
   }
 });
-define('frampton-list/tail', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsAssert, _framptonUtilsIs_array) {
+define('frampton-list/tail', ['exports', 'frampton-utils/assert', 'frampton-utils/is_array'], function (exports, _assert, _is_array) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = tail;
+
+  var _assert2 = _interopRequireDefault(_assert);
+
+  var _is_array2 = _interopRequireDefault(_is_array);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
   /**
    * @name tail
    * @method
    * @memberof Frampton.List
    */
-  'use strict';
-
-  module.exports = tail;
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
-
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
-
   function tail(xs) {
-    _assert['default']("Frampton.List.tail recieved a non-array", _isArray['default'](xs));
+    (0, _assert2.default)("Frampton.List.tail recieved a non-array", (0, _is_array2.default)(xs));
     switch (xs.length) {
       case 0:
         return Object.freeze([]);
@@ -3275,60 +3692,70 @@ define('frampton-list/tail', ['exports', 'module', 'frampton-utils/assert', 'fra
     }
   }
 });
-define('frampton-list/take', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-math/min'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry, _framptonUtilsIs_array, _framptonMathMin) {
+define('frampton-list/take', ['exports', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-math/min'], function (exports, _assert, _curry, _is_array, _min) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _min = _interopRequireDefault(_framptonMathMin);
+  var _min2 = _interopRequireDefault(_min);
 
-  module.exports = _curry['default'](function take(num, xs) {
-    _assert['default']("Frampton.List.take recieved a non-array", _isArray['default'](xs));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function take(num, xs) {
+    (0, _assert2.default)("Frampton.List.take recieved a non-array", (0, _is_array2.default)(xs));
     var newList = [];
-    var len = _min['default'](xs.length, num);
+    var len = (0, _min2.default)(xs.length, num);
     for (var i = 0; i < len; i++) {
       newList.push(xs[i]);
     }
     return newList;
   });
 });
-define('frampton-list/third', ['exports', 'module', 'frampton-list/at'], function (exports, module, _framptonListAt) {
+define('frampton-list/third', ['exports', 'frampton-list/at'], function (exports, _at) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _at = _interopRequireDefault(_framptonListAt);
+  var _at2 = _interopRequireDefault(_at);
 
-  /**
-   * @name third
-   * @method
-   * @memberof Frampton.List
-   */
-  module.exports = _at['default'](2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _at2.default)(2);
 });
-define('frampton-list/zip', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-list/zip', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * zip :: List a -> List b - List (a, b)
-   *
-   * @name zip
-   * @method
-   * @memberof Frampton.List
-   * @param {Array} xs
-   * @param {Array} ys
-   */
-  module.exports = _curry['default'](function zip_array(xs, ys) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function zip_array(xs, ys) {
 
     var xLen = xs.length;
     var yLen = ys.length;
@@ -3342,213 +3769,228 @@ define('frampton-list/zip', ['exports', 'module', 'frampton-utils/curry'], funct
     return Object.freeze(zs);
   });
 });
-define('frampton-math', ['exports', 'frampton/namespace', 'frampton-math/add', 'frampton-math/subtract', 'frampton-math/multiply', 'frampton-math/divide', 'frampton-math/modulo', 'frampton-math/max', 'frampton-math/min'], function (exports, _framptonNamespace, _framptonMathAdd, _framptonMathSubtract, _framptonMathMultiply, _framptonMathDivide, _framptonMathModulo, _framptonMathMax, _framptonMathMin) {
+define('frampton-math', ['frampton/namespace', 'frampton-math/add', 'frampton-math/subtract', 'frampton-math/multiply', 'frampton-math/divide', 'frampton-math/modulo', 'frampton-math/max', 'frampton-math/min'], function (_namespace, _add, _subtract, _multiply, _divide, _modulo, _max, _min) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _add2 = _interopRequireDefault(_add);
 
-  var _add = _interopRequireDefault(_framptonMathAdd);
+  var _subtract2 = _interopRequireDefault(_subtract);
 
-  var _subtract = _interopRequireDefault(_framptonMathSubtract);
+  var _multiply2 = _interopRequireDefault(_multiply);
 
-  var _multiply = _interopRequireDefault(_framptonMathMultiply);
+  var _divide2 = _interopRequireDefault(_divide);
 
-  var _divide = _interopRequireDefault(_framptonMathDivide);
+  var _modulo2 = _interopRequireDefault(_modulo);
 
-  var _modulo = _interopRequireDefault(_framptonMathModulo);
+  var _max2 = _interopRequireDefault(_max);
 
-  var _max = _interopRequireDefault(_framptonMathMax);
+  var _min2 = _interopRequireDefault(_min);
 
-  var _min = _interopRequireDefault(_framptonMathMin);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Math
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Math = {};
-  _Frampton['default'].Math.add = _add['default'];
-  _Frampton['default'].Math.subtract = _subtract['default'];
-  _Frampton['default'].Math.multiply = _multiply['default'];
-  _Frampton['default'].Math.divide = _divide['default'];
-  _Frampton['default'].Math.modulo = _modulo['default'];
-  _Frampton['default'].Math.max = _max['default'];
-  _Frampton['default'].Math.min = _min['default'];
+  _namespace2.default.Math = {};
+  _namespace2.default.Math.add = _add2.default;
+  _namespace2.default.Math.subtract = _subtract2.default;
+  _namespace2.default.Math.multiply = _multiply2.default;
+  _namespace2.default.Math.divide = _divide2.default;
+  _namespace2.default.Math.modulo = _modulo2.default;
+  _namespace2.default.Math.max = _max2.default;
+  _namespace2.default.Math.min = _min2.default;
 });
-define('frampton-math/add', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-math/add', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name add
-   * @method
-   * @memberof Frampton.Math
-   * @param {Number} left
-   * @param {Number} right
-   * @returns {Number}
-   */
-  module.exports = _curry['default'](function add(left, right) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function add(left, right) {
     return left + right;
   });
 });
-define('frampton-math/divide', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-math/divide', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name divide
-   * @method
-   * @memberof Frampton.Math
-   * @param {Number} left
-   * @param {Number} right
-   * @returns {Number}
-   */
-  module.exports = _curry['default'](function divide(left, right) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function divide(left, right) {
     return left / right;
   });
 });
-define('frampton-math/max', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-math/max', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name max
-   * @method
-   * @memberof Frampton.Math
-   * @param {Number} left - First number to test
-   * @param {Number} right - Second number to test
-   * @returns {Number} The larger of the two numbers
-   */
-  module.exports = _curry['default'](function max(left, right) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function max(left, right) {
     return left > right ? left : right;
   });
 });
-define('frampton-math/min', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-math/min', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name min
-   * @method
-   * @memberof Frampton.Math
-   * @param {Number} left - First number to test
-   * @param {Number} right - Second number to test
-   * @returns {Number} The smaller of the two numbers
-   */
-  module.exports = _curry['default'](function min(left, right) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function min(left, right) {
     return left < right ? left : right;
   });
 });
-define('frampton-math/modulo', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-math/modulo', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name modulo
-   * @method
-   * @memberof Frampton.Math
-   * @param {Number} left
-   * @param {Number} right
-   * @returns {Number}
-   */
-  module.exports = _curry['default'](function modulo(left, right) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function modulo(left, right) {
     return left % right;
   });
 });
-define('frampton-math/multiply', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-math/multiply', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name multiply
-   * @method
-   * @memberof Frampton.Math
-   * @param {Number} a
-   * @param {Number} b
-   * @returns {Number}
-   */
-  module.exports = _curry['default'](function multiply(a, b) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function multiply(a, b) {
     return a * b;
   });
 });
-define('frampton-math/subtract', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-math/subtract', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name subtract
-   * @method
-   * @memberof Frampton.Math
-   * @param {Number} left
-   * @param {Number} right
-   * @returns {Number}
-   */
-  module.exports = _curry['default'](function (left, right) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (left, right) {
     return left - right;
   });
 });
-define('frampton-mouse', ['exports', 'frampton/namespace', 'frampton-mouse/mouse'], function (exports, _framptonNamespace, _framptonMouseMouse) {
+define('frampton-mouse', ['frampton/namespace', 'frampton-mouse/mouse'], function (_namespace, _mouse) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _mouse2 = _interopRequireDefault(_mouse);
 
-  var _Mouse = _interopRequireDefault(_framptonMouseMouse);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-  _Frampton['default'].Mouse = _Mouse['default'];
+  _namespace2.default.Mouse = _mouse2.default;
 });
-define('frampton-mouse/mouse', ['exports', 'module', 'frampton-signal/stepper', 'frampton-events/on_event', 'frampton-events/contains', 'frampton-events/get_position', 'frampton-events/get_position_relative'], function (exports, module, _framptonSignalStepper, _framptonEventsOn_event, _framptonEventsContains, _framptonEventsGet_position, _framptonEventsGet_position_relative) {
+define('frampton-mouse/mouse', ['exports', 'frampton-signal/stepper', 'frampton-events/on_event', 'frampton-events/contains', 'frampton-events/get_position', 'frampton-events/get_position_relative'], function (exports, _stepper, _on_event, _contains, _get_position, _get_position_relative) {
   'use strict';
 
-  module.exports = Mouse;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Mouse;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _stepper2 = _interopRequireDefault(_stepper);
 
-  var _stepper = _interopRequireDefault(_framptonSignalStepper);
+  var _on_event2 = _interopRequireDefault(_on_event);
 
-  var _onEvent = _interopRequireDefault(_framptonEventsOn_event);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _contains = _interopRequireDefault(_framptonEventsContains);
+  var _get_position2 = _interopRequireDefault(_get_position);
 
-  var _getPosition = _interopRequireDefault(_framptonEventsGet_position);
+  var _get_position_relative2 = _interopRequireDefault(_get_position_relative);
 
-  var _getPositionRelative = _interopRequireDefault(_framptonEventsGet_position_relative);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-  var clicks = _onEvent['default']('click');
-  var downs = _onEvent['default']('mousedown');
-  var ups = _onEvent['default']('mouseup');
-  var moves = _onEvent['default']('mousemove');
-  var isDown = _stepper['default'](false, downs.map(true).merge(ups.map(false)));
+  var clicks = (0, _on_event2.default)('click');
+  var downs = (0, _on_event2.default)('mousedown');
+  var ups = (0, _on_event2.default)('mouseup');
+  var moves = (0, _on_event2.default)('mousemove');
+  var isDown = (0, _stepper2.default)(false, downs.map(true).merge(ups.map(false)));
 
   var defaultMouse = {
     clicks: clicks,
     downs: downs,
     ups: ups,
-    position: _stepper['default']([0, 0], moves.map(_getPosition['default'])),
+    position: (0, _stepper2.default)([0, 0], moves.map(_get_position2.default)),
     isDown: isDown
   };
 
@@ -3557,67 +3999,77 @@ define('frampton-mouse/mouse', ['exports', 'module', 'frampton-signal/stepper', 
    * @memberof Frampton
    * @class
    */
-
   function Mouse(element) {
     if (!element) {
       return defaultMouse;
     } else {
       return {
-        clicks: clicks.filter(_contains['default'](element)),
-        downs: downs.filter(_contains['default'](element)),
-        ups: ups.filter(_contains['default'](element)),
-        position: _stepper['default']([0, 0], moves.filter(_contains['default'](element)).map(_getPositionRelative['default'](element))),
+        clicks: clicks.filter((0, _contains2.default)(element)),
+        downs: downs.filter((0, _contains2.default)(element)),
+        ups: ups.filter((0, _contains2.default)(element)),
+        position: (0, _stepper2.default)([0, 0], moves.filter((0, _contains2.default)(element)).map((0, _get_position_relative2.default)(element))),
         isDown: isDown
       };
     }
   }
 });
-define('frampton-record', ['exports', 'frampton/namespace', 'frampton-record/filter', 'frampton-record/reduce', 'frampton-record/map', 'frampton-record/merge', 'frampton-record/for_each', 'frampton-record/as_list', 'frampton-record/copy', 'frampton-record/update'], function (exports, _framptonNamespace, _framptonRecordFilter, _framptonRecordReduce, _framptonRecordMap, _framptonRecordMerge, _framptonRecordFor_each, _framptonRecordAs_list, _framptonRecordCopy, _framptonRecordUpdate) {
+define('frampton-record', ['frampton/namespace', 'frampton-record/filter', 'frampton-record/reduce', 'frampton-record/map', 'frampton-record/merge', 'frampton-record/for_each', 'frampton-record/as_list', 'frampton-record/copy', 'frampton-record/update'], function (_namespace, _filter, _reduce, _map, _merge, _for_each, _as_list, _copy, _update) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _filter2 = _interopRequireDefault(_filter);
 
-  var _filter = _interopRequireDefault(_framptonRecordFilter);
+  var _reduce2 = _interopRequireDefault(_reduce);
 
-  var _reduce = _interopRequireDefault(_framptonRecordReduce);
+  var _map2 = _interopRequireDefault(_map);
 
-  var _map = _interopRequireDefault(_framptonRecordMap);
+  var _merge2 = _interopRequireDefault(_merge);
 
-  var _merge = _interopRequireDefault(_framptonRecordMerge);
+  var _for_each2 = _interopRequireDefault(_for_each);
 
-  var _forEach = _interopRequireDefault(_framptonRecordFor_each);
+  var _as_list2 = _interopRequireDefault(_as_list);
 
-  var _asList = _interopRequireDefault(_framptonRecordAs_list);
+  var _copy2 = _interopRequireDefault(_copy);
 
-  var _copy = _interopRequireDefault(_framptonRecordCopy);
+  var _update2 = _interopRequireDefault(_update);
 
-  var _update = _interopRequireDefault(_framptonRecordUpdate);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Record
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Record = {};
-  _Frampton['default'].Record.copy = _copy['default'];
-  _Frampton['default'].Record.update = _update['default'];
-  _Frampton['default'].Record.filter = _filter['default'];
-  _Frampton['default'].Record.reduce = _reduce['default'];
-  _Frampton['default'].Record.map = _map['default'];
-  _Frampton['default'].Record.each = _forEach['default'];
-  _Frampton['default'].Record.asList = _asList['default'];
-  _Frampton['default'].Record.merge = _merge['default'];
+  _namespace2.default.Record = {};
+  _namespace2.default.Record.copy = _copy2.default;
+  _namespace2.default.Record.update = _update2.default;
+  _namespace2.default.Record.filter = _filter2.default;
+  _namespace2.default.Record.reduce = _reduce2.default;
+  _namespace2.default.Record.map = _map2.default;
+  _namespace2.default.Record.each = _for_each2.default;
+  _namespace2.default.Record.asList = _as_list2.default;
+  _namespace2.default.Record.merge = _merge2.default;
 });
-define('frampton-record/as_list', ['exports', 'module', 'frampton-record/reduce'], function (exports, module, _framptonRecordReduce) {
+define('frampton-record/as_list', ['exports', 'frampton-record/reduce'], function (exports, _reduce) {
   'use strict';
 
-  module.exports = as_list;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = as_list;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _reduce2 = _interopRequireDefault(_reduce);
 
-  var _reduce = _interopRequireDefault(_framptonRecordReduce);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   // as_list :: Object -> Array [String, *]
   /**
@@ -3627,22 +4079,28 @@ define('frampton-record/as_list', ['exports', 'module', 'frampton-record/reduce'
    * @param {Object} obj Object to transform
    * @returns {Array}
    */
-
   function as_list(obj) {
-    return Object.freeze(_reduce['default'](function (acc, nextValue, nextKey) {
+    return Object.freeze((0, _reduce2.default)(function (acc, nextValue, nextKey) {
       acc.push([nextKey, nextValue]);
       return acc;
     }, [], obj));
   }
 });
-define('frampton-record/copy', ['exports', 'module', 'frampton-record/for_each'], function (exports, module, _framptonRecordFor_each) {
+define('frampton-record/copy', ['exports', 'frampton-record/for_each'], function (exports, _for_each) {
   'use strict';
 
-  module.exports = copy_object;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = copy_object;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _for_each2 = _interopRequireDefault(_for_each);
 
-  var _forEach = _interopRequireDefault(_framptonRecordFor_each);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * copy :: Object -> Object
@@ -3653,40 +4111,39 @@ define('frampton-record/copy', ['exports', 'module', 'frampton-record/for_each']
    * @param {Object} obj object to copy
    * @returns {Object}
    */
-
   function copy_object(obj) {
 
     var newObj = {};
 
-    _forEach['default'](function (value, key) {
+    (0, _for_each2.default)(function (value, key) {
       newObj[key] = value;
     }, obj);
 
     return Object.freeze(newObj);
   }
 });
-define('frampton-record/filter', ['exports', 'module', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, module, _framptonUtilsCurry, _framptonRecordFor_each) {
+define('frampton-record/filter', ['exports', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, _curry, _for_each) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _forEach = _interopRequireDefault(_framptonRecordFor_each);
+  var _for_each2 = _interopRequireDefault(_for_each);
 
-  /**
-   * @name filter
-   * @method
-   * @memberof Frampton.Record
-   * @param {Function} predicate A function to filter the object. The functino recieves the
-   * value and key as arguments to make its decision
-   * @returns {Object}
-   */
-  module.exports = _curry['default'](function curried_filter(predicate, obj) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_filter(predicate, obj) {
 
     var newObj = {};
 
-    _forEach['default'](function (value, key) {
+    (0, _for_each2.default)(function (value, key) {
       if (predicate(value, key)) {
         newObj[key] = value;
       }
@@ -3695,21 +4152,22 @@ define('frampton-record/filter', ['exports', 'module', 'frampton-utils/curry', '
     return Object.freeze(newObj);
   });
 });
-define('frampton-record/for_each', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-record/for_each', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name forEach
-   * @method
-   * @memberof Frampton.Record
-   * @param {Function} fn Function to call for each key/value pair
-   * @param {Object} obj Object to iterate over
-   */
-  module.exports = _curry['default'](function curried_for_each(fn, obj) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_for_each(fn, obj) {
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
         fn(obj[key], key);
@@ -3717,14 +4175,21 @@ define('frampton-record/for_each', ['exports', 'module', 'frampton-utils/curry']
     }
   });
 });
-define('frampton-record/keys', ['exports', 'module', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsIs_function) {
+define('frampton-record/keys', ['exports', 'frampton-utils/is_function'], function (exports, _is_function) {
   'use strict';
 
-  module.exports = keys;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = keys;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var hasOwnProp = Object.prototype.hasOwnProperty;
 
@@ -3745,9 +4210,8 @@ define('frampton-record/keys', ['exports', 'module', 'frampton-utils/is_function
    * @param {Object} obj Object whose keys to get
    * @returns {String[]}
    */
-
   function keys(obj) {
-    if (_isFunction['default'](Object.keys)) {
+    if ((0, _is_function2.default)(Object.keys)) {
       return Object.keys(obj).filter(function (key) {
         return hasOwnProp.call(obj, key);
       });
@@ -3756,65 +4220,70 @@ define('frampton-record/keys', ['exports', 'module', 'frampton-utils/is_function
     }
   }
 });
-define('frampton-record/map', ['exports', 'module', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, module, _framptonUtilsCurry, _framptonRecordFor_each) {
+define('frampton-record/map', ['exports', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, _curry, _for_each) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _forEach = _interopRequireDefault(_framptonRecordFor_each);
+  var _for_each2 = _interopRequireDefault(_for_each);
 
-  /**
-   * @name map
-   * @method
-   * @memberof Frampton.Record
-   * @param {Function} fn Function used to map the object
-   * @param {Object} obj Object to map
-   * @returns {Object} A new object with its values mapped using the given function
-   */
-  module.exports = _curry['default'](function curried_map(fn, obj) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_map(fn, obj) {
 
     var newObj = {};
 
-    _forEach['default'](function (value, key) {
+    (0, _for_each2.default)(function (value, key) {
       newObj[key] = fn(value, key);
     }, obj);
 
     return Object.freeze(newObj);
   });
 });
-define('frampton-record/merge', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/extend'], function (exports, module, _framptonUtilsCurry, _framptonUtilsExtend) {
+define('frampton-record/merge', ['exports', 'frampton-utils/curry', 'frampton-utils/extend'], function (exports, _curry, _extend) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _extend = _interopRequireDefault(_framptonUtilsExtend);
+  var _extend2 = _interopRequireDefault(_extend);
 
-  /**
-   * Merges two objects into one. Priority is given to the keys on the second object.
-   *
-   * @name merge
-   * @method
-   * @memberof Frampton.Record
-   * @param {Object} obj1 First object to merge
-   * @param {Object} obj2 Second object to merge
-   * @returns {Object}
-   */
-  module.exports = _curry['default'](function curried_merge(obj1, obj2) {
-    return Object.freeze(_extend['default']({}, obj1, obj2));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function curried_merge(obj1, obj2) {
+    return Object.freeze((0, _extend2.default)({}, obj1, obj2));
   });
 });
-define('frampton-record/of', ['exports', 'module', 'frampton-record/copy'], function (exports, module, _framptonRecordCopy) {
+define('frampton-record/of', ['exports', 'frampton-record/copy'], function (exports, _copy) {
   'use strict';
 
-  module.exports = of_record;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = of_record;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _copy2 = _interopRequireDefault(_copy);
 
-  var _copy = _interopRequireDefault(_framptonRecordCopy);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * of :: Object -> Object
@@ -3825,48 +4294,51 @@ define('frampton-record/of', ['exports', 'module', 'frampton-record/copy'], func
    * @param {Object} obj object to copy
    * @returns {Object}
    */
-
   function of_record(obj) {
-    return _copy['default'](obj);
+    return (0, _copy2.default)(obj);
   }
 });
-define('frampton-record/reduce', ['exports', 'module', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, module, _framptonUtilsCurry, _framptonRecordFor_each) {
+define('frampton-record/reduce', ['exports', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, _curry, _for_each) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _forEach = _interopRequireDefault(_framptonRecordFor_each);
+  var _for_each2 = _interopRequireDefault(_for_each);
 
-  /**
-   * reduce :: Function -> Any -> Object -> Object
-   *
-   * @name reduce
-   * @method
-   * @memberof Frampton.Record
-   * @param {Function} fn Function used to reduce the object
-   * @param {*} acc Initial value of reduce operation
-   * @param {Object} obj Object to iterate over for the reduce
-   * @returns {*}
-   */
-  module.exports = _curry['default'](function curried_reduce(fn, acc, obj) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-    _forEach['default'](function (value, key) {
+  exports.default = (0, _curry2.default)(function curried_reduce(fn, acc, obj) {
+
+    (0, _for_each2.default)(function (value, key) {
       acc = fn(acc, value, key);
     }, obj);
 
     return acc;
   });
 });
-define('frampton-record/update', ['exports', 'module', 'frampton-record/for_each'], function (exports, module, _framptonRecordFor_each) {
+define('frampton-record/update', ['exports', 'frampton-record/for_each'], function (exports, _for_each) {
   'use strict';
 
-  module.exports = update_object;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = update_object;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _for_each2 = _interopRequireDefault(_for_each);
 
-  var _forEach = _interopRequireDefault(_framptonRecordFor_each);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * update :: Object -> Object -> Object
@@ -3878,12 +4350,11 @@ define('frampton-record/update', ['exports', 'module', 'frampton-record/for_each
    * @param {Object} update object describing desired udpate
    * @returns {Object}
    */
-
   function update_object(base, update) {
 
     var newObj = {};
 
-    _forEach['default'](function (value, key) {
+    (0, _for_each2.default)(function (value, key) {
       if (update[key]) {
         newObj[key] = update[key];
       } else {
@@ -3894,46 +4365,54 @@ define('frampton-record/update', ['exports', 'module', 'frampton-record/for_each
     return Object.freeze(newObj);
   }
 });
-define('frampton-signal', ['exports', 'frampton/namespace', 'frampton-signal/create', 'frampton-signal/stepper', 'frampton-signal/combine', 'frampton-signal/swap', 'frampton-signal/toggle', 'frampton-signal/is_signal', 'frampton-signal/forward'], function (exports, _framptonNamespace, _framptonSignalCreate, _framptonSignalStepper, _framptonSignalCombine, _framptonSignalSwap, _framptonSignalToggle, _framptonSignalIs_signal, _framptonSignalForward) {
+define('frampton-signal', ['frampton/namespace', 'frampton-signal/create', 'frampton-signal/stepper', 'frampton-signal/combine', 'frampton-signal/swap', 'frampton-signal/toggle', 'frampton-signal/is_signal', 'frampton-signal/forward'], function (_namespace, _create, _stepper, _combine, _swap, _toggle, _is_signal, _forward) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _create2 = _interopRequireDefault(_create);
 
-  var _create = _interopRequireDefault(_framptonSignalCreate);
+  var _stepper2 = _interopRequireDefault(_stepper);
 
-  var _stepper = _interopRequireDefault(_framptonSignalStepper);
+  var _combine2 = _interopRequireDefault(_combine);
 
-  var _combine = _interopRequireDefault(_framptonSignalCombine);
+  var _swap2 = _interopRequireDefault(_swap);
 
-  var _swap = _interopRequireDefault(_framptonSignalSwap);
+  var _toggle2 = _interopRequireDefault(_toggle);
 
-  var _toggle = _interopRequireDefault(_framptonSignalToggle);
+  var _is_signal2 = _interopRequireDefault(_is_signal);
 
-  var _isSignal = _interopRequireDefault(_framptonSignalIs_signal);
+  var _forward2 = _interopRequireDefault(_forward);
 
-  var _forward = _interopRequireDefault(_framptonSignalForward);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Signal
    * @class
    * @memberof Frampton
    */
-  _Frampton['default'].Signal = {};
-  _Frampton['default'].Signal.create = _create['default'];
-  _Frampton['default'].Signal.stepper = _stepper['default'];
-  _Frampton['default'].Signal.combine = _combine['default'];
-  _Frampton['default'].Signal.merge = _framptonSignalCreate.mergeMany;
-  _Frampton['default'].Signal.swap = _swap['default'];
-  _Frampton['default'].Signal.toggle = _toggle['default'];
-  _Frampton['default'].Signal.isSignal = _isSignal['default'];
-  _Frampton['default'].Signal.forward = _forward['default'];
+  _namespace2.default.Signal = {};
+  _namespace2.default.Signal.create = _create2.default;
+  _namespace2.default.Signal.stepper = _stepper2.default;
+  _namespace2.default.Signal.combine = _combine2.default;
+  _namespace2.default.Signal.merge = _create.mergeMany;
+  _namespace2.default.Signal.swap = _swap2.default;
+  _namespace2.default.Signal.toggle = _toggle2.default;
+  _namespace2.default.Signal.isSignal = _is_signal2.default;
+  _namespace2.default.Signal.forward = _forward2.default;
 });
-define('frampton-signal/combine', ['exports', 'module', 'frampton-signal/create'], function (exports, module, _framptonSignalCreate) {
+define('frampton-signal/combine', ['exports', 'frampton-signal/create'], function (exports, _create) {
   'use strict';
 
-  module.exports = combine;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = combine;
+
 
   /**
    * Method to combine multiple Signals into one with a given mapping function. Values
@@ -3947,40 +4426,45 @@ define('frampton-signal/combine', ['exports', 'module', 'frampton-signal/create'
    * @param {Frampton.Signal[]} parents - Array of Signals to combine
    * @returns {Frampton.Signal} A new Signal
    */
-
   function combine(mapping, parents) {
-    return _framptonSignalCreate.createSignal(function (self) {
+    return (0, _create.createSignal)(function (self) {
       self.push(mapping.apply(null, parents.map(function (parent) {
         return parent._value;
       })));
     }, parents);
   }
 });
-define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-utils/is_defined', 'frampton-utils/is_promise', 'frampton-utils/is_function', 'frampton-utils/is_equal', 'frampton-utils/of_value', 'frampton-utils/noop', 'frampton-utils/log'], function (exports, _framptonUtilsGuid, _framptonUtilsIs_defined, _framptonUtilsIs_promise, _framptonUtilsIs_function, _framptonUtilsIs_equal, _framptonUtilsOf_value, _framptonUtilsNoop, _framptonUtilsLog) {
+define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-utils/is_defined', 'frampton-utils/is_promise', 'frampton-utils/is_function', 'frampton-utils/is_equal', 'frampton-utils/of_value', 'frampton-utils/noop', 'frampton-utils/log'], function (exports, _guid, _is_defined, _is_promise, _is_function, _is_equal, _of_value, _noop, _log) {
   'use strict';
 
-  exports.__esModule = true;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
   exports.createSignal = createSignal;
   exports.mergeMany = mergeMany;
-  exports['default'] = create;
+  exports.default = create;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _guid2 = _interopRequireDefault(_guid);
 
-  var _guid = _interopRequireDefault(_framptonUtilsGuid);
+  var _is_defined2 = _interopRequireDefault(_is_defined);
 
-  var _isDefined = _interopRequireDefault(_framptonUtilsIs_defined);
+  var _is_promise2 = _interopRequireDefault(_is_promise);
 
-  var _isPromise = _interopRequireDefault(_framptonUtilsIs_promise);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_equal2 = _interopRequireDefault(_is_equal);
 
-  var _isEqual = _interopRequireDefault(_framptonUtilsIs_equal);
+  var _of_value2 = _interopRequireDefault(_of_value);
 
-  var _ofValue = _interopRequireDefault(_framptonUtilsOf_value);
+  var _noop2 = _interopRequireDefault(_noop);
 
-  var _noop = _interopRequireDefault(_framptonUtilsNoop);
+  var _log2 = _interopRequireDefault(_log);
 
-  var _log = _interopRequireDefault(_framptonUtilsLog);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var signalGraph = [];
   var updateQueue = [];
@@ -4002,7 +4486,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
   // Build the initial graph by queuing children breadth first
   function buildRawGraph(sig) {
     var graph = [];
-    return (function addChildren(next) {
+    return function addChildren(next) {
       var len = next._children.length;
       var i;
       for (i = 0; i < len; i++) {
@@ -4012,7 +4496,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
         addChildren(next._children[i]);
       }
       return graph;
-    })(sig);
+    }(sig);
   }
 
   function buildSignalGraph(sig) {
@@ -4077,7 +4561,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
   }
 
   function updateValue(sig, val) {
-    if (_isPromise['default'](val)) {
+    if ((0, _is_promise2.default)(val)) {
       val.then(sig);
     } else {
       sig._value = val;
@@ -4196,7 +4680,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    */
   function filter(predicate) {
     var parent = this;
-    var filterFn = _isFunction['default'](predicate) ? predicate : _isEqual['default'](predicate);
+    var filterFn = (0, _is_function2.default)(predicate) ? predicate : (0, _is_equal2.default)(predicate);
     var initial = parent._hasValue && filterFn(parent._value) ? parent._value : undefined;
     return createSignal(function (self) {
       if (filterFn(parent._value)) {
@@ -4275,7 +4759,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    */
   function map(mapping) {
     var parent = this;
-    var mappingFn = _isFunction['default'](mapping) ? mapping : _ofValue['default'](mapping);
+    var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
     var initial = parent._hasValue ? mappingFn(parent._value) : undefined;
     return createSignal(function (self) {
       self.push(mappingFn(parent._value));
@@ -4432,9 +4916,9 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     var parent = this;
     return createSignal(function (self) {
       if (msg) {
-        _log['default'](msg);
+        (0, _log2.default)(msg);
       } else {
-        _log['default'](parent._value);
+        (0, _log2.default)(parent._value);
       }
       self.push(parent._value);
     }, [parent], parent._value);
@@ -4450,7 +4934,6 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @param {*}                        initial - Initial value for this signal
    * @returns {Frampton.Signal.Signal}
    */
-
   function createSignal(update, parents, initial) {
 
     var signal = {};
@@ -4467,14 +4950,14 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     signal.ctor = 'Frampton.Signal';
 
     // Private
-    signal._id = _guid['default']();
+    signal._id = (0, _guid2.default)();
     signal._value = initial;
-    signal._hasValue = _isDefined['default'](initial);
+    signal._hasValue = (0, _is_defined2.default)(initial);
     signal._queued = false;
     signal._updater = null;
     signal._parents = parents || [];
     signal._children = [];
-    signal._update = update || _noop['default'];
+    signal._update = update || _noop2.default;
 
     // Public
     signal.debounce = debounce;
@@ -4510,7 +4993,6 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @method
    * @param {Frampton.Signal.Signal[]} parents - Signals to merge
    */
-
   function mergeMany(parents) {
     var initial = parents.length > 0 ? parents[0]._value : undefined;
     return createSignal(function (self) {
@@ -4528,12 +5010,17 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
    * @param {*} [initial] - Initial value for this signal
    * @returns {Frampton.Signal}
    */
-
   function create(initial) {
     return createSignal(null, null, initial);
   }
 });
-define("frampton-signal/forward", ["exports", "module"], function (exports, module) {
+define("frampton-signal/forward", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = forward;
   /**
    * @name forward
    * @memberof Frampton.Signal
@@ -4541,97 +5028,101 @@ define("frampton-signal/forward", ["exports", "module"], function (exports, modu
    * @param {Function} mapping
    * @returns {Frampton.Signal#}
    */
-  "use strict";
-
-  module.exports = forward;
-
   function forward(sig, mapping) {
     return function (val) {
       sig.push(mapping(val));
     };
   }
 });
-define('frampton-signal/is_signal', ['exports', 'module', 'frampton-utils/is_function', 'frampton-utils/is_string'], function (exports, module, _framptonUtilsIs_function, _framptonUtilsIs_string) {
+define('frampton-signal/is_signal', ['exports', 'frampton-utils/is_function', 'frampton-utils/is_string'], function (exports, _is_function, _is_string) {
   'use strict';
 
-  module.exports = is_signal;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_signal;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_string2 = _interopRequireDefault(_is_string);
 
-  var _isString = _interopRequireDefault(_framptonUtilsIs_string);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function is_signal(obj) {
-    return _isFunction['default'](obj) && _isString['default'](obj.ctor) && obj.ctor === 'Frampton.Signal';
+    return (0, _is_function2.default)(obj) && (0, _is_string2.default)(obj.ctor) && obj.ctor === 'Frampton.Signal';
   }
 });
-define('frampton-signal/stepper', ['exports', 'module', 'frampton-utils/curry', 'frampton-signal/create'], function (exports, module, _framptonUtilsCurry, _framptonSignalCreate) {
+define('frampton-signal/stepper', ['exports', 'frampton-utils/curry', 'frampton-signal/create'], function (exports, _curry, _create) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _createSignal = _interopRequireDefault(_framptonSignalCreate);
+  var _create2 = _interopRequireDefault(_create);
 
-  // stepper :: a -> Signal a -> Signal a
-  module.exports = _curry['default'](function (initial, updater) {
-    var sig = _createSignal['default'](initial);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (initial, updater) {
+    var sig = (0, _create2.default)(initial);
     return sig.merge(updater.dropRepeats());
   });
 });
-define('frampton-signal/swap', ['exports', 'module', 'frampton-utils/curry', 'frampton-signal/stepper'], function (exports, module, _framptonUtilsCurry, _framptonSignalStepper) {
+define('frampton-signal/swap', ['exports', 'frampton-utils/curry', 'frampton-signal/stepper'], function (exports, _curry, _stepper) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _stepper = _interopRequireDefault(_framptonSignalStepper);
+  var _stepper2 = _interopRequireDefault(_stepper);
 
-  /**
-   * swap :: Signal a -> Signal b -> Signal Boolean
-   *
-   * @name swap
-   * @method
-   * @memberof Frampton.Signal
-   * @param {Frampton.Signal.Signal} sig1
-   * @param {Frampton.Signal.Signal} sig2
-   * @returns {Frampton.Signal.Signal}
-   */
-  module.exports = _curry['default'](function toggle(sig1, sig2) {
-    return _stepper['default'](false, sig1.map(true).merge(sig2.map(false)));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function toggle(sig1, sig2) {
+    return (0, _stepper2.default)(false, sig1.map(true).merge(sig2.map(false)));
   });
 });
-define('frampton-signal/toggle', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_boolean', 'frampton-signal/create'], function (exports, module, _framptonUtilsAssert, _framptonUtilsCurry, _framptonUtilsIs_boolean, _framptonSignalCreate) {
+define('frampton-signal/toggle', ['exports', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_boolean', 'frampton-signal/create'], function (exports, _assert, _curry, _is_boolean, _create) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isBoolean = _interopRequireDefault(_framptonUtilsIs_boolean);
+  var _is_boolean2 = _interopRequireDefault(_is_boolean);
 
-  var _createSignal = _interopRequireDefault(_framptonSignalCreate);
+  var _create2 = _interopRequireDefault(_create);
 
-  /**
-   * toggle :: Boolean -> Signal a -> Signal Boolean
-   *
-   * Creates a signal that emits alternating Boolean values on occurences of input signal.
-   *
-   * @name toggle
-   * @method
-   * @memberof Frampton.Signal
-   * @param {Boolean} initial Value to initialize toggle to
-   * @param {Frampton.Signal.Signal} updater Signal to update toggle to
-   * @returns {Frampton.Signal.Signal}
-   */
-  module.exports = _curry['default'](function (initial, updater) {
-    _assert['default']('Frampton.Signal.toggle must be initialized with a Boolean', _isBoolean['default'](initial));
-    var sig = _createSignal['default'](initial);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function (initial, updater) {
+    (0, _assert2.default)('Frampton.Signal.toggle must be initialized with a Boolean', (0, _is_boolean2.default)(initial));
+    var sig = (0, _create2.default)(initial);
     var current = initial;
     return sig.merge(updater.map(function () {
       current = !current;
@@ -4639,144 +5130,174 @@ define('frampton-signal/toggle', ['exports', 'module', 'frampton-utils/assert', 
     }));
   });
 });
-define('frampton-string', ['exports', 'frampton/namespace', 'frampton-string/replace', 'frampton-string/trim', 'frampton-string/join', 'frampton-string/split', 'frampton-string/lines', 'frampton-string/words', 'frampton-string/starts_with', 'frampton-string/ends_with', 'frampton-string/contains', 'frampton-string/capitalize', 'frampton-string/dash_to_camel', 'frampton-string/length', 'frampton-string/normalize_newline'], function (exports, _framptonNamespace, _framptonStringReplace, _framptonStringTrim, _framptonStringJoin, _framptonStringSplit, _framptonStringLines, _framptonStringWords, _framptonStringStarts_with, _framptonStringEnds_with, _framptonStringContains, _framptonStringCapitalize, _framptonStringDash_to_camel, _framptonStringLength, _framptonStringNormalize_newline) {
+define('frampton-string', ['frampton/namespace', 'frampton-string/replace', 'frampton-string/trim', 'frampton-string/join', 'frampton-string/split', 'frampton-string/lines', 'frampton-string/words', 'frampton-string/starts_with', 'frampton-string/ends_with', 'frampton-string/contains', 'frampton-string/capitalize', 'frampton-string/dash_to_camel', 'frampton-string/length', 'frampton-string/normalize_newline'], function (_namespace, _replace, _trim, _join, _split, _lines, _words, _starts_with, _ends_with, _contains, _capitalize, _dash_to_camel, _length, _normalize_newline) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _replace2 = _interopRequireDefault(_replace);
 
-  var _replace = _interopRequireDefault(_framptonStringReplace);
+  var _trim2 = _interopRequireDefault(_trim);
 
-  var _trim = _interopRequireDefault(_framptonStringTrim);
+  var _join2 = _interopRequireDefault(_join);
 
-  var _join = _interopRequireDefault(_framptonStringJoin);
+  var _split2 = _interopRequireDefault(_split);
 
-  var _split = _interopRequireDefault(_framptonStringSplit);
+  var _lines2 = _interopRequireDefault(_lines);
 
-  var _lines = _interopRequireDefault(_framptonStringLines);
+  var _words2 = _interopRequireDefault(_words);
 
-  var _words = _interopRequireDefault(_framptonStringWords);
+  var _starts_with2 = _interopRequireDefault(_starts_with);
 
-  var _startsWith = _interopRequireDefault(_framptonStringStarts_with);
+  var _ends_with2 = _interopRequireDefault(_ends_with);
 
-  var _endsWith = _interopRequireDefault(_framptonStringEnds_with);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _contains = _interopRequireDefault(_framptonStringContains);
+  var _capitalize2 = _interopRequireDefault(_capitalize);
 
-  var _capitalize = _interopRequireDefault(_framptonStringCapitalize);
+  var _dash_to_camel2 = _interopRequireDefault(_dash_to_camel);
 
-  var _dashToCamel = _interopRequireDefault(_framptonStringDash_to_camel);
+  var _length2 = _interopRequireDefault(_length);
 
-  var _length = _interopRequireDefault(_framptonStringLength);
+  var _normalize_newline2 = _interopRequireDefault(_normalize_newline);
 
-  var _normalizeNewline = _interopRequireDefault(_framptonStringNormalize_newline);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name String
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].String = {};
-  _Frampton['default'].String.replace = _replace['default'];
-  _Frampton['default'].String.trim = _trim['default'];
-  _Frampton['default'].String.join = _join['default'];
-  _Frampton['default'].String.split = _split['default'];
-  _Frampton['default'].String.lines = _lines['default'];
-  _Frampton['default'].String.words = _words['default'];
-  _Frampton['default'].String.startsWith = _startsWith['default'];
-  _Frampton['default'].String.endsWith = _endsWith['default'];
-  _Frampton['default'].String.contains = _contains['default'];
-  _Frampton['default'].String.capitalize = _capitalize['default'];
-  _Frampton['default'].String.dashToCamel = _dashToCamel['default'];
-  _Frampton['default'].String.length = _length['default'];
-  _Frampton['default'].String.normalizeNewline = _normalizeNewline['default'];
+  _namespace2.default.String = {};
+  _namespace2.default.String.replace = _replace2.default;
+  _namespace2.default.String.trim = _trim2.default;
+  _namespace2.default.String.join = _join2.default;
+  _namespace2.default.String.split = _split2.default;
+  _namespace2.default.String.lines = _lines2.default;
+  _namespace2.default.String.words = _words2.default;
+  _namespace2.default.String.startsWith = _starts_with2.default;
+  _namespace2.default.String.endsWith = _ends_with2.default;
+  _namespace2.default.String.contains = _contains2.default;
+  _namespace2.default.String.capitalize = _capitalize2.default;
+  _namespace2.default.String.dashToCamel = _dash_to_camel2.default;
+  _namespace2.default.String.length = _length2.default;
+  _namespace2.default.String.normalizeNewline = _normalize_newline2.default;
 });
-define("frampton-string/capitalize", ["exports", "module"], function (exports, module) {
+define("frampton-string/capitalize", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = capitalize;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = capitalize;
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 });
-define('frampton-string/contains', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-string/contains', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  // contains :: String -> String -> Boolean
-  module.exports = _curry['default'](function contains(sub, str) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function contains(sub, str) {
     return str.indexOf(sub) > -1;
   });
 });
-define("frampton-string/dash_to_camel", ["exports", "module"], function (exports, module) {
+define("frampton-string/dash_to_camel", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = dash_to_camel;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = dash_to_camel;
   function dash_to_camel(str) {
     return str.replace(/-([a-z])/g, function (m, w) {
       return w.toUpperCase();
     });
   }
 });
-define('frampton-string/ends_with', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-string/ends_with', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  // ends_with :: String -> String -> Boolean
-  module.exports = _curry['default'](function ends_with(sub, str) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function ends_with(sub, str) {
     return str.length >= sub.length && str.lastIndexOf(sub) === str.length - sub.length;
   });
 });
-define('frampton-string/is_empty', ['exports', 'module'], function (exports, module) {
+define('frampton-string/is_empty', ['exports'], function (exports) {
   'use strict';
 
-  module.exports = is_empty;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_empty;
   function is_empty(str) {
     return str.trim() === '';
   }
 });
-define('frampton-string/join', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-string/join', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * join :: String -> Array String -> String
-   * @name join
-   * @method
-   * @memberof Frampton.String
-   * @param {String} sep
-   * @param {Array} strs
-   * @returns {String}
-   */
-  module.exports = _curry['default'](function join(sep, strs) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function join(sep, strs) {
     return strs.join(sep);
   });
 });
-define('frampton-string/length', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_defined', 'frampton-string/normalize_newline'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_defined, _framptonStringNormalize_newline) {
+define('frampton-string/length', ['exports', 'frampton-utils/is_something', 'frampton-utils/is_defined', 'frampton-string/normalize_newline'], function (exports, _is_something, _is_defined, _normalize_newline) {
   'use strict';
 
-  module.exports = length;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = length;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_defined2 = _interopRequireDefault(_is_defined);
 
-  var _isDefined = _interopRequireDefault(_framptonUtilsIs_defined);
+  var _normalize_newline2 = _interopRequireDefault(_normalize_newline);
 
-  var _normalizeNewline = _interopRequireDefault(_framptonStringNormalize_newline);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name length
@@ -4785,22 +5306,29 @@ define('frampton-string/length', ['exports', 'module', 'frampton-utils/is_someth
    * @param {String}
    * @returns {Number}
    */
-
   function length(str) {
-    return _isSomething['default'](str) && _isDefined['default'](str.length) ? _normalizeNewline['default'](str).length : 0;
+    return (0, _is_something2.default)(str) && (0, _is_defined2.default)(str.length) ? (0, _normalize_newline2.default)(str).length : 0;
   }
 });
-define("frampton-string/lines", ["exports", "module"], function (exports, module) {
-  // lines :: String -> Array String
+define("frampton-string/lines", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = lines;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = lines;
+  // lines :: String -> Array String
   function lines(str) {
     return str.split(/\r\n|\r|\n/g);
   }
 });
-define('frampton-string/normalize_newline', ['exports', 'module'], function (exports, module) {
+define('frampton-string/normalize_newline', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = normalize_newline;
   /**
    * Returns a string with newlines normalized to \n. Windows machines will use
    * \r\n for newlines which can lead to irregularities when dealing with strings
@@ -4811,207 +5339,222 @@ define('frampton-string/normalize_newline', ['exports', 'module'], function (exp
    * @param {String} str
    * @returns {String}
    */
-  'use strict';
-
-  module.exports = normalize_newline;
-
   function normalize_newline(str) {
     return str.replace(/\r\n/g, '\n');
   }
 });
-define('frampton-string/replace', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-string/replace', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * replace :: String -> String -> String -> String
-   * @name replace
-   * @method
-   * @memberof Frampton.String
-   * @param {String} newSubStr
-   * @param {String} oldSubStr
-   * @param {String} str
-   * @returns {String}
-   */
-  module.exports = _curry['default'](function replace(newSubStr, oldSubStr, str) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function replace(newSubStr, oldSubStr, str) {
     return str.replace(oldSubStr, newSubStr);
   });
 });
-define('frampton-string/split', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-string/split', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  // split :: String -> String -> Array String
-  module.exports = _curry['default'](function join(sep, str) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function join(sep, str) {
     return str.split(sep);
   });
 });
-define('frampton-string/starts_with', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-string/starts_with', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  // starts_with :: String -> String -> Boolean
-  module.exports = _curry['default'](function starts_with(sub, str) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function starts_with(sub, str) {
     return str.indexOf(sub) === 0;
   });
 });
-define("frampton-string/trim", ["exports", "module"], function (exports, module) {
+define("frampton-string/trim", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = trim;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = trim;
   function trim(str) {
     return str.trim();
   }
 });
-define("frampton-string/words", ["exports", "module"], function (exports, module) {
-  // words :: String -> Array String
+define("frampton-string/words", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = words;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = words;
+  // words :: String -> Array String
   function words(str) {
     return str.trim().split(/\s+/g);
   }
 });
-define('frampton-style', ['exports', 'frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/set_style', 'frampton-style/remove_style', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/closest', 'frampton-style/contains', 'frampton-style/selector_contains', 'frampton-style/supported', 'frampton-style/supported_props'], function (exports, _framptonNamespace, _framptonStyleAdd_class, _framptonStyleRemove_class, _framptonStyleHas_class, _framptonStyleMatches, _framptonStyleCurrent_value, _framptonStyleSet_style, _framptonStyleRemove_style, _framptonStyleApply_styles, _framptonStyleRemove_styles, _framptonStyleClosest, _framptonStyleContains, _framptonStyleSelector_contains, _framptonStyleSupported, _framptonStyleSupported_props) {
+define('frampton-style', ['frampton/namespace', 'frampton-style/add_class', 'frampton-style/remove_class', 'frampton-style/has_class', 'frampton-style/matches', 'frampton-style/current_value', 'frampton-style/set_style', 'frampton-style/remove_style', 'frampton-style/apply_styles', 'frampton-style/remove_styles', 'frampton-style/closest', 'frampton-style/contains', 'frampton-style/selector_contains', 'frampton-style/supported', 'frampton-style/supported_props'], function (_namespace, _add_class, _remove_class, _has_class, _matches, _current_value, _set_style, _remove_style, _apply_styles, _remove_styles, _closest, _contains, _selector_contains, _supported, _supported_props) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _add_class2 = _interopRequireDefault(_add_class);
 
-  var _addClass = _interopRequireDefault(_framptonStyleAdd_class);
+  var _remove_class2 = _interopRequireDefault(_remove_class);
 
-  var _removeClass = _interopRequireDefault(_framptonStyleRemove_class);
+  var _has_class2 = _interopRequireDefault(_has_class);
 
-  var _hasClass = _interopRequireDefault(_framptonStyleHas_class);
+  var _matches2 = _interopRequireDefault(_matches);
 
-  var _matches = _interopRequireDefault(_framptonStyleMatches);
+  var _current_value2 = _interopRequireDefault(_current_value);
 
-  var _current = _interopRequireDefault(_framptonStyleCurrent_value);
+  var _set_style2 = _interopRequireDefault(_set_style);
 
-  var _setStyle = _interopRequireDefault(_framptonStyleSet_style);
+  var _remove_style2 = _interopRequireDefault(_remove_style);
 
-  var _removeStyle = _interopRequireDefault(_framptonStyleRemove_style);
+  var _apply_styles2 = _interopRequireDefault(_apply_styles);
 
-  var _applyStyles = _interopRequireDefault(_framptonStyleApply_styles);
+  var _remove_styles2 = _interopRequireDefault(_remove_styles);
 
-  var _removeStyles = _interopRequireDefault(_framptonStyleRemove_styles);
+  var _closest2 = _interopRequireDefault(_closest);
 
-  var _closest = _interopRequireDefault(_framptonStyleClosest);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  var _contains = _interopRequireDefault(_framptonStyleContains);
+  var _selector_contains2 = _interopRequireDefault(_selector_contains);
 
-  var _selectorContains = _interopRequireDefault(_framptonStyleSelector_contains);
+  var _supported2 = _interopRequireDefault(_supported);
 
-  var _supported = _interopRequireDefault(_framptonStyleSupported);
+  var _supported_props2 = _interopRequireDefault(_supported_props);
 
-  var _supportedProps = _interopRequireDefault(_framptonStyleSupported_props);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Style
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Style = {};
-  _Frampton['default'].Style.addClass = _addClass['default'];
-  _Frampton['default'].Style.closest = _closest['default'];
-  _Frampton['default'].Style.removeClass = _removeClass['default'];
-  _Frampton['default'].Style.hasClass = _hasClass['default'];
-  _Frampton['default'].Style.matches = _matches['default'];
-  _Frampton['default'].Style.current = _current['default'];
-  _Frampton['default'].Style.setStyle = _setStyle['default'];
-  _Frampton['default'].Style.removeStyle = _removeStyle['default'];
-  _Frampton['default'].Style.applyStyles = _applyStyles['default'];
-  _Frampton['default'].Style.removeStyles = _removeStyles['default'];
-  _Frampton['default'].Style.contains = _contains['default'];
-  _Frampton['default'].Style.selectorContains = _selectorContains['default'];
-  _Frampton['default'].Style.supported = _supported['default'];
-  _Frampton['default'].Style.supportedProps = _supportedProps['default'];
+  _namespace2.default.Style = {};
+  _namespace2.default.Style.addClass = _add_class2.default;
+  _namespace2.default.Style.closest = _closest2.default;
+  _namespace2.default.Style.removeClass = _remove_class2.default;
+  _namespace2.default.Style.hasClass = _has_class2.default;
+  _namespace2.default.Style.matches = _matches2.default;
+  _namespace2.default.Style.current = _current_value2.default;
+  _namespace2.default.Style.setStyle = _set_style2.default;
+  _namespace2.default.Style.removeStyle = _remove_style2.default;
+  _namespace2.default.Style.applyStyles = _apply_styles2.default;
+  _namespace2.default.Style.removeStyles = _remove_styles2.default;
+  _namespace2.default.Style.contains = _contains2.default;
+  _namespace2.default.Style.selectorContains = _selector_contains2.default;
+  _namespace2.default.Style.supported = _supported2.default;
+  _namespace2.default.Style.supportedProps = _supported_props2.default;
 });
-define('frampton-style/add_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-style/add_class', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name addClass
-   * @method
-   * @memberof Frampton.Style
-   * @param {Object} element
-   * @param {String} name
-   */
-  module.exports = _curry['default'](function add_class(element, name) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function add_class(element, name) {
     element.classList.add(name);
   });
 });
-define('frampton-style/apply_styles', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-style/remove_style', 'frampton-style/set_style'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonStyleRemove_style, _framptonStyleSet_style) {
+define('frampton-style/apply_styles', ['exports', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-style/remove_style', 'frampton-style/set_style'], function (exports, _curry, _is_something, _remove_style, _set_style) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _removeStyle = _interopRequireDefault(_framptonStyleRemove_style);
+  var _remove_style2 = _interopRequireDefault(_remove_style);
 
-  var _setStyle = _interopRequireDefault(_framptonStyleSet_style);
+  var _set_style2 = _interopRequireDefault(_set_style);
 
-  /**
-   * @name applyStyles
-   * @method
-   * @memberof Frampton.Style
-   * @param {Object} element DomNode to add styles to
-   * @param {Object} props   Has of props to add
-   */
-  module.exports = _curry['default'](function apply_styles(element, props) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function apply_styles(element, props) {
     for (var key in props) {
       var value = props[key];
-      if (_isSomething['default'](value)) {
-        _setStyle['default'](element, key, value);
+      if ((0, _is_something2.default)(value)) {
+        (0, _set_style2.default)(element, key, value);
       } else {
-        _removeStyle['default'](element, key, value);
+        (0, _remove_style2.default)(element, key, value);
       }
     }
   });
 });
-define('frampton-style/closest', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/matches'], function (exports, module, _framptonUtilsCurry, _framptonStyleMatches) {
+define('frampton-style/closest', ['exports', 'frampton-utils/curry', 'frampton-style/matches'], function (exports, _curry, _matches) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _matches = _interopRequireDefault(_framptonStyleMatches);
+  var _matches2 = _interopRequireDefault(_matches);
 
-  /**
-   * Searches up the Dom Tree from a given node and returns the first element
-   * that matches the selector. If no match is found, null is returned.
-   *
-   * @name closest
-   * @method
-   * @memberof Frampton.Style
-   * @param {String} selector Selector to search for
-   * @param {Object} element  DomNode to start search from
-   * @returns {Object} The first DomNode matching the selector or null.
-   */
-  module.exports = _curry['default'](function closest(selector, element) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function closest(selector, element) {
 
     while (element) {
-      if (_matches['default'](selector, element)) {
+      if ((0, _matches2.default)(selector, element)) {
         break;
       }
       element = element.parentElement;
@@ -5020,38 +5563,43 @@ define('frampton-style/closest', ['exports', 'module', 'frampton-utils/curry', '
     return element || null;
   });
 });
-define('frampton-style/contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/matches'], function (exports, module, _framptonUtilsCurry, _framptonStyleMatches) {
+define('frampton-style/contains', ['exports', 'frampton-utils/curry', 'frampton-style/matches'], function (exports, _curry, _matches) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _matches = _interopRequireDefault(_framptonStyleMatches);
+  var _matches2 = _interopRequireDefault(_matches);
 
-  /**
-   * Searches inside the given element and returns true if the given element, or
-   * one of its children matches the given selector, false otherwise.
-   *
-   * @name contains
-   * @method
-   * @memberof Frampton.Style
-   * @param {String} selector Selector to search for
-   * @param {Object} element  DomNode to search inside of
-   * @returns {Boolean} Is there a match for the selector?
-   */
-  module.exports = _curry['default'](function contains(selector, element) {
-    return _matches['default'](selector, element) || element.querySelectorAll(selector).length > 0;
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function contains(selector, element) {
+    return (0, _matches2.default)(selector, element) || element.querySelectorAll(selector).length > 0;
   });
 });
-define('frampton-style/current_value', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, module, _framptonUtilsCurry, _framptonStyleSupported) {
+define('frampton-style/current_value', ['exports', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, _curry, _supported) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _supported = _interopRequireDefault(_framptonStyleSupported);
+  var _supported2 = _interopRequireDefault(_supported);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var style = window.getComputedStyle;
 
@@ -5065,51 +5613,49 @@ define('frampton-style/current_value', ['exports', 'module', 'frampton-utils/cur
    * @param {String} prop    Name of property to check
    * @returns {String} String representation of current property value
    */
-  module.exports = _curry['default'](function current(element, prop) {
-    return style(element).getPropertyValue(_supported['default'](prop));
+  exports.default = (0, _curry2.default)(function current(element, prop) {
+    return style(element).getPropertyValue((0, _supported2.default)(prop));
   });
 });
-define('frampton-style/has_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-style/has_class', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * Returns a Boolean indicated if the given DomNode has the given class.
-   *
-   * @name hasClass
-   * @method
-   * @memberof Frampton.Style
-   * @param {String} name    Class to test for
-   * @param {Object} element DomNode to test
-   * @returns {Boolean}
-   */
-  module.exports = _curry['default'](function has_class(name, element) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function has_class(name, element) {
     return element.classList.contains(name);
   });
 });
-define('frampton-style/matches', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_function) {
+define('frampton-style/matches', ['exports', 'frampton-utils/curry', 'frampton-utils/is_function'], function (exports, _curry, _is_function) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  /**
-   * @name matches
-   * @method
-   * @memberof Frampton.Style
-   * @param {String} selector
-   * @param {Object} element
-   * @returns {Boolean}
-   */
-  module.exports = _curry['default'](function matches(selector, element) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-    if (_isFunction['default'](element.matches)) {
+  exports.default = (0, _curry2.default)(function matches(selector, element) {
+
+    if ((0, _is_function2.default)(element.matches)) {
       return element.matches(selector);
     } else {
       var elementList = document.querySelectorAll(selector);
@@ -5123,131 +5669,156 @@ define('frampton-style/matches', ['exports', 'module', 'frampton-utils/curry', '
     }
   });
 });
-define('frampton-style/remove_class', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-style/remove_class', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * @name removeClass
-   * @method
-   * @memberof Frampton.Style
-   * @param {Object} element
-   * @param {String} name
-   */
-  module.exports = _curry['default'](function remove_class(element, name) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function remove_class(element, name) {
     element.classList.remove(name);
   });
 });
-define('frampton-style/remove_style', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, module, _framptonUtilsCurry, _framptonStyleSupported) {
+define('frampton-style/remove_style', ['exports', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, _curry, _supported) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _supported = _interopRequireDefault(_framptonStyleSupported);
+  var _supported2 = _interopRequireDefault(_supported);
 
-  /**
-   * @name removeStyle
-   * @method
-   * @memberof Frampton.Style
-   * @param {Object} element
-   * @param {String} key
-   */
-  module.exports = _curry['default'](function remove_style(element, key) {
-    element.style.removeProperty(_supported['default'](key));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function remove_style(element, key) {
+    element.style.removeProperty((0, _supported2.default)(key));
   });
 });
-define('frampton-style/remove_styles', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-style/remove_styles', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * removeStyles :: DomNode -> Object -> ()
-   *
-   * @name removeStyles
-   * @method
-   * @memberof Frampton.Style
-   * @param {Object} element A dom node to remove styles from
-   * @param {Object} props   A hash of properties to remove
-   */
-  module.exports = _curry['default'](function remove_styles(element, props) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function remove_styles(element, props) {
     for (var key in props) {
       element.style.removeProperty(key);
     }
   });
 });
-define('frampton-style/selector_contains', ['exports', 'module', 'frampton-utils/curry', 'frampton-html/contains'], function (exports, module, _framptonUtilsCurry, _framptonHtmlContains) {
+define('frampton-style/selector_contains', ['exports', 'frampton-utils/curry', 'frampton-html/contains'], function (exports, _curry, _contains) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _contains = _interopRequireDefault(_framptonHtmlContains);
+  var _contains2 = _interopRequireDefault(_contains);
 
-  /**
-   * Searches inside all elements with the given selector and returns if one of them
-   * contains the given element.
-   *
-   * @name selectorContains
-   * @method
-   * @memberof Frampton.Style
-   * @param {String} selector Selector to search inside of
-   * @param {Object} element  DomNode to search for
-   * @returns {Boolean} Is there a match for the element?
-   */
-  module.exports = _curry['default'](function selector_contains(selector, element) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function selector_contains(selector, element) {
 
     var elementList = document.querySelectorAll(selector);
     var i = 0;
 
-    while (elementList[i] && !_contains['default'](elementList[i], element)) {
+    while (elementList[i] && !(0, _contains2.default)(elementList[i], element)) {
       i++;
     }
 
     return elementList[i] ? true : false;
   });
 });
-define('frampton-style/set_style', ['exports', 'module', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, module, _framptonUtilsCurry, _framptonStyleSupported) {
+define('frampton-style/set_style', ['exports', 'frampton-utils/curry', 'frampton-style/supported'], function (exports, _curry, _supported) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _supported = _interopRequireDefault(_framptonStyleSupported);
+  var _supported2 = _interopRequireDefault(_supported);
 
-  /**
-   * @name setStyle
-   * @method
-   * @memberof Frampton.Style
-   * @param {Object} element - Element to apply style to
-   * @param {String} key - Style to update
-   * @param {String} value - Value of style
-   */
-  module.exports = _curry['default'](function set_style(element, key, value) {
-    element.style.setProperty(_supported['default'](key), value, '');
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function set_style(element, key, value) {
+    element.style.setProperty((0, _supported2.default)(key), value, '');
   });
 });
-define('frampton-style/supported_by_element', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-string/capitalize', 'frampton-string/dash_to_camel'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_something, _framptonStringCapitalize, _framptonStringDash_to_camel) {
+define('frampton-style/supported', ['exports', 'frampton-utils/memoize', 'frampton-style/supported_by_element'], function (exports, _memoize, _supported_by_element) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _memoize2 = _interopRequireDefault(_memoize);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _supported_by_element2 = _interopRequireDefault(_supported_by_element);
 
-  var _capitalize = _interopRequireDefault(_framptonStringCapitalize);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-  var _dashToCamel = _interopRequireDefault(_framptonStringDash_to_camel);
+  exports.default = (0, _memoize2.default)((0, _supported_by_element2.default)(document.createElement('div')));
+});
+define('frampton-style/supported_by_element', ['exports', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-string/capitalize', 'frampton-string/dash_to_camel'], function (exports, _curry, _is_something, _capitalize, _dash_to_camel) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _curry2 = _interopRequireDefault(_curry);
+
+  var _is_something2 = _interopRequireDefault(_is_something);
+
+  var _capitalize2 = _interopRequireDefault(_capitalize);
+
+  var _dash_to_camel2 = _interopRequireDefault(_dash_to_camel);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var vendors = {
     'webkit': 'webkit',
@@ -5265,17 +5836,17 @@ define('frampton-style/supported_by_element', ['exports', 'module', 'frampton-ut
    * @param {String} prop
    * @returns {String}
    */
-  module.exports = _curry['default'](function supported_by_element(element, prop) {
+  exports.default = (0, _curry2.default)(function supported_by_element(element, prop) {
 
-    var camelProp = _dashToCamel['default'](prop);
+    var camelProp = (0, _dash_to_camel2.default)(prop);
 
-    if (_isSomething['default'](element.style[camelProp])) {
+    if ((0, _is_something2.default)(element.style[camelProp])) {
       return prop;
     }
 
     for (var key in vendors) {
-      var propToCheck = key + _capitalize['default'](camelProp);
-      if (_isSomething['default'](element.style[propToCheck])) {
+      var propToCheck = key + (0, _capitalize2.default)(camelProp);
+      if ((0, _is_something2.default)(element.style[propToCheck])) {
         return ('-' + vendors[key] + '-' + prop).toLowerCase();
       }
     }
@@ -5283,16 +5854,23 @@ define('frampton-style/supported_by_element', ['exports', 'module', 'frampton-ut
     return null;
   });
 });
-define('frampton-style/supported_props', ['exports', 'module', 'frampton-utils/warn', 'frampton-style/supported'], function (exports, module, _framptonUtilsWarn, _framptonStyleSupported) {
+define('frampton-style/supported_props', ['exports', 'frampton-utils/warn', 'frampton-style/supported'], function (exports, _warn, _supported) {
   'use strict';
 
-  module.exports = supported_props;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = supported_props;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _warn2 = _interopRequireDefault(_warn);
 
-  var _warn = _interopRequireDefault(_framptonUtilsWarn);
+  var _supported2 = _interopRequireDefault(_supported);
 
-  var _supported = _interopRequireDefault(_framptonStyleSupported);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name supportedProps
@@ -5301,199 +5879,180 @@ define('frampton-style/supported_props', ['exports', 'module', 'frampton-utils/w
    * @param {Object} props
    * @returns {Object}
    */
-
   function supported_props(props) {
     var obj = {};
     var temp;
     for (var key in props) {
-      temp = _supported['default'](key);
+      temp = (0, _supported2.default)(key);
       if (temp) {
-        obj[_supported['default'](key)] = props[key];
+        obj[(0, _supported2.default)(key)] = props[key];
       } else {
-        _warn['default']('style prop ' + key + ' is not supported by this browser');
+        (0, _warn2.default)('style prop ' + key + ' is not supported by this browser');
       }
     }
     return obj;
   }
 });
-define('frampton-style/supported', ['exports', 'module', 'frampton-utils/memoize', 'frampton-style/supported_by_element'], function (exports, module, _framptonUtilsMemoize, _framptonStyleSupported_by_element) {
+define('frampton-utils', ['frampton/namespace', 'frampton-utils/always', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/curry_n', 'frampton-utils/equal', 'frampton-utils/error', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/has_length', 'frampton-utils/has_prop', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/is_array', 'frampton-utils/is_boolean', 'frampton-utils/is_defined', 'frampton-utils/is_empty', 'frampton-utils/is_equal', 'frampton-utils/is_false', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-utils/is_nothing', 'frampton-utils/is_null', 'frampton-utils/is_number', 'frampton-utils/is_numeric', 'frampton-utils/is_object', 'frampton-utils/is_primitive', 'frampton-utils/is_promise', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_true', 'frampton-utils/is_undefined', 'frampton-utils/is_value', 'frampton-utils/lazy', 'frampton-utils/log', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/not', 'frampton-utils/of_value', 'frampton-utils/once', 'frampton-utils/warn'], function (_namespace, _always, _apply, _assert, _compose, _curry, _curry_n, _equal, _error, _extend, _get, _has_length, _has_prop, _identity, _immediate, _is_array, _is_boolean, _is_defined, _is_empty, _is_equal, _is_false, _is_function, _is_node, _is_nothing, _is_null, _is_number, _is_numeric, _is_object, _is_primitive, _is_promise, _is_something, _is_string, _is_true, _is_undefined, _is_value, _lazy, _log, _memoize, _noop, _not, _of_value, _once, _warn) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _memoize = _interopRequireDefault(_framptonUtilsMemoize);
+  var _always2 = _interopRequireDefault(_always);
 
-  var _supportedByElement = _interopRequireDefault(_framptonStyleSupported_by_element);
+  var _apply2 = _interopRequireDefault(_apply);
 
-  /**
-   * supported :: String -> String
-   *
-   * @name supported
-   * @method
-   * @memberof Frampton.Style
-   * @param {String} prop A standard CSS property name
-   * @returns {String} The property name with any vendor prefixes required by the browser, or null if the property is not supported
-   */
-  module.exports = _memoize['default'](_supportedByElement['default'](document.createElement('div')));
-});
-define('frampton-utils', ['exports', 'frampton/namespace', 'frampton-utils/always', 'frampton-utils/apply', 'frampton-utils/assert', 'frampton-utils/compose', 'frampton-utils/curry', 'frampton-utils/curry_n', 'frampton-utils/equal', 'frampton-utils/error', 'frampton-utils/extend', 'frampton-utils/get', 'frampton-utils/has_length', 'frampton-utils/has_prop', 'frampton-utils/identity', 'frampton-utils/immediate', 'frampton-utils/is_array', 'frampton-utils/is_boolean', 'frampton-utils/is_defined', 'frampton-utils/is_empty', 'frampton-utils/is_equal', 'frampton-utils/is_false', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-utils/is_nothing', 'frampton-utils/is_null', 'frampton-utils/is_number', 'frampton-utils/is_numeric', 'frampton-utils/is_object', 'frampton-utils/is_primitive', 'frampton-utils/is_promise', 'frampton-utils/is_something', 'frampton-utils/is_string', 'frampton-utils/is_true', 'frampton-utils/is_undefined', 'frampton-utils/is_value', 'frampton-utils/lazy', 'frampton-utils/log', 'frampton-utils/memoize', 'frampton-utils/noop', 'frampton-utils/not', 'frampton-utils/of_value', 'frampton-utils/once', 'frampton-utils/warn'], function (exports, _framptonNamespace, _framptonUtilsAlways, _framptonUtilsApply, _framptonUtilsAssert, _framptonUtilsCompose, _framptonUtilsCurry, _framptonUtilsCurry_n, _framptonUtilsEqual, _framptonUtilsError, _framptonUtilsExtend, _framptonUtilsGet, _framptonUtilsHas_length, _framptonUtilsHas_prop, _framptonUtilsIdentity, _framptonUtilsImmediate, _framptonUtilsIs_array, _framptonUtilsIs_boolean, _framptonUtilsIs_defined, _framptonUtilsIs_empty, _framptonUtilsIs_equal, _framptonUtilsIs_false, _framptonUtilsIs_function, _framptonUtilsIs_node, _framptonUtilsIs_nothing, _framptonUtilsIs_null, _framptonUtilsIs_number, _framptonUtilsIs_numeric, _framptonUtilsIs_object, _framptonUtilsIs_primitive, _framptonUtilsIs_promise, _framptonUtilsIs_something, _framptonUtilsIs_string, _framptonUtilsIs_true, _framptonUtilsIs_undefined, _framptonUtilsIs_value, _framptonUtilsLazy, _framptonUtilsLog, _framptonUtilsMemoize, _framptonUtilsNoop, _framptonUtilsNot, _framptonUtilsOf_value, _framptonUtilsOnce, _framptonUtilsWarn) {
-  'use strict';
+  var _assert2 = _interopRequireDefault(_assert);
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _compose2 = _interopRequireDefault(_compose);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _always = _interopRequireDefault(_framptonUtilsAlways);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _apply = _interopRequireDefault(_framptonUtilsApply);
+  var _equal2 = _interopRequireDefault(_equal);
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _error2 = _interopRequireDefault(_error);
 
-  var _compose = _interopRequireDefault(_framptonUtilsCompose);
+  var _extend2 = _interopRequireDefault(_extend);
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _get2 = _interopRequireDefault(_get);
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _has_length2 = _interopRequireDefault(_has_length);
 
-  var _equal = _interopRequireDefault(_framptonUtilsEqual);
+  var _has_prop2 = _interopRequireDefault(_has_prop);
 
-  var _error = _interopRequireDefault(_framptonUtilsError);
+  var _identity2 = _interopRequireDefault(_identity);
 
-  var _extend = _interopRequireDefault(_framptonUtilsExtend);
+  var _immediate2 = _interopRequireDefault(_immediate);
 
-  var _get = _interopRequireDefault(_framptonUtilsGet);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _hasLength = _interopRequireDefault(_framptonUtilsHas_length);
+  var _is_boolean2 = _interopRequireDefault(_is_boolean);
 
-  var _hasProp = _interopRequireDefault(_framptonUtilsHas_prop);
+  var _is_defined2 = _interopRequireDefault(_is_defined);
 
-  var _identity = _interopRequireDefault(_framptonUtilsIdentity);
+  var _is_empty2 = _interopRequireDefault(_is_empty);
 
-  var _immediate = _interopRequireDefault(_framptonUtilsImmediate);
+  var _is_equal2 = _interopRequireDefault(_is_equal);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  var _is_false2 = _interopRequireDefault(_is_false);
 
-  var _isBoolean = _interopRequireDefault(_framptonUtilsIs_boolean);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isDefined = _interopRequireDefault(_framptonUtilsIs_defined);
+  var _is_node2 = _interopRequireDefault(_is_node);
 
-  var _isEmpty = _interopRequireDefault(_framptonUtilsIs_empty);
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
 
-  var _isEqual = _interopRequireDefault(_framptonUtilsIs_equal);
+  var _is_null2 = _interopRequireDefault(_is_null);
 
-  var _isFalse = _interopRequireDefault(_framptonUtilsIs_false);
+  var _is_number2 = _interopRequireDefault(_is_number);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  var _is_numeric2 = _interopRequireDefault(_is_numeric);
 
-  var _isNode = _interopRequireDefault(_framptonUtilsIs_node);
+  var _is_object2 = _interopRequireDefault(_is_object);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  var _is_primitive2 = _interopRequireDefault(_is_primitive);
 
-  var _isNull = _interopRequireDefault(_framptonUtilsIs_null);
+  var _is_promise2 = _interopRequireDefault(_is_promise);
 
-  var _isNumber = _interopRequireDefault(_framptonUtilsIs_number);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isNumeric = _interopRequireDefault(_framptonUtilsIs_numeric);
+  var _is_string2 = _interopRequireDefault(_is_string);
 
-  var _isObject = _interopRequireDefault(_framptonUtilsIs_object);
+  var _is_true2 = _interopRequireDefault(_is_true);
 
-  var _isPrimitive = _interopRequireDefault(_framptonUtilsIs_primitive);
+  var _is_undefined2 = _interopRequireDefault(_is_undefined);
 
-  var _isPromise = _interopRequireDefault(_framptonUtilsIs_promise);
+  var _is_value2 = _interopRequireDefault(_is_value);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _lazy2 = _interopRequireDefault(_lazy);
 
-  var _isString = _interopRequireDefault(_framptonUtilsIs_string);
+  var _log2 = _interopRequireDefault(_log);
 
-  var _isTrue = _interopRequireDefault(_framptonUtilsIs_true);
+  var _memoize2 = _interopRequireDefault(_memoize);
 
-  var _isUndefined = _interopRequireDefault(_framptonUtilsIs_undefined);
+  var _noop2 = _interopRequireDefault(_noop);
 
-  var _isValue = _interopRequireDefault(_framptonUtilsIs_value);
+  var _not2 = _interopRequireDefault(_not);
 
-  var _lazy = _interopRequireDefault(_framptonUtilsLazy);
+  var _of_value2 = _interopRequireDefault(_of_value);
 
-  var _log = _interopRequireDefault(_framptonUtilsLog);
+  var _once2 = _interopRequireDefault(_once);
 
-  var _memoize = _interopRequireDefault(_framptonUtilsMemoize);
+  var _warn2 = _interopRequireDefault(_warn);
 
-  var _noop = _interopRequireDefault(_framptonUtilsNoop);
-
-  var _not = _interopRequireDefault(_framptonUtilsNot);
-
-  var _ofValue = _interopRequireDefault(_framptonUtilsOf_value);
-
-  var _once = _interopRequireDefault(_framptonUtilsOnce);
-
-  var _warn = _interopRequireDefault(_framptonUtilsWarn);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name Utils
    * @namespace
    * @memberof Frampton
    */
-  _Frampton['default'].Utils = {};
-  _Frampton['default'].Utils.always = _always['default'];
-  _Frampton['default'].Utils.apply = _apply['default'];
-  _Frampton['default'].Utils.assert = _assert['default'];
-  _Frampton['default'].Utils.compose = _compose['default'];
-  _Frampton['default'].Utils.curry = _curry['default'];
-  _Frampton['default'].Utils.curryN = _curryN['default'];
-  _Frampton['default'].Utils.equal = _equal['default'];
-  _Frampton['default'].Utils.error = _error['default'];
-  _Frampton['default'].Utils.extend = _extend['default'];
-  _Frampton['default'].Utils.get = _get['default'];
-  _Frampton['default'].Utils.hasLength = _hasLength['default'];
-  _Frampton['default'].Utils.hasProp = _hasProp['default'];
-  _Frampton['default'].Utils.identity = _identity['default'];
-  _Frampton['default'].Utils.immediate = _immediate['default'];
-  _Frampton['default'].Utils.isArray = _isArray['default'];
-  _Frampton['default'].Utils.isBoolean = _isBoolean['default'];
-  _Frampton['default'].Utils.isDefined = _isDefined['default'];
-  _Frampton['default'].Utils.isEmpty = _isEmpty['default'];
-  _Frampton['default'].Utils.isEqual = _isEqual['default'];
-  _Frampton['default'].Utils.isFalse = _isFalse['default'];
-  _Frampton['default'].Utils.isFunction = _isFunction['default'];
-  _Frampton['default'].Utils.isNode = _isNode['default'];
-  _Frampton['default'].Utils.isNothing = _isNothing['default'];
-  _Frampton['default'].Utils.isNull = _isNull['default'];
-  _Frampton['default'].Utils.isNumber = _isNumber['default'];
-  _Frampton['default'].Utils.isNumeric = _isNumeric['default'];
-  _Frampton['default'].Utils.isObject = _isObject['default'];
-  _Frampton['default'].Utils.isPrimitive = _isPrimitive['default'];
-  _Frampton['default'].Utils.isPromise = _isPromise['default'];
-  _Frampton['default'].Utils.isSomething = _isSomething['default'];
-  _Frampton['default'].Utils.isString = _isString['default'];
-  _Frampton['default'].Utils.isTrue = _isTrue['default'];
-  _Frampton['default'].Utils.isUndefined = _isUndefined['default'];
-  _Frampton['default'].Utils.isValue = _isValue['default'];
-  _Frampton['default'].Utils.lazy = _lazy['default'];
-  _Frampton['default'].Utils.log = _log['default'];
-  _Frampton['default'].Utils.memoize = _memoize['default'];
-  _Frampton['default'].Utils.noop = _noop['default'];
-  _Frampton['default'].Utils.not = _not['default'];
-  _Frampton['default'].Utils.ofValue = _ofValue['default'];
-  _Frampton['default'].Utils.once = _once['default'];
-  _Frampton['default'].Utils.warn = _warn['default'];
+  _namespace2.default.Utils = {};
+  _namespace2.default.Utils.always = _always2.default;
+  _namespace2.default.Utils.apply = _apply2.default;
+  _namespace2.default.Utils.assert = _assert2.default;
+  _namespace2.default.Utils.compose = _compose2.default;
+  _namespace2.default.Utils.curry = _curry2.default;
+  _namespace2.default.Utils.curryN = _curry_n2.default;
+  _namespace2.default.Utils.equal = _equal2.default;
+  _namespace2.default.Utils.error = _error2.default;
+  _namespace2.default.Utils.extend = _extend2.default;
+  _namespace2.default.Utils.get = _get2.default;
+  _namespace2.default.Utils.hasLength = _has_length2.default;
+  _namespace2.default.Utils.hasProp = _has_prop2.default;
+  _namespace2.default.Utils.identity = _identity2.default;
+  _namespace2.default.Utils.immediate = _immediate2.default;
+  _namespace2.default.Utils.isArray = _is_array2.default;
+  _namespace2.default.Utils.isBoolean = _is_boolean2.default;
+  _namespace2.default.Utils.isDefined = _is_defined2.default;
+  _namespace2.default.Utils.isEmpty = _is_empty2.default;
+  _namespace2.default.Utils.isEqual = _is_equal2.default;
+  _namespace2.default.Utils.isFalse = _is_false2.default;
+  _namespace2.default.Utils.isFunction = _is_function2.default;
+  _namespace2.default.Utils.isNode = _is_node2.default;
+  _namespace2.default.Utils.isNothing = _is_nothing2.default;
+  _namespace2.default.Utils.isNull = _is_null2.default;
+  _namespace2.default.Utils.isNumber = _is_number2.default;
+  _namespace2.default.Utils.isNumeric = _is_numeric2.default;
+  _namespace2.default.Utils.isObject = _is_object2.default;
+  _namespace2.default.Utils.isPrimitive = _is_primitive2.default;
+  _namespace2.default.Utils.isPromise = _is_promise2.default;
+  _namespace2.default.Utils.isSomething = _is_something2.default;
+  _namespace2.default.Utils.isString = _is_string2.default;
+  _namespace2.default.Utils.isTrue = _is_true2.default;
+  _namespace2.default.Utils.isUndefined = _is_undefined2.default;
+  _namespace2.default.Utils.isValue = _is_value2.default;
+  _namespace2.default.Utils.lazy = _lazy2.default;
+  _namespace2.default.Utils.log = _log2.default;
+  _namespace2.default.Utils.memoize = _memoize2.default;
+  _namespace2.default.Utils.noop = _noop2.default;
+  _namespace2.default.Utils.not = _not2.default;
+  _namespace2.default.Utils.ofValue = _of_value2.default;
+  _namespace2.default.Utils.once = _once2.default;
+  _namespace2.default.Utils.warn = _warn2.default;
 });
-define('frampton-utils/always', ['exports', 'module', 'frampton-utils/curry_n'], function (exports, module, _framptonUtilsCurry_n) {
+define('frampton-utils/always', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  /**
-   * Create a function that always returns the same value every time
-   * it is called
-   *
-   * @name always
-   * @method
-   * @memberof Frampton.Utils
-   * @param {Function} fn The function to wrap.
-   * @param {*} args The arguments to pass to the function.
-   */
-  module.exports = _curryN['default'](2, function always(fn) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry_n2.default)(2, function always(fn) {
     for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
@@ -5507,7 +6066,13 @@ define('frampton-utils/always', ['exports', 'module', 'frampton-utils/curry_n'],
     };
   });
 });
-define("frampton-utils/apply", ["exports", "module"], function (exports, module) {
+define("frampton-utils/apply", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = apply;
   /**
    * Takes a function and warps it to be called at a later time.
    *
@@ -5517,15 +6082,17 @@ define("frampton-utils/apply", ["exports", "module"], function (exports, module)
    * @param {Function} fn      The function to wrap.
    * @param {Object}   thisArg Context in which to apply function.
    */
-  "use strict";
-
-  module.exports = apply;
-
   function apply(fn, thisArg) {
     return fn.call(thisArg || null);
   }
 });
-define('frampton-utils/assert', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/assert', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = assert;
   /**
    * Occassionally we need to blow things up if something isn't right.
    *
@@ -5535,28 +6102,31 @@ define('frampton-utils/assert', ['exports', 'module'], function (exports, module
    * @param {String} msg  - Message to throw with error.
    * @param {*}    cond - A condition that evaluates to a Boolean. If false, an error is thrown.
    */
-  'use strict';
-
-  module.exports = assert;
-
   function assert(msg, cond) {
     if (!cond) {
       throw new Error(msg || 'An error occured'); // Boom!
     }
   }
 });
-define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 'frampton-list/foldr', 'frampton-list/first'], function (exports, module, _framptonUtilsAssert, _framptonListFoldr, _framptonListFirst) {
+define('frampton-utils/compose', ['exports', 'frampton-utils/assert', 'frampton-list/foldr', 'frampton-list/first'], function (exports, _assert, _foldr, _first) {
   'use strict';
 
-  module.exports = compose;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = compose;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _assert2 = _interopRequireDefault(_assert);
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  var _foldr2 = _interopRequireDefault(_foldr);
 
-  var _foldr = _interopRequireDefault(_framptonListFoldr);
+  var _first2 = _interopRequireDefault(_first);
 
-  var _first = _interopRequireDefault(_framptonListFirst);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Compose takes any number of functions and returns a function that when
@@ -5569,34 +6139,72 @@ define('frampton-utils/compose', ['exports', 'module', 'frampton-utils/assert', 
    * @param {function} functions - Any number of function used to build the composition.
    * @returns {function} A new function that runs each of the given functions in succession
    */
-
   function compose() {
     for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
       fns[_key] = arguments[_key];
     }
 
-    _assert['default']("Compose did not receive any arguments. You can't compose nothing.", fns.length > 0);
+    (0, _assert2.default)("Compose did not receive any arguments. You can't compose nothing.", fns.length > 0);
     return function composition() {
       for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
       }
 
-      return _first['default'](_foldr['default'](function (args, fn) {
+      return (0, _first2.default)((0, _foldr2.default)(function (args, fn) {
         return [fn.apply(this, args)];
       }, args, fns));
     };
   }
 });
-define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsAssert, _framptonUtilsIs_function) {
+define('frampton-utils/curry', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
-  module.exports = curry_n;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = curry;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _assert = _interopRequireDefault(_framptonUtilsAssert);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  /**
+   * Takes a function and returns a new function that will wait to execute the original
+   * function until it has received all of its arguments. Each time the function is called
+   * without receiving all of its arguments it will return a new function waiting for the
+   * remaining arguments.
+   *
+   * @name curry
+   * @memberof Frampton.Utils
+   * @method
+   * @param {Function} curry - Function to curry.
+   * @returns {Function} A curried version of the function passed in.
+   */
+  function curry(fn) {
+    return (0, _curry_n2.default)(fn.length, fn);
+  }
+});
+define('frampton-utils/curry_n', ['exports', 'frampton-utils/assert', 'frampton-utils/is_function'], function (exports, _assert, _is_function) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = curry_n;
+
+  var _assert2 = _interopRequireDefault(_assert);
+
+  var _is_function2 = _interopRequireDefault(_is_function);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Takes a function and returns a new function that will wait to execute the original
@@ -5611,13 +6219,12 @@ define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 
    * @param {Function} fn - Function to curry.
    * @returns {Function} A curried version of the function passed in.
    */
-
   function curry_n(arity, fn) {
     for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
       args[_key - 2] = arguments[_key];
     }
 
-    _assert['default']('Argument passed to curry is not a function', _isFunction['default'](fn));
+    (0, _assert2.default)('Argument passed to curry is not a function', (0, _is_function2.default)(fn));
 
     function curried() {
       for (var _len2 = arguments.length, args2 = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
@@ -5633,49 +6240,30 @@ define('frampton-utils/curry_n', ['exports', 'module', 'frampton-utils/assert', 
 
         // If we don't have all the arguments, return a new function that awaits remaining arguments
       } else {
-          return curry_n.apply(null, [arity, fn].concat(locals));
-        }
+        return curry_n.apply(null, [arity, fn].concat(locals));
+      }
     }
 
     return args.length >= arity ? curried() : curried;
   }
 });
-define('frampton-utils/curry', ['exports', 'module', 'frampton-utils/curry_n'], function (exports, module, _framptonUtilsCurry_n) {
+define('frampton-utils/equal', ['exports', 'frampton-utils/is_object', 'frampton-utils/is_array'], function (exports, _is_object, _is_array) {
   'use strict';
 
-  module.exports = curry;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = deep_equal;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_object2 = _interopRequireDefault(_is_object);
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  /**
-   * Takes a function and returns a new function that will wait to execute the original
-   * function until it has received all of its arguments. Each time the function is called
-   * without receiving all of its arguments it will return a new function waiting for the
-   * remaining arguments.
-   *
-   * @name curry
-   * @memberof Frampton.Utils
-   * @method
-   * @param {Function} curry - Function to curry.
-   * @returns {Function} A curried version of the function passed in.
-   */
-
-  function curry(fn) {
-    return _curryN['default'](fn.length, fn);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
   }
-});
-define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsIs_object, _framptonUtilsIs_array) {
-  'use strict';
-
-  module.exports = deep_equal;
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-  var _isObject = _interopRequireDefault(_framptonUtilsIs_object);
-
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
 
   /**
    * equal :: Object -> Object -> Boolean
@@ -5687,7 +6275,6 @@ define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object',
    * @param {*} obj2
    * @returns {Boolean}
    */
-
   function deep_equal(obj1, obj2) {
 
     var depth = 0;
@@ -5700,7 +6287,7 @@ define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object',
 
       if (
       // If we're dealing with a circular reference, return reference equality.
-      !(depth > 1 && original1 === obj1 && original2 === obj2) && (_isObject['default'](obj1) || _isArray['default'](obj1)) && (_isObject['default'](obj2) || _isArray['default'](obj2))) {
+      !(depth > 1 && original1 === obj1 && original2 === obj2) && ((0, _is_object2.default)(obj1) || (0, _is_array2.default)(obj1)) && ((0, _is_object2.default)(obj2) || (0, _is_array2.default)(obj2))) {
 
         for (var key in obj1) {
           if (!obj2 || !_equal(obj1[key], obj2[key])) {
@@ -5717,29 +6304,36 @@ define('frampton-utils/equal', ['exports', 'module', 'frampton-utils/is_object',
     return _equal(obj1, obj2);
   }
 });
-define('frampton-utils/error', ['exports', 'module', 'frampton/namespace', 'frampton-utils/is_something'], function (exports, module, _framptonNamespace, _framptonUtilsIs_something) {
+define('frampton-utils/error', ['exports', 'frampton/namespace', 'frampton-utils/is_something'], function (exports, _namespace, _is_something) {
   'use strict';
 
-  module.exports = error;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = error;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function error(msg, data) {
 
-    if (_Frampton['default'].isDev()) {
+    if (_namespace2.default.isDev()) {
 
-      if (_isSomething['default'](console.error)) {
-        if (_isSomething['default'](data)) {
+      if ((0, _is_something2.default)(console.error)) {
+        if ((0, _is_something2.default)(data)) {
           console.error(msg, data);
         } else {
           console.error(msg);
         }
-      } else if (_isSomething['default'](console.log)) {
-        if (_isSomething['default'](data)) {
+      } else if ((0, _is_something2.default)(console.log)) {
+        if ((0, _is_something2.default)(data)) {
           console.log('Error: ' + msg, data);
         } else {
           console.log('Error: ' + msg);
@@ -5750,14 +6344,21 @@ define('frampton-utils/error', ['exports', 'module', 'frampton/namespace', 'fram
     return msg;
   }
 });
-define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], function (exports, module, _framptonListFoldl) {
+define('frampton-utils/extend', ['exports', 'frampton-list/foldl'], function (exports, _foldl) {
   'use strict';
 
-  module.exports = extend;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = extend;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _foldl2 = _interopRequireDefault(_foldl);
 
-  var _foldl = _interopRequireDefault(_framptonListFoldl);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Extends one object with one or more other objects
@@ -5769,13 +6370,12 @@ define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], fu
    * @param {Object} args
    * @returns {Object}
    */
-
   function extend(base) {
     for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
 
-    return _foldl['default'](function (acc, next) {
+    return (0, _foldl2.default)(function (acc, next) {
       for (var key in next) {
         if (next.hasOwnProperty(key)) {
           acc[key] = next[key];
@@ -5785,90 +6385,83 @@ define('frampton-utils/extend', ['exports', 'module', 'frampton-list/foldl'], fu
     }, base, args);
   }
 });
-define('frampton-utils/filter', ['exports', 'module', 'frampton-utils/curry_n'], function (exports, module, _framptonUtilsCurry_n) {
+define('frampton-utils/filter', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  /**
-   * @name filter
-   * @memberof Frampton.Utils
-   * @method
-   * @param {Function} predicate
-   * @param {Array} xs
-   * @returns {*}
-   */
-  module.exports = _curryN['default'](2, function (predicate, xs) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry_n2.default)(2, function (predicate, xs) {
     return xs.filter(predicate);
   });
 });
-define('frampton-utils/get', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/is_nothing', 'frampton-utils/is_string', 'frampton-utils/is_primitive'], function (exports, module, _framptonUtilsCurry, _framptonUtilsIs_nothing, _framptonUtilsIs_string, _framptonUtilsIs_primitive) {
+define('frampton-utils/get', ['exports', 'frampton-utils/curry', 'frampton-utils/is_nothing', 'frampton-utils/is_string', 'frampton-utils/is_primitive'], function (exports, _curry, _is_nothing, _is_string, _is_primitive) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
 
-  var _isString = _interopRequireDefault(_framptonUtilsIs_string);
+  var _is_string2 = _interopRequireDefault(_is_string);
 
-  var _isPrimitive = _interopRequireDefault(_framptonUtilsIs_primitive);
+  var _is_primitive2 = _interopRequireDefault(_is_primitive);
 
-  /**
-   * get :: String -> Object -> Any
-   *
-   * @name get
-   * @method
-   * @memberof Frampton.Utils
-   * @param {String} prop
-   * @param {Object} obj
-   * @returns {*}
-   */
-  module.exports = _curry['default'](function get(_x, _x2) {
-    var _again = true;
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-    _function: while (_again) {
-      var prop = _x,
-          obj = _x2;
-      _again = false;
+  function _toArray(arr) {
+    return Array.isArray(arr) ? arr : Array.from(arr);
+  }
 
-      if (_isPrimitive['default'](obj) || _isNothing['default'](obj)) {
-        return null;
-      } else if (_isString['default'](prop)) {
-        var parts = (prop || '').split('.').filter(function (val) {
-          return val.trim() !== '';
-        });
+  exports.default = (0, _curry2.default)(function get(prop, obj) {
 
-        if (parts.length > 1) {
-          var head = parts[0];
-          var tail = parts.slice(1);
+    if ((0, _is_primitive2.default)(obj) || (0, _is_nothing2.default)(obj)) {
+      return null;
+    } else if ((0, _is_string2.default)(prop)) {
+      var parts = (prop || '').split('.').filter(function (val) {
+        return val.trim() !== '';
+      });
 
-          var sub = obj[head];
-          if (!_isPrimitive['default'](sub)) {
-            _x = tail.join('.');
-            _x2 = sub;
-            _again = true;
-            parts = head = tail = sub = undefined;
-            continue _function;
-          } else {
-            return null;
-          }
-        } else {
-          return obj[parts[0]] || null;
-        }
+      if (parts.length > 1) {
+        var _parts = _toArray(parts);
+
+        var head = _parts[0];
+
+        var tail = _parts.slice(1);
+
+        var sub = obj[head];
+        return !(0, _is_primitive2.default)(sub) ? get(tail.join('.'), sub) : null;
       } else {
-        return obj[prop] || null;
+        return obj[parts[0]] || null;
       }
+    } else {
+      return obj[prop] || null;
     }
   });
 });
-define('frampton-utils/guid', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/guid', ['exports'], function (exports) {
   'use strict';
 
-  module.exports = guid;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = guid;
   var id = 0;
 
   function guid() {
@@ -5876,53 +6469,55 @@ define('frampton-utils/guid', ['exports', 'module'], function (exports, module) 
     return 'fr-id-' + id;
   }
 });
-define('frampton-utils/has_length', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-utils/has_length', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * hasLength :: Int -> [a] -> Boolean
-   *
-   * @name hasLength
-   * @method
-   * @memberof Frampton.Utils
-   * @param {Number} len
-   * @param {Object} obj
-   * @returns {Boolean}
-   */
-  module.exports = _curry['default'](function has_length(len, obj) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function has_length(len, obj) {
     return obj && obj.length && obj.length >= len ? true : false;
   });
 });
-define('frampton-utils/has_prop', ['exports', 'module', 'frampton-utils/curry', 'frampton-utils/get', 'frampton-utils/is_something'], function (exports, module, _framptonUtilsCurry, _framptonUtilsGet, _framptonUtilsIs_something) {
+define('frampton-utils/has_prop', ['exports', 'frampton-utils/curry', 'frampton-utils/get', 'frampton-utils/is_something'], function (exports, _curry, _get, _is_something) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  var _get = _interopRequireDefault(_framptonUtilsGet);
+  var _get2 = _interopRequireDefault(_get);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  /**
-   * hasProp :: String -> Object -> Boolean
-   *
-   * @name hasProp
-   * @method
-   * @memberof Frampton.Utils
-   * @param {String} prop
-   * @param {Object} obj
-   * @returns {Boolean}
-   */
-  module.exports = _curry['default'](function has_prop(prop, obj) {
-    return _isSomething['default'](_get['default'](prop, obj));
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function has_prop(prop, obj) {
+    return (0, _is_something2.default)((0, _get2.default)(prop, obj));
   });
 });
-define("frampton-utils/identity", ["exports", "module"], function (exports, module) {
+define("frampton-utils/identity", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = identity;
   /**
    * identity :: a -> a
    *
@@ -5932,15 +6527,17 @@ define("frampton-utils/identity", ["exports", "module"], function (exports, modu
    * @param {*} x
    * @returns {*}
    */
-  "use strict";
-
-  module.exports = identity;
-
   function identity(x) {
     return x;
   }
 });
-define("frampton-utils/immediate", ["exports", "module"], function (exports, module) {
+define("frampton-utils/immediate", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = immediate;
   /**
    * immediate :: Function -> ()
    *
@@ -5950,15 +6547,17 @@ define("frampton-utils/immediate", ["exports", "module"], function (exports, mod
    * @param {Function} fn
    * @param {Object}   [context]
    */
-  "use strict";
-
-  module.exports = immediate;
-
   function immediate(fn, context) {
     setTimeout(fn.bind(context || null), 0);
   }
 });
-define("frampton-utils/is_array", ["exports", "module"], function (exports, module) {
+define("frampton-utils/is_array", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_array;
   /**
    * Returns a boolean telling us if a given object is an array
    *
@@ -5968,15 +6567,17 @@ define("frampton-utils/is_array", ["exports", "module"], function (exports, modu
    * @param {Object} arr
    * @returns {Boolean}
    */
-  "use strict";
-
-  module.exports = is_array;
-
   function is_array(arr) {
     return Array.isArray ? Array.isArray(arr) : Object.prototype.toString.call(arr) === "[object Array]";
   }
 });
-define('frampton-utils/is_boolean', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/is_boolean', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_boolean;
   /**
    * Returns a boolean telling us if a given value is a boolean
    *
@@ -5986,22 +6587,25 @@ define('frampton-utils/is_boolean', ['exports', 'module'], function (exports, mo
    * @param {*} obj
    * @returns {Boolean}
    */
-  'use strict';
-
-  module.exports = is_boolean;
-
   function is_boolean(obj) {
     return typeof obj === 'boolean';
   }
 });
-define('frampton-utils/is_defined', ['exports', 'module', 'frampton-utils/is_undefined'], function (exports, module, _framptonUtilsIs_undefined) {
+define('frampton-utils/is_defined', ['exports', 'frampton-utils/is_undefined'], function (exports, _is_undefined) {
   'use strict';
 
-  module.exports = is_defined;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_defined;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_undefined2 = _interopRequireDefault(_is_undefined);
 
-  var _isUndefined = _interopRequireDefault(_framptonUtilsIs_undefined);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Returns a boolean telling us if a given value is defined
@@ -6012,19 +6616,25 @@ define('frampton-utils/is_defined', ['exports', 'module', 'frampton-utils/is_und
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function is_defined(obj) {
-    return !_isUndefined['default'](obj);
+    return !(0, _is_undefined2.default)(obj);
   }
 });
-define('frampton-utils/is_empty', ['exports', 'module', 'frampton-utils/is_nothing'], function (exports, module, _framptonUtilsIs_nothing) {
+define('frampton-utils/is_empty', ['exports', 'frampton-utils/is_nothing'], function (exports, _is_nothing) {
   'use strict';
 
-  module.exports = is_empty;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_empty;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Returns a boolean telling us if a given value doesn't exist or has length 0
@@ -6035,33 +6645,36 @@ define('frampton-utils/is_empty', ['exports', 'module', 'frampton-utils/is_nothi
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function is_empty(obj) {
-    return _isNothing['default'](obj) || !obj.length || 0 === obj.length;
+    return (0, _is_nothing2.default)(obj) || !obj.length || 0 === obj.length;
   }
 });
-define('frampton-utils/is_equal', ['exports', 'module', 'frampton-utils/curry'], function (exports, module, _framptonUtilsCurry) {
+define('frampton-utils/is_equal', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curry = _interopRequireDefault(_framptonUtilsCurry);
+  var _curry2 = _interopRequireDefault(_curry);
 
-  /**
-   * (===) equality between two values
-   *
-   * @name isEqual
-   * @method
-   * @memberof Frampton.Utils
-   * @param {*} a
-   * @param {*} b
-   * @returns {Boolean}
-   */
-  module.exports = _curry['default'](function is_equal(a, b) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function is_equal(a, b) {
     return a === b;
   });
 });
-define("frampton-utils/is_false", ["exports", "module"], function (exports, module) {
+define("frampton-utils/is_false", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_false;
   /**
    * isFalse :: a -> Boolean
    *
@@ -6071,15 +6684,17 @@ define("frampton-utils/is_false", ["exports", "module"], function (exports, modu
    * @param {*} obj
    * @returns {Boolean}
    */
-  "use strict";
-
-  module.exports = is_false;
-
   function is_false(obj) {
     return obj === false;
   }
 });
-define('frampton-utils/is_function', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/is_function', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_function;
   /**
    * Returns true/false is the object a fucntion
    *
@@ -6089,26 +6704,29 @@ define('frampton-utils/is_function', ['exports', 'module'], function (exports, m
    * @param {*} fn
    * @returns {Boolean}
    */
-  'use strict';
-
-  module.exports = is_function;
-
   function is_function(fn) {
     return typeof fn === 'function';
   }
 });
-define('frampton-utils/is_node', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_object', 'frampton-utils/is_defined'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_object, _framptonUtilsIs_defined) {
+define('frampton-utils/is_node', ['exports', 'frampton-utils/is_something', 'frampton-utils/is_object', 'frampton-utils/is_defined'], function (exports, _is_something, _is_object, _is_defined) {
   'use strict';
 
-  module.exports = is_node;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_node;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_object2 = _interopRequireDefault(_is_object);
 
-  var _isObject = _interopRequireDefault(_framptonUtilsIs_object);
+  var _is_defined2 = _interopRequireDefault(_is_defined);
 
-  var _isDefined = _interopRequireDefault(_framptonUtilsIs_defined);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Returns true/false is the object a DomNode
@@ -6119,21 +6737,27 @@ define('frampton-utils/is_node', ['exports', 'module', 'frampton-utils/is_someth
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function is_node(obj) {
-    return _isSomething['default'](obj) && _isObject['default'](obj) && _isDefined['default'](obj.nodeType) && _isDefined['default'](obj.nodeName);
+    return (0, _is_something2.default)(obj) && (0, _is_object2.default)(obj) && (0, _is_defined2.default)(obj.nodeType) && (0, _is_defined2.default)(obj.nodeName);
   }
 });
-define('frampton-utils/is_nothing', ['exports', 'module', 'frampton-utils/is_undefined', 'frampton-utils/is_null'], function (exports, module, _framptonUtilsIs_undefined, _framptonUtilsIs_null) {
+define('frampton-utils/is_nothing', ['exports', 'frampton-utils/is_undefined', 'frampton-utils/is_null'], function (exports, _is_undefined, _is_null) {
   'use strict';
 
-  module.exports = is_nothing;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_nothing;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_undefined2 = _interopRequireDefault(_is_undefined);
 
-  var _isUndefined = _interopRequireDefault(_framptonUtilsIs_undefined);
+  var _is_null2 = _interopRequireDefault(_is_null);
 
-  var _isNull = _interopRequireDefault(_framptonUtilsIs_null);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Returns true/false is the object null or undefined
@@ -6144,12 +6768,17 @@ define('frampton-utils/is_nothing', ['exports', 'module', 'frampton-utils/is_und
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function is_nothing(obj) {
-    return _isUndefined['default'](obj) || _isNull['default'](obj);
+    return (0, _is_undefined2.default)(obj) || (0, _is_null2.default)(obj);
   }
 });
-define("frampton-utils/is_null", ["exports", "module"], function (exports, module) {
+define("frampton-utils/is_null", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_null;
   /**
    * Returns true/false is the object null
    *
@@ -6159,15 +6788,17 @@ define("frampton-utils/is_null", ["exports", "module"], function (exports, modul
    * @param {*} obj
    * @returns {Boolean}
    */
-  "use strict";
-
-  module.exports = is_null;
-
   function is_null(obj) {
     return obj === null;
   }
 });
-define('frampton-utils/is_number', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/is_number', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_number;
   /**
    * Returns true/false is the object a number
    *
@@ -6177,33 +6808,44 @@ define('frampton-utils/is_number', ['exports', 'module'], function (exports, mod
    * @param {*} obj
    * @returns {Boolean}
    */
-  'use strict';
-
-  module.exports = is_number;
-
   function is_number(obj) {
     return typeof obj === 'number';
   }
 });
-define("frampton-utils/is_numeric", ["exports", "module"], function (exports, module) {
+define("frampton-utils/is_numeric", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = is_numeric;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_numeric;
   function is_numeric(val) {
     return !isNaN(val);
   }
 });
-define('frampton-utils/is_object', ['exports', 'module', 'frampton-utils/is_something', 'frampton-utils/is_array'], function (exports, module, _framptonUtilsIs_something, _framptonUtilsIs_array) {
+define('frampton-utils/is_object', ['exports', 'frampton-utils/is_something', 'frampton-utils/is_array'], function (exports, _is_something, _is_array) {
   'use strict';
 
-  module.exports = isObject;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = isObject;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _isArray = _interopRequireDefault(_framptonUtilsIs_array);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };
 
   /**
    * Returns true/false is the object a regular Object
@@ -6214,23 +6856,29 @@ define('frampton-utils/is_object', ['exports', 'module', 'frampton-utils/is_some
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function isObject(obj) {
-    return _isSomething['default'](obj) && !_isArray['default'](obj) && typeof obj === 'object';
+    return (0, _is_something2.default)(obj) && !(0, _is_array2.default)(obj) && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
   }
 });
-define('frampton-utils/is_primitive', ['exports', 'module', 'frampton-utils/is_number', 'frampton-utils/is_boolean', 'frampton-utils/is_string'], function (exports, module, _framptonUtilsIs_number, _framptonUtilsIs_boolean, _framptonUtilsIs_string) {
+define('frampton-utils/is_primitive', ['exports', 'frampton-utils/is_number', 'frampton-utils/is_boolean', 'frampton-utils/is_string'], function (exports, _is_number, _is_boolean, _is_string) {
   'use strict';
 
-  module.exports = is_primitive;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_primitive;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_number2 = _interopRequireDefault(_is_number);
 
-  var _isNumber = _interopRequireDefault(_framptonUtilsIs_number);
+  var _is_boolean2 = _interopRequireDefault(_is_boolean);
 
-  var _isBoolean = _interopRequireDefault(_framptonUtilsIs_boolean);
+  var _is_string2 = _interopRequireDefault(_is_string);
 
-  var _isString = _interopRequireDefault(_framptonUtilsIs_string);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Returns true/false is the value a primitive value
@@ -6241,21 +6889,27 @@ define('frampton-utils/is_primitive', ['exports', 'module', 'frampton-utils/is_n
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function is_primitive(obj) {
-    return _isNumber['default'](obj) || _isBoolean['default'](obj) || _isString['default'](obj);
+    return (0, _is_number2.default)(obj) || (0, _is_boolean2.default)(obj) || (0, _is_string2.default)(obj);
   }
 });
-define('frampton-utils/is_promise', ['exports', 'module', 'frampton-utils/is_object', 'frampton-utils/is_function'], function (exports, module, _framptonUtilsIs_object, _framptonUtilsIs_function) {
+define('frampton-utils/is_promise', ['exports', 'frampton-utils/is_object', 'frampton-utils/is_function'], function (exports, _is_object, _is_function) {
   'use strict';
 
-  module.exports = is_promise;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_promise;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_object2 = _interopRequireDefault(_is_object);
 
-  var _isObject = _interopRequireDefault(_framptonUtilsIs_object);
+  var _is_function2 = _interopRequireDefault(_is_function);
 
-  var _isFunction = _interopRequireDefault(_framptonUtilsIs_function);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Returns true/false indicating if object appears to be a Promise
@@ -6266,19 +6920,25 @@ define('frampton-utils/is_promise', ['exports', 'module', 'frampton-utils/is_obj
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function is_promise(obj) {
-    return _isObject['default'](obj) && _isFunction['default'](obj.then);
+    return (0, _is_object2.default)(obj) && (0, _is_function2.default)(obj.then);
   }
 });
-define('frampton-utils/is_something', ['exports', 'module', 'frampton-utils/is_nothing'], function (exports, module, _framptonUtilsIs_nothing) {
+define('frampton-utils/is_something', ['exports', 'frampton-utils/is_nothing'], function (exports, _is_nothing) {
   'use strict';
 
-  module.exports = is_something;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_something;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_nothing2 = _interopRequireDefault(_is_nothing);
 
-  var _isNothing = _interopRequireDefault(_framptonUtilsIs_nothing);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Returns true/false indicating if object is not null or undefined
@@ -6289,12 +6949,17 @@ define('frampton-utils/is_something', ['exports', 'module', 'frampton-utils/is_n
    * @param {*} obj
    * @returns {Boolean}
    */
-
   function is_something(obj) {
-    return !_isNothing['default'](obj);
+    return !(0, _is_nothing2.default)(obj);
   }
 });
-define('frampton-utils/is_string', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/is_string', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_string;
   /**
    * Returns true/false indicating if object is a String
    *
@@ -6304,15 +6969,17 @@ define('frampton-utils/is_string', ['exports', 'module'], function (exports, mod
    * @param {*} obj
    * @returns {Boolean}
    */
-  'use strict';
-
-  module.exports = is_string;
-
   function is_string(obj) {
     return typeof obj === 'string';
   }
 });
-define("frampton-utils/is_true", ["exports", "module"], function (exports, module) {
+define("frampton-utils/is_true", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_true;
   /**
    * isTrue :: a -> Boolean
    *
@@ -6322,15 +6989,17 @@ define("frampton-utils/is_true", ["exports", "module"], function (exports, modul
    * @param {*} obj
    * @returns {Boolean}
    */
-  "use strict";
-
-  module.exports = is_true;
-
   function is_true(obj) {
     return obj === true;
   }
 });
-define('frampton-utils/is_undefined', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/is_undefined', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_undefined;
   /**
    * Returns true/false indicating if object is undefined
    *
@@ -6340,62 +7009,66 @@ define('frampton-utils/is_undefined', ['exports', 'module'], function (exports, 
    * @param {*} obj
    * @returns {Boolean}
    */
-  'use strict';
-
-  module.exports = is_undefined;
-
   function is_undefined(obj) {
     return typeof obj === 'undefined';
   }
 });
-define("frampton-utils/is_value", ["exports", "module"], function (exports, module) {
+define("frampton-utils/is_value", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = is_value;
-
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = is_value;
   function is_value(test) {
     return function (val) {
       return val === test;
     };
   }
 });
-define('frampton-utils/lazy', ['exports', 'module', 'frampton-utils/curry_n'], function (exports, module, _framptonUtilsCurry_n) {
+define('frampton-utils/lazy', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  /**
-   * Takes a function and warps it to be called at a later time.
-   *
-   * @name lazy
-   * @method
-   * @memberof Frampton.Utils
-   * @param {Function} fn The function to wrap.
-   * @param {Array} args Array of arguments to pass to the function when called.
-   */
-  module.exports = _curryN['default'](2, function lazy(fn, args) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry_n2.default)(2, function lazy(fn, args) {
     return function () {
       return fn.apply(null, args);
     };
   });
 });
-define('frampton-utils/log', ['exports', 'module', 'frampton/namespace', 'frampton-utils/is_something'], function (exports, module, _framptonNamespace, _framptonUtilsIs_something) {
+define('frampton-utils/log', ['exports', 'frampton/namespace', 'frampton-utils/is_something'], function (exports, _namespace, _is_something) {
   'use strict';
 
-  module.exports = log;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = log;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function log(msg, data) {
 
-    if (_Frampton['default'].isDev() && _isSomething['default'](console.log)) {
-      if (_isSomething['default'](data)) {
+    if (_namespace2.default.isDev() && (0, _is_something2.default)(console.log)) {
+      if ((0, _is_something2.default)(data)) {
         console.log(msg, data);
       } else {
         console.log(msg);
@@ -6405,35 +7078,42 @@ define('frampton-utils/log', ['exports', 'module', 'frampton/namespace', 'frampt
     return msg;
   }
 });
-define('frampton-utils/map', ['exports', 'module', 'frampton-utils/curry_n'], function (exports, module, _framptonUtilsCurry_n) {
+define('frampton-utils/map', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  /**
-   * @name map
-   * @method
-   * @memberof Frampton.Utils
-   * @param {Function} fn - The function to apply to the array
-   * @param {Array} xs - The array to apply the mapping function to
-   * @returns {Array} A new array transfomred by the mapping function
-   */
-  module.exports = _curryN['default'](2, function (fn, xs) {
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry_n2.default)(2, function (fn, xs) {
     return xs.map(fn);
   });
 });
-define('frampton-utils/memoize', ['exports', 'module', 'frampton-utils/is_string', 'frampton-utils/is_number'], function (exports, module, _framptonUtilsIs_string, _framptonUtilsIs_number) {
+define('frampton-utils/memoize', ['exports', 'frampton-utils/is_string', 'frampton-utils/is_number'], function (exports, _is_string, _is_number) {
   'use strict';
 
-  module.exports = memoize;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = memoize;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _is_string2 = _interopRequireDefault(_is_string);
 
-  var _isString = _interopRequireDefault(_framptonUtilsIs_string);
+  var _is_number2 = _interopRequireDefault(_is_number);
 
-  var _isNumber = _interopRequireDefault(_framptonUtilsIs_number);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * @name memoize
@@ -6442,7 +7122,6 @@ define('frampton-utils/memoize', ['exports', 'module', 'frampton-utils/is_string
    * @param {Function} fn
    * @returns {Function}
    */
-
   function memoize(fn) {
 
     var store = {};
@@ -6453,7 +7132,7 @@ define('frampton-utils/memoize', ['exports', 'module', 'frampton-utils/is_string
         args[_key] = arguments[_key];
       }
 
-      var key = len === 1 && (_isString['default'](args[0]) || _isNumber['default'](args[0])) ? args[0] : JSON.stringify(args);
+      var key = len === 1 && ((0, _is_string2.default)(args[0]) || (0, _is_number2.default)(args[0])) ? args[0] : JSON.stringify(args);
 
       if (key in store) {
         return store[key];
@@ -6463,48 +7142,59 @@ define('frampton-utils/memoize', ['exports', 'module', 'frampton-utils/is_string
     };
   }
 });
-define("frampton-utils/noop", ["exports", "module"], function (exports, module) {
+define("frampton-utils/noop", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = noop;
   /**
    * @name noop
    * @method
    * @memberof Frampton.Utils
    */
-  "use strict";
-
-  module.exports = noop;
-
   function noop() {}
 });
-define('frampton-utils/not_implemented', ['exports', 'module'], function (exports, module) {
+define('frampton-utils/not', ['exports', 'frampton-utils/curry_n', 'frampton-utils/to_boolean'], function (exports, _curry_n, _to_boolean) {
   'use strict';
 
-  module.exports = function () {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _curry_n2 = _interopRequireDefault(_curry_n);
+
+  var _to_boolean2 = _interopRequireDefault(_to_boolean);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry_n2.default)(2, function (fn, arg) {
+    return !(0, _to_boolean2.default)(fn(arg));
+  });
+});
+define('frampton-utils/not_implemented', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  exports.default = function () {
     throw new Error('This method has not been implemented');
   };
 });
-define('frampton-utils/not', ['exports', 'module', 'frampton-utils/curry_n', 'frampton-utils/to_boolean'], function (exports, module, _framptonUtilsCurry_n, _framptonUtilsTo_boolean) {
-  'use strict';
+define("frampton-utils/of_value", ["exports"], function (exports) {
+  "use strict";
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-  var _curryN = _interopRequireDefault(_framptonUtilsCurry_n);
-
-  var _toBoolean = _interopRequireDefault(_framptonUtilsTo_boolean);
-
-  /**
-   * not :: Function -> a -> Boolean
-   *
-   * @name not
-   * @method
-   * @memberof Frampton.Utils
-   * @param {Function} fn
-   * @returns {Boolean}
-   */
-  module.exports = _curryN['default'](2, function (fn, arg) {
-    return !_toBoolean['default'](fn(arg));
+  Object.defineProperty(exports, "__esModule", {
+    value: true
   });
-});
-define("frampton-utils/of_value", ["exports", "module"], function (exports, module) {
+  exports.default = of_value;
   /**
    * Creates a function that always returns the specified value.
    *
@@ -6514,24 +7204,27 @@ define("frampton-utils/of_value", ["exports", "module"], function (exports, modu
    * @param {*} value
    * @returns {Function}
    */
-  "use strict";
-
-  module.exports = of_value;
-
   function of_value(value) {
     return function () {
       return value;
     };
   }
 });
-define('frampton-utils/once', ['exports', 'module', 'frampton-utils/warn'], function (exports, module, _framptonUtilsWarn) {
+define('frampton-utils/once', ['exports', 'frampton-utils/warn'], function (exports, _warn) {
   'use strict';
 
-  module.exports = once;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = once;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _warn2 = _interopRequireDefault(_warn);
 
-  var _warn = _interopRequireDefault(_framptonUtilsWarn);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   /**
    * Create a function that can only be called once.
@@ -6542,7 +7235,6 @@ define('frampton-utils/once', ['exports', 'module', 'frampton-utils/warn'], func
    * @param {Function} fn
    * @returns {Function}
    */
-
   function once(fn) {
     var called = false;
     return function () {
@@ -6550,50 +7242,52 @@ define('frampton-utils/once', ['exports', 'module', 'frampton-utils/warn'], func
         called = true;
         return fn.apply(undefined, arguments);
       } else {
-        _warn['default']('Once function called multiple times');
+        (0, _warn2.default)('Once function called multiple times');
       }
     };
   }
 });
-define("frampton-utils/to_boolean", ["exports", "module"], function (exports, module) {
-  /**
-   * Read value as true Boolean (true | false)
-   *
-   * @name toBoolean
-   * @method
-   * @memberof Frampton.Utils
-   * @param {*} val
-   * @returns {Boolean} true if val is truthy, false if falsy
-   */
+define("frampton-utils/to_boolean", ["exports"], function (exports) {
   "use strict";
 
-  module.exports = function (val) {
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  exports.default = function (val) {
     return !!val;
   };
 });
-define('frampton-utils/warn', ['exports', 'module', 'frampton/namespace', 'frampton-utils/is_something'], function (exports, module, _framptonNamespace, _framptonUtilsIs_something) {
+define('frampton-utils/warn', ['exports', 'frampton/namespace', 'frampton-utils/is_something'], function (exports, _namespace, _is_something) {
   'use strict';
 
-  module.exports = warn;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = warn;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function warn(msg, data) {
 
-    if (_Frampton['default'].isDev()) {
+    if (_namespace2.default.isDev()) {
 
-      if (_isSomething['default'](console.warn)) {
-        if (_isSomething['default'](data)) {
+      if ((0, _is_something2.default)(console.warn)) {
+        if ((0, _is_something2.default)(data)) {
           console.warn(msg, data);
         } else {
           console.warn(msg);
         }
-      } else if (_isSomething['default'](console.log)) {
-        if (_isSomething['default'](data)) {
+      } else if ((0, _is_something2.default)(console.log)) {
+        if ((0, _is_something2.default)(data)) {
           console.log(msg, data);
         } else {
           console.log(msg);
@@ -6604,44 +7298,55 @@ define('frampton-utils/warn', ['exports', 'module', 'frampton/namespace', 'framp
     return msg;
   }
 });
-define('frampton-window', ['exports', 'frampton/namespace', 'frampton-window/window'], function (exports, _framptonNamespace, _framptonWindowWindow) {
+define('frampton-window', ['frampton/namespace', 'frampton-window/window'], function (_namespace, _window) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _window2 = _interopRequireDefault(_window);
 
-  var _Window = _interopRequireDefault(_framptonWindowWindow);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
-  _Frampton['default'].Window = _Window['default'];
+  _namespace2.default.Window = _window2.default;
 });
-define('frampton-window/window', ['exports', 'module', 'frampton-signal/stepper', 'frampton-events/on_event', 'frampton-utils/get', 'frampton-utils/is_something'], function (exports, module, _framptonSignalStepper, _framptonEventsOn_event, _framptonUtilsGet, _framptonUtilsIs_something) {
+define('frampton-window/window', ['exports', 'frampton-signal/stepper', 'frampton-events/on_event', 'frampton-utils/get', 'frampton-utils/is_something'], function (exports, _stepper, _on_event, _get, _is_something) {
   'use strict';
 
-  module.exports = Window;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Window;
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  var _stepper2 = _interopRequireDefault(_stepper);
 
-  var _stepper = _interopRequireDefault(_framptonSignalStepper);
+  var _on_event2 = _interopRequireDefault(_on_event);
 
-  var _onEvent = _interopRequireDefault(_framptonEventsOn_event);
+  var _get2 = _interopRequireDefault(_get);
 
-  var _get = _interopRequireDefault(_framptonUtilsGet);
+  var _is_something2 = _interopRequireDefault(_is_something);
 
-  var _isSomething = _interopRequireDefault(_framptonUtilsIs_something);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   var element = null;
-  var resize = _onEvent['default']('resize', window);
-  var dimensions = _stepper['default']([getWidth(), getHeight()], resize.map(update));
-  var width = _stepper['default'](getWidth(), dimensions.map(_get['default'](0)));
-  var height = _stepper['default'](getHeight(), dimensions.map(_get['default'](1)));
+  var resize = (0, _on_event2.default)('resize', window);
+  var dimensions = (0, _stepper2.default)([getWidth(), getHeight()], resize.map(update));
+  var width = (0, _stepper2.default)(getWidth(), dimensions.map((0, _get2.default)(0)));
+  var height = (0, _stepper2.default)(getHeight(), dimensions.map((0, _get2.default)(1)));
 
   function getWidth() {
-    return _isSomething['default'](element) ? element.clientWidth : window.innerWidth;
+    return (0, _is_something2.default)(element) ? element.clientWidth : window.innerWidth;
   }
 
   function getHeight() {
-    return _isSomething['default'](element) ? element.clientHeight : window.innerHeight;
+    return (0, _is_something2.default)(element) ? element.clientHeight : window.innerHeight;
   }
 
   function update() {
@@ -6667,7 +7372,6 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signal/stepper'
    * @param {Object} [element] - DomNode to act as applicaton window
    * @returns {Window}
    */
-
   function Window(element) {
     element = element;
     return {
@@ -6678,16 +7382,29 @@ define('frampton-window/window', ['exports', 'module', 'frampton-signal/stepper'
     };
   }
 });
-define('frampton', ['exports', 'module', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-record', 'frampton-string', 'frampton-math', 'frampton-events', 'frampton-data', 'frampton-signal', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-html', 'frampton-style'], function (exports, module, _framptonNamespace, _framptonUtils, _framptonList, _framptonRecord, _framptonString, _framptonMath, _framptonEvents, _framptonData, _framptonSignal, _framptonMouse, _framptonKeyboard, _framptonWindow, _framptonHtml, _framptonStyle) {
+define('frampton', ['exports', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-record', 'frampton-string', 'frampton-math', 'frampton-events', 'frampton-data', 'frampton-signal', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-html', 'frampton-style'], function (exports, _namespace) {
   'use strict';
 
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  var _Frampton = _interopRequireDefault(_framptonNamespace);
+  var _namespace2 = _interopRequireDefault(_namespace);
 
-  module.exports = _Frampton['default'];
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = _namespace2.default;
 });
-define('frampton/namespace', ['exports', 'module'], function (exports, module) {
+define('frampton/namespace', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
   /*globals Frampton:true */
 
   /**
@@ -6696,9 +7413,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
    * @name Frampton
    * @namespace
    */
-  'use strict';
-
-  Frampton.VERSION = '0.1.7';
+  Frampton.VERSION = '0.1.8';
 
   Frampton.TEST = 'test';
 
@@ -6734,8 +7449,7 @@ define('frampton/namespace', ['exports', 'module'], function (exports, module) {
     return Frampton.ENV.MODE === Frampton.PROD;
   };
 
-  module.exports = Frampton;
+  exports.default = Frampton;
 });
 require("frampton");
-
 })();

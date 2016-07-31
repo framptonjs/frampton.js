@@ -14,13 +14,13 @@
     "url": "git@github.com:framptonjs/frampton.js.git"
   },
   "author": "Kevin Greene <hightimesteddy@gmail.com>",
-  "license": "MIT",
+  "license": "BSD",
   "bugs": {
     "url": "https://github.com/framptonjs/frampton.js/issues"
   },
   "homepage": "https://github.com/framptonjs/frampton.js",
   "devDependencies": {
-    "frampton-build": "0.0.5",
+    "frampton-build": "0.0.6",
     "frampton-cli": "0.0.6",
     "jsdoc": "3.4.0"
   }
