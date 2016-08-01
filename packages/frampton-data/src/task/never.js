@@ -1,4 +1,4 @@
-import create from 'frampton-data/task/create';
+import createTask from 'frampton-data/task/create';
 
 /**
  * never :: Task x a
@@ -11,5 +11,5 @@ import create from 'frampton-data/task/create';
  * @returns {Frampton.Data.Task}
  */
 export default function never() {
-  return create(() => {});
+  return createTask(() => {});
 }

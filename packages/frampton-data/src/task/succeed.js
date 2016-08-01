@@ -1,4 +1,4 @@
-import create from 'frampton-data/task/create';
+import createTask from 'frampton-data/task/create';
 
 /**
  * succeed :: a -> Task x a
@@ -12,5 +12,5 @@ import create from 'frampton-data/task/create';
  * @returns {Frampton.Data.Task}
  */
 export default function succeed(val) {
-  return create((sinks) => sinks.resolve(val));
+  return createTask((sinks) => sinks.resolve(val));
 }

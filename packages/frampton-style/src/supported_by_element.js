@@ -3,7 +3,7 @@ import isSomething from 'frampton-utils/is_something';
 import capitalize from 'frampton-string/capitalize';
 import dashToCamel from 'frampton-string/dash_to_camel';
 
-var vendors = {
+const vendors = {
   'webkit' : 'webkit',
   'Webkit' : 'webkit',
   'Moz'    : 'moz',
@@ -21,7 +21,7 @@ var vendors = {
  */
 export default curry(function supported_by_element(element, prop) {
 
-  var camelProp = dashToCamel(prop);
+  const camelProp = dashToCamel(prop);
 
   if (isSomething(element.style[camelProp])) {
     return prop;

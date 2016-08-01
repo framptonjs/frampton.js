@@ -103,7 +103,7 @@ function checkUpdateQueue() {
 
 function updateValue(sig, val) {
   if (isPromise(val)) {
-    val.then(sig);
+    val.then(sig.push);
   } else {
     sig._value = val;
     sig._hasValue = true;
@@ -204,6 +204,24 @@ function fold(fn, initial) {
   const parent = this;
   return createSignal((self) => {
     self.push(fn(self._value, parent._value));
+  }, [parent], initial);
+}
+
+/**
+ * Return the values of these signals as a tuple
+ *
+ * @name zip
+ * @method
+ * @private
+ * @memberof Frampton.Signal.Signal#
+ * @param {Frampton.Signal.Signal} sig
+ * @returns {Frampton.Signal.Signal}
+ */
+function zip(sig) {
+  const parent = this;
+  const initial = [parent._value, sig._value];
+  return createSignal((self) => {
+    self.push([parent._value, sig._value]);
   }, [parent], initial);
 }
 
@@ -457,7 +475,7 @@ function logValue(msg) {
   const parent = this;
   return createSignal((self) => {
     if (msg) {
-      log(msg);
+      log(msg, parent._value);
     } else {
       log(parent._value);
     }
@@ -505,6 +523,7 @@ export function createSignal(update, parents, initial) {
   signal.delay = delay;
   signal.ap = ap;
   signal.merge = merge;
+  signal.zip = zip;
   signal.map = map;
   signal.filter = filter;
   signal.filterPrevious = filterPrevious;

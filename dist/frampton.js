@@ -836,7 +836,7 @@ define('frampton-data/task/valid_sinks', ['exports', 'frampton-utils/noop'], fun
     };
   }
 });
-define('frampton-data/task/when', ['exports', 'frampton-data/task/create'], function (exports, _create) {
+define('frampton-data/task/when', ['exports', 'frampton-utils/log', 'frampton-utils/warn', 'frampton-data/task/create'], function (exports, _log, _warn, _create) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -844,12 +844,24 @@ define('frampton-data/task/when', ['exports', 'frampton-data/task/create'], func
   });
   exports.default = when;
 
+  var _log2 = _interopRequireDefault(_log);
+
+  var _warn2 = _interopRequireDefault(_warn);
+
   var _create2 = _interopRequireDefault(_create);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
       default: obj
     };
+  }
+
+  function logError(err) {
+    (0, _warn2.default)('error in task: ', err);
+  }
+
+  function logProgress(val) {
+    (0, _log2.default)('progress in task: ', val);
   }
 
   /**
@@ -877,9 +889,6 @@ define('frampton-data/task/when', ['exports', 'frampton-data/task/create'], func
       var len = tasks.length;
       var idx = 0;
       var count = 0;
-
-      function logError(err) {}
-      function logProgress(val) {}
 
       tasks.forEach(function (task) {
         var index = idx++;
@@ -4562,7 +4571,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
 
   function updateValue(sig, val) {
     if ((0, _is_promise2.default)(val)) {
-      val.then(sig);
+      val.then(sig.push);
     } else {
       sig._value = val;
       sig._hasValue = true;
@@ -4663,6 +4672,24 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     var parent = this;
     return createSignal(function (self) {
       self.push(fn(self._value, parent._value));
+    }, [parent], initial);
+  }
+
+  /**
+   * Return the values of these signals as a tuple
+   *
+   * @name zip
+   * @method
+   * @private
+   * @memberof Frampton.Signal.Signal#
+   * @param {Frampton.Signal.Signal} sig
+   * @returns {Frampton.Signal.Signal}
+   */
+  function zip(sig) {
+    var parent = this;
+    var initial = [parent._value, sig._value];
+    return createSignal(function (self) {
+      self.push([parent._value, sig._value]);
     }, [parent], initial);
   }
 
@@ -4916,7 +4943,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     var parent = this;
     return createSignal(function (self) {
       if (msg) {
-        (0, _log2.default)(msg);
+        (0, _log2.default)(msg, parent._value);
       } else {
         (0, _log2.default)(parent._value);
       }
@@ -4964,6 +4991,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     signal.delay = delay;
     signal.ap = ap;
     signal.merge = merge;
+    signal.zip = zip;
     signal.map = map;
     signal.filter = filter;
     signal.filterPrevious = filterPrevious;
@@ -7413,7 +7441,7 @@ define('frampton/namespace', ['exports'], function (exports) {
    * @name Frampton
    * @namespace
    */
-  Frampton.VERSION = '0.1.8';
+  Frampton.VERSION = '0.1.9';
 
   Frampton.TEST = 'test';
 

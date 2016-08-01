@@ -1,4 +1,14 @@
-import create from 'frampton-data/task/create';
+import log from 'frampton-utils/log';
+import warn from 'frampton-utils/warn';
+import createTask from 'frampton-data/task/create';
+
+function logError(err) {
+  warn('error in task: ', err);
+}
+
+function logProgress(val) {
+  log('progress in task: ', val);
+}
 
 /**
  * when :: [Task x a] -> Task x [a]
@@ -16,15 +26,12 @@ import create from 'frampton-data/task/create';
  */
 export default function when(...tasks) {
 
-  return create((sinks) => {
+  return createTask((sinks) => {
 
     const valueArray = new Array(tasks.length);
     const len = tasks.length;
     var idx = 0;
     var count = 0;
-
-    function logError(err) {}
-    function logProgress(val) {}
 
     tasks.forEach((task) => {
       const index = idx++;
