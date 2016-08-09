@@ -12,6 +12,10 @@ import createUnion from 'frampton-data/union/create';
 
 import createRecord from 'frampton-data/record/create';
 
+import { create as createMaybe } from 'frampton-data/maybe/create';
+import Just from 'frampton-data/maybe/just';
+import Nothing from 'frampton-data/maybe/nothing';
+
 
 /**
  * @name Data
@@ -50,3 +54,13 @@ Frampton.Data.Union.create = createUnion;
  */
 Frampton.Data.Record = {};
 Frampton.Data.Record.create = createRecord;
+
+/**
+ * @name Maybe
+ * @memberof Frampton.Data
+ * @class
+ */
+Frampton.Data.Maybe = {};
+Frampton.Data.Maybe.create = createMaybe;
+Frampton.Data.Maybe.Just = Just;
+Frampton.Data.Maybe.Nothing = Nothing;
