@@ -1053,7 +1053,7 @@ define('frampton-data/union/utils/case_of', ['exports', 'frampton/namespace', 'f
     return match.apply(undefined, _toConsumableArray(child._values));
   }
 });
-define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace', 'frampton-utils/is_array', 'frampton-utils/is_something', 'frampton-utils/curry_n', 'frampton-data/union/utils/validator', 'frampton-data/union/utils/validate_args'], function (exports, _namespace, _is_array, _is_something, _curry_n, _validator, _validate_args) {
+define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace', 'frampton-utils/is_array', 'frampton-utils/is_something', 'frampton-utils/curry_n', 'frampton-data/union/utils/get_validator', 'frampton-data/union/utils/validate_args'], function (exports, _namespace, _is_array, _is_something, _curry_n, _get_validator, _validate_args) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1069,7 +1069,7 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace'
 
   var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _validator2 = _interopRequireDefault(_validator);
+  var _get_validator2 = _interopRequireDefault(_get_validator);
 
   var _validate_args2 = _interopRequireDefault(_validate_args);
 
@@ -1082,7 +1082,7 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace'
   function getValidators(parent, fields) {
     if (!_namespace2.default.isProd()) {
       return fields.map(function (field) {
-        return (0, _validator2.default)(parent, field);
+        return (0, _get_validator2.default)(parent, field);
       });
     } else {
       return null;
@@ -1129,6 +1129,79 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace'
     };
 
     return len === 0 ? constructor : (0, _curry_n2.default)(len, constructor);
+  }
+});
+define('frampton-data/union/utils/get_validator', ['exports', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-data/union/utils/object_validator'], function (exports, _is_boolean, _is_array, _is_number, _is_string, _is_function, _is_node, _object_validator) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = get_validator;
+
+  var _is_boolean2 = _interopRequireDefault(_is_boolean);
+
+  var _is_array2 = _interopRequireDefault(_is_array);
+
+  var _is_number2 = _interopRequireDefault(_is_number);
+
+  var _is_string2 = _interopRequireDefault(_is_string);
+
+  var _is_function2 = _interopRequireDefault(_is_function);
+
+  var _is_node2 = _interopRequireDefault(_is_node);
+
+  var _object_validator2 = _interopRequireDefault(_object_validator);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };
+
+  function get_validator(parent, type) {
+
+    switch (type) {
+      case String:
+        return _is_string2.default;
+
+      case Number:
+        return _is_number2.default;
+
+      case Function:
+        return _is_function2.default;
+
+      case Boolean:
+        return _is_boolean2.default;
+
+      case Array:
+        return _is_array2.default;
+
+      case Element:
+        return _is_node2.default;
+
+      case Node:
+        return _is_node2.default;
+
+      case Object:
+        return function (obj) {
+          return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+        };
+
+      case undefined:
+        return (0, _object_validator2.default)(parent);
+
+      default:
+        return (0, _object_validator2.default)(type);
+    }
+
+    return false;
   }
 });
 define('frampton-data/union/utils/object_validator', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
@@ -3001,19 +3074,17 @@ define('frampton-list/copy', ['exports', 'frampton-list/length'], function (expo
    */
   function copy(xs, begin, end) {
 
-    var argLen = (0, _length2.default)(xs),
-        idx = 0,
-        arrLen,
-        arr,
-        i;
+    var argLen = (0, _length2.default)(xs);
+    var idx = 0;
+    var arr;
 
     begin = begin || 0;
     end = end || argLen;
-    arrLen = end - begin;
+    var arrLen = end - begin;
 
     if (argLen > 0) {
       arr = new Array(arrLen);
-      for (i = begin; i < end; i++) {
+      for (var i = begin; i < end; i++) {
         arr[idx++] = xs[i];
       }
     }
@@ -5678,7 +5749,7 @@ define('frampton-style/current_value', ['exports', 'frampton-utils/curry', 'fram
    * @param {String} prop    Name of property to check
    * @returns {String} String representation of current property value
    */
-  exports.default = (0, _curry2.default)(function current(element, prop) {
+  exports.default = (0, _curry2.default)(function current_value(element, prop) {
     return style(element).getPropertyValue((0, _supported2.default)(prop));
   });
 });

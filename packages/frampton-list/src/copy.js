@@ -7,17 +7,17 @@ import length from 'frampton-list/length';
  */
 export default function copy(xs, begin, end) {
 
-  var argLen = length(xs),
-      idx    = 0,
-      arrLen, arr, i;
+  const argLen = length(xs);
+  var idx = 0;
+  var arr;
 
   begin = (begin || 0);
   end = (end || argLen);
-  arrLen = (end - begin);
+  const arrLen = (end - begin);
 
   if (argLen > 0) {
     arr = new Array(arrLen);
-    for (i=begin;i<end;i++) {
+    for (let i = begin; i < end; i++) {
       arr[idx++] = xs[i];
     }
   }

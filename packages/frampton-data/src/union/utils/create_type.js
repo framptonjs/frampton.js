@@ -2,13 +2,13 @@ import Frampton from 'frampton/namespace';
 import isArray from 'frampton-utils/is_array';
 import isSomething from 'frampton-utils/is_something';
 import curryN from 'frampton-utils/curry_n';
-import validator from 'frampton-data/union/utils/validator';
+import getValidator from 'frampton-data/union/utils/get_validator';
 import validateArgs from 'frampton-data/union/utils/validate_args';
 
 function getValidators(parent, fields) {
   if (!Frampton.isProd()) {
     return fields.map((field) => {
-      return validator(parent, field);
+      return getValidator(parent, field);
     });
   } else {
     return null;
