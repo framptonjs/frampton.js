@@ -6,7 +6,9 @@
     "test": "frampton test",
     "build": "frampton build",
     "clean-install": "rm -rfv node_modules; npm install;",
-    "deploy": "git push -u origin master; npm publish ./",
+    "release": "frampton release --patch",
+    "minor-release": "frampton release --minor",
+    "major-release": "frampton release --major",
     "docs": "rm -rfv docs/* && jsdoc packages/**/src/*.js -d docs --readme README.md  --private"
   },
   "repository": {
@@ -21,7 +23,7 @@
   "homepage": "https://github.com/framptonjs/frampton.js",
   "devDependencies": {
     "frampton-build": "0.0.6",
-    "frampton-cli": "0.0.6",
+    "frampton-cli": "0.0.8",
     "jsdoc": "3.4.0"
   }
 }
