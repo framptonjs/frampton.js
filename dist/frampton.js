@@ -4374,6 +4374,43 @@ define('frampton-record/update', ['exports', 'frampton-record/for_each'], functi
     return Object.freeze(newObj);
   }
 });
+define('frampton-record/values', ['exports', 'frampton-utils/is_object'], function (exports, _is_object) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = values;
+
+  var _is_object2 = _interopRequireDefault(_is_object);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  var hasOwnProp = Object.prototype.hasOwnProperty;
+
+  /**
+   * @name values
+   * @method
+   * @memberof Frampton.Record
+   * @param {Object} obj Object whose values to get
+   * @returns {String[]}
+   */
+  function values(obj) {
+    var result = [];
+    if ((0, _is_object2.default)(obj)) {
+      for (var key in obj) {
+        if (hasOwnProp.call(obj, key)) {
+          result.push(obj[key]);
+        }
+      }
+    }
+    return result;
+  }
+});
 define('frampton-signal', ['frampton/namespace', 'frampton-signal/create', 'frampton-signal/stepper', 'frampton-signal/combine', 'frampton-signal/swap', 'frampton-signal/toggle', 'frampton-signal/is_signal', 'frampton-signal/forward'], function (_namespace, _create, _stepper, _combine, _swap, _toggle, _is_signal, _forward) {
   'use strict';
 
