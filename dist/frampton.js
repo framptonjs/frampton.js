@@ -6234,6 +6234,18 @@ define('frampton-utils/curry_n', ['exports', 'frampton-utils/assert', 'frampton-
     };
   }
 
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  }
+
   /**
    * Takes a function and returns a new function that will wait to execute the original
    * function until it has received all of its arguments. Each time the function is called
@@ -6264,7 +6276,7 @@ define('frampton-utils/curry_n', ['exports', 'frampton-utils/assert', 'frampton-
 
       // If we have all the arguments, apply the function and return result
       if (locals.length >= arity) {
-        return fn.apply(null, locals);
+        return fn.apply(undefined, _toConsumableArray(locals));
 
         // If we don't have all the arguments, return a new function that awaits remaining arguments
       } else {
@@ -6431,6 +6443,44 @@ define('frampton-utils/filter', ['exports', 'frampton-utils/curry_n'], function 
   exports.default = (0, _curry_n2.default)(2, function (predicate, xs) {
     return xs.filter(predicate);
   });
+});
+define('frampton-utils/flip_args', ['exports', 'frampton-list/reverse'], function (exports, _reverse) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = flip_args;
+
+  var _reverse2 = _interopRequireDefault(_reverse);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  }
+
+  function flip_args(fn) {
+    return function flipped() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return fn.apply(undefined, _toConsumableArray((0, _reverse2.default)(args)));
+    };
+  }
 });
 define('frampton-utils/get', ['exports', 'frampton-utils/curry', 'frampton-utils/is_nothing', 'frampton-utils/is_string', 'frampton-utils/is_primitive'], function (exports, _curry, _is_nothing, _is_string, _is_primitive) {
   'use strict';

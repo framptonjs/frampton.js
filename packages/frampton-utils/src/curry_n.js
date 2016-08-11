@@ -25,7 +25,7 @@ export default function curry_n(arity, fn, ...args) {
 
     // If we have all the arguments, apply the function and return result
     if (locals.length >= arity) {
-      return fn.apply(null, locals);
+      return fn(...locals);
 
     // If we don't have all the arguments, return a new function that awaits remaining arguments
     } else {
