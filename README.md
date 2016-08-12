@@ -51,7 +51,8 @@ sig2.get();
 // Filter values
 const greaterThanFive = sig2.filter((val) => val > 5);
 
-// How changes is implemented
+// You can also compare the current value against the next to decide if you want
+// the signal to update. How changes is implemented
 const changes = sig2.filterPrevious((prevValue, nextValue) => {
   return prevValue !== nextValue;
 });
@@ -93,13 +94,19 @@ Events are central to any browser application. This module provides a number of 
 const Events = Frampton.Events;
 
 // Create a signal from DOM events
+// These events are attached to the document element.
 const clicks = Events.onEvent('click');
 const inputs = Events.onEvent('input');
 
-// Create a signal from DOM events scoped to a given element
+// Create a signal from DOM events scoped to a given element.
+// These events are also attached to the document, but are filtered based on
+// the event target. All DOM events handled by Frampton are delegated. Most
+// are delegated off of the document. No mater how many clicks you listen for
+// in your code only one listener for click is ever attached to the DOM.
 const divClicks = Events.onEvent('click', document.querySelector('div'));
 
 // Listen for clicks on elements with a given selector
+// Again event listeners are attached to the document and delegated.
 const itemClicks = Events.onSelector('click', '.list-item');
 
 // Get signal of event targets
@@ -134,6 +141,78 @@ const relativePostion = clicks.map(Events.getPositionRelative(node));
 
 Frampton.Data module exposes a few abstract data types that make working functionally a little easier.
 
+### Frampton.Data.Maybe
+
+A Maybe is used to represent a value that may be null or undefined. This gives you an interface for dealing with such values without having to constantly do null checks.
+
+In Frampton Maybes are essentially abstract classes that have two subclass Just and Nothing. Here we're using Haskell naming conventions. A Just represents a value and a Nothing is a missing value.
+
+```
+const Maybe = Frampton.Data.Maybe.create;
+
+const maybeOne = Maybe(1); // -> 'Just(1)'
+const maybeNothing = Maybe(null); // -> 'Nothing'
+
+// change the value of a Maybe
+const mapping = (val) => val + 2;
+const updatedOne = maybeOne.map(mapping); // -> 'Just(3)'
+const updatedNothing = maybeNothing.map(mapping); // 'Nothing'
+
+// filter the value of a Maybe
+const predicate = (val) => val > 2;
+const filteredOne = maybeOne.filter(predicate); // -> 'Nothing'
+const filteredUpdatedOne = updatedOne.filter(predicate); // -> 'Just(3)'
+const filteredNothing = updatedNothing.filter(predicate); // -> 'Nothing'
+
+// flatten a nested Maybe
+const nested = Maybe(Mabye(5)); // -> 'Just(Just(5))'
+cosnt flattened = nested.join(); // -> 'Just(5)'
+
+// join only removes one level of nesting
+const doubleNested = Maybe(Maybe(Mabye(5))); // -> 'Just(Just(Just(5)))'
+cosnt doubleFlattened = doubleNested.join(); // -> 'Just(Just(5))'
+
+// get the value from a Maybe
+const one = maybeOne.get(); // -> 1
+const nothing = maybeNothing.get(); // -> Error: can't get value of Nothing
+
+// safely get the value of a Maybe
+const safeOne = maybeOne.getOrElse(5); // -> 1
+const safeNothing = maybeNothing.getOrElse(5); // -> 5
+```
+
+### Frampton.Data.Record
+
+Records in functional languages are often types that are similar to object literals in JavaScript. The difference is they are immutable and updating a key returns a new Record with the updated key/value.
+
+Frampton provides a simple type that gives you an immutable object that when updated returns a new object.
+
+```
+const Record = Frampton.Data.Record.create;
+
+const bob = Record({
+  name : 'Bob',
+  age : 32
+});
+
+// Records are immutable
+bob.age = 40;
+console.log(bob.age); // -> 32
+
+const olderBob = bob.update({ age : 40});
+console.log(olderBob.age); // -> 40
+console.log(bob.age); // -> 32
+
+// You can't add keys during an update
+// In dev mode a warning is logged when trying to add keys during update
+const jim = bob.update({ name : 'Jim', eyes : 'blue' });
+console.log(jim.eyes); // -> undefined
+console.log(jim.name); // -> 'Jim'
+
+// Get an object literal representation of the Record
+const data = bob.data(); // -> { name : 'Bob', age : 32 }
+```
+
 ### Frampton.Data.Task
 
 A Task is essentially an IO monad. Use it to wrap IO operations that may fail. Tasks are particularly good for wrapping async operations. Much like promises.
@@ -141,7 +220,7 @@ A Task is essentially an IO monad. Use it to wrap IO operations that may fail. T
 Tasks are lazy. A task can be described without being run.
 
 ```
-const Task = Frampton.Data.Task;
+const Task = Frampton.Data.Task.create;
 
 // A task takes a function to run. When the function is run it will receive
 // an object with callbacks for different events in the life of the task.
