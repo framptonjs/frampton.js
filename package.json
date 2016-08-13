@@ -23,7 +23,7 @@
   "homepage": "https://github.com/framptonjs/frampton.js",
   "devDependencies": {
     "frampton-build": "0.0.6",
-    "frampton-cli": "0.0.9",
+    "frampton-cli": "0.0.10",
     "jsdoc": "3.4.0"
   }
 }
