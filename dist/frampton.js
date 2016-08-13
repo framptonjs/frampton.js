@@ -143,7 +143,7 @@ SOFTWARE.
 
 }());
 
-define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create', 'frampton-data/maybe/create', 'frampton-data/maybe/just', 'frampton-data/maybe/nothing'], function (_namespace, _create, _fail, _never, _sequence, _succeed, _when, _execute, _create3, _create5, _create7, _just, _nothing) {
+define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create', 'frampton-data/maybe/create', 'frampton-data/maybe/just', 'frampton-data/maybe/nothing', 'frampton-data/result/success', 'frampton-data/result/failure', 'frampton-data/result/from_throwable'], function (_namespace, _create, _fail, _never, _sequence, _succeed, _when, _execute, _create3, _create5, _create7, _just, _nothing, _success, _failure, _from_throwable) {
   'use strict';
 
   var _namespace2 = _interopRequireDefault(_namespace);
@@ -169,6 +169,12 @@ define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'fra
   var _just2 = _interopRequireDefault(_just);
 
   var _nothing2 = _interopRequireDefault(_nothing);
+
+  var _success2 = _interopRequireDefault(_success);
+
+  var _failure2 = _interopRequireDefault(_failure);
+
+  var _from_throwable2 = _interopRequireDefault(_from_throwable);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -223,6 +229,16 @@ define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'fra
   _namespace2.default.Data.Maybe.create = _create7.create;
   _namespace2.default.Data.Maybe.Just = _just2.default;
   _namespace2.default.Data.Maybe.Nothing = _nothing2.default;
+
+  /**
+   * @name Result
+   * @memberof Frampton.Data
+   * @class
+   */
+  _namespace2.default.Data.Result = {};
+  _namespace2.default.Data.Result.fromThrowable = _from_throwable2.default;
+  _namespace2.default.Data.Result.Success = _success2.default;
+  _namespace2.default.Data.Result.Failure = _failure2.default;
 });
 define('frampton-data/maybe/create', ['exports', 'frampton-utils/is_something', 'frampton-utils/is_function', 'frampton-utils/of_value', 'frampton-utils/is_equal'], function (exports, _is_something, _is_function, _of_value, _is_equal) {
   'use strict';
@@ -271,6 +287,16 @@ define('frampton-data/maybe/create', ['exports', 'frampton-utils/is_something', 
     } else {
       return new Nothing();
     }
+  };
+
+  /**
+   * @name toString
+   * @method
+   * @memberof Frampton.Data.Mabye#
+   * @returns {String}
+   */
+  Maybe.prototype.toString = function () {
+    return 'Just(' + this._value + ')';
   };
 
   /**
@@ -413,16 +439,6 @@ define('frampton-data/maybe/create', ['exports', 'frampton-utils/is_something', 
   }
 
   Just.prototype = new Maybe();
-
-  /**
-   * @name toString
-   * @method
-   * @memberof Frampton.Data.Mabye#
-   * @returns {String}
-   */
-  Just.prototype.toString = function () {
-    return 'Just(' + this._value + ')';
-  };
 
   Just.isJust = function () {
     return true;
@@ -595,6 +611,238 @@ define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampto
     validateData(_props, data);
 
     return Object.freeze(model);
+  }
+});
+define('frampton-data/result/failure', ['exports', 'frampton-data/result/result'], function (exports, _result) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = failure;
+  function failure(err) {
+    return new _result.FailureType(err);
+  }
+});
+define('frampton-data/result/from_throwable', ['exports', 'frampton-data/result/success', 'frampton-data/result/failure'], function (exports, _success, _failure) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = from_throwable;
+
+  var _success2 = _interopRequireDefault(_success);
+
+  var _failure2 = _interopRequireDefault(_failure);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function from_throwable(fn) {
+    return function () {
+      try {
+        var value = fn.apply(undefined, arguments);
+        return (0, _success2.default)(value);
+      } catch (e) {
+        return (0, _failure2.default)(e);
+      }
+    };
+  }
+});
+define('frampton-data/result/result', ['exports', 'frampton-utils/of_value', 'frampton-utils/is_equal', 'frampton-utils/is_function'], function (exports, _of_value, _is_equal, _is_function) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.FailureType = exports.SuccessType = undefined;
+
+  var _of_value2 = _interopRequireDefault(_of_value);
+
+  var _is_equal2 = _interopRequireDefault(_is_equal);
+
+  var _is_function2 = _interopRequireDefault(_is_function);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  /**
+   * @name Result
+   * @class
+   * @abstract
+   * @memberof Frampton.Data
+   */
+  function Result() {}
+
+  /**
+   * @name of
+   * @method
+   * @memberof Frampton.Data.Result
+   * @param {*} val Value to place in context of Result
+   * @returns {Frampton.Data.Result}
+   */
+  Result.of = function (val) {
+    return new Success(val);
+  };
+
+  /**
+   * Provides a string representation of this Result
+   *
+   * @name toString
+   * @method
+   * @override
+   * @memberof Frampton.Data.Result#
+   * @returns {String}
+   */
+  Result.prototype.toString = function () {
+    return 'Success(' + this._value + ')';
+  };
+
+  /**
+   * Maps the successful value of a Result. Failures are returned unaltered.
+   *
+   * @name map
+   * @method
+   * @memberof Frampton.Data.Result#
+   * @param {Function} mapping Function used to map successful value
+   * @returns {Frampton.Data.Result}
+   */
+  Result.prototype.map = function (mapping) {
+    var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
+    return new Success(mappingFn(this._value));
+  };
+
+  /**
+   * Maps the failed value of a Result. Successes are returned unaltered.
+   *
+   * @name mapFailure
+   * @method
+   * @memberof Frampton.Data.Result#
+   * @param {Function} mapping Function used to map failed value
+   * @returns {Frampton.Data.Result}
+   */
+  Result.prototype.mapFailure = function (_) {
+    return new Success(this._value);
+  };
+
+  /**
+   * Filters successful values. If the predicate fails the success becomes a failure.
+   *
+   * @name filter
+   * @method
+   * @memberof Frampton.Data.Result#
+   * @param {Function} predicate Function to test successful values
+   * @returns {Frampton.Data.Result}
+   */
+  Result.prototype.filter = function (predicate) {
+    var filterFn = (0, _is_function2.default)(predicate) ? predicate : (0, _is_equal2.default)(predicate);
+    if (filterFn(this._value)) {
+      return new Success(this._value);
+    } else {
+      return new Failure(this._value);
+    }
+  };
+
+  /**
+   * Handle the value in a Result. Given two functions it will call the appropriate one
+   * with the value of this Result and return the return value of that function.
+   *
+   * @name fork
+   * @method
+   * @memberof Frampton.Data.Result#
+   * @param {Function} success Function to call for Successes
+   * @param {Function} failure Function to call for Failures
+   * @returns {*} The result of the given callback function
+   */
+  Result.prototype.fork = function (success, _) {
+    return success(this._value);
+  };
+
+  /**
+   * Is this Result a Success?
+   *
+   * @name isSuccess
+   * @method
+   * @memberof Frampton.Data.Result#
+   * @returns {Boolean}
+   */
+  Result.prototype.isSuccess = function () {
+    return false;
+  };
+
+  /**
+   * Is this Result a Failure?
+   *
+   * @name isFailure
+   * @method
+   * @memberof Frampton.Data.Result#
+   * @returns {Boolean}
+   */
+  Result.prototype.isFailure = function () {
+    return false;
+  };
+
+  function Success(val) {
+    this._value = val;
+  }
+
+  Success.prototype = new Result();
+
+  Success.prototype.isSuccess = function () {
+    return true;
+  };
+
+  function Failure(err) {
+    this._value = err;
+  }
+
+  Failure.prototype = new Result();
+
+  Failure.prototype.toString = function () {
+    return 'Failure(' + this._value + ')';
+  };
+
+  Failure.prototype.map = function (_) {
+    return new Failure(this._value);
+  };
+
+  Failure.prototype.mapFailure = function (mapping) {
+    var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
+    return new Failure(mappingFn(this._value));
+  };
+
+  Failure.prototype.filter = function (_) {
+    return new Failure(this._value);
+  };
+
+  Failure.prototype.fork = function (_, failure) {
+    return failure(this._value);
+  };
+
+  Failure.prototype.isFailure = function () {
+    return true;
+  };
+
+  var SuccessType = exports.SuccessType = Success;
+
+  var FailureType = exports.FailureType = Failure;
+});
+define('frampton-data/result/success', ['exports', 'frampton-data/result/result'], function (exports, _result) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = success;
+  function success(val) {
+    return new _result.SuccessType(val);
   }
 });
 define('frampton-data/task/create', ['exports', 'frampton-utils/immediate', 'frampton-utils/is_function', 'frampton-utils/noop', 'frampton-utils/of_value', 'frampton-utils/is_equal', 'frampton-data/task/valid_sinks'], function (exports, _immediate, _is_function, _noop, _of_value, _is_equal, _valid_sinks) {
@@ -7834,7 +8082,7 @@ define('frampton/namespace', ['exports'], function (exports) {
    * @name Frampton
    * @namespace
    */
-  Frampton.VERSION = '0.2.1';
+  Frampton.VERSION = '0.2.2';
 
   Frampton.TEST = 'test';
 
