@@ -16,6 +16,10 @@ import { create as createMaybe } from 'frampton-data/maybe/create';
 import Just from 'frampton-data/maybe/just';
 import Nothing from 'frampton-data/maybe/nothing';
 
+import Success from 'frampton-data/result/success';
+import Failure from 'frampton-data/result/failure';
+import fromThrowable from 'frampton-data/result/from_throwable';
+
 
 /**
  * @name Data
@@ -64,3 +68,13 @@ Frampton.Data.Maybe = {};
 Frampton.Data.Maybe.create = createMaybe;
 Frampton.Data.Maybe.Just = Just;
 Frampton.Data.Maybe.Nothing = Nothing;
+
+/**
+ * @name Result
+ * @memberof Frampton.Data
+ * @class
+ */
+Frampton.Data.Result = {};
+Frampton.Data.Result.fromThrowable = fromThrowable;
+Frampton.Data.Result.Success = Success;
+Frampton.Data.Result.Failure = Failure;

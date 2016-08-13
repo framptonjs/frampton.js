@@ -31,6 +31,16 @@ Maybe.of = function(val) {
 };
 
 /**
+ * @name toString
+ * @method
+ * @memberof Frampton.Data.Mabye#
+ * @returns {String}
+ */
+Maybe.prototype.toString = function() {
+  return `Just(${this._value})`;
+};
+
+/**
  * join :: Maybe (a -> b) -> Maybe a -> Maybe b
  *
  * Applies the function in one maybe to the value of another.
@@ -170,16 +180,6 @@ function Just(val) {
 }
 
 Just.prototype = new Maybe();
-
-/**
- * @name toString
- * @method
- * @memberof Frampton.Data.Mabye#
- * @returns {String}
- */
-Just.prototype.toString = function() {
-  return `Just(${this._value})`;
-};
 
 Just.isJust = function() {
   return true;
