@@ -141,6 +141,40 @@ const relativePostion = clicks.map(Events.getPositionRelative(node));
 
 Frampton.Data module exposes a few abstract data types that make working functionally a little easier.
 
+### Frampton.Data.Result
+
+A Result is used to represent values that can be the result of successful or failed computations. It is analogous to Either in some functional programming languages. Result has two subclasses, Success and Failure.
+
+```
+const { Success, Failure } = Frampton.Data.Result;
+const fromThrowable = Frampton.Data.Result.fromThrowable;
+
+const success = Success(5);
+const failure = Failure(8);
+
+// map successful values
+const mapping = (val) => val + 5;
+const mappedSuccess = success.map(mapping); // -> 'Success(10)'
+const mappedFailure = failure.map(mapping); // -> 'Failure(8)'
+
+// map failed values
+const mapping = (val) => val + 3;
+const mappedSuccess = success.mapFailure(mapping); // -> 'Success(5)'
+const mappedFailure = failure.mapFailure(mapping); // -> 'Failure(11)'
+
+// filter Successes. Successes become Failures if the fail the predicate.
+// Failures are unaltered.
+const predicate = (val) => val > 10;
+const filteredSuccess = success.filter(predicate); // -> 'Failure(5)'
+const filteredFailure = failure.filter(predicate); // -> 'Failure(8)'
+
+// Run a callback based on success or failure.
+const onSuccess = (val) => val + 3;
+const onFailure = (val) => val + 10;
+const successResult = success.fork(onSuccess, onFailure); // -> 8
+const failureResult = failure.fork(onSuccess, onFailure); // -> 18
+```
+
 ### Frampton.Data.Maybe
 
 A Maybe is used to represent a value that may be null or undefined. This gives you an interface for dealing with such values without having to constantly do null checks.
