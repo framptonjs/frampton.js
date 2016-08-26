@@ -523,7 +523,7 @@ define('frampton-data/maybe/nothing', ['exports', 'frampton-data/maybe/create'],
     return new _create.NothingType();
   }
 });
-define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-utils/is_object', 'frampton-record/merge', 'frampton-record/keys'], function (exports, _namespace, _guid, _warn, _is_object, _merge, _keys) {
+define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-record/merge', 'frampton-record/keys', 'frampton-record/map', 'frampton-record/reduce'], function (exports, _namespace, _guid, _warn, _merge, _keys, _map, _reduce) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -537,11 +537,13 @@ define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampto
 
   var _warn2 = _interopRequireDefault(_warn);
 
-  var _is_object2 = _interopRequireDefault(_is_object);
-
   var _merge2 = _interopRequireDefault(_merge);
 
   var _keys2 = _interopRequireDefault(_keys);
+
+  var _map2 = _interopRequireDefault(_map);
+
+  var _reduce2 = _interopRequireDefault(_reduce);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -571,7 +573,7 @@ define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampto
 
     /**
      * @name data
-     * @memberof Frampton.Data.Record
+     * @memberof Frampton.Data.Record#
      * @returns {Object}
      */
     model.data = function () {
@@ -579,17 +581,63 @@ define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampto
     };
 
     /**
+     * @name keys
+     * @memberof Frampton.Data.Record#
+     * @returns {Array}
+     */
+    model.keys = function () {
+      return Object.freeze(_props);
+    };
+
+    /**
      * @name update
-     * @memberof Frampton.Data.Record
+     * @memberof Frampton.Data.Record#
      * @param {Object} update
      * @returns {Object}
      */
     model.update = function (update) {
-      if ((0, _is_object2.default)(update)) {
-        return create_record((0, _merge2.default)(data, update), _id, _props);
-      } else {
-        (0, _warn2.default)('Frampton.Data.Record.update did not receive an object');
-      }
+      // In dev mode verify object properties
+      validateData(_props, update);
+      return create_record((0, _merge2.default)(data, update), _id, _props);
+    };
+
+    /**
+     * @name set
+     * @memberof Frampton.Data.Record#
+     * @param {String} key
+     * @param {*} value
+     * @returns {Frampont.Data.Record}
+     */
+    model.set = function (key, value) {
+      var update = {};
+      update[key] = value;
+      // In dev mode verify object properties
+      validateData(_props, update);
+      return create_record((0, _merge2.default)(data, update), _id, _props);
+    };
+
+    /**
+     * @name map
+     * @memberof Frampton.Data.Record#
+     * @method
+     * @param {Function} mapping
+     * @returns {Frampton.Data.Record}
+     */
+    model.map = function (mapping) {
+      var update = (0, _map2.default)(mapping, data);
+      return create_record((0, _merge2.default)(data, update), _id, _props);
+    };
+
+    /**
+     * @name reduce
+     * @memberof Frampton.Data.Record#
+     * @method
+     * @param {Function} mapping
+     * @param {*} initial
+     * @returns {Frampton.Data.Record}
+     */
+    model.reduce = function (mapping, initial) {
+      return (0, _reduce2.default)(mapping, initial, data);
     };
 
     // private
@@ -606,9 +654,6 @@ define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampto
         (0, _warn2.default)('Frampton.Data.Record received a protected key: ' + key);
       }
     }
-
-    // In dev mode verify object properties
-    validateData(_props, data);
 
     return Object.freeze(model);
   }

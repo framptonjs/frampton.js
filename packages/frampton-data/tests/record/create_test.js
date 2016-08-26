@@ -34,7 +34,7 @@ QUnit.test('data method should return correct keys/values', function(assert) {
   const test = createRecord(obj);
   const actual = test.data();
 
-  assert.equal(actual, obj);
+  assert.deepEqual(actual, obj);
 });
 
 QUnit.test('update method should update values', function(assert) {
@@ -67,4 +67,28 @@ QUnit.test('update method should not mutate original object', function(assert) {
   test.update({ two : 4 });
 
   assert.deepEqual(test.data(), obj);
+});
+
+QUnit.test('map method should update object with function', function(assert) {
+
+  const obj = { one : 1, two : 2, three : 3 };
+  const test = createRecord(obj);
+  const actual = test.map((value, key) => {
+    return value + 2;
+  });
+  const expected = { one : 3, two : 4, three : 5 };
+
+  assert.deepEqual(actual.data(), expected);
+});
+
+QUnit.test('reduce method should reduce object with function', function(assert) {
+
+  const obj = { one : 1, two : 2, three : 3 };
+  const test = createRecord(obj);
+  const actual = test.reduce((acc, nextVal, nextKey) => {
+    return acc + nextVal;
+  }, 0);
+  const expected = 6;
+
+  assert.equal(actual, expected);
 });

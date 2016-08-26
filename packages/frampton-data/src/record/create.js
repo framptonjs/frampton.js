@@ -1,9 +1,10 @@
 import Frampton from 'frampton/namespace';
 import guid from 'frampton-utils/guid';
 import warn from 'frampton-utils/warn';
-import isObject from 'frampton-utils/is_object';
 import merge from 'frampton-record/merge';
 import keys from 'frampton-record/keys';
+import mapObj from 'frampton-record/map';
+import reduceObj from 'frampton-record/reduce';
 
 const blacklist =
   ['_id', '_props', 'ctor', 'keys', 'get', 'set', 'update', 'data'];
@@ -28,7 +29,7 @@ export default function create_record(data, id, props) {
 
   /**
    * @name data
-   * @memberof Frampton.Data.Record
+   * @memberof Frampton.Data.Record#
    * @returns {Object}
    */
   model.data = () => {
@@ -36,17 +37,63 @@ export default function create_record(data, id, props) {
   };
 
   /**
+   * @name keys
+   * @memberof Frampton.Data.Record#
+   * @returns {Array}
+   */
+  model.keys = () => {
+    return Object.freeze(_props);
+  };
+
+  /**
    * @name update
-   * @memberof Frampton.Data.Record
+   * @memberof Frampton.Data.Record#
    * @param {Object} update
    * @returns {Object}
    */
   model.update = (update) => {
-    if (isObject(update)) {
-      return create_record(merge(data, update), _id, _props);
-    } else {
-      warn('Frampton.Data.Record.update did not receive an object');
-    }
+    // In dev mode verify object properties
+    validateData(_props, update);
+    return create_record(merge(data, update), _id, _props);
+  };
+
+  /**
+   * @name set
+   * @memberof Frampton.Data.Record#
+   * @param {String} key
+   * @param {*} value
+   * @returns {Frampont.Data.Record}
+   */
+  model.set = (key, value) => {
+    const update = {};
+    update[key] = value;
+    // In dev mode verify object properties
+    validateData(_props, update);
+    return create_record(merge(data, update), _id, _props);
+  };
+
+  /**
+   * @name map
+   * @memberof Frampton.Data.Record#
+   * @method
+   * @param {Function} mapping
+   * @returns {Frampton.Data.Record}
+   */
+  model.map = (mapping) => {
+    const update = mapObj(mapping, data);
+    return create_record(merge(data, update), _id, _props);
+  };
+
+  /**
+   * @name reduce
+   * @memberof Frampton.Data.Record#
+   * @method
+   * @param {Function} mapping
+   * @param {*} initial
+   * @returns {Frampton.Data.Record}
+   */
+  model.reduce = (mapping, initial) => {
+    return reduceObj(mapping, initial, data);
   };
 
   // private
@@ -63,9 +110,6 @@ export default function create_record(data, id, props) {
       warn(`Frampton.Data.Record received a protected key: ${key}`);
     }
   }
-
-  // In dev mode verify object properties
-  validateData(_props, data);
 
   return Object.freeze(model);
 }
