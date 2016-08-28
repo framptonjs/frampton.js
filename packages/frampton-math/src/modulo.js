@@ -8,6 +8,6 @@ import curry from 'frampton-utils/curry';
  * @param {Number} right
  * @returns {Number}
  */
-export default curry( function modulo(left, right) {
+export default curry(function modulo(left, right) {
   return left % right;
 });
