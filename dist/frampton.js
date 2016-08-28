@@ -6750,13 +6750,22 @@ define("frampton-utils/apply", ["exports"], function (exports) {
     return fn.call(thisArg || null);
   }
 });
-define('frampton-utils/assert', ['exports'], function (exports) {
+define('frampton-utils/assert', ['exports', 'frampton/namespace'], function (exports, _namespace) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = assert;
+
+  var _namespace2 = _interopRequireDefault(_namespace);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
   /**
    * Occassionally we need to blow things up if something isn't right.
    *
@@ -6764,10 +6773,10 @@ define('frampton-utils/assert', ['exports'], function (exports) {
    * @method
    * @memberof Frampton.Utils
    * @param {String} msg  - Message to throw with error.
-   * @param {*}    cond - A condition that evaluates to a Boolean. If false, an error is thrown.
+   * @param {Boolean} cond - A condition that evaluates to a Boolean. If false, an error is thrown.
    */
   function assert(msg, cond) {
-    if (!cond) {
+    if (!_namespace2.default.isProd() && !cond) {
       throw new Error(msg || 'An error occured'); // Boom!
     }
   }
