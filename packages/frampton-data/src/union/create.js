@@ -9,18 +9,11 @@ const blacklist = ['ctor', 'children', 'caseOf'];
 /**
 
   const Action = Union({
-    Foo : [String, Number],
-    Bar : { name : String }
+    Foo : ['name', 'id'],
+    Bar : ['id', 'description']
   });
 
   const foo = Action.Foo('test', 89);
-
-  const bar = Action.Bar({ name : 'test' });
-
-  Action.match({
-    Foo : (str, num) => str + num,
-    Bar : (name) => `my name is ${name}`
-  });
 
  */
 

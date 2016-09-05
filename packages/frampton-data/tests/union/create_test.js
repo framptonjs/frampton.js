@@ -3,6 +3,9 @@ import Union from 'frampton-data/union/create';
 QUnit.module('Frampton.Data.Union.create');
 
 QUnit.test('Should create an object with specified keys', function(assert) {
+
+  assert.expect(2);
+
   const Person = Union({
     Employee : [],
     Manager : []
@@ -20,6 +23,7 @@ QUnit.test('Should create an object with a match method', function(assert) {
 });
 
 QUnit.test('Match method should correctly match instances', function(assert) {
+
   const Person = Union({
     Employee : [],
     Manager : []
@@ -38,12 +42,45 @@ QUnit.test('Match method should correctly match instances', function(assert) {
   match(test);
 });
 
-QUnit.test('Should have a match method that validates types', function(assert) {
+QUnit.test('Should create types with accessor properties', function(assert) {
+
+  assert.expect(2);
+
   const Person = Union({
-    Employee : [String],
-    Manager : [String]
+    Employee : ['name', 'age'],
+    Manager : ['name', 'age']
   });
 
-  assert.ok(typeof Person.Employee('Fred') === 'object', 'Did not return object');
-  assert.throws(() => { Person.Employee(29); }, 'Did not throw');
+  const bob = Person.Employee('Bob', 45);
+  const larry = Person.Manager('Larry', 53);
+
+  assert.equal(bob.name, 'Bob');
+  assert.equal(larry.age, 53);
+});
+
+QUnit.test('Should properly destructure arguments to match', function(assert) {
+
+  assert.expect(4);
+
+  const Person = Union({
+    Employee : ['name', 'age'],
+    Manager : ['name', 'age']
+  });
+
+  const match = Person.match({
+    Employee : (name, age) => {
+      assert.equal(name, 'Bob');
+      assert.equal(age, 45);
+    },
+    Manager : (name, age) => {
+      assert.equal(name, 'Larry');
+      assert.equal(age, 53);
+    }
+  });
+
+  const bob = Person.Employee('Bob', 45);
+  const larry = Person.Manager('Larry', 53);
+
+  match(bob);
+  match(larry);
 });

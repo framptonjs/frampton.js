@@ -1222,6 +1222,38 @@ define('frampton-data/task/create', ['exports', 'frampton-utils/immediate', 'fra
     return new Task(computation);
   }
 });
+define('frampton-data/task/delay', ['exports', 'frampton-data/task/create'], function (exports, _create) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = delay;
+
+  var _create2 = _interopRequireDefault(_create);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  /**
+   * @name delay
+   * @method
+   * @memberof Frampton.Data.Task
+   * @param {Function} fn - Function to delay
+   * @param {Number} time - Miliseconds to delay function
+   * @returns {Frampton.Data.Task}
+   */
+  function delay(fn, time) {
+    return (0, _create2.default)(function (sinks) {
+      setTimeout(function () {
+        sinks.resolve(fn());
+      }, time);
+    });
+  }
+});
 define('frampton-data/task/execute', ['exports', 'frampton-utils/log', 'frampton-utils/warn'], function (exports, _log, _warn) {
   'use strict';
 
@@ -1526,18 +1558,11 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'fram
   /**
   
     const Action = Union({
-      Foo : [String, Number],
-      Bar : { name : String }
+      Foo : ['name', 'id'],
+      Bar : ['id', 'description']
     });
   
     const foo = Action.Foo('test', 89);
-  
-    const bar = Action.Bar({ name : 'test' });
-  
-    Action.match({
-      Foo : (str, num) => str + num,
-      Bar : (name) => `my name is ${name}`
-    });
   
    */
 
@@ -1569,7 +1594,7 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'fram
     return Object.freeze(parent);
   }
 });
-define('frampton-data/union/utils/case_of', ['exports', 'frampton/namespace', 'frampton-utils/is_something', 'frampton-utils/is_nothing', 'frampton-data/union/utils/validate_parent', 'frampton-data/union/utils/validate_options', 'frampton-data/union/utils/wildcard'], function (exports, _namespace, _is_something, _is_nothing, _validate_parent, _validate_options, _wildcard) {
+define('frampton-data/union/utils/case_of', ['exports', 'frampton-utils/is_nothing', 'frampton-data/union/utils/validate_options', 'frampton-data/union/utils/get_match'], function (exports, _is_nothing, _validate_options, _get_match) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1577,17 +1602,11 @@ define('frampton-data/union/utils/case_of', ['exports', 'frampton/namespace', 'f
   });
   exports.default = case_of;
 
-  var _namespace2 = _interopRequireDefault(_namespace);
-
-  var _is_something2 = _interopRequireDefault(_is_something);
-
   var _is_nothing2 = _interopRequireDefault(_is_nothing);
-
-  var _validate_parent2 = _interopRequireDefault(_validate_parent);
 
   var _validate_options2 = _interopRequireDefault(_validate_options);
 
-  var _wildcard2 = _interopRequireDefault(_wildcard);
+  var _get_match2 = _interopRequireDefault(_get_match);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -1607,15 +1626,6 @@ define('frampton-data/union/utils/case_of', ['exports', 'frampton/namespace', 'f
     }
   }
 
-  function getMatch(child, cases) {
-    var match = cases[child.ctor];
-    if ((0, _is_something2.default)(match)) {
-      return match;
-    } else {
-      return cases[_wildcard2.default];
-    }
-  }
-
   /**
    * @name caseOf
    * @memberof Frampton.Data.Union
@@ -1626,24 +1636,20 @@ define('frampton-data/union/utils/case_of', ['exports', 'frampton/namespace', 'f
    */
   function case_of(parent, cases, child) {
 
-    // In dev mode we validate types
-    // In prod we pray because we're screwed anyway
-    if (!_namespace2.default.isProd()) {
-      (0, _validate_parent2.default)(parent, child);
-      (0, _validate_options2.default)(parent, cases);
-    }
+    // Validate we have exhausitve pattern match
+    (0, _validate_options2.default)(parent, cases);
 
-    var match = getMatch(child, cases);
+    var match = (0, _get_match2.default)(child, cases);
 
     if ((0, _is_nothing2.default)(match)) {
       throw new Error('No match for value with name: ' + child.ctor);
+    } else {
+      // Destructure arguments for passing to callback
+      return match.apply(undefined, _toConsumableArray(child._values));
     }
-
-    // Destructure arguments for passing to callback
-    return match.apply(undefined, _toConsumableArray(child._values));
   }
 });
-define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace', 'frampton-utils/is_array', 'frampton-utils/is_something', 'frampton-utils/curry_n', 'frampton-data/union/utils/get_validator', 'frampton-data/union/utils/validate_args'], function (exports, _namespace, _is_array, _is_something, _curry_n, _get_validator, _validate_args) {
+define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn', 'frampton-utils/curry_n', 'frampton-data/union/utils/validate_names'], function (exports, _warn, _curry_n, _validate_names) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1651,32 +1657,16 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace'
   });
   exports.default = create_type;
 
-  var _namespace2 = _interopRequireDefault(_namespace);
-
-  var _is_array2 = _interopRequireDefault(_is_array);
-
-  var _is_something2 = _interopRequireDefault(_is_something);
+  var _warn2 = _interopRequireDefault(_warn);
 
   var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _get_validator2 = _interopRequireDefault(_get_validator);
-
-  var _validate_args2 = _interopRequireDefault(_validate_args);
+  var _validate_names2 = _interopRequireDefault(_validate_names);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
       default: obj
     };
-  }
-
-  function getValidators(parent, fields) {
-    if (!_namespace2.default.isProd()) {
-      return fields.map(function (field) {
-        return (0, _get_validator2.default)(parent, field);
-      });
-    } else {
-      return null;
-    }
   }
 
   /**
@@ -1689,30 +1679,27 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace'
    */
   function create_type(parent, name, fields) {
 
-    if (!(0, _is_array2.default)(fields)) {
-      throw new Error('Union must receive an array of fields for each type');
-    }
-
+    (0, _validate_names2.default)(fields);
     var len = fields.length;
-    var validators = getValidators(parent, fields);
 
     var constructor = function constructor() {
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
 
-      if ((0, _is_something2.default)(validators) && !(0, _validate_args2.default)(validators, args)) {
-        throw new TypeError('Frampton.Data.Union.' + name + ' recieved an unknown argument');
+      var argLen = args.length;
+
+      if (len !== argLen) {
+        (0, _warn2.default)('Frampton.Data.Union.' + name + ' expected ' + len + ' arguments but received ' + argLen + '.');
       }
 
       var child = [];
-      var len = args.length;
       child.constructor = parent;
       child.ctor = name;
       child._values = args;
 
-      for (var i = 0; i < len; i++) {
-        child[i] = args[i];
+      for (var i = 0; i < argLen; i++) {
+        child[fields[i]] = args[i];
       }
 
       return Object.freeze(child);
@@ -1721,121 +1708,70 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton/namespace'
     return len === 0 ? constructor : (0, _curry_n2.default)(len, constructor);
   }
 });
-define('frampton-data/union/utils/get_validator', ['exports', 'frampton-utils/is_boolean', 'frampton-utils/is_array', 'frampton-utils/is_number', 'frampton-utils/is_string', 'frampton-utils/is_function', 'frampton-utils/is_node', 'frampton-data/union/utils/object_validator'], function (exports, _is_boolean, _is_array, _is_number, _is_string, _is_function, _is_node, _object_validator) {
+define('frampton-data/union/utils/get_match', ['exports', 'frampton-utils/is_something', 'frampton-data/union/utils/wildcard'], function (exports, _is_something, _wildcard) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = get_validator;
+  exports.default = get_match;
 
-  var _is_boolean2 = _interopRequireDefault(_is_boolean);
+  var _is_something2 = _interopRequireDefault(_is_something);
+
+  var _wildcard2 = _interopRequireDefault(_wildcard);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  /**
+   * @name getMatch
+   * @memberof Frampton.Data.Union.Utils
+   * @param {}
+   * @param {}
+   */
+  function get_match(child, cases) {
+    var match = cases[child.ctor];
+    if ((0, _is_something2.default)(match)) {
+      return match;
+    } else {
+      return cases[_wildcard2.default];
+    }
+  }
+});
+define('frampton-data/union/utils/validate_names', ['exports', 'frampton-utils/is_array'], function (exports, _is_array) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = validate_names;
 
   var _is_array2 = _interopRequireDefault(_is_array);
 
-  var _is_number2 = _interopRequireDefault(_is_number);
-
-  var _is_string2 = _interopRequireDefault(_is_string);
-
-  var _is_function2 = _interopRequireDefault(_is_function);
-
-  var _is_node2 = _interopRequireDefault(_is_node);
-
-  var _object_validator2 = _interopRequireDefault(_object_validator);
-
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
       default: obj
     };
   }
 
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-  };
+  var blacklist = ['ctor', 'constructor', 'get', 'set', 'update'];
 
-  function get_validator(parent, type) {
+  function validate_names(names) {
 
-    switch (type) {
-      case String:
-        return _is_string2.default;
-
-      case Number:
-        return _is_number2.default;
-
-      case Function:
-        return _is_function2.default;
-
-      case Boolean:
-        return _is_boolean2.default;
-
-      case Array:
-        return _is_array2.default;
-
-      case Element:
-        return _is_node2.default;
-
-      case Node:
-        return _is_node2.default;
-
-      case Object:
-        return function (obj) {
-          return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
-        };
-
-      case undefined:
-        return (0, _object_validator2.default)(parent);
-
-      default:
-        return (0, _object_validator2.default)(type);
+    if (!(0, _is_array2.default)(names)) {
+      throw new Error('Frampton.Data.Union must receive an array of fields for each type');
     }
 
-    return false;
-  }
-});
-define('frampton-data/union/utils/object_validator', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _curry2 = _interopRequireDefault(_curry);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  exports.default = (0, _curry2.default)(function object_validator(parent, child) {
-    return child.constructor === parent;
-  });
-});
-define('frampton-data/union/utils/validate_args', ['exports', 'frampton-utils/is_undefined'], function (exports, _is_undefined) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = validate_args;
-
-  var _is_undefined2 = _interopRequireDefault(_is_undefined);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function validate_args(validators, args) {
-    for (var i = 0; i < validators.length; i++) {
-      if ((0, _is_undefined2.default)(args[i]) || !validators[i](args[i])) {
-        return false;
+    var len = names.length;
+    for (var i = 0; i < len; i++) {
+      var name = names[i];
+      if (blacklist.indexOf(name) !== -1) {
+        throw new Error('Frampton.Data.Union recieved reserved field name ' + name);
       }
     }
-    return true;
   }
 });
 define('frampton-data/union/utils/validate_options', ['exports', 'frampton-utils/warn', 'frampton-data/union/utils/wildcard'], function (exports, _warn, _wildcard) {
@@ -1870,35 +1806,6 @@ define('frampton-data/union/utils/validate_options', ['exports', 'frampton-utils
       }
     }
   }
-});
-define('frampton-data/union/utils/validate_parent', ['exports', 'frampton-utils/curry', 'frampton-utils/is_object', 'frampton-data/union/utils/object_validator'], function (exports, _curry, _is_object, _object_validator) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _curry2 = _interopRequireDefault(_curry);
-
-  var _is_object2 = _interopRequireDefault(_is_object);
-
-  var _object_validator2 = _interopRequireDefault(_object_validator);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  exports.default = (0, _curry2.default)(function validate_parent(parent, child) {
-    if (!(0, _object_validator2.default)(parent, child)) {
-      if ((0, _is_object2.default)(child) && child.ctor) {
-        throw new TypeError('Frampton.Data.Union.caseOf received unrecognized type: ' + child.ctor);
-      } else {
-        throw new TypeError('Frampton.Data.Union.caseOf received unrecognized type');
-      }
-    }
-  });
 });
 define('frampton-data/union/utils/wildcard', ['exports'], function (exports) {
   'use strict';

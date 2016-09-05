@@ -1,19 +1,6 @@
-import Frampton from 'frampton/namespace';
-import isArray from 'frampton-utils/is_array';
-import isSomething from 'frampton-utils/is_something';
+import warn from 'frampton-utils/warn';
 import curryN from 'frampton-utils/curry_n';
-import getValidator from 'frampton-data/union/utils/get_validator';
-import validateArgs from 'frampton-data/union/utils/validate_args';
-
-function getValidators(parent, fields) {
-  if (!Frampton.isProd()) {
-    return fields.map((field) => {
-      return getValidator(parent, field);
-    });
-  } else {
-    return null;
-  }
-}
+import validateNames from 'frampton-data/union/utils/validate_names';
 
 /**
  * @name createType
@@ -25,29 +12,24 @@ function getValidators(parent, fields) {
  */
 export default function create_type(parent, name, fields) {
 
-  if (!isArray(fields)) {
-    throw new Error('Union must receive an array of fields for each type');
-  }
-
+  validateNames(fields);
   const len = fields.length;
-  const validators = getValidators(parent, fields);
 
   const constructor = (...args) => {
 
-    if (isSomething(validators) && !validateArgs(validators, args)) {
-      throw new TypeError(
-        `Frampton.Data.Union.${name} recieved an unknown argument`
-      );
+    const argLen = args.length;
+
+    if (len !== argLen) {
+      warn(`Frampton.Data.Union.${name} expected ${len} arguments but received ${argLen}.`);
     }
 
     const child = [];
-    const len = args.length;
     child.constructor = parent;
     child.ctor = name;
     child._values = args;
 
-    for (let i = 0; i < len; i++) {
-      child[i] = args[i];
+    for (let i = 0; i < argLen; i++) {
+      child[fields[i]] = args[i];
     }
 
     return Object.freeze(child);

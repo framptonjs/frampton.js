@@ -10,25 +10,37 @@ QUnit.module('Frampton.Keyboard', {
 });
 
 QUnit.test('Keyboard.arrows should have initial value of [0,0]', function(assert) {
-  assert.deepEqual(this.keyboard.arrows.get(), [0,0]);
+  const actual = this.keyboard.arrows.get();
+  const expected = [0, 0];
+  assert.deepEqual(actual, expected);
 });
 
 QUnit.test('Keyboard.shift should have initial value of false', function(assert) {
-  assert.equal(this.keyboard.shift.get(), false);
+  const actual = this.keyboard.shift.get();
+  const expected = false;
+  assert.equal(actual, expected);
 });
 
 QUnit.test('Keyboard.ctrl should have initial value of false', function(assert) {
-  assert.equal(this.keyboard.ctrl.get(), false);
+  const actual = this.keyboard.ctrl.get();
+  const expected = false;
+  assert.equal(actual, expected);
 });
 
 QUnit.test('Keyboard.escape should have initial value of false', function(assert) {
-  assert.equal(this.keyboard.escape.get(), false);
+  const actual = this.keyboard.escape.get();
+  const expected = false;
+  assert.equal(actual, expected);
 });
 
 QUnit.test('Keyboard.enter should have initial value of false', function(assert) {
-  assert.equal(this.keyboard.enter.get(), false);
+  const actual = this.keyboard.enter.get();
+  const expected = false;
+  assert.equal(actual, expected);
 });
 
 QUnit.test('Keyboard.space should have initial value of false', function(assert) {
-  assert.equal(this.keyboard.space.get(), false);
+  const actual = this.keyboard.space.get();
+  const expected = false;
+  assert.equal(actual, expected);
 });
