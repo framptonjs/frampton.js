@@ -1,7 +1,7 @@
 import isArray from 'frampton-utils/is_array';
 
 const blacklist =
-  ['ctor', 'constructor', 'get', 'set', 'update'];
+  ['ctor', 'get', 'set', 'update'];
 
 export default function validate_names(names) {
 

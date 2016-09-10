@@ -14,7 +14,7 @@ export default function validate_options(parent, cases) {
   for (let i = 0; i < len; i++) {
     let child = children[i];
     if (!hasMatch(cases, child)) {
-      warn('Non-exhaustive pattern match for case: ' + child);
+      warn(`Non-exhaustive pattern match for case: ${child.ctor}`);
     }
   }
 }

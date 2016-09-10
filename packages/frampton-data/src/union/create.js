@@ -1,10 +1,8 @@
 import curryN from 'frampton-utils/curry_n';
-import warn from 'frampton-utils/warn';
 import getKeys from 'frampton-record/keys';
 import createType from 'frampton-data/union/utils/create_type';
 import caseOf from 'frampton-data/union/utils/case_of';
-
-const blacklist = ['ctor', 'children', 'caseOf'];
+import validateTypes from 'frampton-data/union/utils/validate_types';
 
 /**
 
@@ -28,18 +26,14 @@ const blacklist = ['ctor', 'children', 'caseOf'];
 export default function create_union(values) {
   const parent = {};
   const children = getKeys(values);
+  validateTypes(children);
 
-  parent.prototype = {};
   parent.ctor = 'Frampton.Data.Union';
   parent.children = children;
   parent.match = curryN(3, caseOf, parent);
 
   for (let name in values) {
-    if (blacklist.indexOf(name) === -1) {
-      parent[name] = createType(parent, name, values[name]);
-    } else {
-      warn(`Frampton.Data.Union received a protected key: ${name}`);
-    }
+    parent[name] = createType(name, values[name]);
   }
 
   return Object.freeze(parent);

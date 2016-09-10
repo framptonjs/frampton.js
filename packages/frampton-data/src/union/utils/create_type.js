@@ -1,16 +1,17 @@
 import warn from 'frampton-utils/warn';
 import curryN from 'frampton-utils/curry_n';
+import isString from 'frampton-utils/is_string';
+import toString from 'frampton-data/union/utils/to_string';
 import validateNames from 'frampton-data/union/utils/validate_names';
 
 /**
  * @name createType
  * @memberof Frampton.Data.Union
- * @param {Object} parent
  * @param {String} name
  * @param {Object} fields
  * @returns {Function}
  */
-export default function create_type(parent, name, fields) {
+export default function create_type(name, fields) {
 
   validateNames(fields);
   const len = fields.length;
@@ -23,13 +24,18 @@ export default function create_type(parent, name, fields) {
       warn(`Frampton.Data.Union.${name} expected ${len} arguments but received ${argLen}.`);
     }
 
-    const child = [];
-    child.constructor = parent;
+    const child = {};
     child.ctor = name;
+    child.toString = toString;
     child._values = args;
 
     for (let i = 0; i < argLen; i++) {
-      child[fields[i]] = args[i];
+      let field = fields[i];
+      if (isString(field)) {
+        child[field] = args[i];
+      } else {
+        warn(`Frampton.Data.Union.${name} received argument without associated field.`);
+      }
     }
 
     return Object.freeze(child);

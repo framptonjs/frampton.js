@@ -42,6 +42,19 @@ QUnit.test('Match method should correctly match instances', function(assert) {
   match(test);
 });
 
+QUnit.test('Should have a toString method', function(assert) {
+  const Person = Union({
+    Employee : ['name', 'age'],
+    Manager : ['name', 'age']
+  });
+
+  const bob = Person.Employee('Bob', 45);
+  const actual = bob.toString();
+  const expected = 'Union.Employee(Bob,45)';
+
+  assert.equal(actual, expected);
+});
+
 QUnit.test('Should create types with accessor properties', function(assert) {
 
   assert.expect(2);

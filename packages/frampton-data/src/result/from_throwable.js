@@ -4,8 +4,7 @@ import Failure from 'frampton-data/result/failure';
 export default function from_throwable(fn) {
   return function(...args) {
     try {
-      const value = fn(...args);
-      return Success(value);
+      return Success(fn(...args));
     } catch(e) {
       return Failure(e);
     }
