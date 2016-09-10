@@ -1,5 +1,7 @@
 # Frampton
 
+[![Build Status](https://semaphoreci.com/api/v1/beatniklarry/frampton-js/branches/master/badge.svg)](https://semaphoreci.com/beatniklarry/frampton-js)
+
 Frampton is a library to assist writing JavaScript in a functional manner. Frampton supplies an observable implementation (Frampton.Signal). Frampton is inspired largely by the Elm community thus we use similar naming conventions (Signal vs EventStream). Frampton also provides a number of utilities for dealing with common JavaScript types in a more functional manner.
 
 ### Currying
@@ -311,6 +313,55 @@ Frampton.Data.Task.when(/* tasks to run */).run(...);
 // Run tasks in sequence...
 Frampton.Data.Task.sequence(/* tasks to run */).run(...);
 
+```
+
+### Frampton.Data.Union
+
+In many functional languages there is a very useful data construct called a Union Type. It is used for modeling data types with a finite set of predefined values. The easiest example is a boolean. It can be either true or false. Union types allow you to create such constructs yourself. These constructs are usually accompanied by pattern matching. You can also associate data with unions.
+
+```
+const Union = Frampton.Data.Union.create;
+
+// This creates type constructors
+const Colors = Union({
+  Red : [],
+  Green : [],
+  Blue : []
+});
+
+// Create types
+const red = Colors.Red();
+
+// Pattern match against the instance
+const hexColor = Colors.match({
+  Red : () => '#FF0000',
+  Green : () => '#00FF00',
+  Blue : () => '#0000FF'
+}, red);
+
+console.log(hexColor); // #FF0000
+
+// Associate data with unions
+const Person = Union({
+  Man : ['name', 'age'],
+  Woman : ['name', 'age']
+});
+
+const john = Person.Man('John', 45);
+const jane = Person.Woman('Jane', 43);
+
+// Access values
+console.log(john.name); // 'John'
+console.log(jane.age); // 43
+
+// Match with values, curried function
+const age = Person.match({
+  Man : (name, age) => age,
+  Woman : (name, age) => age
+});
+
+console.log(age(john)); // 45
+console.log(age(jane)); // 43
 ```
 
 
