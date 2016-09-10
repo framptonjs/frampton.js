@@ -690,8 +690,7 @@ define('frampton-data/result/from_throwable', ['exports', 'frampton-data/result/
   function from_throwable(fn) {
     return function () {
       try {
-        var value = fn.apply(undefined, arguments);
-        return (0, _success2.default)(value);
+        return (0, _success2.default)(fn.apply(undefined, arguments));
       } catch (e) {
         return (0, _failure2.default)(e);
       }
@@ -1529,7 +1528,7 @@ define('frampton-data/task/when', ['exports', 'frampton-utils/log', 'frampton-ut
     });
   }
 });
-define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'frampton-utils/warn', 'frampton-record/keys', 'frampton-data/union/utils/create_type', 'frampton-data/union/utils/case_of'], function (exports, _curry_n, _warn, _keys, _create_type, _case_of) {
+define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'frampton-record/keys', 'frampton-data/union/utils/create_type', 'frampton-data/union/utils/case_of', 'frampton-data/union/utils/validate_types'], function (exports, _curry_n, _keys, _create_type, _case_of, _validate_types) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1539,21 +1538,19 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'fram
 
   var _curry_n2 = _interopRequireDefault(_curry_n);
 
-  var _warn2 = _interopRequireDefault(_warn);
-
   var _keys2 = _interopRequireDefault(_keys);
 
   var _create_type2 = _interopRequireDefault(_create_type);
 
   var _case_of2 = _interopRequireDefault(_case_of);
 
+  var _validate_types2 = _interopRequireDefault(_validate_types);
+
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
       default: obj
     };
   }
-
-  var blacklist = ['ctor', 'children', 'caseOf'];
 
   /**
   
@@ -1577,18 +1574,14 @@ define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'fram
   function create_union(values) {
     var parent = {};
     var children = (0, _keys2.default)(values);
+    (0, _validate_types2.default)(children);
 
-    parent.prototype = {};
     parent.ctor = 'Frampton.Data.Union';
     parent.children = children;
     parent.match = (0, _curry_n2.default)(3, _case_of2.default, parent);
 
     for (var name in values) {
-      if (blacklist.indexOf(name) === -1) {
-        parent[name] = (0, _create_type2.default)(parent, name, values[name]);
-      } else {
-        (0, _warn2.default)('Frampton.Data.Union received a protected key: ' + name);
-      }
+      parent[name] = (0, _create_type2.default)(name, values[name]);
     }
 
     return Object.freeze(parent);
@@ -1649,7 +1642,7 @@ define('frampton-data/union/utils/case_of', ['exports', 'frampton-utils/is_nothi
     }
   }
 });
-define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn', 'frampton-utils/curry_n', 'frampton-data/union/utils/validate_names'], function (exports, _warn, _curry_n, _validate_names) {
+define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn', 'frampton-utils/curry_n', 'frampton-utils/is_string', 'frampton-data/union/utils/to_string', 'frampton-data/union/utils/validate_names'], function (exports, _warn, _curry_n, _is_string, _to_string, _validate_names) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1660,6 +1653,10 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn
   var _warn2 = _interopRequireDefault(_warn);
 
   var _curry_n2 = _interopRequireDefault(_curry_n);
+
+  var _is_string2 = _interopRequireDefault(_is_string);
+
+  var _to_string2 = _interopRequireDefault(_to_string);
 
   var _validate_names2 = _interopRequireDefault(_validate_names);
 
@@ -1672,12 +1669,11 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn
   /**
    * @name createType
    * @memberof Frampton.Data.Union
-   * @param {Object} parent
    * @param {String} name
    * @param {Object} fields
    * @returns {Function}
    */
-  function create_type(parent, name, fields) {
+  function create_type(name, fields) {
 
     (0, _validate_names2.default)(fields);
     var len = fields.length;
@@ -1693,13 +1689,18 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn
         (0, _warn2.default)('Frampton.Data.Union.' + name + ' expected ' + len + ' arguments but received ' + argLen + '.');
       }
 
-      var child = [];
-      child.constructor = parent;
+      var child = {};
       child.ctor = name;
+      child.toString = _to_string2.default;
       child._values = args;
 
       for (var i = 0; i < argLen; i++) {
-        child[fields[i]] = args[i];
+        var field = fields[i];
+        if ((0, _is_string2.default)(field)) {
+          child[field] = args[i];
+        } else {
+          (0, _warn2.default)('Frampton.Data.Union.' + name + ' received argument without associated field.');
+        }
       }
 
       return Object.freeze(child);
@@ -1741,6 +1742,18 @@ define('frampton-data/union/utils/get_match', ['exports', 'frampton-utils/is_som
     }
   }
 });
+define('frampton-data/union/utils/to_string', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = to_string;
+  function to_string() {
+    var value = this._values.join(',');
+    return 'Union.' + this.ctor + '(' + value + ')';
+  }
+});
 define('frampton-data/union/utils/validate_names', ['exports', 'frampton-utils/is_array'], function (exports, _is_array) {
   'use strict';
 
@@ -1757,7 +1770,7 @@ define('frampton-data/union/utils/validate_names', ['exports', 'frampton-utils/i
     };
   }
 
-  var blacklist = ['ctor', 'constructor', 'get', 'set', 'update'];
+  var blacklist = ['ctor', 'get', 'set', 'update'];
 
   function validate_names(names) {
 
@@ -1802,7 +1815,26 @@ define('frampton-data/union/utils/validate_options', ['exports', 'frampton-utils
     for (var i = 0; i < len; i++) {
       var child = children[i];
       if (!hasMatch(cases, child)) {
-        (0, _warn2.default)('Non-exhaustive pattern match for case: ' + child);
+        (0, _warn2.default)('Non-exhaustive pattern match for case: ' + child.ctor);
+      }
+    }
+  }
+});
+define('frampton-data/union/utils/validate_types', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = validate_types;
+  var blacklist = ['ctor', 'children', 'caseOf', 'match'];
+
+  function validate_types(types) {
+    var len = types.length;
+    for (var i = 0; i < len; i++) {
+      var name = types[i];
+      if (blacklist.indexOf(name) !== -1) {
+        throw new Error('Frampton.Data.Union received a protected key: ' + name);
       }
     }
   }
@@ -8043,7 +8075,7 @@ define('frampton/namespace', ['exports'], function (exports) {
    * @name Frampton
    * @namespace
    */
-  Frampton.VERSION = '0.2.2';
+  Frampton.VERSION = '0.2.3';
 
   Frampton.TEST = 'test';
 
