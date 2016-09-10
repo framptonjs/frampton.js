@@ -26,6 +26,6 @@ QUnit.test('Should create function that returns a Failure if given function thro
   };
   const safeThrowable = fromThrowable(throwable);
   const actual = safeThrowable(8).toString();
-  const expected = 'Failure(Error: Number too big)';
+  const expected = 'Failure(Number too big)';
   assert.equal(actual, expected);
 });

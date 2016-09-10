@@ -6,7 +6,7 @@ export default function from_throwable(fn) {
     try {
       return Success(fn(...args));
     } catch(e) {
-      return Failure(e);
+      return Failure(e.message);
     }
   };
 }

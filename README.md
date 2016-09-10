@@ -175,6 +175,18 @@ const onSuccess = (val) => val + 3;
 const onFailure = (val) => val + 10;
 const successResult = success.fork(onSuccess, onFailure); // -> 8
 const failureResult = failure.fork(onSuccess, onFailure); // -> 18
+
+// Create Result from function that may throw
+const wrappedFn = fromThrowable((num) => {
+  if (num > 5) {
+    return num;
+  } else {
+    throw new Error('Too small');
+  }
+});
+
+wrappedFn(10); // -> 'Success(10)'
+wrappedFn(2); // -> 'Failure(Too small)'
 ```
 
 ### Frampton.Data.Maybe
