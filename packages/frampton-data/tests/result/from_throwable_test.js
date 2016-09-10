@@ -29,3 +29,43 @@ QUnit.test('Should create function that returns a Failure if given function thro
   const expected = 'Failure(Number too big)';
   assert.equal(actual, expected);
 });
+
+QUnit.test('Should return a curried function that handles success', function(assert) {
+  const throwable = (first, second) => {
+    if (first > second) {
+      throw new Error('Wrong');
+    } else {
+      return second;
+    }
+  };
+  const safeThrowable = fromThrowable(throwable);
+  const testSix = safeThrowable(6);
+  const actual = testSix(8).toString();
+  const expected = 'Success(8)';
+  assert.equal(actual, expected);
+});
+
+QUnit.test('Should return a curried function that handles failure', function(assert) {
+  const throwable = (first, second) => {
+    if (first > second) {
+      throw new Error('Wrong');
+    } else {
+      return second;
+    }
+  };
+  const safeThrowable = fromThrowable(throwable);
+  const testSix = safeThrowable(6);
+  const actual = testSix(4).toString();
+  const expected = 'Failure(Wrong)';
+  assert.equal(actual, expected);
+});
+
+QUnit.test('Returned function should not require an argument', function(assert) {
+  const throwable = () => {
+    return 'Ok';
+  };
+  const safeThrowable = fromThrowable(throwable);
+  const actual = safeThrowable().toString();
+  const expected = 'Success(Ok)';
+  assert.equal(actual, expected);
+});

@@ -18,7 +18,7 @@ export default function curry_n(arity, fn, ...args) {
 
   assert('Argument passed to curry is not a function', isFunction(fn));
 
-  function curried(...args2) {
+  return function curried(...args2) {
 
     // an array of arguments for this instance of the curried function
     const locals = args.concat(args2);
@@ -31,7 +31,5 @@ export default function curry_n(arity, fn, ...args) {
     } else {
       return curry_n.apply(null, [arity, fn].concat(locals));
     }
-  }
-
-  return ((args.length >= arity) ? curried() : curried);
+  };
 }

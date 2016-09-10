@@ -187,6 +187,19 @@ const wrappedFn = fromThrowable((num) => {
 
 wrappedFn(10); // -> 'Success(10)'
 wrappedFn(2); // -> 'Failure(Too small)'
+
+// fromThrowable returns a curried function
+const testValues = fromThrowable((first, second) => {
+  if (first > second) {
+    throw new Error('Second too small');
+  } else {
+    return second;
+  }
+});
+
+const testSix = testValues(6);
+testSix(8); // -> 'Success(8)';
+testSix(2); // -> 'Failure(Second too small)'
 ```
 
 ### Frampton.Data.Maybe

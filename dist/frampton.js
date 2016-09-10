@@ -669,13 +669,15 @@ define('frampton-data/result/failure', ['exports', 'frampton-data/result/result'
     return new _result.FailureType(err);
   }
 });
-define('frampton-data/result/from_throwable', ['exports', 'frampton-data/result/success', 'frampton-data/result/failure'], function (exports, _success, _failure) {
+define('frampton-data/result/from_throwable', ['exports', 'frampton-utils/curry_n', 'frampton-data/result/success', 'frampton-data/result/failure'], function (exports, _curry_n, _success, _failure) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = from_throwable;
+
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _success2 = _interopRequireDefault(_success);
 
@@ -688,13 +690,14 @@ define('frampton-data/result/from_throwable', ['exports', 'frampton-data/result/
   }
 
   function from_throwable(fn) {
-    return function () {
+    var arity = fn.length;
+    return (0, _curry_n2.default)(arity, function () {
       try {
         return (0, _success2.default)(fn.apply(undefined, arguments));
       } catch (e) {
-        return (0, _failure2.default)(e);
+        return (0, _failure2.default)(e.message);
       }
-    };
+    });
   }
 });
 define('frampton-data/result/result', ['exports', 'frampton-utils/of_value', 'frampton-utils/is_equal', 'frampton-utils/is_function'], function (exports, _of_value, _is_equal, _is_function) {
@@ -6850,7 +6853,7 @@ define('frampton-utils/curry_n', ['exports', 'frampton-utils/assert', 'frampton-
 
     (0, _assert2.default)('Argument passed to curry is not a function', (0, _is_function2.default)(fn));
 
-    function curried() {
+    return function curried() {
       for (var _len2 = arguments.length, args2 = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args2[_key2] = arguments[_key2];
       }
@@ -6866,9 +6869,7 @@ define('frampton-utils/curry_n', ['exports', 'frampton-utils/assert', 'frampton-
       } else {
         return curry_n.apply(null, [arity, fn].concat(locals));
       }
-    }
-
-    return args.length >= arity ? curried() : curried;
+    };
   }
 });
 define('frampton-utils/equal', ['exports', 'frampton-utils/is_object', 'frampton-utils/is_array'], function (exports, _is_object, _is_array) {
