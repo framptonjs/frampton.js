@@ -3,7 +3,7 @@ import curry from 'frampton-utils/curry';
 /**
  * @name forEach
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Function} fn Function to call for each key/value pair
  * @param {Object} obj Object to iterate over
  */

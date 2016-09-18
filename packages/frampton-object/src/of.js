@@ -1,11 +1,11 @@
-import copy from 'frampton-record/copy';
+import copy from 'frampton-object/copy';
 
 /**
  * of :: Object -> Object
  *
  * @name of
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Object} obj object to copy
  * @returns {Object}
  */

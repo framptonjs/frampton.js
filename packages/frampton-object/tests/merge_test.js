@@ -1,6 +1,6 @@
-import merge from 'frampton-record/merge';
+import merge from 'frampton-object/merge';
 
-QUnit.module('Frampton.Record.merge');
+QUnit.module('Frampton.Object.merge');
 
 QUnit.test('Should create a new object with values from two objects', function(assert) {
   const obj = { one: 1, two: 2 };

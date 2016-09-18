@@ -523,7 +523,7 @@ define('frampton-data/maybe/nothing', ['exports', 'frampton-data/maybe/create'],
     return new _create.NothingType();
   }
 });
-define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-record/merge', 'frampton-record/keys', 'frampton-record/map', 'frampton-record/reduce'], function (exports, _namespace, _guid, _warn, _merge, _keys, _map, _reduce) {
+define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampton-utils/guid', 'frampton-utils/warn', 'frampton-object/merge', 'frampton-object/keys', 'frampton-object/map', 'frampton-object/reduce'], function (exports, _namespace, _guid, _warn, _merge, _keys, _map, _reduce) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1531,7 +1531,7 @@ define('frampton-data/task/when', ['exports', 'frampton-utils/log', 'frampton-ut
     });
   }
 });
-define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'frampton-record/keys', 'frampton-data/union/utils/create_type', 'frampton-data/union/utils/case_of', 'frampton-data/union/utils/validate_types'], function (exports, _curry_n, _keys, _create_type, _case_of, _validate_types) {
+define('frampton-data/union/create', ['exports', 'frampton-utils/curry_n', 'frampton-object/keys', 'frampton-data/union/utils/create_type', 'frampton-data/union/utils/case_of', 'frampton-data/union/utils/validate_types'], function (exports, _curry_n, _keys, _create_type, _case_of, _validate_types) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1681,7 +1681,7 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn
     (0, _validate_names2.default)(fields);
     var len = fields.length;
 
-    var constructor = function constructor() {
+    return (0, _curry_n2.default)(len, function () {
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
@@ -1696,6 +1696,7 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn
       child.ctor = name;
       child.toString = _to_string2.default;
       child._values = args;
+      child._keys = fields;
 
       for (var i = 0; i < argLen; i++) {
         var field = fields[i];
@@ -1707,9 +1708,7 @@ define('frampton-data/union/utils/create_type', ['exports', 'frampton-utils/warn
       }
 
       return Object.freeze(child);
-    };
-
-    return len === 0 ? constructor : (0, _curry_n2.default)(len, constructor);
+    });
   }
 });
 define('frampton-data/union/utils/get_match', ['exports', 'frampton-utils/is_something', 'frampton-data/union/utils/wildcard'], function (exports, _is_something, _wildcard) {
@@ -3951,7 +3950,12 @@ define('frampton-list/prepend', ['exports', 'frampton-utils/curry'], function (e
   }
 
   exports.default = (0, _curry2.default)(function (xs, obj) {
-    return Object.freeze([].concat(obj).concat(xs));
+    var ys = [obj];
+    var len = xs.length;
+    for (var i = 0; i < len; i++) {
+      ys.push(xs[i]);
+    }
+    return Object.freeze(ys);
   });
 });
 define('frampton-list/product', ['exports', 'frampton-list/foldl'], function (exports, _foldl) {
@@ -4536,8 +4540,7 @@ define('frampton-mouse/mouse', ['exports', 'frampton-signal/stepper', 'frampton-
   var moves = (0, _on_event2.default)('mousemove');
   var isDown = (0, _stepper2.default)(false, downs.map(true).merge(ups.map(false)));
 
-  var defaultMouse = {
-    clicks: clicks,
+  var defaultMouse = { clicks: clicks,
     downs: downs,
     ups: ups,
     position: (0, _stepper2.default)([0, 0], moves.map(_get_position2.default)),
@@ -4563,7 +4566,7 @@ define('frampton-mouse/mouse', ['exports', 'frampton-signal/stepper', 'frampton-
     }
   }
 });
-define('frampton-record', ['frampton/namespace', 'frampton-record/filter', 'frampton-record/reduce', 'frampton-record/map', 'frampton-record/merge', 'frampton-record/for_each', 'frampton-record/as_list', 'frampton-record/copy', 'frampton-record/update'], function (_namespace, _filter, _reduce, _map, _merge, _for_each, _as_list, _copy, _update) {
+define('frampton-object', ['frampton/namespace', 'frampton-object/filter', 'frampton-object/reduce', 'frampton-object/map', 'frampton-object/merge', 'frampton-object/for_each', 'frampton-object/as_list', 'frampton-object/copy', 'frampton-object/update'], function (_namespace, _filter, _reduce, _map, _merge, _for_each, _as_list, _copy, _update) {
   'use strict';
 
   var _namespace2 = _interopRequireDefault(_namespace);
@@ -4595,17 +4598,17 @@ define('frampton-record', ['frampton/namespace', 'frampton-record/filter', 'fram
    * @namespace
    * @memberof Frampton
    */
-  _namespace2.default.Record = {};
-  _namespace2.default.Record.copy = _copy2.default;
-  _namespace2.default.Record.update = _update2.default;
-  _namespace2.default.Record.filter = _filter2.default;
-  _namespace2.default.Record.reduce = _reduce2.default;
-  _namespace2.default.Record.map = _map2.default;
-  _namespace2.default.Record.each = _for_each2.default;
-  _namespace2.default.Record.asList = _as_list2.default;
-  _namespace2.default.Record.merge = _merge2.default;
+  _namespace2.default.Object = {};
+  _namespace2.default.Object.copy = _copy2.default;
+  _namespace2.default.Object.update = _update2.default;
+  _namespace2.default.Object.filter = _filter2.default;
+  _namespace2.default.Object.reduce = _reduce2.default;
+  _namespace2.default.Object.map = _map2.default;
+  _namespace2.default.Object.each = _for_each2.default;
+  _namespace2.default.Object.asList = _as_list2.default;
+  _namespace2.default.Object.merge = _merge2.default;
 });
-define('frampton-record/as_list', ['exports', 'frampton-record/reduce'], function (exports, _reduce) {
+define('frampton-object/as_list', ['exports', 'frampton-object/reduce'], function (exports, _reduce) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4636,7 +4639,7 @@ define('frampton-record/as_list', ['exports', 'frampton-record/reduce'], functio
     }, [], obj));
   }
 });
-define('frampton-record/copy', ['exports', 'frampton-record/for_each'], function (exports, _for_each) {
+define('frampton-object/copy', ['exports', 'frampton-object/for_each'], function (exports, _for_each) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4672,7 +4675,7 @@ define('frampton-record/copy', ['exports', 'frampton-record/for_each'], function
     return Object.freeze(newObj);
   }
 });
-define('frampton-record/filter', ['exports', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, _curry, _for_each) {
+define('frampton-object/filter', ['exports', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, _curry, _for_each) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4702,7 +4705,7 @@ define('frampton-record/filter', ['exports', 'frampton-utils/curry', 'frampton-r
     return Object.freeze(newObj);
   });
 });
-define('frampton-record/for_each', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-object/for_each', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4725,7 +4728,7 @@ define('frampton-record/for_each', ['exports', 'frampton-utils/curry'], function
     }
   });
 });
-define('frampton-record/keys', ['exports', 'frampton-utils/is_function'], function (exports, _is_function) {
+define('frampton-object/keys', ['exports', 'frampton-utils/is_function'], function (exports, _is_function) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4756,7 +4759,7 @@ define('frampton-record/keys', ['exports', 'frampton-utils/is_function'], functi
   /**
    * @name keys
    * @method
-   * @memberof Frampton.Record
+   * @memberof Frampton.Object
    * @param {Object} obj Object whose keys to get
    * @returns {String[]}
    */
@@ -4770,7 +4773,7 @@ define('frampton-record/keys', ['exports', 'frampton-utils/is_function'], functi
     }
   }
 });
-define('frampton-record/map', ['exports', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, _curry, _for_each) {
+define('frampton-object/map', ['exports', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, _curry, _for_each) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4798,7 +4801,7 @@ define('frampton-record/map', ['exports', 'frampton-utils/curry', 'frampton-reco
     return Object.freeze(newObj);
   });
 });
-define('frampton-record/merge', ['exports', 'frampton-utils/curry', 'frampton-utils/extend'], function (exports, _curry, _extend) {
+define('frampton-object/merge', ['exports', 'frampton-utils/curry', 'frampton-utils/extend'], function (exports, _curry, _extend) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4819,7 +4822,7 @@ define('frampton-record/merge', ['exports', 'frampton-utils/curry', 'frampton-ut
     return Object.freeze((0, _extend2.default)({}, obj1, obj2));
   });
 });
-define('frampton-record/of', ['exports', 'frampton-record/copy'], function (exports, _copy) {
+define('frampton-object/of', ['exports', 'frampton-object/copy'], function (exports, _copy) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4840,7 +4843,7 @@ define('frampton-record/of', ['exports', 'frampton-record/copy'], function (expo
    *
    * @name of
    * @method
-   * @memberof Frampton.Record
+   * @memberof Frampton.Object
    * @param {Object} obj object to copy
    * @returns {Object}
    */
@@ -4848,7 +4851,7 @@ define('frampton-record/of', ['exports', 'frampton-record/copy'], function (expo
     return (0, _copy2.default)(obj);
   }
 });
-define('frampton-record/reduce', ['exports', 'frampton-utils/curry', 'frampton-record/for_each'], function (exports, _curry, _for_each) {
+define('frampton-object/reduce', ['exports', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, _curry, _for_each) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4874,7 +4877,7 @@ define('frampton-record/reduce', ['exports', 'frampton-utils/curry', 'frampton-r
     return acc;
   });
 });
-define('frampton-record/update', ['exports', 'frampton-record/for_each'], function (exports, _for_each) {
+define('frampton-object/update', ['exports', 'frampton-object/for_each'], function (exports, _for_each) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4895,7 +4898,7 @@ define('frampton-record/update', ['exports', 'frampton-record/for_each'], functi
    *
    * @name update
    * @method
-   * @memberof Frampton.Record
+   * @memberof Frampton.Object
    * @param {Object} base   object to copy
    * @param {Object} update object describing desired udpate
    * @returns {Object}
@@ -4915,7 +4918,7 @@ define('frampton-record/update', ['exports', 'frampton-record/for_each'], functi
     return Object.freeze(newObj);
   }
 });
-define('frampton-record/values', ['exports', 'frampton-utils/is_object'], function (exports, _is_object) {
+define('frampton-object/values', ['exports', 'frampton-utils/is_object'], function (exports, _is_object) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4936,7 +4939,7 @@ define('frampton-record/values', ['exports', 'frampton-utils/is_object'], functi
   /**
    * @name values
    * @method
-   * @memberof Frampton.Record
+   * @memberof Frampton.Object
    * @param {Object} obj Object whose values to get
    * @returns {String[]}
    */
@@ -8045,7 +8048,7 @@ define('frampton-window/window', ['exports', 'frampton-signal/stepper', 'frampto
     };
   }
 });
-define('frampton', ['exports', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-record', 'frampton-string', 'frampton-math', 'frampton-events', 'frampton-data', 'frampton-signal', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-html', 'frampton-style'], function (exports, _namespace) {
+define('frampton', ['exports', 'frampton/namespace', 'frampton-utils', 'frampton-list', 'frampton-object', 'frampton-string', 'frampton-math', 'frampton-events', 'frampton-data', 'frampton-signal', 'frampton-mouse', 'frampton-keyboard', 'frampton-window', 'frampton-html', 'frampton-style'], function (exports, _namespace) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {

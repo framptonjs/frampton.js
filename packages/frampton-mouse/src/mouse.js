@@ -10,13 +10,13 @@ const ups = onEvent('mouseup');
 const moves = onEvent('mousemove');
 const isDown = stepper(false, downs.map(true).merge(ups.map(false)));
 
-const defaultMouse = {
-  clicks   : clicks,
-  downs    : downs,
-  ups      : ups,
-  position : stepper([0,0], moves.map(getPosition)),
-  isDown   : isDown
-};
+const defaultMouse =
+  { clicks : clicks
+  , downs : downs
+  , ups : ups
+  , position : stepper([0,0], moves.map(getPosition))
+  , isDown : isDown
+  };
 
 /**
  * @name Mouse

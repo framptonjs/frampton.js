@@ -1,6 +1,6 @@
-import values from 'frampton-record/values';
+import values from 'frampton-object/values';
 
-QUnit.module('Frampton.Record.values');
+QUnit.module('Frampton.Object.values');
 
 QUnit.test('Should return an array of object values', function(assert) {
   const obj = { one: 1, two: 2, three: 3 };

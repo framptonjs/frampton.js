@@ -1,6 +1,6 @@
-import update from 'frampton-record/update';
+import update from 'frampton-object/update';
 
-QUnit.module('Frampton.Record.update');
+QUnit.module('Frampton.Object.update');
 
 QUnit.test('Should correctly update specified keys', function(assert) {
   const obj = { one: 1, two: 2, three: 3 };

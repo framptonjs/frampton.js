@@ -6,7 +6,7 @@ import extend from 'frampton-utils/extend';
  *
  * @name merge
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Object} obj1 First object to merge
  * @param {Object} obj2 Second object to merge
  * @returns {Object}

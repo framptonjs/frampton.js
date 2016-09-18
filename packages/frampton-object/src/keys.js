@@ -15,7 +15,7 @@ function getKeys(obj) {
 /**
  * @name keys
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Object} obj Object whose keys to get
  * @returns {String[]}
  */

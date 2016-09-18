@@ -8,5 +8,10 @@ import curry from 'frampton-utils/curry';
  * @param {*} obj
  */
 export default curry(function(xs, obj) {
-  return Object.freeze([].concat(obj).concat(xs));
+  const ys = [ obj ];
+  const len = xs.length;
+  for (let i = 0; i < len; i++) {
+    ys.push(xs[i]);
+  }
+  return Object.freeze(ys);
 });

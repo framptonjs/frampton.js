@@ -16,7 +16,7 @@ export default function create_type(name, fields) {
   validateNames(fields);
   const len = fields.length;
 
-  const constructor = (...args) => {
+  return curryN(len, (...args) => {
 
     const argLen = args.length;
 
@@ -28,6 +28,7 @@ export default function create_type(name, fields) {
     child.ctor = name;
     child.toString = toString;
     child._values = args;
+    child._keys = fields;
 
     for (let i = 0; i < argLen; i++) {
       let field = fields[i];
@@ -39,7 +40,5 @@ export default function create_type(name, fields) {
     }
 
     return Object.freeze(child);
-  };
-
-  return (len === 0) ? constructor : curryN(len, constructor);
+  });
 }

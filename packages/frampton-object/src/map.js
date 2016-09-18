@@ -1,10 +1,10 @@
 import curry from 'frampton-utils/curry';
-import forEach from 'frampton-record/for_each';
+import forEach from 'frampton-object/for_each';
 
 /**
  * @name map
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Function} fn Function used to map the object
  * @param {Object} obj Object to map
  * @returns {Object} A new object with its values mapped using the given function

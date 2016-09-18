@@ -5,7 +5,7 @@ const packages = {
   'frampton-utils' : { trees: null },
   'frampton-math' : { trees: null },
   'frampton-list' : { trees: null },
-  'frampton-record' : { trees: null },
+  'frampton-object' : { trees: null },
   'frampton-string' : { trees: null },
   'frampton-data' : { trees: null },
   'frampton-html' : { trees: null },

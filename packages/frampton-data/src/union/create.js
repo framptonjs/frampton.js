@@ -1,5 +1,5 @@
 import curryN from 'frampton-utils/curry_n';
-import getKeys from 'frampton-record/keys';
+import getKeys from 'frampton-object/keys';
 import createType from 'frampton-data/union/utils/create_type';
 import caseOf from 'frampton-data/union/utils/case_of';
 import validateTypes from 'frampton-data/union/utils/validate_types';

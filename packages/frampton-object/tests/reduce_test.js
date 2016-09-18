@@ -1,8 +1,8 @@
-import reduce from 'frampton-record/reduce';
+import reduce from 'frampton-object/reduce';
 
-QUnit.module('Frampton.Record.reduce');
+QUnit.module('Frampton.Object.reduce');
 
-QUnit.test('should reduce an object to another value', function(assert) {
+QUnit.test('Should reduce an object to another value', function(assert) {
 
   const obj = { one: 1, two: 2, three: 3 };
   const reduction = (acc, val) => (acc + val);

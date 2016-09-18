@@ -1,11 +1,11 @@
-import forEach from 'frampton-record/for_each';
+import forEach from 'frampton-object/for_each';
 
 /**
  * update :: Object -> Object -> Object
  *
  * @name update
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Object} base   object to copy
  * @param {Object} update object describing desired udpate
  * @returns {Object}

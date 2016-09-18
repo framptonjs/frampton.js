@@ -1,8 +1,8 @@
-import map from 'frampton-record/map';
+import map from 'frampton-object/map';
 
-QUnit.module('Frampton.Record.map');
+QUnit.module('Frampton.Object.map');
 
-QUnit.test('should map the values of an object', function(assert) {
+QUnit.test('Should map the values of an object', function(assert) {
   const obj = { one: 1, two: 2, three: 3 };
   const mapping = (val) => (val + 1);
   const actual = map(mapping, obj);

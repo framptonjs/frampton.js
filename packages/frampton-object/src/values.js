@@ -5,7 +5,7 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 /**
  * @name values
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Object} obj Object whose values to get
  * @returns {String[]}
  */

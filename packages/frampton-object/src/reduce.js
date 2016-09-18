@@ -1,12 +1,12 @@
 import curry from 'frampton-utils/curry';
-import forEach from 'frampton-record/for_each';
+import forEach from 'frampton-object/for_each';
 
 /**
  * reduce :: Function -> Any -> Object -> Object
  *
  * @name reduce
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Function} fn Function used to reduce the object
  * @param {*} acc Initial value of reduce operation
  * @param {Object} obj Object to iterate over for the reduce

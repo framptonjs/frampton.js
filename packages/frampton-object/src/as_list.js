@@ -1,4 +1,4 @@
-import reduce from 'frampton-record/reduce';
+import reduce from 'frampton-object/reduce';
 
 // as_list :: Object -> Array [String, *]
 /**

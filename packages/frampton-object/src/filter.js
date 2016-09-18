@@ -1,10 +1,10 @@
 import curry from 'frampton-utils/curry';
-import forEach from 'frampton-record/for_each';
+import forEach from 'frampton-object/for_each';
 
 /**
  * @name filter
  * @method
- * @memberof Frampton.Record
+ * @memberof Frampton.Object
  * @param {Function} predicate A function to filter the object. The functino recieves the
  * value and key as arguments to make its decision
  * @returns {Object}

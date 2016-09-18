@@ -42,5 +42,6 @@
   "strict": false,
   "white": true,
   "eqnull": true,
-  "unused": "vars"
+  "unused": "vars",
+  "laxcomma": true
 }

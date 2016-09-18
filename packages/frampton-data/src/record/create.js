@@ -1,10 +1,10 @@
 import Frampton from 'frampton/namespace';
 import guid from 'frampton-utils/guid';
 import warn from 'frampton-utils/warn';
-import merge from 'frampton-record/merge';
-import keys from 'frampton-record/keys';
-import mapObj from 'frampton-record/map';
-import reduceObj from 'frampton-record/reduce';
+import merge from 'frampton-object/merge';
+import keys from 'frampton-object/keys';
+import mapObj from 'frampton-object/map';
+import reduceObj from 'frampton-object/reduce';
 
 const blacklist =
   ['_id', '_props', 'ctor', 'keys', 'get', 'set', 'update', 'data'];

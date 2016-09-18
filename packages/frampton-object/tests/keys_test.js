@@ -1,6 +1,6 @@
-import keys from 'frampton-record/keys';
+import keys from 'frampton-object/keys';
 
-QUnit.module('Frampton.Record.keys');
+QUnit.module('Frampton.Object.keys');
 
 QUnit.test('Should return array of objects keys', function(assert) {
   const map = { one : 1, two : 2, three : 3 };
