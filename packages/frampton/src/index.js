@@ -8,9 +8,6 @@ import 'frampton-math';
 import 'frampton-events';
 import 'frampton-data';
 import 'frampton-signal';
-import 'frampton-mouse';
-import 'frampton-keyboard';
-import 'frampton-window';
 import 'frampton-html';
 import 'frampton-style';
 

@@ -11,10 +11,7 @@ const packages = {
   'frampton-html' : { trees: null },
   'frampton-style' : { trees: null },
   'frampton-events' : { trees: null },
-  'frampton-signal' : { trees: null },
-  'frampton-mouse' : { trees: null },
-  'frampton-keyboard' : { trees: null },
-  'frampton-window' : { trees: null }
+  'frampton-signal' : { trees: null }
 };
 
 const build = new FramptonBuild({
