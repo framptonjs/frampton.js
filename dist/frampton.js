@@ -2891,6 +2891,18 @@ define("frampton-html/element_value", ["exports"], function (exports) {
     return element.value || null;
   }
 });
+define("frampton-html/remove", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = remove;
+  function remove(element) {
+    var parent = element.parentNode;
+    parent.removeChild(element);
+  }
+});
 define('frampton-html/set_html', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
   'use strict';
 
