@@ -611,9 +611,7 @@ define('frampton-data/record/create', ['exports', 'frampton/namespace', 'frampto
     model.set = function (key, value) {
       var update = {};
       update[key] = value;
-      // In dev mode verify object properties
-      validateData(_props, update);
-      return create_record((0, _merge2.default)(data, update), _id, _props);
+      return model.update(update);
     };
 
     /**
@@ -2027,7 +2025,7 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   function addCustomEvent(name, target, callback) {
     var listen = (0, _is_function2.default)(target.addEventListener) ? target.addEventListener : (0, _is_function2.default)(target.on) ? target.on : null;
 
-    (0, _assert2.default)('addListener received an unknown type as target', (0, _is_function2.default)(listen));
+    (0, _assert2.default)('Frampton.Events.addListener received an unknown type as target', (0, _is_function2.default)(listen));
 
     listen.call(target, name, callback);
   }
@@ -2039,13 +2037,12 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
   function removeCustomEvent(name, target, callback) {
     var remove = (0, _is_function2.default)(target.removeEventListener) ? target.removeEventListener : (0, _is_function2.default)(target.off) ? target.off : null;
 
-    (0, _assert2.default)('removeListener received an unknown type as target', (0, _is_function2.default)(remove));
+    (0, _assert2.default)('Frampton.Events.removeListener received an unknown type as target', (0, _is_function2.default)(remove));
 
     remove.call(target, name, callback);
   }
 
-  function addListener(eventName, target, callback) {
-
+  var addListener = exports.addListener = function addListener(eventName, target, callback) {
     if ((0, _is_defined2.default)(_event_map2.default[eventName]) && (0, _is_function2.default)(target.addEventListener)) {
       addDomEvent(eventName, target, callback);
     } else {
@@ -2053,18 +2050,15 @@ define('frampton-events/event_dispatcher', ['exports', 'frampton-utils/assert', 
     }
 
     return (0, _lazy2.default)(removeListener, [eventName, target, callback]);
-  }
+  };
 
-  function removeListener(eventName, target, callback) {
+  var removeListener = exports.removeListener = function removeListener(eventName, target, callback) {
     if ((0, _is_defined2.default)(_event_map2.default[eventName]) && (0, _is_function2.default)(target.removeEventListener)) {
       removeDomEvent(eventName, target, callback);
     } else {
       removeCustomEvent(eventName, target, callback);
     }
-  }
-
-  exports.addListener = addListener;
-  exports.removeListener = removeListener;
+  };
 });
 define("frampton-events/event_map", ["exports"], function (exports) {
   "use strict";
@@ -3033,7 +3027,7 @@ define('frampton-list', ['frampton/namespace', 'frampton-list/add', 'frampton-li
   _namespace2.default.List.take = _take2.default;
   _namespace2.default.List.zip = _zip2.default;
 });
-define('frampton-list/add', ['exports', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append', 'frampton-list/copy'], function (exports, _curry, _contains, _append, _copy) {
+define('frampton-list/add', ['exports', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append'], function (exports, _curry, _contains, _append) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -3046,8 +3040,6 @@ define('frampton-list/add', ['exports', 'frampton-utils/curry', 'frampton-list/c
 
   var _append2 = _interopRequireDefault(_append);
 
-  var _copy2 = _interopRequireDefault(_copy);
-
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
       default: obj
@@ -3055,7 +3047,7 @@ define('frampton-list/add', ['exports', 'frampton-utils/curry', 'frampton-list/c
   }
 
   exports.default = (0, _curry2.default)(function add_to_list(xs, obj) {
-    return !(0, _contains2.default)(xs, obj) ? (0, _append2.default)(xs, obj) : (0, _copy2.default)(xs);
+    return !(0, _contains2.default)(xs, obj) ? (0, _append2.default)(xs, obj) : xs;
   });
 });
 define('frampton-list/append', ['exports', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-list/length'], function (exports, _curry, _is_something, _length) {

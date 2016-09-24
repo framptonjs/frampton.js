@@ -67,9 +67,7 @@ export default function create_record(data, id, props) {
   model.set = (key, value) => {
     const update = {};
     update[key] = value;
-    // In dev mode verify object properties
-    validateData(_props, update);
-    return create_record(merge(data, update), _id, _props);
+    return model.update(update);
   };
 
   /**

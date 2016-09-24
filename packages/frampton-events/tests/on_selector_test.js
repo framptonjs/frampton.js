@@ -15,6 +15,7 @@ QUnit.module('Frampton.Events.onSelector', {
 });
 
 QUnit.test('Should create a signal that responds to events on a given selector', function(assert) {
+  assert.expect(2);
   const sig = onSelector('click', '.blue').map(1);
   assert.equal(sig.get(), undefined, 'Initial value is not undefined');
   this.selectorTestDiv.click();
