@@ -4103,26 +4103,32 @@ define('frampton-math/subtract', ['exports', 'frampton-utils/curry'], function (
     return left - right;
   });
 });
-define('frampton-object', ['frampton/namespace', 'frampton-object/filter', 'frampton-object/reduce', 'frampton-object/map', 'frampton-object/merge', 'frampton-object/for_each', 'frampton-object/as_list', 'frampton-object/copy', 'frampton-object/update'], function (_namespace, _filter, _reduce, _map, _merge, _for_each, _as_list, _copy, _update) {
+define('frampton-object', ['frampton/namespace', 'frampton-object/as_list', 'frampton-object/copy', 'frampton-object/filter', 'frampton-object/for_each', 'frampton-object/keys', 'frampton-object/map', 'frampton-object/merge', 'frampton-object/reduce', 'frampton-object/set', 'frampton-object/update', 'frampton-object/values'], function (_namespace, _as_list, _copy, _filter, _for_each, _keys, _map, _merge, _reduce, _set, _update, _values) {
   'use strict';
 
   var _namespace2 = _interopRequireDefault(_namespace);
-
-  var _filter2 = _interopRequireDefault(_filter);
-
-  var _reduce2 = _interopRequireDefault(_reduce);
-
-  var _map2 = _interopRequireDefault(_map);
-
-  var _merge2 = _interopRequireDefault(_merge);
-
-  var _for_each2 = _interopRequireDefault(_for_each);
 
   var _as_list2 = _interopRequireDefault(_as_list);
 
   var _copy2 = _interopRequireDefault(_copy);
 
+  var _filter2 = _interopRequireDefault(_filter);
+
+  var _for_each2 = _interopRequireDefault(_for_each);
+
+  var _keys2 = _interopRequireDefault(_keys);
+
+  var _map2 = _interopRequireDefault(_map);
+
+  var _merge2 = _interopRequireDefault(_merge);
+
+  var _reduce2 = _interopRequireDefault(_reduce);
+
+  var _set2 = _interopRequireDefault(_set);
+
   var _update2 = _interopRequireDefault(_update);
+
+  var _values2 = _interopRequireDefault(_values);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -4136,14 +4142,17 @@ define('frampton-object', ['frampton/namespace', 'frampton-object/filter', 'fram
    * @memberof Frampton
    */
   _namespace2.default.Object = {};
-  _namespace2.default.Object.copy = _copy2.default;
-  _namespace2.default.Object.update = _update2.default;
-  _namespace2.default.Object.filter = _filter2.default;
-  _namespace2.default.Object.reduce = _reduce2.default;
-  _namespace2.default.Object.map = _map2.default;
-  _namespace2.default.Object.each = _for_each2.default;
   _namespace2.default.Object.asList = _as_list2.default;
+  _namespace2.default.Object.copy = _copy2.default;
+  _namespace2.default.Object.each = _for_each2.default;
+  _namespace2.default.Object.filter = _filter2.default;
+  _namespace2.default.Object.keys = _keys2.default;
+  _namespace2.default.Object.map = _map2.default;
   _namespace2.default.Object.merge = _merge2.default;
+  _namespace2.default.Object.reduce = _reduce2.default;
+  _namespace2.default.Object.set = _set2.default;
+  _namespace2.default.Object.update = _update2.default;
+  _namespace2.default.Object.values = _values2.default;
 });
 define('frampton-object/as_list', ['exports', 'frampton-object/reduce'], function (exports, _reduce) {
   'use strict';
@@ -4359,35 +4368,6 @@ define('frampton-object/merge', ['exports', 'frampton-utils/curry', 'frampton-ut
     return Object.freeze((0, _extend2.default)({}, obj1, obj2));
   });
 });
-define('frampton-object/of', ['exports', 'frampton-object/copy'], function (exports, _copy) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = of_record;
-
-  var _copy2 = _interopRequireDefault(_copy);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  /**
-   * of :: Object -> Object
-   *
-   * @name of
-   * @method
-   * @memberof Frampton.Object
-   * @param {Object} obj object to copy
-   * @returns {Object}
-   */
-  function of_record(obj) {
-    return (0, _copy2.default)(obj);
-  }
-});
 define('frampton-object/reduce', ['exports', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, _curry, _for_each) {
   'use strict';
 
@@ -4412,6 +4392,29 @@ define('frampton-object/reduce', ['exports', 'frampton-utils/curry', 'frampton-o
     }, obj);
 
     return acc;
+  });
+});
+define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-object/update'], function (exports, _curry, _update) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _curry2 = _interopRequireDefault(_curry);
+
+  var _update2 = _interopRequireDefault(_update);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = (0, _curry2.default)(function set(key, value, obj) {
+    var toUpdate = {};
+    toUpdate[key] = value;
+    return (0, _update2.default)(obj, toUpdate);
   });
 });
 define('frampton-object/update', ['exports', 'frampton-object/for_each'], function (exports, _for_each) {

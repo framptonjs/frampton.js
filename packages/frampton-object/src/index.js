@@ -1,12 +1,15 @@
 import Frampton from 'frampton/namespace';
-import filter from 'frampton-object/filter';
-import reduce from 'frampton-object/reduce';
-import map from 'frampton-object/map';
-import merge from 'frampton-object/merge';
-import forEach from 'frampton-object/for_each';
 import asList from 'frampton-object/as_list';
 import copy from 'frampton-object/copy';
+import filter from 'frampton-object/filter';
+import forEach from 'frampton-object/for_each';
+import keys from 'frampton-object/keys';
+import map from 'frampton-object/map';
+import merge from 'frampton-object/merge';
+import reduce from 'frampton-object/reduce';
+import set from 'frampton-object/set';
 import update from 'frampton-object/update';
+import values from 'frampton-object/values';
 
 /**
  * @name Record
@@ -14,11 +17,14 @@ import update from 'frampton-object/update';
  * @memberof Frampton
  */
 Frampton.Object = {};
-Frampton.Object.copy   = copy;
-Frampton.Object.update = update;
-Frampton.Object.filter = filter;
-Frampton.Object.reduce = reduce;
-Frampton.Object.map    = map;
-Frampton.Object.each   = forEach;
 Frampton.Object.asList = asList;
+Frampton.Object.copy   = copy;
+Frampton.Object.each   = forEach;
+Frampton.Object.filter = filter;
+Frampton.Object.keys   = keys;
+Frampton.Object.map    = map;
 Frampton.Object.merge  = merge;
+Frampton.Object.reduce = reduce;
+Frampton.Object.set    = set;
+Frampton.Object.update = update;
+Frampton.Object.values = values;
