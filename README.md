@@ -8,6 +8,10 @@ Frampton is a library to assist writing JavaScript in a functional manner. Framp
 
 Almost all functions exported by Frampton are curried. If a function takes more than one argument it can be partially applied to create a new function that waits on the remaining arguments.
 
+### Tutorial
+
+[Frampton Comes Alive: Event-Driven Functional Programming in JavaScript](https://www.linkedin.com/pulse/frampton-comes-alive-event-driven-functional-kevin-greene)
+
 
 ## Frampton.Signal
 
