@@ -390,6 +390,137 @@ console.log(age(jane)); // 43
 ```
 
 
+## Native JavaScript Types
+
+In addition to the Frampton.Data classes Frampton exports a number of functions for working with normal JavaScript objects in a more functional manner.
+
+### Frampton.List
+
+Frampton.List exports functions for working with JavaScript Arrays in a functional manner. All functions that modify an Array return a new Array leaving the original Array unaltered. All functions are curried if they take more than one parameter.
+
+```
+const List = Frampton.List;
+const arr = [1,2,3];
+
+// Add item to Array if it doesn't already exist in Array.
+const added = List.add(arr, 4);
+console.log(added); // -> [1,2,3,4];
+console.log(arr); // -> [1,2,3];
+const dup = List.add(arr, 3);
+console.log(dup); // -> [1,2,3];
+
+// Append item to Array
+const appended = List.append(arr, 3);
+console.log(appended); // -> [1,2,3,3];
+
+// Prepend item to Array
+const prepended = List.prepend(arr, 2);
+console.log(prepended); // -> [2,1,2,3]
+
+// Get item at index
+const elm = List.at(1, arr);
+console.log(elm); // -> 2
+
+// Test if Array contains item
+const test = List.contains(arr, 2);
+console.log(test); // -> true
+
+// Find the diff between two lists. Returns Array of item that
+// are in the first array but not the second
+const diff = List.diff(arr, [0,2,4,6]);
+console.log(diff); // -> [1,3]
+
+// Find max value in Array
+const max = List.max(arr);
+console.log(max); // -> 3
+
+// Find min value in Array
+const min = List.min(arr);
+console.log(min); // -> 1
+
+// All elements but the last
+const init = List.init(arr);
+console.log(init); // -> [1,2]
+
+// All elements but the first
+const tail = List.tail(arr);
+console.log(tail); // -> [2,3]
+
+// The first element in Array
+const first = List.first(arr);
+console.log(first); // -> 1
+
+// The second element in Array
+const second = List.first(second);
+console.log(second); // -> 2
+
+// The last element in Array
+const last = List.last(arr);
+console.log(arr); // -> 3
+
+// Reverse an Array
+const reverse = List.reverse(arr);
+console.log(reverse); // -> [3,2,1]
+
+// Zip the values of two Arrays into an Array of pairs
+const zipped = List.zip(arr, [5,6,7,8,9]);
+console.log(zipped); // -> [[1,5], [2,6], [3,7]]
+
+// Split Array into two Arrays at index
+const split = List.split(2, arr);
+console.log(split); // -> [[1,2], [3]]
+
+// Drop the first n items in Array
+const dropped = List.drop(2, arr);
+console.log(dropped); // -> [3]
+```
+
+### Frampton.Object
+
+Frampton.Object doesn't have as many methods, but they may be a little more interesting. Similarly, the goal here is to work with native JavaScript Objects in a functional manner.
+
+Functions return new Objects. They do not modify the original Object.
+
+```
+const Obj = Frampton.Object;
+const obj = { foo : 1, bar : 2 };
+
+// Turn an Object into an Array of key/value pairs
+const list = Obj.asList(obj);
+console.log(obj); // -> [['foo', 1], ['bar', 2]]
+
+// Filter keys in an Object
+const filtered =
+  Obj.filter((value, key) => {
+    return value < 2;
+  }, obj);
+console.log(filtered); // -> { foo : 1 }
+console.log(obj); // -> { foo : 1, bar : 2 }
+
+// Map the values of an Object
+const mapped =
+  Obj.map((value, key) => {
+    return value + 2;
+  }, obj);
+console.log(mapped); // -> { foo : 3, bar : 4 }
+
+// Reduce a Object to a value
+const reduced =
+  Obj.reduce((acc, value, key) => {
+    return acc + value;
+  }, 0, obj);
+console.log(reduced); // -> 3
+
+// Set a value and return a new Object
+const updated = Obj.set('foo', 5, obj);
+console.log(updated); // -> { foo : 5, bar : 2 }
+
+// Update many key/value pairs on an Object
+const updated2 = Obj.update(obj, { foo : 6, bar : 8 });
+console.log(updated2); // -> { foo : 6, bar : 8 };
+```
+
+
 ## Frampton.Style
 
 Frampton.Style exports functions for dealing with CSS styles and classes.
