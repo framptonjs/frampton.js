@@ -1,6 +1,6 @@
-import get from 'frampton-utils/get';
+import get from 'frampton-object/get';
 
-QUnit.module('Frampton.Utils.get');
+QUnit.module('Frampton.Object.get');
 
 QUnit.test('Should retrieve value by key', function(assert) {
   const temp = { id : 1 };
