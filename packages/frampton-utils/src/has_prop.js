@@ -1,5 +1,5 @@
 import curry from 'frampton-utils/curry';
-import get from 'frampton-utils/get';
+import get from 'frampton-object/get';
 import isSomething from 'frampton-utils/is_something';
 
 /**

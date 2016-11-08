@@ -7,6 +7,6 @@
  * @param {Function} fn      The function to wrap.
  * @param {Object}   thisArg Context in which to apply function.
  */
-export default function apply(fn, thisArg) {
-  return fn.call(thisArg || null);
+export default function apply(fn) {
+  return fn.call(null);
 }

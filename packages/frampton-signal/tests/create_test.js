@@ -3,12 +3,12 @@ import { mergeMany } from 'frampton-signal/create';
 
 QUnit.module('Frampton.Signal.create');
 
-QUnit.test('Should create signal with default value', function(assert) {
+QUnit.test('creates signal with default value', function(assert) {
   const sig = createSignal(2);
   assert.equal(sig.get(), 2);
 });
 
-QUnit.test('next method should alert given function of next signal value', function(assert) {
+QUnit.test('next method alerts given function of next signal value', function(assert) {
   const sig = createSignal(3);
   sig.next((val) => {
     assert.equal(val, 1);
@@ -16,7 +16,7 @@ QUnit.test('next method should alert given function of next signal value', funct
   sig.push(1);
 });
 
-QUnit.test('value method should alert given function of signal value', function(assert) {
+QUnit.test('value method alerts given function of signal value', function(assert) {
   var count = 0;
   const sig = createSignal(3);
   sig.value((val) => {
@@ -30,7 +30,7 @@ QUnit.test('value method should alert given function of signal value', function(
   sig.push(1);
 });
 
-QUnit.test('changes method should alert given function of signal value change', function(assert) {
+QUnit.test('changes method alerts given function of signal value change', function(assert) {
 
   var count = 0;
   const sig = createSignal(3);
@@ -53,14 +53,14 @@ QUnit.test('changes method should alert given function of signal value change', 
   sig.push(1);
 });
 
-QUnit.test('map method should correctly map values on a signal', function(assert) {
+QUnit.test('map method maps values on a signal', function(assert) {
   const sig = createSignal();
   const sig1 = sig.map((val) => val + 5);
   sig.push(1);
   assert.equal(sig1.get(), 6);
 });
 
-QUnit.test('filter method should correctly filter values on a signal', function(assert) {
+QUnit.test('filter method filters values on a signal', function(assert) {
   const sig = createSignal();
   const sig1 = sig.filter((val) => val > 5);
   sig.push(1);
@@ -69,7 +69,7 @@ QUnit.test('filter method should correctly filter values on a signal', function(
   assert.equal(sig1.get(), 8);
 });
 
-QUnit.test('filter method should block children from being updated', function(assert) {
+QUnit.test('filter method blocks children from being updated', function(assert) {
   const sig = createSignal();
   const sig1 = sig.filter((val) => val > 5);
   const sig2 = sig1.map((val) => val + 1);
@@ -79,7 +79,7 @@ QUnit.test('filter method should block children from being updated', function(as
   assert.equal(sig2.get(), 10);
 });
 
-QUnit.test('fold method should correctly reduce values on a signal', function(assert) {
+QUnit.test('fold method reduces values on a signal', function(assert) {
   const sig = createSignal();
   const sig1 = sig.fold((acc, next) => acc + next, '');
   sig.push('h');
@@ -90,7 +90,7 @@ QUnit.test('fold method should correctly reduce values on a signal', function(as
   assert.equal(sig1.get(), 'hello');
 });
 
-QUnit.test('debounce method should remove repeated values form signal', function(assert) {
+QUnit.test('debounce method removes repeated values form signal', function(assert) {
   const done = assert.async();
   const sig = createSignal();
   const sig1 = sig.debounce(20);
@@ -109,7 +109,7 @@ QUnit.test('debounce method should remove repeated values form signal', function
   sig.push(5);
 });
 
-QUnit.test('dropRepeats method should remove repeated values form signal', function(assert) {
+QUnit.test('dropRepeats method removes repeated values form signal', function(assert) {
   const sig = createSignal();
   const sig1 = sig.dropRepeats();
   const counter = sig1.fold((acc, next) => acc + 1, 0);
@@ -125,7 +125,7 @@ QUnit.test('dropRepeats method should remove repeated values form signal', funct
   assert.equal(counter.get(), 3);
 });
 
-QUnit.test('merge method should correctly merge two signals', function(assert) {
+QUnit.test('merge method merges two signals', function(assert) {
   const sig = createSignal();
   const sig1 = createSignal();
   const sig2 = sig.merge(sig1);
@@ -141,7 +141,7 @@ QUnit.test('merge method should correctly merge two signals', function(assert) {
   assert.equal(sig2.get(), 5);
 });
 
-QUnit.test('mergeMany should correctly merge n signals', function(assert) {
+QUnit.test('mergeMany merges n signals', function(assert) {
   const sig = createSignal();
   const sig1 = createSignal();
   const sig2 = createSignal();

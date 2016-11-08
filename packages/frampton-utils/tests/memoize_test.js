@@ -2,7 +2,7 @@ import memoize from 'frampton-utils/memoize';
 
 QUnit.module('Frampton.Utils.memoize');
 
-QUnit.test('should wrap a function so it always returns same value for same argument', function(assert) {
+QUnit.test('wraps a function so it always returns same value for same argument', function(assert) {
   var count = 1;
   var temp = memoize((key) => {
     return count++;

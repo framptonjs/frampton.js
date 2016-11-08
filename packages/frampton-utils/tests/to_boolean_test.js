@@ -2,12 +2,12 @@ import toBoolean from 'frampton-utils/to_boolean';
 
 QUnit.module('Frampton.Utils.toBoolean');
 
-QUnit.test('Should return true for a truthy value', function(assert) {
+QUnit.test('returns true for a truthy value', function(assert) {
   const test = 'test';
   assert.equal(toBoolean(test), true);
 });
 
-QUnit.test('Should return false for a falsy value', function(assert) {
+QUnit.test('returns false for a falsy value', function(assert) {
   const test = '';
   assert.equal(toBoolean(test), false);
 });

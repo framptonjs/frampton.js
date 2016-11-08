@@ -2,7 +2,7 @@ import createRecord from 'frampton-data/record/create';
 
 QUnit.module('Frampton.Data.Record.create');
 
-QUnit.test('Should return an object with update function', function(assert) {
+QUnit.test('returns an object with update function', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -10,7 +10,7 @@ QUnit.test('Should return an object with update function', function(assert) {
   assert.equal(typeof test.update, 'function');
 });
 
-QUnit.test('Should return an object with data function', function(assert) {
+QUnit.test('returns an object with data function', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -18,7 +18,7 @@ QUnit.test('Should return an object with data function', function(assert) {
   assert.equal(typeof test.update, 'function');
 });
 
-QUnit.test('Should return a new object keys/values from given object', function(assert) {
+QUnit.test('returns a new object keys/values from given object', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -28,7 +28,7 @@ QUnit.test('Should return a new object keys/values from given object', function(
   assert.equal(obj.three, test.three);
 });
 
-QUnit.test('data method should return correct keys/values', function(assert) {
+QUnit.test('data method returns correct keys/values', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -37,7 +37,7 @@ QUnit.test('data method should return correct keys/values', function(assert) {
   assert.deepEqual(actual, obj);
 });
 
-QUnit.test('update method should update values', function(assert) {
+QUnit.test('update method updates values', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -49,7 +49,7 @@ QUnit.test('update method should update values', function(assert) {
   assert.deepEqual(actual.data(), expected);
 });
 
-QUnit.test('update method should return new reference', function(assert) {
+QUnit.test('update method returns new reference', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -60,7 +60,7 @@ QUnit.test('update method should return new reference', function(assert) {
   assert.notEqual(actual, test);
 });
 
-QUnit.test('update method should not mutate original object', function(assert) {
+QUnit.test('update method does not mutate original object', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -69,7 +69,7 @@ QUnit.test('update method should not mutate original object', function(assert) {
   assert.deepEqual(test.data(), obj);
 });
 
-QUnit.test('map method should update object with function', function(assert) {
+QUnit.test('map method updates object with function', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);
@@ -81,7 +81,7 @@ QUnit.test('map method should update object with function', function(assert) {
   assert.deepEqual(actual.data(), expected);
 });
 
-QUnit.test('reduce method should reduce object with function', function(assert) {
+QUnit.test('reduce method reduces object with function', function(assert) {
 
   const obj = { one : 1, two : 2, three : 3 };
   const test = createRecord(obj);

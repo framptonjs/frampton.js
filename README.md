@@ -487,41 +487,60 @@ Functions return new Objects. They do not modify the original Object.
 
 ```
 const Obj = Frampton.Object;
-const obj = { foo : 1, bar : 2 };
+const basicObject = { foo : 1, bar : 2 };
+const nestedObject = {
+  one : 1,
+  two : 2,
+  sub : {
+    three : 3,
+    four : 4
+  }
+};
+
+// Get a property from an Object
+Obj.get('foo', basicObject); // -> 1
+
+// Get a nested property from an Object
+Obj.get('sub.four', nestedObject); // -> 4
+Obj.get('sub.five', nestedObject); // -> null
+
+// Set a value and return a new Object
+const updated = Obj.set('foo', 5, basicObject);
+console.log(updated); // -> { foo : 5, bar : 2 }
+
+// Set the value of a nested object
+const updated = Obj.set('foo.three', 5, nestedObject);
+console.log(updated); // -> { one : 1, two : 2, sub : { three : 5, four : 4 } }
+
+// Update many key/value pairs on an Object
+const updated = Obj.update(obj, { foo : 6, bar : 8 });
+console.log(updated); // -> { foo : 6, bar : 8 };
 
 // Turn an Object into an Array of key/value pairs
-const list = Obj.asList(obj);
+const list = Obj.asList(basicObject);
 console.log(obj); // -> [['foo', 1], ['bar', 2]]
 
 // Filter keys in an Object
 const filtered =
   Obj.filter((value, key) => {
     return value < 2;
-  }, obj);
+  }, basicObject);
 console.log(filtered); // -> { foo : 1 }
-console.log(obj); // -> { foo : 1, bar : 2 }
+console.log(basicObject); // -> { foo : 1, bar : 2 }
 
 // Map the values of an Object
 const mapped =
   Obj.map((value, key) => {
     return value + 2;
-  }, obj);
+  }, basicObject);
 console.log(mapped); // -> { foo : 3, bar : 4 }
 
 // Reduce a Object to a value
 const reduced =
   Obj.reduce((acc, value, key) => {
     return acc + value;
-  }, 0, obj);
+  }, 0, basicObject);
 console.log(reduced); // -> 3
-
-// Set a value and return a new Object
-const updated = Obj.set('foo', 5, obj);
-console.log(updated); // -> { foo : 5, bar : 2 }
-
-// Update many key/value pairs on an Object
-const updated2 = Obj.update(obj, { foo : 6, bar : 8 });
-console.log(updated2); // -> { foo : 6, bar : 8 };
 ```
 
 
@@ -571,20 +590,6 @@ addFive(5); // -> 10
 
 // Identity function
 Utils.identity(5); // -> 5
-
-// Get a property from an Object
-const obj = {
-  one : 1,
-  two : 2,
-  sub : {
-    three : 3,
-    four : 4
-  }
-};
-
-Utils.get('one', obj); // -> 1
-Utils.get('sub.four', obj); // -> 4
-Utils.get('sub.five', obj); // -> null
 
 // Boolean tests
 Utils.isArray({}); // -> false

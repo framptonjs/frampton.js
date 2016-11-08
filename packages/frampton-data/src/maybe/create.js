@@ -3,6 +3,14 @@ import isFunction from 'frampton-utils/is_function';
 import ofValue from 'frampton-utils/of_value';
 import isEqual from 'frampton-utils/is_equal';
 
+function create(val) {
+  if (isSomething(val)) {
+    return new Just(val);
+  } else {
+    return new Nothing();
+  }
+}
+
 /**
  * @name Maybe
  * @class
@@ -11,24 +19,6 @@ import isEqual from 'frampton-utils/is_equal';
  * @memberof Frampton.Data
  */
 function Maybe() {}
-
-/**
- * Takes a value and places into the context of a Maybe. If the values is null
- * or undefined a Nothing is returned, otherwise a Just.
- *
- * @name of
- * @method
- * @memberof Frampton.Data.Mabye
- * @param {*} val Value to place in context of a Maybe
- * @returns {Frampton.Data.Maybe}
- */
-Maybe.of = function(val) {
-  if (isSomething(val)) {
-    return new Just(val);
-  } else {
-    return new Nothing();
-  }
-};
 
 /**
  * @name toString
@@ -52,7 +42,7 @@ Maybe.prototype.toString = function() {
  * @returns {Frampton.Data.Maybe}
  */
 Maybe.prototype.ap = function(mb) {
-  return Maybe.of(this._value(mb._value));
+  return create(this._value(mb._value));
 };
 
 /**
@@ -82,7 +72,7 @@ Maybe.prototype.join = function() {
  */
 Maybe.prototype.map = function(mapping) {
   const mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
-  return Maybe.of(mappingFn(this._value));
+  return create(mappingFn(this._value));
 };
 
 /**
@@ -230,13 +220,7 @@ Nothing.isNothing = function() {
   return true;
 };
 
-export const create = function create_maybe(val) {
-  if (isSomething(val)) {
-    return new Just(val);
-  } else {
-    return new Nothing();
-  }
-};
+export const createMaybe = create;
 
 export const JustType = Just;
 

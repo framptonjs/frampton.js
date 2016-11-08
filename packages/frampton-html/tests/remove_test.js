@@ -2,7 +2,7 @@ import remove from 'frampton-html/remove';
 
 QUnit.module('Frampton.Html.remove');
 
-QUnit.test('Should remove element from its parent', function(assert) {
+QUnit.test('removes element from its parent', function(assert) {
   assert.expect(2);
   const parent = document.createElement('div');
   const child = document.createElement('div');

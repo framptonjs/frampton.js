@@ -1,22 +1,29 @@
 import curry from 'frampton-utils/curry';
+import warn from 'frampton-utils/warn';
 import isString from 'frampton-utils/is_string';
 
 function setValue(prop, value, oldObj, newObj) {
   if (!isString(prop)) {
     throw new Error('Property to set must be a string');
   } else {
-    const parts = (prop || '').split('.').filter((val) => {
+    const [head, ...tail] = (prop || '').split('.').filter((val) => {
       return val.trim() !== '';
     });
 
-    if (parts.length > 1) {
-      const [head, ...tail] = parts;
-      if (!newObj[head]) {
-        newObj[head] = {};
-      }
-      newObj[head] = setValue(tail.join('.'), value, oldObj, newObj[head]);
+    if (oldObj[head] === undefined) {
+      warn(`Frampton.Object.set: the given path ${prop} is not found in given object`);
     } else {
-      newObj[parts[0]] = value;
+      for (let key in oldObj) {
+        if (key === head) {
+          if (tail.length > 0) {
+            newObj[key] = setValue(tail.join('.'), value, oldObj[key], {});
+          } else {
+            newObj[key] = value;
+          }
+        } else {
+          newObj[key] = oldObj[key];
+        }
+      }
     }
   }
 
@@ -35,9 +42,5 @@ function setValue(prop, value, oldObj, newObj) {
  * @returns {Object}
  */
 export default curry(function set(prop, value, obj) {
-  const newObj = {};
-  for (let key in obj) {
-    newObj[key] = obj[key];
-  }
-  return setValue(prop, value, obj, newObj);
+  return setValue(prop, value, obj, {});
 });

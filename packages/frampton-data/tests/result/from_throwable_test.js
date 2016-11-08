@@ -2,7 +2,7 @@ import fromThrowable from 'frampton-data/result/from_throwable';
 
 QUnit.module('Frampton.Data.Result.fromThrowable');
 
-QUnit.test('Should create function that returns a Success on successful application', function(assert) {
+QUnit.test('creates function that returns a Success on successful application', function(assert) {
   const throwable = (val) => {
     if (val > 5) {
       throw new Error('Number too big');
@@ -16,7 +16,7 @@ QUnit.test('Should create function that returns a Success on successful applicat
   assert.equal(actual, expected);
 });
 
-QUnit.test('Should create function that returns a Failure if given function throws', function(assert) {
+QUnit.test('creates function that returns a Failure if given function throws', function(assert) {
   const throwable = (val) => {
     if (val > 5) {
       throw new Error('Number too big');
@@ -30,7 +30,7 @@ QUnit.test('Should create function that returns a Failure if given function thro
   assert.equal(actual, expected);
 });
 
-QUnit.test('Should return a curried function that handles success', function(assert) {
+QUnit.test('returns a curried function that handles success', function(assert) {
   const throwable = (first, second) => {
     if (first > second) {
       throw new Error('Wrong');
@@ -45,7 +45,7 @@ QUnit.test('Should return a curried function that handles success', function(ass
   assert.equal(actual, expected);
 });
 
-QUnit.test('Should return a curried function that handles failure', function(assert) {
+QUnit.test('returns a curried function that handles failure', function(assert) {
   const throwable = (first, second) => {
     if (first > second) {
       throw new Error('Wrong');
@@ -60,7 +60,7 @@ QUnit.test('Should return a curried function that handles failure', function(ass
   assert.equal(actual, expected);
 });
 
-QUnit.test('Returned function should not require an argument', function(assert) {
+QUnit.test('returned function does not require an argument', function(assert) {
   const throwable = () => {
     return 'Ok';
   };

@@ -3,8 +3,8 @@ import noop from 'frampton-utils/noop';
 
 QUnit.module('Frampton.Data.Task');
 
-QUnit.test('Task.join method should flatten nested Tasks', function(assert) {
-
+QUnit.test('Task.join method flattens nested Tasks', function(assert) {
+  assert.expect(1);
   const done = assert.async();
   const task = createTask((sinks) => {
     sinks.resolve(createTask((sinks) => {
@@ -22,8 +22,8 @@ QUnit.test('Task.join method should flatten nested Tasks', function(assert) {
   });
 });
 
-QUnit.test('Task.join method should flatten many nested Tasks', function(assert) {
-
+QUnit.test('Task.join method flattens many nested Tasks', function(assert) {
+  assert.expect(1);
   const done = assert.async();
   const task = createTask((sinks) => {
     sinks.resolve(createTask((sinks) => {
@@ -43,8 +43,8 @@ QUnit.test('Task.join method should flatten many nested Tasks', function(assert)
   });
 });
 
-QUnit.test('Task.chain method should propertly map and flatten', function(assert) {
-
+QUnit.test('Task.chain method propertly maps and flattens', function(assert) {
+  assert.expect(3);
   const done = assert.async();
   const task = createTask((sinks) => {
     sinks.resolve(5);
@@ -74,8 +74,8 @@ QUnit.test('Task.chain method should propertly map and flatten', function(assert
   });
 });
 
-QUnit.test('Task.map method should propertly map value of task to another value', function(assert) {
-
+QUnit.test('Task.map method propertly maps value of task to another value', function(assert) {
+  assert.expect(1);
   const done = assert.async();
   const task = createTask((sinks) => {
     sinks.resolve(5);
@@ -95,8 +95,8 @@ QUnit.test('Task.map method should propertly map value of task to another value'
   });
 });
 
-QUnit.test('Task.filter method should turn a resolve into a reject if prediate fails', function(assert) {
-
+QUnit.test('Task.filter method turns a resolve into a reject if prediate fails', function(assert) {
+  assert.expect(1);
   const done = assert.async();
   const task = createTask((sinks) => {
     sinks.resolve(5);
@@ -119,8 +119,8 @@ QUnit.test('Task.filter method should turn a resolve into a reject if prediate f
   });
 });
 
-QUnit.test('Task.filter method should do nothing if prediate succeeds', function(assert) {
-
+QUnit.test('Task.filter method does nothing if prediate succeeds', function(assert) {
+  assert.expect(1);
   const done = assert.async();
   const task = createTask((sinks) => {
     sinks.resolve(5);
@@ -143,8 +143,8 @@ QUnit.test('Task.filter method should do nothing if prediate succeeds', function
   });
 });
 
-QUnit.test('Task.recover method should propertly map reject value to resolved value', function(assert) {
-
+QUnit.test('Task.recover method propertly maps reject value to resolved value', function(assert) {
+  assert.expect(1);
   const done = assert.async();
   const task = createTask((sinks) => {
     sinks.reject(5);
@@ -164,8 +164,8 @@ QUnit.test('Task.recover method should propertly map reject value to resolved va
   });
 });
 
-QUnit.test('Task.progress method should propertly map progress values', function(assert) {
-
+QUnit.test('Task.progress method propertly maps progress values', function(assert) {
+  assert.expect(3);
   var count = 0;
   const done = assert.async();
   const task = createTask((sinks) => {

@@ -3,7 +3,7 @@ import create from 'frampton-data/task/create';
 
 QUnit.module('Frampton.Data.Task.when');
 
-QUnit.test('Should create a task that runs a list of tasks in sequence', function(assert) {
+QUnit.test('creates a task that runs a list of tasks in sequence', function(assert) {
 
   const done = assert.async();
   var counter = 0;
@@ -33,12 +33,12 @@ QUnit.test('Should create a task that runs a list of tasks in sequence', functio
 
   task.run({
     reject : (err) => {
-      assert.ok(false, 'when failed');
+      assert.ok(false, 'reject called');
       done();
     },
     resolve : (val) => {
-      assert.equal(counter, 3, 'count wrong');
-      assert.deepEqual(val, [1,2,3], 'value wrong');
+      assert.equal(counter, 3);
+      assert.deepEqual(val, [1,2,3]);
       done();
     }
   });

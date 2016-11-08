@@ -1,6 +1,7 @@
 import Frampton from 'frampton/namespace';
 
 import createTask from 'frampton-data/task/create';
+import delay from 'frampton-data/task/delay';
 import fail from 'frampton-data/task/fail';
 import never from 'frampton-data/task/never';
 import sequence from 'frampton-data/task/sequence';
@@ -12,7 +13,7 @@ import createUnion from 'frampton-data/union/create';
 
 import createRecord from 'frampton-data/record/create';
 
-import { create as createMaybe } from 'frampton-data/maybe/create';
+import { createMaybe } from 'frampton-data/maybe/create';
 import Just from 'frampton-data/maybe/just';
 import Nothing from 'frampton-data/maybe/nothing';
 
@@ -32,9 +33,10 @@ Frampton.Data = {};
  * @name Task
  * @memberof Frampton.Data
  * @class A data type for wrapping impure computations
- * @constructor Should not be called by the user.
+ * @constructor does not be called by the user.
  */
 Frampton.Data.Task          = {};
+Frampton.Data.Task.delay    = delay;
 Frampton.Data.Task.create   = createTask;
 Frampton.Data.Task.fail     = fail;
 Frampton.Data.Task.succeed  = succeed;

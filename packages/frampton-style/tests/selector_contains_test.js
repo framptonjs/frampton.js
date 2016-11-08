@@ -16,17 +16,17 @@ QUnit.module('Frampton.Style.selectorContains', {
   }
 });
 
-QUnit.test('should return true if the element is contained inside an element with the given selector', function(assert) {
+QUnit.test('returns true if the element is contained inside an element with the given selector', function(assert) {
   this.div1.classList.add('blue');
   assert.ok(selectorContains('.blue', this.div2));
 });
 
-QUnit.test('should return true if the element matches the selector', function(assert) {
+QUnit.test('returns true if the element matches the selector', function(assert) {
   this.div1.classList.add('blue');
   assert.ok(selectorContains('.blue', this.div1));
 });
 
-QUnit.test('should return false if the element is not contained inside an element with the given selector', function(assert) {
+QUnit.test('returns false if the element is not contained inside an element with the given selector', function(assert) {
   this.div2.classList.add('blue');
   assert.notOk(selectorContains('.blue', this.div1));
 });

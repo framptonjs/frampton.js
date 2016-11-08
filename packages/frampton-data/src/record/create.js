@@ -19,13 +19,14 @@ function validateData(props, data) {
   }
 }
 
-export default function create_record(data, id, props) {
-
-  const _id = (id || guid());
-  const _props = (props || keys(data));
+function makeRecord(data, id, props) {
 
   const model = {};
   model.ctor =  'Frampton.Data.Record';
+
+  // private
+  model._id = id;
+  model._props = props;
 
   /**
    * @name data
@@ -42,7 +43,7 @@ export default function create_record(data, id, props) {
    * @returns {Array}
    */
   model.keys = () => {
-    return Object.freeze(_props);
+    return Object.freeze(props);
   };
 
   /**
@@ -53,8 +54,8 @@ export default function create_record(data, id, props) {
    */
   model.update = (update) => {
     // In dev mode verify object properties
-    validateData(_props, update);
-    return create_record(merge(data, update), _id, _props);
+    validateData(props, update);
+    return create_record(merge(data, update), id, props);
   };
 
   /**
@@ -79,7 +80,7 @@ export default function create_record(data, id, props) {
    */
   model.map = (mapping) => {
     const update = mapObj(mapping, data);
-    return create_record(merge(data, update), _id, _props);
+    return create_record(merge(data, update), id, props);
   };
 
   /**
@@ -94,13 +95,10 @@ export default function create_record(data, id, props) {
     return reduceObj(mapping, initial, data);
   };
 
-  // private
-  model._id = _id;
-  model._props = _props;
 
-  // public
-  for (let i = 0; i < _props.length; i++) {
-    const key = _props[i];
+
+  for (let i = 0; i < props.length; i++) {
+    const key = props[i];
     const value = data[key];
     if (blacklist.indexOf(key) === -1) {
       model[key] = value;
@@ -110,4 +108,8 @@ export default function create_record(data, id, props) {
   }
 
   return Object.freeze(model);
+}
+
+export default function create_record(data) {
+  return makeRecord(data, guid(), keys(data));
 }

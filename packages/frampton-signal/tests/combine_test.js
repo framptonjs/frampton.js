@@ -3,7 +3,7 @@ import createSignal from 'frampton-signal/create';
 
 QUnit.module('Frampton.Signal.combine');
 
-QUnit.test('Should correctly combine n number of signals', function(assert) {
+QUnit.test('combines n number of signals', function(assert) {
   const sig1 = createSignal(0);
   const sig2 = createSignal(0);
   const sig3 = createSignal(0);

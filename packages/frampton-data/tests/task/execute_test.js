@@ -4,7 +4,7 @@ import succeed from 'frampton-data/task/succeed';
 
 QUnit.module('Frampton.Data.Task.execute');
 
-QUnit.test('Should run tasks on stream and push results to given function', function(assert) {
+QUnit.test('runs tasks on stream and push results to given function', function(assert) {
 
   const done = assert.async();
   const tasks = createSignal();

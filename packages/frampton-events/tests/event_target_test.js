@@ -16,7 +16,7 @@ QUnit.module('Frampton.Events.eventTarget', {
   }
 });
 
-QUnit.test('should return closest element matching selector', function(assert) {
+QUnit.test('returns closest element matching selector', function(assert) {
   const actual = eventTarget({ target: this.div1 });
   const expected = this.div1;
   assert.equal(actual, expected, 'correctly gets element');

@@ -8,10 +8,10 @@ import createTask from 'frampton-data/task/create';
  * @param {Number} time - Miliseconds to delay function
  * @returns {Frampton.Data.Task}
  */
-export default function delay(fn, time) {
+export default function delay(val, time) {
   return createTask((sinks) => {
     setTimeout(() => {
-      sinks.resolve(fn());
+      sinks.resolve(val);
     }, time);
   });
 }

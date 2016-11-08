@@ -190,7 +190,7 @@ function take(limit) {
  * single value using the given function.
  *
  * The function recieves arguments in the order of (accumulator, next value). The function
- * should return a new value that will then be the new accumulator for the next interation.
+ * returns a new value that will then be the new accumulator for the next interation.
  *
  * @name fold
  * @method

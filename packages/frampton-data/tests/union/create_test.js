@@ -2,7 +2,7 @@ import Union from 'frampton-data/union/create';
 
 QUnit.module('Frampton.Data.Union.create');
 
-QUnit.test('Should create an object with specified keys', function(assert) {
+QUnit.test('creates an object with specified keys', function(assert) {
 
   assert.expect(2);
 
@@ -14,7 +14,7 @@ QUnit.test('Should create an object with specified keys', function(assert) {
   assert.ok(typeof Person.Manager === 'function');
 });
 
-QUnit.test('Should create an object with a match method', function(assert) {
+QUnit.test('creates an object with a match method', function(assert) {
   const Person = Union({
     Employee : [],
     Manager : []
@@ -22,7 +22,7 @@ QUnit.test('Should create an object with a match method', function(assert) {
   assert.ok(typeof Person.match === 'function');
 });
 
-QUnit.test('Match method should correctly match instances', function(assert) {
+QUnit.test('match method matchs instances', function(assert) {
 
   const Person = Union({
     Employee : [],
@@ -42,7 +42,7 @@ QUnit.test('Match method should correctly match instances', function(assert) {
   match(test);
 });
 
-QUnit.test('Should have a toString method', function(assert) {
+QUnit.test('has a toString method', function(assert) {
   const Person = Union({
     Employee : ['name', 'age'],
     Manager : ['name', 'age']
@@ -55,7 +55,7 @@ QUnit.test('Should have a toString method', function(assert) {
   assert.equal(actual, expected);
 });
 
-QUnit.test('Should create types with accessor properties', function(assert) {
+QUnit.test('creates types with accessor properties', function(assert) {
 
   assert.expect(2);
 
@@ -71,7 +71,7 @@ QUnit.test('Should create types with accessor properties', function(assert) {
   assert.equal(larry.age, 53);
 });
 
-QUnit.test('Should properly destructure arguments to match', function(assert) {
+QUnit.test('destructures arguments to match', function(assert) {
 
   assert.expect(4);
 

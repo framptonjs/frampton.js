@@ -2,7 +2,7 @@ import never from 'frampton-data/task/never';
 
 QUnit.module('Frampton.Data.Task.never');
 
-QUnit.test('Should create a task that never resolves', function(assert) {
+QUnit.test('creates a task that never resolves', function(assert) {
 
   const done = assert.async();
   const task = never();

@@ -3,7 +3,7 @@ import createSignal from 'frampton-signal/create';
 
 QUnit.module('Frampton.Signal.forward');
 
-QUnit.test('Should return a function that applies its argument to function and forwards that result to another function', function(assert) {
+QUnit.test('returns a function that applies its argument to function and forwards that result to another function', function(assert) {
   const done = assert.async();
   const receiver = createSignal();
   receiver.next((val) => {

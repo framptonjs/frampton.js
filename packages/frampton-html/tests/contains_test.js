@@ -20,10 +20,10 @@ QUnit.module('Frampton.Html.contains', {
   }
 });
 
-QUnit.test('Should return true if an element contains given element', function(assert) {
+QUnit.test('returns true if an element contains given element', function(assert) {
   assert.ok(contains(this.div1, this.div2));
 });
 
-QUnit.test('Should return false if an element does not contain a given element', function(assert) {
+QUnit.test('returns false if an element does not contain a given element', function(assert) {
   assert.notOk(contains(this.div1, this.div3));
 });

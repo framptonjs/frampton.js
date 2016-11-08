@@ -49,23 +49,6 @@ Task.prototype.run = function(sinks) {
  *
  * @name of
  * @method
- * @memberof Frampton.Data.Task
- * @param {*} val - Value to resolve task with
- * @returns {Frampton.Data.Task}
- */
-Task.of = function(val) {
-  return new Task((sinks) => {
-    sinks.resolve(val);
-  });
-};
-
-/**
- * of(return) :: a -> Success a
- *
- * Returns a Task that always resolves with the given value.
- *
- * @name of
- * @method
  * @memberof Frampton.Data.Task#
  * @param {*} val - Value to resolve task with
  * @returns {Frampton.Data.Task}
@@ -292,7 +275,7 @@ Task.prototype.filter = function(predicate) {
  * @param {Function} predicate - The function to validate the resolve value.
  * @returns {Frampton.Data.Task}
  */
- Task.prototype.validate = Task.prototype.filter;
+Task.prototype.validate = Task.prototype.filter;
 
 
 /**

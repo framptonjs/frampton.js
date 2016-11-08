@@ -2,7 +2,7 @@ import fail from 'frampton-data/task/fail';
 
 QUnit.module('Frampton.Data.Task.fail');
 
-QUnit.test('Should create a task that always fails', function(assert) {
+QUnit.test('creates a task that always fails', function(assert) {
 
   const done = assert.async();
   const task = fail('test error');
@@ -13,7 +13,7 @@ QUnit.test('Should create a task that always fails', function(assert) {
       done();
     },
     resolve : (val) => {
-      assert.ok(false, 'should always fail');
+      assert.ok(false, 'resolve called');
       done();
     }
   });

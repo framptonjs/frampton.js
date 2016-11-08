@@ -16,6 +16,6 @@ QUnit.module('Frampton.Style.current', {
   }
 });
 
-QUnit.test('should correctly retrieve current value of style', function(assert) {
+QUnit.test('correctly retrieves current value of style', function(assert) {
   assert.equal(current(this.div, 'color'), 'rgb(0, 0, 255)', 'correctly gets value');
 });

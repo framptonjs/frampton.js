@@ -11,17 +11,6 @@ import isFunction from 'frampton-utils/is_function';
 function Result() {}
 
 /**
- * @name of
- * @method
- * @memberof Frampton.Data.Result
- * @param {*} val Value to place in context of Result
- * @returns {Frampton.Data.Result}
- */
-Result.of = function(val) {
-  return new Success(val);
-};
-
-/**
  * Provides a string representation of this Result
  *
  * @name toString

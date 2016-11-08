@@ -16,12 +16,12 @@ QUnit.module('Frampton.Style.closest', {
   }
 });
 
-QUnit.test('should return closest element matching selector', function(assert) {
+QUnit.test('returns closest element matching selector', function(assert) {
   this.div1.classList.add('blue');
   assert.equal(closest('.blue', this.div2), this.div1, 'correctly gets element');
 });
 
-QUnit.test('should return null if no match', function(assert) {
+QUnit.test('returns null if no match', function(assert) {
   this.div1.classList.add('blue');
   assert.equal(closest('#blue', this.div2), null, 'correctly gets element');
 });

@@ -1,5 +1,5 @@
 import curryN from 'frampton-utils/curry_n';
-import getKeys from 'frampton-object/keys';
+import keys from 'frampton-object/keys';
 import createType from 'frampton-data/union/utils/create_type';
 import caseOf from 'frampton-data/union/utils/case_of';
 import validateTypes from 'frampton-data/union/utils/validate_types';
@@ -25,7 +25,7 @@ import validateTypes from 'frampton-data/union/utils/validate_types';
  */
 export default function create_union(values) {
   const parent = {};
-  const children = getKeys(values);
+  const children = keys(values);
   validateTypes(children);
 
   parent.ctor = 'Frampton.Data.Union';

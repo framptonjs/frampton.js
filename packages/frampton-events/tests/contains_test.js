@@ -16,6 +16,6 @@ QUnit.module('Frampton.Events.contains', {
   }
 });
 
-QUnit.test('should return true if an element contains an event', function(assert) {
+QUnit.test('returns true if an element contains an event', function(assert) {
   assert.ok(contains(this.div1, { target: this.div2 }), 'correctly detects element');
 });
