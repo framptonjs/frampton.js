@@ -4065,7 +4065,7 @@ define('frampton-math/subtract', ['exports', 'frampton-utils/curry'], function (
     return left - right;
   });
 });
-define('frampton-object', ['frampton/namespace', 'frampton-object/as_list', 'frampton-object/copy', 'frampton-object/filter', 'frampton-object/for_each', 'frampton-object/keys', 'frampton-object/map', 'frampton-object/merge', 'frampton-object/reduce', 'frampton-object/set', 'frampton-object/update', 'frampton-object/values'], function (_namespace, _as_list, _copy, _filter, _for_each, _keys, _map, _merge, _reduce, _set, _update, _values) {
+define('frampton-object', ['frampton/namespace', 'frampton-object/as_list', 'frampton-object/copy', 'frampton-object/filter', 'frampton-object/for_each', 'frampton-object/get', 'frampton-object/keys', 'frampton-object/map', 'frampton-object/merge', 'frampton-object/reduce', 'frampton-object/set', 'frampton-object/update', 'frampton-object/values'], function (_namespace, _as_list, _copy, _filter, _for_each, _get, _keys, _map, _merge, _reduce, _set, _update, _values) {
   'use strict';
 
   var _namespace2 = _interopRequireDefault(_namespace);
@@ -4077,6 +4077,8 @@ define('frampton-object', ['frampton/namespace', 'frampton-object/as_list', 'fra
   var _filter2 = _interopRequireDefault(_filter);
 
   var _for_each2 = _interopRequireDefault(_for_each);
+
+  var _get2 = _interopRequireDefault(_get);
 
   var _keys2 = _interopRequireDefault(_keys);
 
@@ -4108,6 +4110,7 @@ define('frampton-object', ['frampton/namespace', 'frampton-object/as_list', 'fra
   _namespace2.default.Object.copy = _copy2.default;
   _namespace2.default.Object.each = _for_each2.default;
   _namespace2.default.Object.filter = _filter2.default;
+  _namespace2.default.Object.get = _get2.default;
   _namespace2.default.Object.keys = _keys2.default;
   _namespace2.default.Object.map = _map2.default;
   _namespace2.default.Object.merge = _merge2.default;
