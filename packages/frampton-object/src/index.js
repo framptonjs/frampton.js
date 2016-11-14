@@ -12,7 +12,7 @@ import update from 'frampton-object/update';
 import values from 'frampton-object/values';
 
 /**
- * @name Record
+ * @name Object
  * @namespace
  * @memberof Frampton
  */
