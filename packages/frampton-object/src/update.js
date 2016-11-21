@@ -15,7 +15,7 @@ export default function update_object(base, update) {
   const newObj = {};
 
   forEach((value, key) => {
-    if (update[key]) {
+    if (update[key] !== undefined) {
       newObj[key] = update[key];
     } else {
       newObj[key] = value;

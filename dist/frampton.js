@@ -4513,7 +4513,7 @@ define('frampton-object/update', ['exports', 'frampton-object/for_each'], functi
     var newObj = {};
 
     (0, _for_each2.default)(function (value, key) {
-      if (update[key]) {
+      if (update[key] !== undefined) {
         newObj[key] = update[key];
       } else {
         newObj[key] = value;
