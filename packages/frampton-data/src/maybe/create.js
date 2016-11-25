@@ -60,6 +60,18 @@ Maybe.prototype.join = function() {
 };
 
 /**
+ * @name fork
+ * @method
+ * @memberof Frampton.Data.Maybe#
+ * @param {Function} justFn Function to call with value of Just
+ * @param {Function} nothingFn Function to call with value of Nothing
+ * @returns {*} The return value of the matching function
+ */
+Maybe.prototype.fork = function(justFn, _) {
+  return justFn(this._value);
+};
+
+/**
  * map :: Maybe a -> (a -> b) -> Maybe b
  *
  * Transforms the value of a Maybe with the given function.
@@ -186,6 +198,10 @@ Nothing.prototype = new Maybe();
 
 Nothing.prototype.toString = function() {
   return 'Nothing';
+};
+
+Nothing.prototype.fork = function(_, nothingFn) {
+  return nothingFn();
 };
 
 Nothing.prototype.join = function() {

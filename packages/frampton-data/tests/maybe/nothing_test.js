@@ -17,7 +17,14 @@ QUnit.test('creates a Nothing even form valid value', function(assert) {
   assert.equal(actual, expected);
 });
 
-QUnit.test('map method returns a nothing', function(assert) {
+QUnit.test('fork method uses first function on a Nothing', function(assert) {
+  const maybe = createMaybe(undefined);
+  const actual = maybe.fork((val) => val + 2, () => 10);
+  const expected = 10;
+  assert.equal(actual, expected);
+});
+
+QUnit.test('map method returns a Nothing', function(assert) {
   const maybe = Nothing();
   const mapping = (val) => val + 3;
   const actual = maybe.map(mapping).toString();
@@ -33,7 +40,7 @@ QUnit.test('filter method returns a nothing', function(assert) {
   assert.equal(actual, expected);
 });
 
-QUnit.test('chain method returns a nothing', function(assert) {
+QUnit.test('chain method returns a Nothing', function(assert) {
   const nothing = Nothing();
   const mapping = (val) => createMaybe(val + 1);
   const actual = nothing.chain(mapping).toString();

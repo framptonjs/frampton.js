@@ -17,7 +17,14 @@ QUnit.test('forces a null into a Just context', function(assert) {
   assert.equal(actual, expected);
 });
 
-QUnit.test('map method transforms value of maybe', function(assert) {
+QUnit.test('fork method uses first function on a Just', function(assert) {
+  const maybe = Just(3);
+  const actual = maybe.fork((val) => val + 2, () => 10);
+  const expected = 5;
+  assert.equal(actual, expected);
+});
+
+QUnit.test('map method transforms value of Maybe', function(assert) {
   const maybe = Just(5);
   const actual = maybe.map((val) => val + 1).toString();
   const expected = 'Just(6)';

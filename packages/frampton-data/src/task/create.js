@@ -214,11 +214,11 @@ Task.prototype.map = function(mapping) {
   const mappingFn = isFunction(mapping) ? mapping : ofValue(mapping);
   return new Task((sinks) => {
     source.run({
-      reject : sinks.reject,
-      resolve : (val) => {
+      reject: sinks.reject,
+      resolve: (val) => {
         sinks.resolve(mappingFn(val));
       },
-      progress : sinks.progress
+      progress: sinks.progress
     });
   });
 };
