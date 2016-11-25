@@ -7524,7 +7524,7 @@ define('frampton/namespace', ['exports'], function (exports) {
    * @name Frampton
    * @namespace
    */
-  Frampton.VERSION = '0.3.3';
+  Frampton.VERSION = '0.3.4';
 
   Frampton.TEST = 'test';
 
