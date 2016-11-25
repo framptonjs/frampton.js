@@ -1,5 +1,5 @@
 import { NothingType } from 'frampton-data/maybe/create';
 
-export default function create_nothing(val) {
+export default function create_nothing() {
   return new NothingType();
 }

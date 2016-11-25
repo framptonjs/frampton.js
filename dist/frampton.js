@@ -522,7 +522,7 @@ define('frampton-data/maybe/nothing', ['exports', 'frampton-data/maybe/create'],
     value: true
   });
   exports.default = create_nothing;
-  function create_nothing(val) {
+  function create_nothing() {
     return new _create.NothingType();
   }
 });
