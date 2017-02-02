@@ -15,8 +15,8 @@ const packages = {
 };
 
 const build = new FramptonBuild({
-  name : 'frampton',
-  packages : packages
+  name: 'frampton',
+  packages: packages
 });
 
 module.exports = build.getDistTree();

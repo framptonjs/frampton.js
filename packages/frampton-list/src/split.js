@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * split :: Number -> List a -> (List a, List a)
@@ -7,7 +7,7 @@ import curry from 'frampton-utils/curry';
  * @method
  * @memberof Frampton.List
  */
-export default curry(function split(n, xs) {
+export default curryN(2, function split(n, xs) {
   var ys = [];
   var zs = [];
   var len = xs.length;
@@ -20,5 +20,5 @@ export default curry(function split(n, xs) {
     }
   }
 
-  return Object.freeze([ys, zs]);
+  return [ys, zs];
 });

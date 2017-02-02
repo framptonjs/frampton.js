@@ -1,5 +1,5 @@
 import assert from 'frampton-utils/assert';
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 import isArray from 'frampton-utils/is_array';
 import filter from 'frampton-list/filter';
 
@@ -8,7 +8,7 @@ import filter from 'frampton-list/filter';
  * @method
  * @memberof Frampton.List
  */
-export default curry(function curried_drop(n, xs) {
+export default curryN(2, function curried_drop(n, xs) {
   assert("Frampton.List.drop recieved a non-array", isArray(xs));
   return filter((next) => {
     if (n === 0) {

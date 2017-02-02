@@ -9,6 +9,13 @@ QUnit.test('updates specified keys', function(assert) {
   assert.deepEqual(actual, expected);
 });
 
+QUnit.test('updates nested values', function(assert) {
+  const obj = { one: 1, two: { four: 4, five: 5, six: 6 } };
+  const actual = update(obj, { two: { five: 8 } });
+  const expected = { one: 1, two: { four: 4, five: 8, six: 6 } };
+  assert.deepEqual(actual, expected);
+});
+
 QUnit.test('ignores undefined keys', function(assert) {
   const obj = { one: 1, two: 2, three: 3 };
   const actual = update(obj, { one : 3, two: undefined });

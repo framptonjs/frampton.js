@@ -1,7 +1,7 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 import length from 'frampton-list/length';
 
-export default curry(function replace_index(index, obj, xs) {
+export default curryN(2, function replace_index(index, obj, xs) {
   const len = length(xs);
   const newArray = new Array(len);
   for (let i = 0; i < len; i++) {
@@ -11,5 +11,5 @@ export default curry(function replace_index(index, obj, xs) {
       newArray[i] = xs[i];
     }
   }
-  return Object.freeze(newArray);
+  return newArray;
 });

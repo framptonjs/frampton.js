@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * @name each
@@ -7,7 +7,7 @@ import curry from 'frampton-utils/curry';
  * @param {Functino} fn Function to run on each element
  * @param {Array} xs Array to
  */
-export default curry(function curried_each(fn, xs) {
+export default curryN(2, function curried_each(fn, xs) {
   const len = xs.length;
   for (let i = 0; i < len; i++) {
     fn(xs[i], i);

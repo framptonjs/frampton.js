@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * @name contains
@@ -8,6 +8,6 @@ import curry from 'frampton-utils/curry';
  * @param {*}   obj
  * @retruns {Boolean}
  */
-export default curry((xs, obj) => {
+export default curryN(2, (xs, obj) => {
   return (xs.indexOf(obj) > -1);
 });

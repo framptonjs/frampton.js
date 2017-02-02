@@ -7,6 +7,7 @@ import ofValue from 'frampton-utils/of_value';
 import noop from 'frampton-utils/noop';
 import log from 'frampton-utils/log';
 
+// STATE
 var signalGraph = [];
 var updateQueue = [];
 var updateInProgress = false;

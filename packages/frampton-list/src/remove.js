@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 import filter from 'frampton-list/filter';
 
 /**
@@ -10,6 +10,6 @@ import filter from 'frampton-list/filter';
  * @param {Array} xs
  * @param {Object} obj
  */
-export default curry(function curried_remove(obj, xs) {
+export default curryN(2, function curried_remove(obj, xs) {
   return filter((next) => next !== obj, xs);
 });

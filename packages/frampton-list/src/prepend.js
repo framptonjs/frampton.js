@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * @name prepend
@@ -7,11 +7,4 @@ import curry from 'frampton-utils/curry';
  * @param {Array} xs
  * @param {*} obj
  */
-export default curry(function(xs, obj) {
-  const ys = [ obj ];
-  const len = xs.length;
-  for (let i = 0; i < len; i++) {
-    ys.push(xs[i]);
-  }
-  return Object.freeze(ys);
-});
+export default curryN(2, (obj, xs) => [ obj, ...xs ]);

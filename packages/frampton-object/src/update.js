@@ -1,3 +1,4 @@
+import isObject from 'frampton-utils/is_object';
 import forEach from 'frampton-object/for_each';
 
 /**
@@ -15,12 +16,14 @@ export default function update_object(base, update) {
   const newObj = {};
 
   forEach((value, key) => {
-    if (update[key] !== undefined) {
+    if (isObject(value) && isObject(update[key])) {
+      newObj[key] = update_object(value, update[key]);
+    } else if (update[key] !== undefined) {
       newObj[key] = update[key];
     } else {
       newObj[key] = value;
     }
   }, base);
 
-  return Object.freeze(newObj);
+  return newObj;
 }

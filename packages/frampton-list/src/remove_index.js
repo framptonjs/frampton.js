@@ -19,5 +19,5 @@ export default function remove_index(index, xs) {
     }
   }
 
-  return Object.freeze(newList);
+  return newList;
 }

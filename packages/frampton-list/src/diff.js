@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 import contains from 'frampton-list/contains';
 import each from 'frampton-list/each';
 
@@ -8,7 +8,7 @@ import each from 'frampton-list/each';
  * @memberof Frampton.List
  * @returns {Array}
  */
-export default curry(function curried_diff(xs, ys) {
+export default curryN(2, function curried_diff(xs, ys) {
 
   const diff = [];
 
@@ -18,5 +18,5 @@ export default curry(function curried_diff(xs, ys) {
     }
   }, xs);
 
-  return Object.freeze(diff);
+  return diff;
 });

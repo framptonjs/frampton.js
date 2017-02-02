@@ -17,5 +17,5 @@ export default curry(function curried_map(fn, obj) {
     newObj[key] = fn(value, key);
   }, obj);
 
-  return Object.freeze(newObj);
+  return newObj;
 });

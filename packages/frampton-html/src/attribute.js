@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * attribute :: String -> Element -> String
@@ -8,6 +8,6 @@ import curry from 'frampton-utils/curry';
  * @param {Element} element
  * @returns {*}
  */
-export default curry((name, element) => {
+export default curryN(2, (name, element) => {
   return element.getAttribute(name);
 });

@@ -12,5 +12,5 @@ import extend from 'frampton-utils/extend';
  * @returns {Object}
  */
 export default curry(function curried_merge(obj1, obj2) {
-  return Object.freeze(extend({}, obj1, obj2));
+  return extend({}, obj1, obj2);
 });

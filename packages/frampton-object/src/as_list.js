@@ -9,8 +9,8 @@ import reduce from 'frampton-object/reduce';
  * @returns {Array}
  */
 export default function as_list(obj) {
-  return Object.freeze(reduce((acc, nextValue, nextKey) => {
+  return reduce((acc, nextValue, nextKey) => {
     acc.push([nextKey, nextValue]);
     return acc;
-  }, [], obj));
+  }, [], obj);
 }

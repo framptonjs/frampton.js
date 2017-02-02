@@ -17,5 +17,5 @@ export default function copy_object(obj) {
     newObj[key] = value;
   }, obj);
 
-  return Object.freeze(newObj);
+  return newObj;
 }

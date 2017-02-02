@@ -1,6 +1,7 @@
 {
   "name": "frampton",
   "version": "0.3.4",
+  "main": "dist/frampton.js",
   "description": "A functional reactive library",
   "scripts": {
     "test": "frampton test",

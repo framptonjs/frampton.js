@@ -19,5 +19,5 @@ export default curry(function curried_filter(predicate, obj) {
     }
   }, obj);
 
-  return Object.freeze(newObj);
+  return newObj;
 });

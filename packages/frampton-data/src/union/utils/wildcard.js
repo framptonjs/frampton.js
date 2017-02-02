@@ -1,1 +1,1 @@
-export default '_';
+export default 'Otherwise';

@@ -7,8 +7,8 @@ import noop from 'frampton-utils/noop';
  */
 export default function valid_sinks(sinks) {
   return {
-    reject : (sinks.reject || noop),
-    resolve : (sinks.resolve || noop),
-    progress : (sinks.progress || noop)
+    reject: (sinks.reject || noop),
+    resolve: (sinks.resolve || noop),
+    progress: (sinks.progress || noop)
   };
 }

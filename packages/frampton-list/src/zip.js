@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * zip :: List a -> List b - List (a, b)
@@ -9,7 +9,7 @@ import curry from 'frampton-utils/curry';
  * @param {Array} xs
  * @param {Array} ys
  */
-export default curry(function zip_array(xs, ys) {
+export default curryN(2, function zip_array(xs, ys) {
 
   const xLen = xs.length;
   const yLen = ys.length;
@@ -20,5 +20,5 @@ export default curry(function zip_array(xs, ys) {
     zs[i] = [xs[i], ys[i]];
   }
 
-  return Object.freeze(zs);
+  return zs;
 });

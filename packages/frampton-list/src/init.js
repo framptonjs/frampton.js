@@ -11,9 +11,9 @@ export default function init(xs) {
   switch (xs.length) {
 
     case 0:
-      return Object.freeze([]);
+      return [];
 
     default:
-      return Object.freeze(xs.slice(0, (xs.length - 1)));
+      return xs.slice(0, (xs.length - 1));
   }
 }

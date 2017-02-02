@@ -36,15 +36,15 @@ export default function when(...tasks) {
     tasks.forEach((task) => {
       const index = idx++;
       task.run({
-        reject : logError,
-        resolve : (val) => {
+        reject: logError,
+        resolve(val) {
           count = count + 1;
           valueArray[index] = val;
           if (count === len) {
             sinks.resolve(valueArray);
           }
         },
-        progress : logProgress
+        progress: logProgress
       });
     });
   });

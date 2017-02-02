@@ -1,4 +1,4 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 import length from 'frampton-list/length';
 
 /**
@@ -9,7 +9,7 @@ import length from 'frampton-list/length';
  * @param {Array} xs
  * @returns {Array} A new array
  */
-export default curry(function filter(predicate, xs) {
+export default curryN(2, function filter(predicate, xs) {
 
   const len = length(xs);
   const newList = [];
@@ -20,5 +20,5 @@ export default curry(function filter(predicate, xs) {
     }
   }
 
-  return Object.freeze(newList);
+  return newList;
 });

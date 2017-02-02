@@ -1,6 +1,4 @@
-import curry from 'frampton-utils/curry';
-import isSomething from 'frampton-utils/is_something';
-import length from 'frampton-list/length';
+import curryN from 'frampton-utils/curry_n';
 
 /**
  * @name append
@@ -10,16 +8,4 @@ import length from 'frampton-list/length';
  * @param {*} obj
  * @returns {Array}
  */
-export default curry((xs, obj) => {
-  if (isSomething(obj)) {
-    const len = length(xs);
-    const newArray = new Array((len + 1));
-    for (let i = 0; i < len; i++) {
-      newArray[i] = xs[i];
-    }
-    newArray[len] = obj;
-    return Object.freeze(newArray);
-  } else {
-    return xs;
-  }
-});
+export default curryN(2, (xs, obj) => [ ...xs, obj ]);

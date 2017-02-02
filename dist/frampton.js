@@ -1197,15 +1197,16 @@ define('frampton-data/task/create', ['exports', 'frampton-utils/immediate', 'fra
     return new Task(computation);
   }
 });
-define('frampton-data/task/delay', ['exports', 'frampton-data/task/create'], function (exports, _create) {
+define('frampton-data/task/delay', ['exports', 'frampton-data/task/create', 'frampton-utils/curry_n'], function (exports, _create, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = delay;
 
   var _create2 = _interopRequireDefault(_create);
+
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -1213,21 +1214,13 @@ define('frampton-data/task/delay', ['exports', 'frampton-data/task/create'], fun
     };
   }
 
-  /**
-   * @name delay
-   * @method
-   * @memberof Frampton.Data.Task
-   * @param {Function} fn - Function to delay
-   * @param {Number} time - Miliseconds to delay function
-   * @returns {Frampton.Data.Task}
-   */
-  function delay(val, time) {
+  exports.default = (0, _curry_n2.default)(2, function delay(time, val) {
     return (0, _create2.default)(function (sinks) {
       setTimeout(function () {
         sinks.resolve(val);
       }, time);
     });
-  }
+  });
 });
 define('frampton-data/task/execute', ['exports', 'frampton-utils/log', 'frampton-utils/warn'], function (exports, _log, _warn) {
   'use strict';
@@ -1498,6 +1491,7 @@ define('frampton-data/task/when', ['exports', 'frampton-utils/log', 'frampton-ut
               sinks.resolve(valueArray);
             }
           },
+
           progress: logProgress
         });
       });
@@ -1729,7 +1723,7 @@ define('frampton-data/union/utils/to_string', ['exports'], function (exports) {
     return 'Union.' + this.ctor + '(' + value + ')';
   }
 });
-define('frampton-data/union/utils/validate_names', ['exports', 'frampton-utils/is_array'], function (exports, _is_array) {
+define('frampton-data/union/utils/validate_names', ['exports', 'frampton-utils/is_array', 'frampton-data/union/utils/wildcard'], function (exports, _is_array, _wildcard) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -1738,6 +1732,8 @@ define('frampton-data/union/utils/validate_names', ['exports', 'frampton-utils/i
   exports.default = validate_names;
 
   var _is_array2 = _interopRequireDefault(_is_array);
+
+  var _wildcard2 = _interopRequireDefault(_wildcard);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -1756,7 +1752,7 @@ define('frampton-data/union/utils/validate_names', ['exports', 'frampton-utils/i
     var len = names.length;
     for (var i = 0; i < len; i++) {
       var name = names[i];
-      if (blacklist.indexOf(name) !== -1) {
+      if (blacklist.indexOf(name) > -1 || name === _wildcard2.default) {
         throw new Error('Frampton.Data.Union recieved reserved field name ' + name);
       }
     }
@@ -1790,7 +1786,7 @@ define('frampton-data/union/utils/validate_options', ['exports', 'frampton-utils
     for (var i = 0; i < len; i++) {
       var child = children[i];
       if (!hasMatch(cases, child)) {
-        (0, _warn2.default)('Non-exhaustive pattern match for case: ' + child.ctor);
+        (0, _warn2.default)('Non-exhaustive pattern match for case: ' + child);
       }
     }
   }
@@ -1820,7 +1816,7 @@ define('frampton-data/union/utils/wildcard', ['exports'], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = '_';
+  exports.default = 'Otherwise';
 });
 define('frampton-events', ['frampton/namespace', 'frampton-events/on_event', 'frampton-events/on_selector', 'frampton-events/contains', 'frampton-events/event_target', 'frampton-events/event_value', 'frampton-events/get_position', 'frampton-events/get_position_relative', 'frampton-events/has_selector', 'frampton-events/contains_selector', 'frampton-events/selector_contains', 'frampton-events/closest_to_event', 'frampton-events/prevent_default'], function (_namespace, _on_event, _on_selector, _contains, _event_target, _event_value, _get_position, _get_position_relative, _has_selector, _contains_selector, _selector_contains, _closest_to_event, _prevent_default) {
   'use strict';
@@ -2768,14 +2764,14 @@ define('frampton-html', ['frampton/namespace', 'frampton-html/attribute', 'framp
   _namespace2.default.Html.data = _data2.default;
   _namespace2.default.Html.set = _set_html2.default;
 });
-define('frampton-html/attribute', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-html/attribute', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -2783,7 +2779,7 @@ define('frampton-html/attribute', ['exports', 'frampton-utils/curry'], function 
     };
   }
 
-  exports.default = (0, _curry2.default)(function (name, element) {
+  exports.default = (0, _curry_n2.default)(2, function (name, element) {
     return element.getAttribute(name);
   });
 });
@@ -3005,14 +3001,14 @@ define('frampton-list', ['frampton/namespace', 'frampton-list/add', 'frampton-li
   _namespace2.default.List.third = _third2.default;
   _namespace2.default.List.zip = _zip2.default;
 });
-define('frampton-list/add', ['exports', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/append'], function (exports, _curry, _contains, _append) {
+define('frampton-list/add', ['exports', 'frampton-utils/curry_n', 'frampton-list/contains', 'frampton-list/append'], function (exports, _curry_n, _contains, _append) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _contains2 = _interopRequireDefault(_contains);
 
@@ -3024,22 +3020,18 @@ define('frampton-list/add', ['exports', 'frampton-utils/curry', 'frampton-list/c
     };
   }
 
-  exports.default = (0, _curry2.default)(function add_to_list(xs, obj) {
+  exports.default = (0, _curry_n2.default)(2, function add_to_list(xs, obj) {
     return !(0, _contains2.default)(xs, obj) ? (0, _append2.default)(xs, obj) : xs;
   });
 });
-define('frampton-list/append', ['exports', 'frampton-utils/curry', 'frampton-utils/is_something', 'frampton-list/length'], function (exports, _curry, _is_something, _length) {
+define('frampton-list/append', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
-
-  var _is_something2 = _interopRequireDefault(_is_something);
-
-  var _length2 = _interopRequireDefault(_length);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -3047,28 +3039,30 @@ define('frampton-list/append', ['exports', 'frampton-utils/curry', 'frampton-uti
     };
   }
 
-  exports.default = (0, _curry2.default)(function (xs, obj) {
-    if ((0, _is_something2.default)(obj)) {
-      var len = (0, _length2.default)(xs);
-      var newArray = new Array(len + 1);
-      for (var i = 0; i < len; i++) {
-        newArray[i] = xs[i];
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
       }
-      newArray[len] = obj;
-      return Object.freeze(newArray);
+
+      return arr2;
     } else {
-      return xs;
+      return Array.from(arr);
     }
+  }
+
+  exports.default = (0, _curry_n2.default)(2, function (xs, obj) {
+    return [].concat(_toConsumableArray(xs), [obj]);
   });
 });
-define('frampton-list/at', ['exports', 'frampton-utils/curry', 'frampton-utils/assert', 'frampton-utils/is_defined', 'frampton-utils/is_array'], function (exports, _curry, _assert, _is_defined, _is_array) {
+define('frampton-list/at', ['exports', 'frampton-utils/curry_n', 'frampton-utils/assert', 'frampton-utils/is_defined', 'frampton-utils/is_array'], function (exports, _curry_n, _assert, _is_defined, _is_array) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _assert2 = _interopRequireDefault(_assert);
 
@@ -3082,19 +3076,19 @@ define('frampton-list/at', ['exports', 'frampton-utils/curry', 'frampton-utils/a
     };
   }
 
-  exports.default = (0, _curry2.default)(function at(index, xs) {
+  exports.default = (0, _curry_n2.default)(2, function at(index, xs) {
     (0, _assert2.default)("Frampton.List.at recieved a non-array", (0, _is_array2.default)(xs));
     return (0, _is_defined2.default)(xs[index]) ? xs[index] : null;
   });
 });
-define('frampton-list/contains', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-list/contains', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -3102,7 +3096,7 @@ define('frampton-list/contains', ['exports', 'frampton-utils/curry'], function (
     };
   }
 
-  exports.default = (0, _curry2.default)(function (xs, obj) {
+  exports.default = (0, _curry_n2.default)(2, function (xs, obj) {
     return xs.indexOf(obj) > -1;
   });
 });
@@ -3144,17 +3138,17 @@ define('frampton-list/copy', ['exports', 'frampton-list/length'], function (expo
       }
     }
 
-    return Object.freeze(arr || []);
+    return arr || [];
   }
 });
-define('frampton-list/diff', ['exports', 'frampton-utils/curry', 'frampton-list/contains', 'frampton-list/each'], function (exports, _curry, _contains, _each) {
+define('frampton-list/diff', ['exports', 'frampton-utils/curry_n', 'frampton-list/contains', 'frampton-list/each'], function (exports, _curry_n, _contains, _each) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _contains2 = _interopRequireDefault(_contains);
 
@@ -3166,7 +3160,7 @@ define('frampton-list/diff', ['exports', 'frampton-utils/curry', 'frampton-list/
     };
   }
 
-  exports.default = (0, _curry2.default)(function curried_diff(xs, ys) {
+  exports.default = (0, _curry_n2.default)(2, function curried_diff(xs, ys) {
 
     var diff = [];
 
@@ -3176,10 +3170,10 @@ define('frampton-list/diff', ['exports', 'frampton-utils/curry', 'frampton-list/
       }
     }, xs);
 
-    return Object.freeze(diff);
+    return diff;
   });
 });
-define('frampton-list/drop', ['exports', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-list/filter'], function (exports, _assert, _curry, _is_array, _filter) {
+define('frampton-list/drop', ['exports', 'frampton-utils/assert', 'frampton-utils/curry_n', 'frampton-utils/is_array', 'frampton-list/filter'], function (exports, _assert, _curry_n, _is_array, _filter) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -3188,7 +3182,7 @@ define('frampton-list/drop', ['exports', 'frampton-utils/assert', 'frampton-util
 
   var _assert2 = _interopRequireDefault(_assert);
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _is_array2 = _interopRequireDefault(_is_array);
 
@@ -3200,7 +3194,7 @@ define('frampton-list/drop', ['exports', 'frampton-utils/assert', 'frampton-util
     };
   }
 
-  exports.default = (0, _curry2.default)(function curried_drop(n, xs) {
+  exports.default = (0, _curry_n2.default)(2, function curried_drop(n, xs) {
     (0, _assert2.default)("Frampton.List.drop recieved a non-array", (0, _is_array2.default)(xs));
     return (0, _filter2.default)(function (next) {
       if (n === 0) {
@@ -3212,14 +3206,14 @@ define('frampton-list/drop', ['exports', 'frampton-utils/assert', 'frampton-util
     }, xs);
   });
 });
-define('frampton-list/each', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-list/each', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -3227,21 +3221,21 @@ define('frampton-list/each', ['exports', 'frampton-utils/curry'], function (expo
     };
   }
 
-  exports.default = (0, _curry2.default)(function curried_each(fn, xs) {
+  exports.default = (0, _curry_n2.default)(2, function curried_each(fn, xs) {
     var len = xs.length;
     for (var i = 0; i < len; i++) {
       fn(xs[i], i);
     }
   });
 });
-define('frampton-list/filter', ['exports', 'frampton-utils/curry', 'frampton-list/length'], function (exports, _curry, _length) {
+define('frampton-list/filter', ['exports', 'frampton-utils/curry_n', 'frampton-list/length'], function (exports, _curry_n, _length) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _length2 = _interopRequireDefault(_length);
 
@@ -3251,7 +3245,7 @@ define('frampton-list/filter', ['exports', 'frampton-utils/curry', 'frampton-lis
     };
   }
 
-  exports.default = (0, _curry2.default)(function filter(predicate, xs) {
+  exports.default = (0, _curry_n2.default)(2, function filter(predicate, xs) {
 
     var len = (0, _length2.default)(xs);
     var newList = [];
@@ -3262,17 +3256,17 @@ define('frampton-list/filter', ['exports', 'frampton-utils/curry', 'frampton-lis
       }
     }
 
-    return Object.freeze(newList);
+    return newList;
   });
 });
-define('frampton-list/find', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-list/find', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -3280,7 +3274,7 @@ define('frampton-list/find', ['exports', 'frampton-utils/curry'], function (expo
     };
   }
 
-  exports.default = (0, _curry2.default)(function (obj, xs) {
+  exports.default = (0, _curry_n2.default)(2, function (obj, xs) {
     return xs.indexOf(obj);
   });
 });
@@ -3385,10 +3379,10 @@ define('frampton-list/init', ['exports', 'frampton-utils/assert', 'frampton-util
     switch (xs.length) {
 
       case 0:
-        return Object.freeze([]);
+        return [];
 
       default:
-        return Object.freeze(xs.slice(0, xs.length - 1));
+        return xs.slice(0, xs.length - 1);
     }
   }
 });
@@ -3520,14 +3514,14 @@ define('frampton-list/min', ['exports', 'frampton-list/foldl', 'frampton-utils/i
     }, null, xs);
   }
 });
-define('frampton-list/prepend', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-list/prepend', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -3535,13 +3529,20 @@ define('frampton-list/prepend', ['exports', 'frampton-utils/curry'], function (e
     };
   }
 
-  exports.default = (0, _curry2.default)(function (xs, obj) {
-    var ys = [obj];
-    var len = xs.length;
-    for (var i = 0; i < len; i++) {
-      ys.push(xs[i]);
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    } else {
+      return Array.from(arr);
     }
-    return Object.freeze(ys);
+  }
+
+  exports.default = (0, _curry_n2.default)(2, function (obj, xs) {
+    return [obj].concat(_toConsumableArray(xs));
   });
 });
 define('frampton-list/product', ['exports', 'frampton-list/foldl'], function (exports, _foldl) {
@@ -3572,14 +3573,14 @@ define('frampton-list/product', ['exports', 'frampton-list/foldl'], function (ex
     }, 1, xs);
   }
 });
-define('frampton-list/remove', ['exports', 'frampton-utils/curry', 'frampton-list/filter'], function (exports, _curry, _filter) {
+define('frampton-list/remove', ['exports', 'frampton-utils/curry_n', 'frampton-list/filter'], function (exports, _curry_n, _filter) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _filter2 = _interopRequireDefault(_filter);
 
@@ -3589,7 +3590,7 @@ define('frampton-list/remove', ['exports', 'frampton-utils/curry', 'frampton-lis
     };
   }
 
-  exports.default = (0, _curry2.default)(function curried_remove(obj, xs) {
+  exports.default = (0, _curry_n2.default)(2, function curried_remove(obj, xs) {
     return (0, _filter2.default)(function (next) {
       return next !== obj;
     }, xs);
@@ -3630,17 +3631,17 @@ define('frampton-list/remove_index', ['exports', 'frampton-list/length'], functi
       }
     }
 
-    return Object.freeze(newList);
+    return newList;
   }
 });
-define('frampton-list/replace', ['exports', 'frampton-utils/curry', 'frampton-list/find', 'frampton-list/replace_index'], function (exports, _curry, _find, _replace_index) {
+define('frampton-list/replace', ['exports', 'frampton-utils/curry_n', 'frampton-list/find', 'frampton-list/replace_index'], function (exports, _curry_n, _find, _replace_index) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _find2 = _interopRequireDefault(_find);
 
@@ -3652,7 +3653,7 @@ define('frampton-list/replace', ['exports', 'frampton-utils/curry', 'frampton-li
     };
   }
 
-  exports.default = (0, _curry2.default)(function replace(oldObj, newObj, xs) {
+  exports.default = (0, _curry_n2.default)(2, function replace(oldObj, newObj, xs) {
     var index = (0, _find2.default)(oldObj, xs);
     if (index > -1) {
       return (0, _replace_index2.default)(index, newObj, xs);
@@ -3661,14 +3662,14 @@ define('frampton-list/replace', ['exports', 'frampton-utils/curry', 'frampton-li
     }
   });
 });
-define('frampton-list/replace_index', ['exports', 'frampton-utils/curry', 'frampton-list/length'], function (exports, _curry, _length) {
+define('frampton-list/replace_index', ['exports', 'frampton-utils/curry_n', 'frampton-list/length'], function (exports, _curry_n, _length) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _length2 = _interopRequireDefault(_length);
 
@@ -3678,7 +3679,7 @@ define('frampton-list/replace_index', ['exports', 'frampton-utils/curry', 'framp
     };
   }
 
-  exports.default = (0, _curry2.default)(function replace_index(index, obj, xs) {
+  exports.default = (0, _curry_n2.default)(2, function replace_index(index, obj, xs) {
     var len = (0, _length2.default)(xs);
     var newArray = new Array(len);
     for (var i = 0; i < len; i++) {
@@ -3688,7 +3689,7 @@ define('frampton-list/replace_index', ['exports', 'frampton-utils/curry', 'framp
         newArray[i] = xs[i];
       }
     }
-    return Object.freeze(newArray);
+    return newArray;
   });
 });
 define('frampton-list/reverse', ['exports', 'frampton-list/foldr'], function (exports, _foldr) {
@@ -3715,10 +3716,10 @@ define('frampton-list/reverse', ['exports', 'frampton-list/foldr'], function (ex
    * @memberof Frampton.List
    */
   function reverse(xs) {
-    return Object.freeze((0, _foldr2.default)(function (acc, next) {
+    return (0, _foldr2.default)(function (acc, next) {
       acc.push(next);
       return acc;
-    }, [], xs));
+    }, [], xs);
   }
 });
 define('frampton-list/second', ['exports', 'frampton-list/at'], function (exports, _at) {
@@ -3738,14 +3739,14 @@ define('frampton-list/second', ['exports', 'frampton-list/at'], function (export
 
   exports.default = (0, _at2.default)(1);
 });
-define('frampton-list/split', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-list/split', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -3753,7 +3754,7 @@ define('frampton-list/split', ['exports', 'frampton-utils/curry'], function (exp
     };
   }
 
-  exports.default = (0, _curry2.default)(function split(n, xs) {
+  exports.default = (0, _curry_n2.default)(2, function split(n, xs) {
     var ys = [];
     var zs = [];
     var len = xs.length;
@@ -3766,7 +3767,7 @@ define('frampton-list/split', ['exports', 'frampton-utils/curry'], function (exp
       }
     }
 
-    return Object.freeze([ys, zs]);
+    return [ys, zs];
   });
 });
 define('frampton-list/sum', ['exports', 'frampton-list/foldl'], function (exports, _foldl) {
@@ -3826,13 +3827,13 @@ define('frampton-list/tail', ['exports', 'frampton-utils/assert', 'frampton-util
     (0, _assert2.default)("Frampton.List.tail recieved a non-array", (0, _is_array2.default)(xs));
     switch (xs.length) {
       case 0:
-        return Object.freeze([]);
+        return [];
       default:
-        return Object.freeze(xs.slice(1));
+        return xs.slice(1);
     }
   }
 });
-define('frampton-list/take', ['exports', 'frampton-utils/assert', 'frampton-utils/curry', 'frampton-utils/is_array', 'frampton-math/min'], function (exports, _assert, _curry, _is_array, _min) {
+define('frampton-list/take', ['exports', 'frampton-utils/assert', 'frampton-utils/curry_n', 'frampton-utils/is_array', 'frampton-math/min'], function (exports, _assert, _curry_n, _is_array, _min) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -3841,7 +3842,7 @@ define('frampton-list/take', ['exports', 'frampton-utils/assert', 'frampton-util
 
   var _assert2 = _interopRequireDefault(_assert);
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   var _is_array2 = _interopRequireDefault(_is_array);
 
@@ -3853,7 +3854,7 @@ define('frampton-list/take', ['exports', 'frampton-utils/assert', 'frampton-util
     };
   }
 
-  exports.default = (0, _curry2.default)(function take(num, xs) {
+  exports.default = (0, _curry_n2.default)(2, function take(num, xs) {
     (0, _assert2.default)("Frampton.List.take recieved a non-array", (0, _is_array2.default)(xs));
     var newList = [];
     var len = (0, _min2.default)(xs.length, num);
@@ -3880,14 +3881,14 @@ define('frampton-list/third', ['exports', 'frampton-list/at'], function (exports
 
   exports.default = (0, _at2.default)(2);
 });
-define('frampton-list/zip', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
+define('frampton-list/zip', ['exports', 'frampton-utils/curry_n'], function (exports, _curry_n) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _curry2 = _interopRequireDefault(_curry);
+  var _curry_n2 = _interopRequireDefault(_curry_n);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -3895,7 +3896,7 @@ define('frampton-list/zip', ['exports', 'frampton-utils/curry'], function (expor
     };
   }
 
-  exports.default = (0, _curry2.default)(function zip_array(xs, ys) {
+  exports.default = (0, _curry_n2.default)(2, function zip_array(xs, ys) {
 
     var xLen = xs.length;
     var yLen = ys.length;
@@ -3906,7 +3907,7 @@ define('frampton-list/zip', ['exports', 'frampton-utils/curry'], function (expor
       zs[i] = [xs[i], ys[i]];
     }
 
-    return Object.freeze(zs);
+    return zs;
   });
 });
 define('frampton-math', ['frampton/namespace', 'frampton-math/add', 'frampton-math/subtract', 'frampton-math/multiply', 'frampton-math/divide', 'frampton-math/modulo', 'frampton-math/max', 'frampton-math/min'], function (_namespace, _add, _subtract, _multiply, _divide, _modulo, _max, _min) {
@@ -4160,10 +4161,10 @@ define('frampton-object/as_list', ['exports', 'frampton-object/reduce'], functio
    * @returns {Array}
    */
   function as_list(obj) {
-    return Object.freeze((0, _reduce2.default)(function (acc, nextValue, nextKey) {
+    return (0, _reduce2.default)(function (acc, nextValue, nextKey) {
       acc.push([nextKey, nextValue]);
       return acc;
-    }, [], obj));
+    }, [], obj);
   }
 });
 define('frampton-object/copy', ['exports', 'frampton-object/for_each'], function (exports, _for_each) {
@@ -4199,7 +4200,7 @@ define('frampton-object/copy', ['exports', 'frampton-object/for_each'], function
       newObj[key] = value;
     }, obj);
 
-    return Object.freeze(newObj);
+    return newObj;
   }
 });
 define('frampton-object/filter', ['exports', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, _curry, _for_each) {
@@ -4229,7 +4230,7 @@ define('frampton-object/filter', ['exports', 'frampton-utils/curry', 'frampton-o
       }
     }, obj);
 
-    return Object.freeze(newObj);
+    return newObj;
   });
 });
 define('frampton-object/for_each', ['exports', 'frampton-utils/curry'], function (exports, _curry) {
@@ -4376,7 +4377,7 @@ define('frampton-object/map', ['exports', 'frampton-utils/curry', 'frampton-obje
       newObj[key] = fn(value, key);
     }, obj);
 
-    return Object.freeze(newObj);
+    return newObj;
   });
 });
 define('frampton-object/merge', ['exports', 'frampton-utils/curry', 'frampton-utils/extend'], function (exports, _curry, _extend) {
@@ -4397,7 +4398,7 @@ define('frampton-object/merge', ['exports', 'frampton-utils/curry', 'frampton-ut
   }
 
   exports.default = (0, _curry2.default)(function curried_merge(obj1, obj2) {
-    return Object.freeze((0, _extend2.default)({}, obj1, obj2));
+    return (0, _extend2.default)({}, obj1, obj2);
   });
 });
 define('frampton-object/reduce', ['exports', 'frampton-utils/curry', 'frampton-object/for_each'], function (exports, _curry, _for_each) {
@@ -4498,13 +4499,15 @@ define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-util
     return setValue(prop, value, obj, {});
   });
 });
-define('frampton-object/update', ['exports', 'frampton-object/for_each'], function (exports, _for_each) {
+define('frampton-object/update', ['exports', 'frampton-utils/is_object', 'frampton-object/for_each'], function (exports, _is_object, _for_each) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = update_object;
+
+  var _is_object2 = _interopRequireDefault(_is_object);
 
   var _for_each2 = _interopRequireDefault(_for_each);
 
@@ -4529,14 +4532,16 @@ define('frampton-object/update', ['exports', 'frampton-object/for_each'], functi
     var newObj = {};
 
     (0, _for_each2.default)(function (value, key) {
-      if (update[key] !== undefined) {
+      if ((0, _is_object2.default)(value) && (0, _is_object2.default)(update[key])) {
+        newObj[key] = update_object(value, update[key]);
+      } else if (update[key] !== undefined) {
         newObj[key] = update[key];
       } else {
         newObj[key] = value;
       }
     }, base);
 
-    return Object.freeze(newObj);
+    return newObj;
   }
 });
 define('frampton-object/values', ['exports', 'frampton-utils/is_object'], function (exports, _is_object) {
@@ -4677,6 +4682,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     };
   }
 
+  // STATE
   var signalGraph = [];
   var updateQueue = [];
   var updateInProgress = false;

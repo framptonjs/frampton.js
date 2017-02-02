@@ -1,5 +1,5 @@
-import curry from 'frampton-utils/curry';
+import curryN from 'frampton-utils/curry_n';
 
-export default curry(function(obj, xs) {
+export default curryN(2, function(obj, xs) {
   return xs.indexOf(obj);
 });
