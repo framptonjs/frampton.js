@@ -1,6 +1,7 @@
 import Frampton from 'frampton/namespace';
 
 import createTask from 'frampton-data/task/create';
+import createSync from 'frampton-data/task/sync';
 import delay from 'frampton-data/task/delay';
 import fail from 'frampton-data/task/fail';
 import never from 'frampton-data/task/never';
@@ -38,6 +39,7 @@ Frampton.Data = {};
 Frampton.Data.Task          = {};
 Frampton.Data.Task.delay    = delay;
 Frampton.Data.Task.create   = createTask;
+Frampton.Data.Task.sync     = createSync;
 Frampton.Data.Task.fail     = fail;
 Frampton.Data.Task.succeed  = succeed;
 Frampton.Data.Task.never    = never;

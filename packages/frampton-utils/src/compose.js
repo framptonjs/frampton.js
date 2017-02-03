@@ -17,7 +17,7 @@ export default function compose(...fns) {
   assert("Compose did not receive any arguments. You can't compose nothing.", (fns.length > 0));
   return function composition(...args) {
     return first(foldr(function(args, fn) {
-      return [fn.apply(this, args)];
+      return [ fn(...args) ];
     }, args, fns));
   };
 }

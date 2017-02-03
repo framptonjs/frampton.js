@@ -3,6 +3,28 @@ import noop from 'frampton-utils/noop';
 
 QUnit.module('Frampton.Data.Task');
 
+QUnit.test('Task.run method runs asyncronously', function(assert) {
+  assert.expect(2);
+  var test = 0;
+  const done = assert.async();
+  const task = createTask((sinks) => {
+    test = 5;
+    sinks.resolve(null);
+  });
+
+  task.run({
+    reject : noop,
+    resolve : (val) => {
+      assert.equal(test, 5);
+      done();
+    },
+    progress : noop
+  });
+
+  // Test should still be 0.
+  assert.equal(test, 0);
+});
+
 QUnit.test('Task.join method flattens nested Tasks', function(assert) {
   assert.expect(1);
   const done = assert.async();

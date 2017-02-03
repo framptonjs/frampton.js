@@ -143,12 +143,14 @@ SOFTWARE.
 
 }());
 
-define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/delay', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create', 'frampton-data/maybe/create', 'frampton-data/maybe/just', 'frampton-data/maybe/nothing', 'frampton-data/result/success', 'frampton-data/result/failure', 'frampton-data/result/from_throwable'], function (_namespace, _create, _delay, _fail, _never, _sequence, _succeed, _when, _execute, _create3, _create5, _create7, _just, _nothing, _success, _failure, _from_throwable) {
+define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/sync', 'frampton-data/task/delay', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create', 'frampton-data/maybe/create', 'frampton-data/maybe/just', 'frampton-data/maybe/nothing', 'frampton-data/result/success', 'frampton-data/result/failure', 'frampton-data/result/from_throwable'], function (_namespace, _create, _sync, _delay, _fail, _never, _sequence, _succeed, _when, _execute, _create3, _create5, _create7, _just, _nothing, _success, _failure, _from_throwable) {
   'use strict';
 
   var _namespace2 = _interopRequireDefault(_namespace);
 
   var _create2 = _interopRequireDefault(_create);
+
+  var _sync2 = _interopRequireDefault(_sync);
 
   var _delay2 = _interopRequireDefault(_delay);
 
@@ -200,6 +202,7 @@ define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'fra
   _namespace2.default.Data.Task = {};
   _namespace2.default.Data.Task.delay = _delay2.default;
   _namespace2.default.Data.Task.create = _create2.default;
+  _namespace2.default.Data.Task.sync = _sync2.default;
   _namespace2.default.Data.Task.fail = _fail2.default;
   _namespace2.default.Data.Task.succeed = _succeed2.default;
   _namespace2.default.Data.Task.never = _never2.default;
@@ -917,6 +920,7 @@ define('frampton-data/task/create', ['exports', 'frampton-utils/immediate', 'fra
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.Task = undefined;
   exports.default = create_task;
 
   var _immediate2 = _interopRequireDefault(_immediate);
@@ -937,280 +941,355 @@ define('frampton-data/task/create', ['exports', 'frampton-utils/immediate', 'fra
     };
   }
 
-  function Task(task) {
-    this.fn = task;
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
   }
 
-  /**
-   * Takes a hash of functions to call based on the resolution of the Task and runs the computation
-   * contained within this Task.
-   *
-   * The sinks object should be of the form:
-   * {
-   *   reject : (err) => {},
-   *   resolve : (val) => {},
-   *   progress : (prog) => {}
-   * }
-   *
-   * Each function is used by the contained computation to update us on the state of the running
-   * computation.
-   *
-   * @name run
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Object} sinks
-   * @param {Function} sinks.reject - The function to call on failure.
-   * @param {Function} sinks.resolve - The function to call on success.
-   * @param {Function} sinks.progress - The function to call on progress.
-   */
-  Task.prototype.run = function (sinks) {
-    var _this = this;
-
-    (0, _immediate2.default)(function () {
-      try {
-        _this.fn((0, _valid_sinks2.default)(sinks));
-      } catch (e) {
-        sinks.reject(e);
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
-    });
-  };
+    }
 
-  /**
-   * of(return) :: a -> Success a
-   *
-   * Returns a Task that always resolves with the given value.
-   *
-   * @name of
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {*} val - Value to resolve task with
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.of = function (val) {
-    return new Task(function (sinks) {
-      sinks.resolve(val);
-    });
-  };
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
 
-  /**
-   * join :: Task x (Task x a) -> Task x a
-   *
-   * Takes a nested Task and removes one level of nesting.
-   *
-   * @name join
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.join = function () {
-    var source = this;
-    return new Task(function (sinks) {
-      source.run({
-        reject: sinks.reject,
-        resolve: function resolve(val) {
-          val.run(sinks);
-        },
-        progress: _noop2.default
-      });
-    });
-  };
+  var Task = exports.Task = function () {
+    function Task(computation) {
+      _classCallCheck(this, Task);
 
-  /**
-   * concat(>>) :: Task x a -> Task x b -> Task x b
-   *
-   * Runs one task after another, discarding the return value of the first.
-   *
-   * @name concat
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Frampton.Data.Task} task - Task to run after this task
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.concat = function (task) {
-    var source = this;
-    return new Task(function (sinks) {
-      source.run({
-        reject: sinks.reject,
-        resolve: function resolve(val) {
-          task.run(sinks);
-        },
-        progress: _noop2.default
-      });
-    });
-  };
+      this.fn = computation;
+    }
 
-  /**
-   * chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
-   *
-   * Maps the return value of one Task to another Task, chaining two Tasks together.
-   *
-   * @name chain
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Function} mapping - Function to map the return value of this Task to another Task.
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.chain = function (mapping) {
-    return this.map(mapping).join();
-  };
+    /**
+     * Takes a hash of functions to call based on the resolution of the Task and runs the computation
+     * contained within this Task.
+     *
+     * The sinks object should be of the form:
+     * {
+     *   reject : (err) => {},
+     *   resolve : (val) => {},
+     *   progress : (prog) => {}
+     * }
+     *
+     * Each function is used by the contained computation to update us on the state of the running
+     * computation.
+     *
+     * @name run
+     * @method
+     * @memberof Frampton.Data.Task#
+     * @param {Object} sinks
+     * @param {Function} sinks.reject - The function to call on failure.
+     * @param {Function} sinks.resolve - The function to call on success.
+     * @param {Function} sinks.progress - The function to call on progress.
+     */
 
-  /**
-   * ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
-   *
-   * @name ap
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Frampton.Data.Task} task
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.ap = function (task) {
-    return this.chain(function (fn) {
-      return task.map(fn);
-    });
-  };
 
-  /**
-   * recover :: Task x a -> (x -> b) -> Task x b
-   *
-   * Used to map a reject to a resolve.
-   *
-   * @name recover
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Function} mapping
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.recover = function (mapping) {
-    var source = this;
-    return new Task(function (sinks) {
-      source.run({
-        reject: function reject(err) {
-          sinks.resolve(mapping(err));
-        },
-        resolve: sinks.resolve,
-        progress: sinks.progress
-      });
-    });
-  };
+    _createClass(Task, [{
+      key: 'run',
+      value: function run(sinks) {
+        var _this = this;
 
-  /**
-   * default :: Task x a -> b -> Task x b
-   *
-   * Returns the given value as a resolve in case of a reject.
-   *
-   * @name default
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {*} val - A value to map errors to
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.default = function (val) {
-    return this.recover(function () {
-      return val;
-    });
-  };
-
-  /**
-   * progress :: Task x a -> (a -> b) -> Task x b
-   *
-   * Maps progress branch to resolution branch
-   *
-   * @name progress
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Function} mapping
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.progress = function (mapping) {
-    var source = this;
-    var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
-    return new Task(function (sinks) {
-      source.run({
-        reject: sinks.reject,
-        resolve: sinks.resolve,
-        progress: function progress(val) {
-          sinks.resolve(mappingFn(val));
-        }
-      });
-    });
-  };
-
-  /**
-   * map :: Task x a -> (a -> b) -> Task x b
-   *
-   * @name map
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Function} mapping
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.map = function (mapping) {
-    var source = this;
-    var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
-    return new Task(function (sinks) {
-      source.run({
-        reject: sinks.reject,
-        resolve: function resolve(val) {
-          sinks.resolve(mappingFn(val));
-        },
-        progress: sinks.progress
-      });
-    });
-  };
-
-  /**
-   * success :: Task x a -> (a -> b) -> Task x b
-   *
-   * A symantic alias for Task.prototype.map
-   *
-   * @name success
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Function} mapping - The function to map the resolve value.
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.success = Task.prototype.map;
-
-  /**
-   * filter :: Task x a -> (a -> b) -> Task x b
-   *
-   * @name filter
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Function} predicate - The function to filter the resolve value.
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.filter = function (predicate) {
-    var source = this;
-    var filterFn = (0, _is_function2.default)(predicate) ? predicate : (0, _is_equal2.default)(predicate);
-    return new Task(function (sinks) {
-      source.run({
-        reject: sinks.reject,
-        resolve: function resolve(val) {
-          if (filterFn(val)) {
-            sinks.resolve(val);
-          } else {
-            sinks.reject(val);
+        (0, _immediate2.default)(function () {
+          try {
+            _this.fn((0, _valid_sinks2.default)(sinks));
+          } catch (e) {
+            sinks.reject(e);
           }
-        },
-        progress: sinks.progress
-      });
-    });
-  };
+        });
+      }
 
-  /**
-   * validate :: Task x a -> (a -> b) -> Task x b
-   *
-   * A symantic alias for filter. Used to validate the return value of a Task. It the given
-   * predicate returns false a resolve is turned into a reject.
-   *
-   * @name validate
-   * @method
-   * @memberof Frampton.Data.Task#
-   * @param {Function} predicate - The function to validate the resolve value.
-   * @returns {Frampton.Data.Task}
-   */
-  Task.prototype.validate = Task.prototype.filter;
+      /**
+       * of(return) :: a -> Success a
+       *
+       * Returns a Task that always resolves with the given value.
+       *
+       * @name of
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {*} val - Value to resolve task with
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'of',
+      value: function of(val) {
+        return new Task(function (sinks) {
+          sinks.resolve(val);
+        });
+      }
+
+      /**
+       * join :: Task x (Task x a) -> Task x a
+       *
+       * Takes a nested Task and removes one level of nesting.
+       *
+       * @name join
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'join',
+      value: function join() {
+        var source = this;
+        return new Task(function (sinks) {
+          source.run({
+            reject: sinks.reject,
+            resolve: function resolve(val) {
+              val.run(sinks);
+            },
+            progress: _noop2.default
+          });
+        });
+      }
+
+      /**
+       * concat(>>) :: Task x a -> Task x b -> Task x b
+       *
+       * Runs one task after another, discarding the return value of the first.
+       *
+       * @name concat
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Frampton.Data.Task} task - Task to run after this task
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'concat',
+      value: function concat(task) {
+        var source = this;
+        return new Task(function (sinks) {
+          source.run({
+            reject: sinks.reject,
+            resolve: function resolve(val) {
+              task.run(sinks);
+            },
+            progress: _noop2.default
+          });
+        });
+      }
+
+      /**
+       * chain(>>=) :: Task x a -> (a -> Task x b) -> Task x b
+       *
+       * Maps the return value of one Task to another Task, chaining two Tasks together.
+       *
+       * @name chain
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Function} mapping - Function to map the return value of this Task to another Task.
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'chain',
+      value: function chain(mapping) {
+        return this.map(mapping).join();
+      }
+
+      /**
+       * ap(<*>) :: Task x (a -> b) -> Task x a -> Task x b
+       *
+       * @name ap
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Frampton.Data.Task} task
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'ap',
+      value: function ap(task) {
+        return this.chain(function (fn) {
+          return task.map(fn);
+        });
+      }
+
+      /**
+       * recover :: Task x a -> (x -> b) -> Task x b
+       *
+       * Used to map a reject to a resolve.
+       *
+       * @name recover
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Function} mapping
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'recover',
+      value: function recover(mapping) {
+        var source = this;
+        return new Task(function (sinks) {
+          source.run({
+            reject: function reject(err) {
+              sinks.resolve(mapping(err));
+            },
+            resolve: sinks.resolve,
+            progress: sinks.progress
+          });
+        });
+      }
+
+      /**
+       * default :: Task x a -> b -> Task x b
+       *
+       * Returns the given value as a resolve in case of a reject.
+       *
+       * @name default
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {*} val - A value to map errors to
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'default',
+      value: function _default(val) {
+        return this.recover(function () {
+          return val;
+        });
+      }
+
+      /**
+       * progress :: Task x a -> (a -> b) -> Task x b
+       *
+       * Maps progress branch to resolution branch
+       *
+       * @name progress
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Function} mapping
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'progress',
+      value: function progress(mapping) {
+        var source = this;
+        var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
+        return new Task(function (sinks) {
+          source.run({
+            reject: sinks.reject,
+            resolve: sinks.resolve,
+            progress: function progress(val) {
+              sinks.resolve(mappingFn(val));
+            }
+          });
+        });
+      }
+
+      /**
+       * map :: Task x a -> (a -> b) -> Task x b
+       *
+       * @name map
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Function} mapping
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'map',
+      value: function map(mapping) {
+        var source = this;
+        var mappingFn = (0, _is_function2.default)(mapping) ? mapping : (0, _of_value2.default)(mapping);
+        return new Task(function (sinks) {
+          source.run({
+            reject: sinks.reject,
+            resolve: function resolve(val) {
+              sinks.resolve(mappingFn(val));
+            },
+            progress: sinks.progress
+          });
+        });
+      }
+
+      /**
+       * success :: Task x a -> (a -> b) -> Task x b
+       *
+       * A symantic alias for Task.prototype.map
+       *
+       * @name success
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Function} mapping - The function to map the resolve value.
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'success',
+      value: function success(mapping) {
+        return this.map(mapping);
+      }
+
+      /**
+       * filter :: Task x a -> (a -> b) -> Task x b
+       *
+       * @name filter
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Function} predicate - The function to filter the resolve value.
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'filter',
+      value: function filter(predicate) {
+        var source = this;
+        var filterFn = (0, _is_function2.default)(predicate) ? predicate : (0, _is_equal2.default)(predicate);
+        return new Task(function (sinks) {
+          source.run({
+            reject: sinks.reject,
+            resolve: function resolve(val) {
+              if (filterFn(val)) {
+                sinks.resolve(val);
+              } else {
+                sinks.reject(val);
+              }
+            },
+            progress: sinks.progress
+          });
+        });
+      }
+
+      /**
+       * validate :: Task x a -> (a -> b) -> Task x b
+       *
+       * A symantic alias for filter. Used to validate the return value of a Task. It the given
+       * predicate returns false a resolve is turned into a reject.
+       *
+       * @name validate
+       * @method
+       * @memberof Frampton.Data.Task#
+       * @param {Function} predicate - The function to validate the resolve value.
+       * @returns {Frampton.Data.Task}
+       */
+
+    }, {
+      key: 'validate',
+      value: function validate(predicate) {
+        return this.filter(predicate);
+      }
+    }]);
+
+    return Task;
+  }();
 
   /**
    * Method for creating new Tasks. This method should be used instead of calling the Task
@@ -1424,6 +1503,122 @@ define('frampton-data/task/succeed', ['exports', 'frampton-data/task/create'], f
     return (0, _create2.default)(function (sinks) {
       return sinks.resolve(val);
     });
+  }
+});
+define('frampton-data/task/sync', ['exports', 'frampton-data/task/create', 'frampton-data/task/valid_sinks'], function (exports, _create, _valid_sinks) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.SyncTask = undefined;
+  exports.default = create_sync;
+
+  var _valid_sinks2 = _interopRequireDefault(_valid_sinks);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var SyncTask = exports.SyncTask = function (_Task) {
+    _inherits(SyncTask, _Task);
+
+    function SyncTask(computation) {
+      _classCallCheck(this, SyncTask);
+
+      return _possibleConstructorReturn(this, (SyncTask.__proto__ || Object.getPrototypeOf(SyncTask)).call(this, computation));
+    }
+
+    /**
+     * Takes a hash of functions to call based on the resolution of the Task and runs the computation
+     * contained within this Task.
+     *
+     * The sinks object should be of the form:
+     * {
+     *   reject : (err) => {},
+     *   resolve : (val) => {},
+     *   progress : (prog) => {}
+     * }
+     *
+     * Each function is used by the contained computation to update us on the state of the running
+     * computation.
+     *
+     * @name run
+     * @method
+     * @memberof Frampton.Data.SyncTask#
+     * @param {Object} sinks
+     * @param {Function} sinks.reject - The function to call on failure.
+     * @param {Function} sinks.resolve - The function to call on success.
+     * @param {Function} sinks.progress - The function to call on progress.
+     */
+
+
+    _createClass(SyncTask, [{
+      key: 'run',
+      value: function run(sinks) {
+        try {
+          this.fn((0, _valid_sinks2.default)(sinks));
+        } catch (e) {
+          sinks.reject(e);
+        }
+      }
+    }]);
+
+    return SyncTask;
+  }(_create.Task);
+
+  function create_sync(computation) {
+    return new SyncTask(computation);
   }
 });
 define('frampton-data/task/valid_sinks', ['exports', 'frampton-utils/noop'], function (exports, _noop) {
@@ -6407,6 +6602,18 @@ define('frampton-utils/compose', ['exports', 'frampton-utils/assert', 'frampton-
     };
   }
 
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  }
+
   /**
    * Compose takes any number of functions and returns a function that when
    * executed will call the passed functions in order, passing the return of
@@ -6430,7 +6637,7 @@ define('frampton-utils/compose', ['exports', 'frampton-utils/assert', 'frampton-
       }
 
       return (0, _first2.default)((0, _foldr2.default)(function (args, fn) {
-        return [fn.apply(this, args)];
+        return [fn.apply(undefined, _toConsumableArray(args))];
       }, args, fns));
     };
   }
