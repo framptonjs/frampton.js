@@ -882,6 +882,35 @@ define('frampton-data/result/success', ['exports', 'frampton-data/result/result'
     return new _result.SuccessType(val);
   }
 });
+define('frampton-data/task/batch', ['exports', 'frampton-data/task/create'], function (exports, _create) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = batch;
+
+  var _create2 = _interopRequireDefault(_create);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function batch() {
+    for (var _len = arguments.length, list = Array(_len), _key = 0; _key < _len; _key++) {
+      list[_key] = arguments[_key];
+    }
+
+    return (0, _create2.default)(function (sinks) {
+      var len = list.length;
+      for (var i = 0; i < len; i++) {
+        list[i].run(sinks);
+      }
+    });
+  }
+});
 define('frampton-data/task/create', ['exports', 'frampton-utils/immediate', 'frampton-utils/is_function', 'frampton-utils/noop', 'frampton-utils/of_value', 'frampton-utils/is_equal', 'frampton-data/task/valid_sinks'], function (exports, _immediate, _is_function, _noop, _of_value, _is_equal, _valid_sinks) {
   'use strict';
 
@@ -1483,7 +1512,14 @@ define('frampton-data/task/when', ['exports', 'frampton-utils/log', 'frampton-ut
       tasks.forEach(function (task) {
         var index = idx++;
         task.run({
-          reject: logError,
+          reject: function reject(err) {
+            logError(err);
+            count = count + 1;
+            valueArray[index] = null;
+            if (count === len) {
+              sinks.resolve(valueArray);
+            }
+          },
           resolve: function resolve(val) {
             count = count + 1;
             valueArray[index] = val;

@@ -1,7 +1,7 @@
 {
   "name": "frampton",
   "version": "0.3.5",
-  "main": "dist/frampton.js",
+  "main": "./dist/frampton.js",
   "description": "A functional reactive library",
   "scripts": {
     "test": "frampton test",
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/framptonjs/frampton.js",
   "devDependencies": {
     "frampton-build": "0.0.7",
-    "frampton-cli": "0.0.10",
+    "frampton-cli": "0.0.12",
     "jsdoc": "3.4.0"
   }
 }

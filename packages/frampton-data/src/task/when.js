@@ -36,7 +36,14 @@ export default function when(...tasks) {
     tasks.forEach((task) => {
       const index = idx++;
       task.run({
-        reject: logError,
+        reject(err) {
+          logError(err);
+          count = count + 1;
+          valueArray[index] = null;
+          if (count === len) {
+            sinks.resolve(valueArray);
+          }
+        },
         resolve(val) {
           count = count + 1;
           valueArray[index] = val;

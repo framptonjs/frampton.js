@@ -4,7 +4,7 @@ import create from 'frampton-data/task/create';
 QUnit.module('Frampton.Data.Task.when');
 
 QUnit.test('creates a task that runs a list of tasks in sequence', function(assert) {
-
+  assert.expect(5);
   const done = assert.async();
   var counter = 0;
   const task = when(
@@ -32,11 +32,11 @@ QUnit.test('creates a task that runs a list of tasks in sequence', function(asse
   );
 
   task.run({
-    reject : (err) => {
+    reject(err) {
       assert.ok(false, 'reject called');
       done();
     },
-    resolve : (val) => {
+    resolve(val) {
       assert.equal(counter, 3);
       assert.deepEqual(val, [1,2,3]);
       done();
