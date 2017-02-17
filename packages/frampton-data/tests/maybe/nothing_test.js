@@ -70,6 +70,6 @@ QUnit.test('isJust method returns false', function(assert) {
 QUnit.test('isNothing method returns true', function(assert) {
   const maybe = Nothing();
   const actual = maybe.isNothing();
-  const expected = false;
+  const expected = true;
   assert.equal(actual, expected);
 });

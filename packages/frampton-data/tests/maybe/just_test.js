@@ -78,7 +78,7 @@ QUnit.test('getOrElse method gets the value from Just', function(assert) {
 QUnit.test('isJust method returns true', function(assert) {
   const maybe = Just(3);
   const actual = maybe.isJust();
-  const expected = false;
+  const expected = true;
   assert.equal(actual, expected);
 });
 

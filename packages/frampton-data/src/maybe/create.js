@@ -183,7 +183,7 @@ function Just(val) {
 
 Just.prototype = new Maybe();
 
-Just.isJust = function() {
+Just.prototype.isJust = function() {
   return true;
 };
 
@@ -232,7 +232,7 @@ Nothing.prototype.getOrElse = function(val) {
   return val;
 };
 
-Nothing.isNothing = function() {
+Nothing.prototype.isNothing = function() {
   return true;
 };
 

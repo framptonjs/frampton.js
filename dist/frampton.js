@@ -445,7 +445,7 @@ define('frampton-data/maybe/create', ['exports', 'frampton-utils/is_something', 
 
   Just.prototype = new Maybe();
 
-  Just.isJust = function () {
+  Just.prototype.isJust = function () {
     return true;
   };
 
@@ -494,7 +494,7 @@ define('frampton-data/maybe/create', ['exports', 'frampton-utils/is_something', 
     return val;
   };
 
-  Nothing.isNothing = function () {
+  Nothing.prototype.isNothing = function () {
     return true;
   };
 
@@ -4327,11 +4327,9 @@ define('frampton-object/get', ['exports', 'frampton-utils/curry', 'frampton-util
       });
 
       if (parts.length > 1) {
-        var _parts = _toArray(parts);
-
-        var head = _parts[0];
-
-        var tail = _parts.slice(1);
+        var _parts = _toArray(parts),
+            head = _parts[0],
+            tail = _parts.slice(1);
 
         var sub = obj[head];
         return !(0, _is_primitive2.default)(sub) ? get(tail.join('.'), sub) : null;
@@ -4492,13 +4490,10 @@ define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-util
     } else {
       var _split$filter = (prop || '').split('.').filter(function (val) {
         return val.trim() !== '';
-      });
-
-      var _split$filter2 = _toArray(_split$filter);
-
-      var head = _split$filter2[0];
-
-      var tail = _split$filter2.slice(1);
+      }),
+          _split$filter2 = _toArray(_split$filter),
+          head = _split$filter2[0],
+          tail = _split$filter2.slice(1);
 
       if (oldObj[head] === undefined) {
         (0, _warn2.default)('Frampton.Object.set: the given path ' + prop + ' is not found in given object');
@@ -7081,7 +7076,7 @@ define('frampton-utils/is_object', ['exports', 'frampton-utils/is_something', 'f
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
   } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   };
 
   /**
