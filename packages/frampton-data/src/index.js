@@ -8,6 +8,7 @@ import never from 'frampton-data/task/never';
 import sequence from 'frampton-data/task/sequence';
 import succeed from 'frampton-data/task/succeed';
 import when from 'frampton-data/task/when';
+import batch from 'frampton-data/task/batch';
 import execute from 'frampton-data/task/execute';
 
 import createUnion from 'frampton-data/union/create';
@@ -45,6 +46,7 @@ Frampton.Data.Task.succeed  = succeed;
 Frampton.Data.Task.never    = never;
 Frampton.Data.Task.sequence = sequence;
 Frampton.Data.Task.when     = when;
+Frampton.Data.Task.batch    = batch;
 Frampton.Data.Task.execute  = execute;
 
 /**

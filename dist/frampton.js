@@ -143,7 +143,7 @@ SOFTWARE.
 
 }());
 
-define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/sync', 'frampton-data/task/delay', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create', 'frampton-data/maybe/create', 'frampton-data/maybe/just', 'frampton-data/maybe/nothing', 'frampton-data/result/success', 'frampton-data/result/failure', 'frampton-data/result/from_throwable'], function (_namespace, _create, _sync, _delay, _fail, _never, _sequence, _succeed, _when, _execute, _create3, _create5, _create7, _just, _nothing, _success, _failure, _from_throwable) {
+define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'frampton-data/task/sync', 'frampton-data/task/delay', 'frampton-data/task/fail', 'frampton-data/task/never', 'frampton-data/task/sequence', 'frampton-data/task/succeed', 'frampton-data/task/when', 'frampton-data/task/batch', 'frampton-data/task/execute', 'frampton-data/union/create', 'frampton-data/record/create', 'frampton-data/maybe/create', 'frampton-data/maybe/just', 'frampton-data/maybe/nothing', 'frampton-data/result/success', 'frampton-data/result/failure', 'frampton-data/result/from_throwable'], function (_namespace, _create, _sync, _delay, _fail, _never, _sequence, _succeed, _when, _batch, _execute, _create3, _create5, _create7, _just, _nothing, _success, _failure, _from_throwable) {
   'use strict';
 
   var _namespace2 = _interopRequireDefault(_namespace);
@@ -163,6 +163,8 @@ define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'fra
   var _succeed2 = _interopRequireDefault(_succeed);
 
   var _when2 = _interopRequireDefault(_when);
+
+  var _batch2 = _interopRequireDefault(_batch);
 
   var _execute2 = _interopRequireDefault(_execute);
 
@@ -208,6 +210,7 @@ define('frampton-data', ['frampton/namespace', 'frampton-data/task/create', 'fra
   _namespace2.default.Data.Task.never = _never2.default;
   _namespace2.default.Data.Task.sequence = _sequence2.default;
   _namespace2.default.Data.Task.when = _when2.default;
+  _namespace2.default.Data.Task.batch = _batch2.default;
   _namespace2.default.Data.Task.execute = _execute2.default;
 
   /**
