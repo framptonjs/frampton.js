@@ -1,5 +1,5 @@
 import isObject from 'frampton-utils/is_object';
-import forEach from 'frampton-object/for_each';
+import getKeys from 'frampton-object/keys';
 
 /**
  * update :: Object -> Object -> Object
@@ -14,16 +14,28 @@ import forEach from 'frampton-object/for_each';
 export default function update_object(base, update) {
 
   const newObj = {};
+  const baseKeys = getKeys(base);
+  const updateKeys = getKeys(update);
 
-  forEach((value, key) => {
-    if (isObject(value) && isObject(update[key])) {
-      newObj[key] = update_object(value, update[key]);
-    } else if (update[key] !== undefined) {
-      newObj[key] = update[key];
-    } else {
-      newObj[key] = value;
+  for (let i = 0; i < updateKeys.length; i++) {
+    const key = updateKeys[i];
+    if (baseKeys.indexOf(key) === -1) {
+      baseKeys.push(key);
     }
-  }, base);
+  }
+
+  for (let i = 0; i < baseKeys.length; i++) {
+    const key = baseKeys[i];
+    const baseValue = base[key];
+    const updateValue = update[key];
+    if (isObject(baseValue) && isObject(updateValue)) {
+      newObj[key] = update_object(baseValue, updateValue);
+    } else if (updateValue !== undefined) {
+      newObj[key] = updateValue;
+    } else {
+      newObj[key] = baseValue;
+    }
+  }
 
   return newObj;
 }

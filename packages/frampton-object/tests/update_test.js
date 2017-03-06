@@ -23,6 +23,13 @@ QUnit.test('ignores undefined keys', function(assert) {
   assert.deepEqual(actual, expected);
 });
 
+QUnit.test('adds values in previously undefined keys', function(assert) {
+  const obj = { one: 1, two: 2, three: 3 };
+  const actual = update(obj, { one: 3, five : 5, six: { seven: 7 } });
+  const expected = { one : 3, two : 2, three : 3, five: 5, six: { seven: 7 } };
+  assert.deepEqual(actual, expected);
+});
+
 QUnit.test('works with falsy values', function(assert) {
   const obj = { one: 1, two: 2, three: 3 };
   const actual = update(obj, { one : 3, two: false });

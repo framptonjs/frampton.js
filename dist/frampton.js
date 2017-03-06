@@ -4659,7 +4659,7 @@ define('frampton-object/reduce', ['exports', 'frampton-utils/curry', 'frampton-o
     return acc;
   });
 });
-define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-utils/warn', 'frampton-utils/is_string'], function (exports, _curry, _warn, _is_string) {
+define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-utils/is_string', 'frampton-object/keys'], function (exports, _curry, _is_string, _keys) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4668,9 +4668,9 @@ define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-util
 
   var _curry2 = _interopRequireDefault(_curry);
 
-  var _warn2 = _interopRequireDefault(_warn);
-
   var _is_string2 = _interopRequireDefault(_is_string);
+
+  var _keys2 = _interopRequireDefault(_keys);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -4693,19 +4693,23 @@ define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-util
           head = _split$filter2[0],
           tail = _split$filter2.slice(1);
 
-      if (oldObj[head] === undefined) {
-        (0, _warn2.default)('Frampton.Object.set: the given path ' + prop + ' is not found in given object');
-      } else {
-        for (var key in oldObj) {
-          if (key === head) {
-            if (tail.length > 0) {
-              newObj[key] = setValue(tail.join('.'), value, oldObj[key], {});
-            } else {
-              newObj[key] = value;
-            }
+      var keys = (0, _keys2.default)(oldObj);
+
+      if (keys.indexOf(head) === -1) {
+        keys.push(head);
+      }
+
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (key === head) {
+          if (tail.length > 0) {
+            var nextObj = oldObj[key] || {};
+            newObj[key] = setValue(tail.join('.'), value, nextObj, {});
           } else {
-            newObj[key] = oldObj[key];
+            newObj[key] = value;
           }
+        } else {
+          newObj[key] = oldObj[key];
         }
       }
     }
@@ -4728,7 +4732,7 @@ define('frampton-object/set', ['exports', 'frampton-utils/curry', 'frampton-util
     return setValue(prop, value, obj, {});
   });
 });
-define('frampton-object/update', ['exports', 'frampton-utils/is_object', 'frampton-object/for_each'], function (exports, _is_object, _for_each) {
+define('frampton-object/update', ['exports', 'frampton-utils/is_object', 'frampton-object/keys'], function (exports, _is_object, _keys) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -4738,7 +4742,7 @@ define('frampton-object/update', ['exports', 'frampton-utils/is_object', 'frampt
 
   var _is_object2 = _interopRequireDefault(_is_object);
 
-  var _for_each2 = _interopRequireDefault(_for_each);
+  var _keys2 = _interopRequireDefault(_keys);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -4759,16 +4763,28 @@ define('frampton-object/update', ['exports', 'frampton-utils/is_object', 'frampt
   function update_object(base, update) {
 
     var newObj = {};
+    var baseKeys = (0, _keys2.default)(base);
+    var updateKeys = (0, _keys2.default)(update);
 
-    (0, _for_each2.default)(function (value, key) {
-      if ((0, _is_object2.default)(value) && (0, _is_object2.default)(update[key])) {
-        newObj[key] = update_object(value, update[key]);
-      } else if (update[key] !== undefined) {
-        newObj[key] = update[key];
-      } else {
-        newObj[key] = value;
+    for (var i = 0; i < updateKeys.length; i++) {
+      var key = updateKeys[i];
+      if (baseKeys.indexOf(key) === -1) {
+        baseKeys.push(key);
       }
-    }, base);
+    }
+
+    for (var _i = 0; _i < baseKeys.length; _i++) {
+      var _key = baseKeys[_i];
+      var baseValue = base[_key];
+      var updateValue = update[_key];
+      if ((0, _is_object2.default)(baseValue) && (0, _is_object2.default)(updateValue)) {
+        newObj[_key] = update_object(baseValue, updateValue);
+      } else if (updateValue !== undefined) {
+        newObj[_key] = updateValue;
+      } else {
+        newObj[_key] = baseValue;
+      }
+    }
 
     return newObj;
   }
