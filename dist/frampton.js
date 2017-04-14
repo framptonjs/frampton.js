@@ -1462,7 +1462,7 @@ define("frampton-data/task/sequence", ["exports"], function (exports) {
    * @name sequence
    * @method
    * @memberof Frampton.Data.Task
-   * @param {Frampton.Data.Task[]} tassk - The Tasks to wait for
+   * @param {Frampton.Data.Task[]} tasks - The Tasks to wait for
    * @returns {Frampton.Data.Task}
    */
   function sequence() {
@@ -5258,6 +5258,29 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     var parent = this;
     var timer = null;
     return createSignal(function (self) {
+      if (timer) {
+        clearTimeout(timer);
+      }
+
+      timer = setTimeout(function () {
+        self.push(parent._value);
+        timer = null;
+      }, delay || 10);
+    }, [parent], parent._value);
+  }
+
+  /**
+   * @name throttle
+   * @method
+   * @private
+   * @memberof Frampton.Signal.Signal#
+   * @param {Number} delay - Milliseconds to throttle the signal
+   * @returns {Frampton.Signal.Signal}
+   */
+  function throttle(delay) {
+    var parent = this;
+    var timer = null;
+    return createSignal(function (self) {
       if (!timer) {
         timer = setTimeout(function () {
           self.push(parent._value);
@@ -5440,6 +5463,7 @@ define('frampton-signal/create', ['exports', 'frampton-utils/guid', 'frampton-ut
     signal._update = update || _noop2.default;
 
     // Public
+    signal.throttle = throttle;
     signal.debounce = debounce;
     signal.delay = delay;
     signal.ap = ap;

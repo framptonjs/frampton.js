@@ -338,6 +338,29 @@ function debounce(delay) {
   const parent = this;
   var timer = null;
   return createSignal((self) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      self.push(parent._value);
+      timer = null;
+    }, (delay || 10));
+  }, [parent], parent._value);
+}
+
+/**
+ * @name throttle
+ * @method
+ * @private
+ * @memberof Frampton.Signal.Signal#
+ * @param {Number} delay - Milliseconds to throttle the signal
+ * @returns {Frampton.Signal.Signal}
+ */
+function throttle(delay) {
+  const parent = this;
+  var timer = null;
+  return createSignal((self) => {
     if (!timer) {
       timer = setTimeout(() => {
         self.push(parent._value);
@@ -520,6 +543,7 @@ export function createSignal(update, parents, initial) {
   signal._update = (update || noop);
 
   // Public
+  signal.throttle = throttle;
   signal.debounce = debounce;
   signal.delay = delay;
   signal.ap = ap;
