@@ -24,8 +24,15 @@ QUnit.test('sets the new value for nested key', function(assert) {
 
 QUnit.test('adds values on missing path', function(assert) {
   const obj = {};
-  const actual = set('two.foo', 2, obj);
-  const expected = { two: { foo: 2 } };
+  const actual = set('two', 2, obj);
+  const expected = { two: 2 };
+  assert.deepEqual(actual, expected);
+});
+
+QUnit.test('adds values on a nested missing path', function(assert) {
+  const obj = { one: { two: {} } };
+  const actual = set('one.three', 3, obj);
+  const expected = { one: { two: {}, three: 3 } };
   assert.deepEqual(actual, expected);
 });
 

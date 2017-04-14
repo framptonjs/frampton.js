@@ -10,7 +10,6 @@ function setValue(prop, value, oldObj, newObj) {
       return val.trim() !== '';
     });
 
-
     const keys = getKeys(oldObj);
 
     if (keys.indexOf(head) === -1) {

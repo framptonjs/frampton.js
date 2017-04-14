@@ -9,7 +9,7 @@
  * @name sequence
  * @method
  * @memberof Frampton.Data.Task
- * @param {Frampton.Data.Task[]} tassk - The Tasks to wait for
+ * @param {Frampton.Data.Task[]} tasks - The Tasks to wait for
  * @returns {Frampton.Data.Task}
  */
 export default function sequence(...tasks) {
